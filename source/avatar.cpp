@@ -44,34 +44,23 @@ static bool fetchOnce(std::vector<uint8_t>& out) {
 }
 
 static void avatarThreadFunc(void*) {
-    nifmInitialize(NifmServiceType_User);
+    // nifmGetInternetConnectionStatus requires NifmServiceType_System which
+    // homebrew may not always have.  curl already times out cleanly when
+    // offline, so just try immediately and let it report failure instead of
+    // gating on a nifm check that might itself fail.
+    nifmInitialize(NifmServiceType_System);
     curl_global_init(CURL_GLOBAL_DEFAULT);
 
     while (g_running.load()) {
-        bool haveNet = false;
-        for (int i = 0; i < NET_WAIT_SECS * 2 && g_running.load(); i++) {
-            NifmInternetConnectionType   type   = {};
-            uint32_t                     wifi   = 0;
-            NifmInternetConnectionStatus status = {};
-            if (R_SUCCEEDED(nifmGetInternetConnectionStatus(&type, &wifi, &status)) &&
-                status == NifmInternetConnectionStatus_Connected) {
-                haveNet = true;
-                break;
+        std::vector<uint8_t> buf;
+        if (fetchOnce(buf)) {
+            {
+                std::lock_guard<std::mutex> lk(g_mtx);
+                g_latest = buf;
+                g_dirty  = true;
             }
-            svcSleepThread(500'000'000ull);
-        }
-
-        if (haveNet) {
-            std::vector<uint8_t> buf;
-            if (fetchOnce(buf)) {
-                {
-                    std::lock_guard<std::mutex> lk(g_mtx);
-                    g_latest = buf;
-                    g_dirty  = true;
-                }
-                FILE* f = fopen(AVATAR_CACHE, "wb");
-                if (f) { fwrite(buf.data(), 1, buf.size(), f); fclose(f); }
-            }
+            FILE* f = fopen(AVATAR_CACHE, "wb");
+            if (f) { fwrite(buf.data(), 1, buf.size(), f); fclose(f); }
         }
 
         for (int i = 0; i < REFRESH_SECS * 2 && g_running.load(); i++)

@@ -368,6 +368,20 @@ struct App {
         extern int  g_ui_head;
         extern int  g_ui_pct;
 
+        // Loop / hang detection: if the ring-buffer head hasn't advanced and
+        // the stage label hasn't changed for a while, the native code is
+        // probably stuck in a tight loop.
+        static int      s_last_head  = -1;
+        static Uint32   s_last_adv   = 0;
+        static char     s_last_stage[64] = {};
+        Uint32 now = SDL_GetTicks();
+        if (g_ui_head != s_last_head || strcmp(stage ? stage : "", s_last_stage) != 0) {
+            s_last_head = g_ui_head;
+            s_last_adv  = now;
+            strncpy(s_last_stage, stage ? stage : "", sizeof(s_last_stage) - 1);
+        }
+        bool maybe_looping = (now - s_last_adv) > 45000u; // 45 s with no progress
+
         fill(0, 0, SW, SH, C_BG);
         fill(0, 0, SW, HEADER_H, C_HEADER);
         drawText(fLg, "BareDroidNX", C_WHITE, 30, (HEADER_H - 28) / 2);
@@ -411,6 +425,15 @@ struct App {
                 drawText(fSm, clamp(fSm, line, SW - 80), col, 40, y);
             }
             y += 24;
+        }
+
+        if (maybe_looping) {
+            int bY = y + 4;
+            fill(20, bY, SW - 40, 54, {60, 20, 20, 230});
+            drawText(fSm, "No progress for 45s — may be stuck in a loop.",
+                     C_ERR, 32, bY + 4);
+            drawText(fSm, "Good time to share compat_log.txt with the test environment.",
+                     C_WARN, 32, bY + 28);
         }
 
         fill(0, SH - FOOTER_H, SW, FOOTER_H, C_FOOTER);

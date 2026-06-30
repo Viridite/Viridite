@@ -240,20 +240,19 @@ static void patchAdrpToDataJit(uint8_t* code_buf, size_t code_size,
 static void applyRela(LoadedSo* so, const Elf64_Rela* relas, size_t count,
                       uint8_t* write_base, uint8_t* exec_base,
                       uint8_t* write_alloc, size_t alloc_size,
-                      uint64_t strsz, const char* tag) {
+                      uint64_t strsz, const char* tag, ProgressCb cb) {
     for (size_t i = 0; i < count; i++) {
         const Elf64_Rela& r = relas[i];
         uint32_t sym_idx = ELF64_R_SYM(r.r_info);
         uint32_t type    = ELF64_R_TYPE(r.r_info);
 
-        // Relocation loops can run for thousands of entries on large libs and
-        // previously only logged to the file — the on-screen progress log
-        // sat static the whole time. Push a throttled update so it visibly
-        // scrolls instead of looking frozen.
-        if ((i & 15) == 0 || i + 1 == count) {
+        // Push a throttled on-screen update AND trigger a render via cb so
+        // the progress screen visibly scrolls instead of looking frozen.
+        if ((i & 511) == 0 || i + 1 == count) {
             char ub[64];
             snprintf(ub, sizeof(ub), "%s %zu/%zu", tag, i + 1, count);
             compatUiLog(ub);
+            if (cb) cb("Loading ELF library", ub);
         }
 
         compatLogFmt("%s[%zu/%zu] type=%u sym_idx=%u off=0x%llx addend=0x%llx",
@@ -346,7 +345,7 @@ static void applyRela(LoadedSo* so, const Elf64_Rela* relas, size_t count,
 // ─── elfLoad ──────────────────────────────────────────────────────────────────
 // Does NOT reset g_unresolved_count or g_last_svc_perm_code — caller must call
 // elfResetCounts() before loading a batch so counts accumulate correctly.
-LoadedSo* elfLoad(const char* path) {
+LoadedSo* elfLoad(const char* path, ProgressCb cb) {
     compatLogFmt("ELF: loading %s", path);
 
     // Read the entire file
@@ -444,14 +443,15 @@ LoadedSo* elfLoad(const char* path) {
                 virtmemUnlock();
                 if (cva) {
                     uint8_t* dva = cva + code_jit_size;
-                    // Owner mappings are fixed for the lifetime of the handle — unlike
-                    // jitCreate's rw_addr/rx_addr pair, there is no later transition
-                    // step. Code's Owner VA is mapped Rx immediately and never touched
-                    // again; writing the relocated code happens through a temporary
-                    // Slave alias at copy time (see "copy stage to final regions" below).
-                    // Data's Owner VA is mapped Rw immediately and stays that way forever.
+                    // Disassembly of libnx jitCreate confirms the correct model:
+                    // MapOwner = always Perm_Rw (write alias, backing heap stays writable).
+                    // MapSlave = always Perm_Rx (exec alias, placed at our chosen VA).
+                    // We write code through code_heap_buf (the original heap backing which
+                    // remains accessible after svcCreateCodeMemory) — no MapOwner needed for
+                    // code at all.  Only data needs MapOwner(Rw) so constructors can write
+                    // guard variables via ADRP into the adjacent data VA.
                     Result rc_mc = svcControlCodeMemory(split_h_code,
-                                       CodeMapOperation_MapOwner, cva, code_jit_size, Perm_Rx);
+                                       CodeMapOperation_MapSlave, cva, code_jit_size, Perm_Rx);
                     Result rc_md = R_SUCCEEDED(rc_mc)
                                  ? svcControlCodeMemory(split_h_data,
                                        CodeMapOperation_MapOwner, dva, data_jit_size, Perm_Rw)
@@ -574,7 +574,7 @@ LoadedSo* elfLoad(const char* path) {
     if (!stage) {
         compatLog("ELF: malloc staging buffer OOM");
         if (using_split_map) {
-            svcControlCodeMemory(split_h_code, CodeMapOperation_UnmapOwner, code_va_base, code_jit_size, 0);
+            svcControlCodeMemory(split_h_code, CodeMapOperation_UnmapSlave, code_va_base, code_jit_size, 0);
             svcControlCodeMemory(split_h_data, CodeMapOperation_UnmapOwner, data_va_base, data_jit_size, 0);
             svcCloseHandle(split_h_code); svcCloseHandle(split_h_data);
             free(code_heap_buf); free(data_heap_buf);
@@ -693,14 +693,14 @@ LoadedSo* elfLoad(const char* path) {
         compatLogFmt("ELF: rela %llu entries", (unsigned long long)(rela_sz / sizeof(Elf64_Rela)));
         applyRela(so, (const Elf64_Rela*)(stage_base + rela_vaddr),
                   rela_sz / sizeof(Elf64_Rela),
-                  stage_base, exec_base, stage, alloc_size, strsz, "RELA");
+                  stage_base, exec_base, stage, alloc_size, strsz, "RELA", cb);
     }
     compatLog("ELF: rela done");
     if (jmprel_vaddr && jmprel_sz && so->symtab) {
         compatLogFmt("ELF: jmprel %llu entries", (unsigned long long)(jmprel_sz / sizeof(Elf64_Rela)));
         applyRela(so, (const Elf64_Rela*)(stage_base + jmprel_vaddr),
                   jmprel_sz / sizeof(Elf64_Rela),
-                  stage_base, exec_base, stage, alloc_size, strsz, "JMPREL");
+                  stage_base, exec_base, stage, alloc_size, strsz, "JMPREL", cb);
     }
     compatLog("ELF: jmprel done");
 
@@ -757,37 +757,16 @@ LoadedSo* elfLoad(const char* path) {
     }
 
     // ── Copy stage → final regions ───────────────────────────────────────────
-    bool split_map_write_ok = true;
     if (using_split_map) {
-        // code_va_base is Rx-only (Owner, fixed at creation) — write the
-        // relocated code through a temporary Slave Rw alias at a separate VA,
-        // then drop that alias. code_va_base itself is never touched again.
-        VirtmemReservation* rv_w = nullptr;
-        uint8_t* twa = nullptr;
-        virtmemLock();
-        void* tva = virtmemFindCodeMemory(code_jit_size, 0x1000);
-        if (tva) { rv_w = virtmemAddReservation(tva, code_jit_size); twa = (uint8_t*)tva; }
-        virtmemUnlock();
-        if (twa) {
-            Result rc_sm = svcControlCodeMemory(split_h_code,
-                               CodeMapOperation_MapSlave, twa, code_jit_size, Perm_Rw);
-            if (R_SUCCEEDED(rc_sm)) {
-                compatLogFmt("ELF: SplitMap copy code→slave %p (exec will be %p) size=0x%zx",
-                             (void*)twa, (void*)code_va_base, code_jit_size);
-                memcpy(twa, stage, code_jit_size);
-                svcControlCodeMemory(split_h_code, CodeMapOperation_UnmapSlave, twa, code_jit_size, 0);
-            } else {
-                compatLogFmt("ELF: SplitMap MapSlave FAILED rc=0x%08x", (uint32_t)rc_sm);
-                split_map_write_ok = false;
-            }
-        } else {
-            compatLog("ELF: SplitMap virtmemFindCodeMemory (slave) failed");
-            split_map_write_ok = false;
-        }
-        virtmemLock();
-        if (rv_w) virtmemRemoveReservation(rv_w);
-        virtmemUnlock();
-
+        // code_heap_buf (the backing heap allocation passed to svcCreateCodeMemory)
+        // remains writable after the svcCreate call — the kernel wraps the physical
+        // pages into a handle without unmapping the original VA.  Write the relocated
+        // code directly there; it aliases the same pages as code_va_base (the
+        // MapSlave Rx view), so the executed code picks up the writes after a
+        // cache flush (__builtin___clear_cache below).
+        compatLogFmt("ELF: SplitMap copy code→heap %p (exec=%p) size=0x%zx",
+                     (void*)code_heap_buf, (void*)code_va_base, code_jit_size);
+        memcpy(code_heap_buf, stage, code_jit_size);
         compatLogFmt("ELF: SplitMap copy data→va %p size=0x%zx", (void*)data_va_base, data_jit_size);
         memcpy(data_va_base, stage + data_off_pg, data_jit_size);
     } else if (using_jit) {
@@ -804,13 +783,12 @@ LoadedSo* elfLoad(const char* path) {
     // ── Make code executable ─────────────────────────────────────────────────
     uint32_t this_svc_perm_code = 0;
     if (using_split_map) {
-        // code_va_base was mapped Rx at creation and never transitioned — the
-        // relocated code was written through a temporary Slave alias above, so
-        // there is nothing left to do here. data_va_base stays Rw permanently.
-        this_svc_perm_code = split_map_write_ok ? 0u : 0xD801u;
-        compatLogFmt("SplitMap: code_va=%p Rx (fixed at creation) %s; data_va=%p stays Rw",
-                     (void*)code_va_base, split_map_write_ok ? "OK" : "WRITE FAILED",
-                     (void*)data_va_base);
+        // MapSlave(Rx) was established at allocation — nothing to transition.
+        // Code writes went through code_heap_buf (backing heap, always writable).
+        // Cache flush below makes the writes visible at the MapSlave exec VA.
+        this_svc_perm_code = 0u;
+        compatLogFmt("SplitMap: code_va=%p Rx (MapSlave, no transition needed); data_va=%p Rw",
+                     (void*)code_va_base, (void*)data_va_base);
     } else if (using_jit) {
         Result exec_rc = jitTransitionToExecutable(&code_jit);
         so->jit_mem = code_jit;

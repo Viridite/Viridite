@@ -158,7 +158,7 @@ typedef void (*ProgressCb)(const char* stage, const char* detail);
 CompatLayer* compatGet();
 
 // Load a single .so from disk — does NOT run constructors (call elfRunCtors after)
-LoadedSo*    elfLoad(const char* path);
+LoadedSo*    elfLoad(const char* path, ProgressCb cb = nullptr);
 // Reset accumulated unresolved-symbol count and JIT error code (call before loading a batch)
 void         elfResetCounts();
 // Run a loaded SO's DT_INIT_ARRAY constructors. cb (optional) is called periodically

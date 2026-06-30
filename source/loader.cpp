@@ -361,7 +361,7 @@ LaunchResult launchApk(const std::string& apk_path, const std::string& pkg_name,
         compatUiSetPct(pct);
         if (cb) cb("Loading ELF library", soName);
         compatLogFmt("Loading: %s", soName);
-        LoadedSo* loaded_so = elfLoad(so_path.c_str());
+        LoadedSo* loaded_so = elfLoad(so_path.c_str(), cb);
         if (loaded_so) {
             loaded.push_back(loaded_so);
             if (so_path == main_so) so = loaded_so;
