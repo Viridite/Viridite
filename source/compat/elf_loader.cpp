@@ -530,37 +530,43 @@ LoadedSo* elfLoad(const char* path) {
     free(stage);
     compatLog("ELF: stage freed");
 
-    // ── Transition to executable ─────────────────────────────────────────────
+    // ── Transition code pages to Rx, leave data pages Rw ────────────────────
+    // After jitTransitionToWritable all exec pages are MemType_CodeOut (Rw).
+    // jitTransitionToExecutable would promote ALL pages to MemType_Code (Rx),
+    // after which the kernel refuses to demote a subset back to Rw (0xD401).
+    //
+    // Instead, when there is a writable data segment, skip jitTransitionToExecutable
+    // and call svcSetMemoryPermission on only the CODE pages to make them Rx.
+    // The data pages stay MemType_CodeOut (Rw), so game code running in the code
+    // pages can write to globals at their natural exec-side addresses without fault.
     uint32_t this_svc_perm_code = 0;
     if (using_jit) {
-        Result exec_rc = jitTransitionToExecutable(&jit_mem);
+        Result exec_rc;
+        if (data_seg_vaddr != UINT64_MAX && data_seg_vaddr > min_vaddr) {
+            // Page-align the code/data boundary (always a whole-page split in ELF).
+            uint64_t code_end_pg = ALIGN_DOWN(data_seg_vaddr - min_vaddr, 0x1000);
+            exec_rc = svcSetMemoryPermission(exec_alloc, (size_t)code_end_pg, Perm_Rx);
+            compatLogFmt("JIT: code-only Rx: rc=0x%08X exec=%p code_size=0x%llx",
+                         (uint32_t)exec_rc, (void*)exec_alloc,
+                         (unsigned long long)code_end_pg);
+            if (R_SUCCEEDED(exec_rc))
+                compatLog("JIT: data pages remain Rw — writes will succeed");
+            else
+                compatLogFmt("JIT: WARN code-only Rx failed — falling back to full jitTransitionToExecutable");
+        } else {
+            exec_rc = MAKERESULT(1, 1);  // force fallback path
+        }
+
+        if (R_FAILED(exec_rc)) {
+            // Fallback: promote the entire region to Rx via the standard JIT API.
+            exec_rc = jitTransitionToExecutable(&jit_mem);
+            compatLogFmt("JIT: full Rx fallback: rc=0x%08X", (uint32_t)exec_rc);
+        }
+
         so->jit_mem = jit_mem;
         this_svc_perm_code = (uint32_t)exec_rc;
-        if (R_FAILED(exec_rc)) {
-            compatLogFmt("JIT: jitTransitionToExecutable failed: 0x%08X", exec_rc);
-        } else {
-            compatLog("JIT: code memory is now executable");
-            // Downgrade the data-segment pages in exec_alloc from Rx to Rw.
-            // After svcMapCodeMemory + jitTransitionToExecutable, those pages are
-            // MemType_Code (Rx).  svcSetMemoryPermission can demote them to
-            // MemType_CodeData (Rw), letting game code write to global variables
-            // at their natural exec-side addresses without any ADRP patching.
-            if (data_seg_vaddr != UINT64_MAX && data_seg_vaddr > min_vaddr) {
-                uint64_t data_off = data_seg_vaddr - min_vaddr;
-                // svcSetMemoryPermission requires page-aligned address and size.
-                // Round the start DOWN to the nearest page so we include the full
-                // page that contains the first byte of the data segment.
-                uint64_t data_off_pg  = ALIGN_DOWN(data_off, 0x1000);
-                void*    data_ptr     = exec_alloc + data_off_pg;
-                size_t   data_size_pg = alloc_size - (size_t)data_off_pg;
-                Result perm_rc = svcSetMemoryPermission(data_ptr, data_size_pg, Perm_Rw);
-                compatLogFmt("JIT: data-seg Rw: rc=0x%08X ptr=%p size=0x%zx (pg_off=0x%llx)",
-                             (uint32_t)perm_rc, data_ptr, data_size_pg,
-                             (unsigned long long)data_off_pg);
-                if (R_FAILED(perm_rc))
-                    compatLog("JIT: WARN data-seg still Rx — writes will fault");
-            }
-        }
+        if (R_FAILED(exec_rc))
+            compatLogFmt("JIT: transition failed: 0x%08X", exec_rc);
     } else {
         this_svc_perm_code = 0xD801;  // heap fallback — not executable
     }
