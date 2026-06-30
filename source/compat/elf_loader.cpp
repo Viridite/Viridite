@@ -85,9 +85,20 @@ jmp_buf           g_recover_jmp;
 volatile bool     g_in_recover  = false;
 volatile int      g_recover_sig = 0;
 volatile uint32_t g_recover_esr = 0;
+volatile uint64_t g_recover_pc  = 0;
+
+static bool inJitRegion(uint64_t addr) {
+    for (int i = 0; i < g_jit_emu_count; i++) {
+        if (addr >= g_jit_emu_regions[i].rx_alloc &&
+            addr <  g_jit_emu_regions[i].rx_alloc + g_jit_emu_regions[i].size)
+            return true;
+    }
+    return false;
+}
 
 extern "C" void __libnx_exception_handler(ThreadExceptionDump* ctx) {
     uint32_t esr = ctx->esr;
+
     // Write-permission fault (EC=0x24, WnR=1) to a JIT rx region?
     // Emulate the store via rw_addr and resume — no longjmp needed.
     if (((esr >> 26) & 0x3f) == 0x24 && ((esr >> 6) & 1) && g_jit_emu_count > 0) {
@@ -96,9 +107,22 @@ extern "C" void __libnx_exception_handler(ThreadExceptionDump* ctx) {
             return;
         }
     }
+
+    // BadSVC fault with PC inside a JIT rx region?
+    // Game code contains Android/Linux SVC instructions that can't run on Switch.
+    // Fake success (x0=0) and advance PC so execution continues.
+    if (ctx->error_desc == ThreadExceptionDesc_BadSVC &&
+        g_jit_emu_count > 0 && inJitRegion(ctx->pc.x)) {
+        ctx->cpu_gprs[0].x = 0;  // fake x0=0 (success/no-error)
+        ctx->pc.x += 4;
+        svcReturnFromException(0);
+        return;
+    }
+
     if (g_in_recover) {
         g_recover_sig = (int)ctx->error_desc;
         g_recover_esr = esr;
+        g_recover_pc  = ctx->pc.x;
         longjmp(g_recover_jmp, 1);
     }
     extern ThreadExceptionDump __nx_exceptiondump;
@@ -190,8 +214,8 @@ void elfRunCtors(LoadedSo* so, ProgressCb cb) {
             ok++;
         } else {
             g_in_recover = false;
-            compatLogFmt("ELF: ctor[%zu/%zu] FAULT sig=%d esr=0x%08x — skipped",
-                         k + 1, n, g_recover_sig, g_recover_esr);
+            compatLogFmt("ELF: ctor[%zu/%zu] FAULT sig=%d esr=0x%08x pc=%p — skipped",
+                         k + 1, n, g_recover_sig, g_recover_esr, (void*)g_recover_pc);
             failed++;
         }
 
