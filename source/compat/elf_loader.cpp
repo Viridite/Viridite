@@ -19,21 +19,15 @@ extern void compatUiSetPct(int pct);
 // Non-static so loader.cpp and shim_table.cpp can also set up recovery scopes.
 // Override libnx's weak __libnx_exception_handler so hardware faults (data
 // aborts, instruction aborts) longjmp back to the nearest active recovery point.
-jmp_buf       g_recover_jmp;
-volatile bool g_in_recover = false;
-volatile int  g_recover_sig = 0;
+jmp_buf          g_recover_jmp;
+volatile bool    g_in_recover  = false;
+volatile int     g_recover_sig = 0;
+volatile uint32_t g_recover_esr = 0;  // ESR captured on each fault
 
 extern "C" void __libnx_exception_handler(ThreadExceptionDump* ctx) {
     if (g_in_recover) {
         g_recover_sig = (int)ctx->error_desc;
-        // Log PC, fault address, and first few GPRs before longjmping so the
-        // next compat_log.txt tells us exactly what each fault was hitting.
-        compatLogFmt("FAULT: pc=0x%llx far=0x%llx x0=0x%llx x1=0x%llx esr=0x%08x",
-                     (unsigned long long)ctx->pc.x,
-                     (unsigned long long)ctx->far.x,
-                     (unsigned long long)ctx->cpu_gprs[0].x,
-                     (unsigned long long)ctx->cpu_gprs[1].x,
-                     (unsigned int)ctx->esr);
+        g_recover_esr = ctx->esr;
         longjmp(g_recover_jmp, 1);
     }
     // Not inside a recovery scope — re-raise as fatal.
@@ -86,11 +80,12 @@ void elfRunCtors(LoadedSo* so, ProgressCb cb) {
     signal(SIGILL,  ctor_crash_handler);
 
     int  failed = 0, skipped = 0, ok = 0;
+    int  consec_wpf = 0;  // consecutive write-permission faults
 
     // DT_INIT runs before DT_INIT_ARRAY (same as Android linker order)
     if (so->init_fn) {
         compatLogFmt("ELF: %s: DT_INIT @%p", soname, (void*)so->init_fn);
-        g_in_recover = true; g_recover_sig = 0;
+        g_in_recover = true; g_recover_sig = 0; g_recover_esr = 0;
         if (setjmp(g_recover_jmp) == 0) {
             so->init_fn();
             g_in_recover = false;
@@ -118,17 +113,33 @@ void elfRunCtors(LoadedSo* so, ProgressCb cb) {
         if (!fn || fn == (LoadedSo::InitFn)(uintptr_t)-1) { skipped++; continue; }
 
         compatLogFmt("ELF: ctor[%zu/%zu] @%p", k+1, n, (void*)fn);
-        g_in_recover = true; g_recover_sig = 0;
+        g_in_recover = true; g_recover_sig = 0; g_recover_esr = 0;
         if (setjmp(g_recover_jmp) == 0) {
             fn();
             g_in_recover = false;
             compatLogFmt("ELF: ctor[%zu/%zu] OK", k + 1, n);
             ok++;
+            consec_wpf = 0;
         } else {
             g_in_recover = false;
-            compatLogFmt("ELF: ctor[%zu/%zu] FAULT sig=%d — skipped",
-                         k + 1, n, g_recover_sig);
+            uint32_t esr = g_recover_esr;
+            compatLogFmt("ELF: ctor[%zu/%zu] FAULT sig=%d esr=0x%08x — skipped",
+                         k + 1, n, g_recover_sig, esr);
             failed++;
+            // EC=0x24 (data abort) + WnR=1 (write) = write to read-execute page.
+            // On JitType_CodeMemory the rx_addr data pages are permanently RX and
+            // cannot be made writable.  If 3 consecutive ctors hit this, all the
+            // rest will too — bail early to avoid flooding the exception handler
+            // (417 hardware exceptions crash Atmosphere).
+            bool is_write_perm = ((esr >> 26) & 0x3f) == 0x24 && ((esr >> 6) & 1);
+            if (is_write_perm && ++consec_wpf >= 3) {
+                compatLogFmt("ELF: %s: write-perm fault x3 (JIT CodeMemory rx data not writable)"
+                             " — bailing, skipping %zu remaining ctors",
+                             soname, n - k - 1);
+                compatUiLog("ctors: early exit (JIT write-perm)");
+                break;
+            }
+            if (!is_write_perm) consec_wpf = 0;
         }
 
         if ((k + 1) % ui_interval == 0 || k + 1 == n) {
@@ -344,24 +355,6 @@ LoadedSo* elfLoad(const char* path) {
 
     size_t alloc_size = (size_t)ALIGN_UP(max_vaddr - min_vaddr, 0x1000);
 
-    // Collect writable (non-exec) data segment page ranges.  After
-    // jitTransitionToExecutable the whole JIT region is RX; constructors and
-    // JNI_OnLoad need to write to global variables in these segments, so we set
-    // them back to RW (data pages don't need execute permission).
-    struct DataSegInfo { uint64_t page_offset; size_t page_size; };
-    std::vector<DataSegInfo> data_segs;
-    for (int i = 0; i < ehdr->e_phnum; i++) {
-        const Elf64_Phdr& ph = phdrs[i];
-        if (ph.p_type != PT_LOAD) continue;
-        if (!(ph.p_flags & PF_W) || (ph.p_flags & PF_X)) continue;
-        uint64_t seg_start = ALIGN_DOWN(ph.p_vaddr - min_vaddr, 0x1000);
-        uint64_t seg_end   = ALIGN_UP((ph.p_vaddr - min_vaddr) + ph.p_memsz, 0x1000);
-        compatLogFmt("ELF: data_seg[%d] page_offset=0x%llx size=0x%llx (will set RW)",
-                     i, (unsigned long long)seg_start,
-                     (unsigned long long)(seg_end - seg_start));
-        data_segs.push_back({seg_start, (size_t)(seg_end - seg_start)});
-    }
-
     // ── Allocate code memory via JIT API ─────────────────────────────────────
     // jitCreate() uses svcMapCodeMemory internally, which creates a dual-view
     // mapping: a writable (src_addr) side and an executable (dst_addr) side.
@@ -559,20 +552,6 @@ LoadedSo* elfLoad(const char* path) {
             compatLogFmt("JIT: jitTransitionToExecutable failed: 0x%08X", exec_rc);
         } else {
             compatLog("JIT: code memory is now executable");
-            // Re-apply RW to data segment pages so constructors and JNI_OnLoad
-            // can write to global variables.  The JIT transition makes the whole
-            // region RX; data pages don't need execute permission.
-            for (const auto& ds : data_segs) {
-                uint64_t ds_addr = (uint64_t)exec_alloc + ds.page_offset;
-                Result ds_rc = svcSetProcessMemoryPermission(
-                    envGetOwnProcessHandle(), ds_addr, (uint64_t)ds.page_size, Perm_Rw);
-                compatLogFmt("JIT: data_seg @0x%llx size=0x%zx -> Perm_Rw rc=0x%08X",
-                             (unsigned long long)ds_addr, ds.page_size, (unsigned int)ds_rc);
-                if (R_FAILED(ds_rc) && g_last_svc_perm_code == 0)
-                    g_last_svc_perm_code = (uint32_t)ds_rc;
-            }
-            if (!data_segs.empty())
-                compatLogFmt("JIT: %zu data seg(s) set to RW", data_segs.size());
         }
     } else {
         this_svc_perm_code = 0xD801;  // heap fallback — not executable
