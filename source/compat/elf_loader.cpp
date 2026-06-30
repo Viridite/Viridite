@@ -437,11 +437,43 @@ LoadedSo* elfLoad(const char* path) {
         if (R_SUCCEEDED(d_rc)) {
             d_rc = jitTransitionToWritable(&data_jit);
             if (R_SUCCEEDED(d_rc)) {
-                using_data_jit = true;
                 data_write = (uint8_t*)data_jit.rw_addr;
                 data_exec  = (uint8_t*)data_jit.rx_addr;
-                compatLogFmt("JIT: data write=%p exec=%p size=0x%zx (stays Rw)",
-                             (void*)data_write, (void*)data_exec, data_jit_size);
+                // Only use split-JIT if data_jit landed within ADRP ±4 GB of
+                // code_jit — otherwise ADRP patching will fail and data reads
+                // will fault (unmapped phantom range is worse than Rx mapped).
+                int64_t delta = (int64_t)data_exec - (int64_t)code_exec;
+                if (delta < 0) delta = -delta;
+                if ((uint64_t)delta < (4ULL * 1024 * 1024 * 1024)) {
+                    using_data_jit = true;
+                    compatLogFmt("JIT: data write=%p exec=%p size=0x%zx (stays Rw, delta=0x%llx)",
+                                 (void*)data_write, (void*)data_exec, data_jit_size,
+                                 (unsigned long long)delta);
+                } else {
+                    // Too far — ADRP can't reach. Fall back to single-JIT so data
+                    // pages are at least mapped (reads work even if writes fault).
+                    compatLogFmt("JIT: data_jit too far (delta=0x%llx) — single-JIT fallback",
+                                 (unsigned long long)delta);
+                    jitClose(&data_jit);
+                    data_write = data_exec = nullptr;
+                    // Expand code_jit to cover the full alloc by re-allocating.
+                    jitClose(&code_jit);
+                    using_jit = false;
+                    Result jit_rc2 = jitCreate(&code_jit, alloc_size);
+                    if (R_SUCCEEDED(jit_rc2) && R_SUCCEEDED(jitTransitionToWritable(&code_jit))) {
+                        using_jit  = true;
+                        code_write = (uint8_t*)code_jit.rw_addr;
+                        code_exec  = (uint8_t*)code_jit.rx_addr;
+                        code_jit_size = alloc_size;
+                        data_jit_size = 0;
+                        data_off_pg   = 0;
+                        compatLogFmt("JIT: single-JIT write=%p exec=%p size=0x%zx",
+                                     (void*)code_write, (void*)code_exec, alloc_size);
+                    } else {
+                        code_write = code_exec = (uint8_t*)memalign(0x1000, alloc_size);
+                        if (!code_write) { free(file_data); compatLog("ELF: memalign failed"); return nullptr; }
+                    }
+                }
             } else {
                 compatLogFmt("JIT: data jitTransitionToWritable 0x%08X", (uint32_t)d_rc);
                 jitClose(&data_jit);

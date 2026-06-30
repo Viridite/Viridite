@@ -15,9 +15,10 @@
 
 // Crash recovery shared with elf_loader.cpp and shim_table.cpp
 extern jmp_buf        g_recover_jmp;
-extern volatile bool  g_in_recover;
-extern volatile int   g_recover_sig;
+extern volatile bool     g_in_recover;
+extern volatile int      g_recover_sig;
 extern volatile uint32_t g_recover_esr;
+extern volatile uint64_t g_recover_pc;
 
 // ─── Logging ──────────────────────────────────────────────────────────────────
 static FILE* g_compat_log = nullptr;
@@ -522,7 +523,7 @@ LaunchResult launchApk(const std::string& apk_path, const std::string& pkg_name,
                     compatUiLog("nativeSetPaths: OK");
                 } else {
                     g_in_recover = false;
-                    compatLogFmt("Cocos2d-x: nativeSetPaths FAULT sig=%d esr=0x%08x", g_recover_sig, g_recover_esr);
+                    compatLogFmt("Cocos2d-x: nativeSetPaths FAULT sig=%d esr=0x%08x pc=%p", g_recover_sig, g_recover_esr, (void*)g_recover_pc);
                     compatUiLog("nativeSetPaths: FAULT");
                 }
             } else {
@@ -545,7 +546,7 @@ LaunchResult launchApk(const std::string& apk_path, const std::string& pkg_name,
                     compatUiLog("nativeInit: OK");
                 } else {
                     g_in_recover = false;
-                    compatLogFmt("Cocos2d-x: nativeInit FAULT sig=%d esr=0x%08x", g_recover_sig, g_recover_esr);
+                    compatLogFmt("Cocos2d-x: nativeInit FAULT sig=%d esr=0x%08x pc=%p", g_recover_sig, g_recover_esr, (void*)g_recover_pc);
                     compatUiLog("nativeInit: FAULT");
                 }
             } else {
