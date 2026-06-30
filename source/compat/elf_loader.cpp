@@ -399,87 +399,157 @@ LoadedSo* elfLoad(const char* path) {
     size_t code_jit_size = (data_off_pg > 0) ? (size_t)data_off_pg : alloc_size;
     size_t data_jit_size = alloc_size - code_jit_size;
 
-    // ── Allocate JIT regions ──────────────────────────────────────────────────
-    // We create TWO svcMapCodeMemory allocations when there is a writable data
-    // segment: one for code (promoted to Rx) and one for data (kept Rw).
-    // Both rx_addrs land in the same code-region VA band of the process, so
-    // they are close enough for ADRP ±4 GB patching to work.
+    // ── Allocate memory regions ───────────────────────────────────────────────
+    // Primary strategy: split-VA CodeMemory map.
+    // svcCreateCodeMemory wraps a heap allocation into a kernel handle whose
+    // pages can be placed at any code-region VA via svcControlCodeMemory.
+    // Two separate handles (code + data) are placed at adjacent VAs so ADRP
+    // instructions in the code segment naturally reach data with no patching.
+    // Code VA is promoted to Rx; data VA stays Rw permanently.
+    bool     using_split_map = false;
+    uint8_t* code_heap_buf   = nullptr;        // heap backing for code
+    uint8_t* data_heap_buf   = nullptr;        // heap backing for data
+    uint8_t* code_va_base    = nullptr;        // code VA (promoted to Rx)
+    uint8_t* data_va_base    = nullptr;        // data VA (permanently Rw)
+    Handle   split_h_code    = INVALID_HANDLE; // CodeMemory handle for code
+    Handle   split_h_data    = INVALID_HANDLE; // CodeMemory handle for data
+
+    if (data_off_pg > 0 && data_jit_size > 0) {
+        code_heap_buf = (uint8_t*)memalign(0x1000, code_jit_size);
+        data_heap_buf = (uint8_t*)memalign(0x1000, data_jit_size);
+        if (code_heap_buf && data_heap_buf) {
+            Result rc_hc = svcCreateCodeMemory(&split_h_code, code_heap_buf, code_jit_size);
+            Result rc_hd = R_SUCCEEDED(rc_hc)
+                         ? svcCreateCodeMemory(&split_h_data, data_heap_buf, data_jit_size)
+                         : rc_hc;
+            if (R_SUCCEEDED(rc_hc) && R_SUCCEEDED(rc_hd)) {
+                VirtmemReservation* rv = nullptr;
+                uint8_t* cva = nullptr;
+                virtmemLock();
+                void* va = virtmemFindCodeMemory(alloc_size, 0x1000);
+                if (va) {
+                    rv  = virtmemAddReservation(va, alloc_size);
+                    cva = (uint8_t*)va;
+                }
+                virtmemUnlock();
+                if (cva) {
+                    uint8_t* dva = cva + code_jit_size;
+                    Result rc_mc = svcControlCodeMemory(split_h_code,
+                                       CodeMapOperation_MapOwner, cva, code_jit_size, Perm_Rw);
+                    Result rc_md = R_SUCCEEDED(rc_mc)
+                                 ? svcControlCodeMemory(split_h_data,
+                                       CodeMapOperation_MapOwner, dva, data_jit_size, Perm_Rw)
+                                 : rc_mc;
+                    virtmemLock();
+                    if (rv) virtmemRemoveReservation(rv);
+                    virtmemUnlock();
+                    if (R_SUCCEEDED(rc_mc) && R_SUCCEEDED(rc_md)) {
+                        using_split_map = true;
+                        code_va_base    = cva;
+                        data_va_base    = dva;
+                        compatLogFmt("SplitMap: code_va=%p data_va=%p csz=0x%zx dsz=0x%zx",
+                                     cva, dva, code_jit_size, data_jit_size);
+                    } else {
+                        compatLogFmt("SplitMap: MapOwner FAILED rc_mc=0x%08x rc_md=0x%08x",
+                                     (uint32_t)rc_mc, (uint32_t)rc_md);
+                        if (R_SUCCEEDED(rc_mc))
+                            svcControlCodeMemory(split_h_code,
+                                CodeMapOperation_UnmapOwner, cva, code_jit_size, 0);
+                    }
+                } else {
+                    compatLog("SplitMap: virtmemFindCodeMemory failed");
+                }
+            } else {
+                compatLogFmt("SplitMap: svcCreateCodeMemory FAILED rc_hc=0x%08x rc_hd=0x%08x",
+                             (uint32_t)rc_hc, (uint32_t)rc_hd);
+                if (R_SUCCEEDED(rc_hc)) { svcCloseHandle(split_h_code); split_h_code = INVALID_HANDLE; }
+            }
+        }
+        if (!using_split_map) {
+            if (split_h_code != INVALID_HANDLE) { svcCloseHandle(split_h_code); split_h_code = INVALID_HANDLE; }
+            if (split_h_data != INVALID_HANDLE) { svcCloseHandle(split_h_data); split_h_data = INVALID_HANDLE; }
+            free(code_heap_buf); code_heap_buf = nullptr;
+            free(data_heap_buf); data_heap_buf = nullptr;
+        }
+    }
+
     Jit      code_jit = {}, data_jit = {};
     bool     using_jit      = false;
     bool     using_data_jit = false;
-    uint8_t* code_write = nullptr;  // code_jit writable side
-    uint8_t* code_exec  = nullptr;  // code_jit rx_addr (→ Rx after transition)
-    uint8_t* data_write = nullptr;  // data_jit writable side
-    uint8_t* data_exec  = nullptr;  // data_jit rx_addr (stays Rw permanently)
+    uint8_t* code_write = nullptr;
+    uint8_t* code_exec  = nullptr;
+    uint8_t* data_write = nullptr;
+    uint8_t* data_exec  = nullptr;
 
-    Result jit_rc = jitCreate(&code_jit, code_jit_size);
-    if (R_SUCCEEDED(jit_rc)) {
-        Result w_rc = jitTransitionToWritable(&code_jit);
-        if (R_SUCCEEDED(w_rc)) {
-            using_jit  = true;
-            code_write = (uint8_t*)code_jit.rw_addr;
-            code_exec  = (uint8_t*)code_jit.rx_addr;
-            compatLogFmt("JIT: code write=%p exec=%p size=0x%zx",
-                         (void*)code_write, (void*)code_exec, code_jit_size);
-        } else {
-            compatLogFmt("JIT: code jitTransitionToWritable 0x%08X", w_rc);
-            jitClose(&code_jit);
-        }
+    if (using_split_map) {
+        code_write = code_heap_buf;
+        code_exec  = code_va_base;
+        data_write = data_heap_buf;
+        data_exec  = data_va_base;
     } else {
-        compatLogFmt("JIT: code jitCreate 0x%08X — heap fallback", (uint32_t)jit_rc);
-    }
-
-    if (!using_jit) {
-        code_write = code_exec = (uint8_t*)memalign(0x1000, alloc_size);
-        if (!code_write) { free(file_data); compatLog("ELF: memalign failed"); return nullptr; }
-    } else if (data_jit_size > 0) {
-        Result d_rc = jitCreate(&data_jit, data_jit_size);
-        if (R_SUCCEEDED(d_rc)) {
-            d_rc = jitTransitionToWritable(&data_jit);
-            if (R_SUCCEEDED(d_rc)) {
-                data_write = (uint8_t*)data_jit.rw_addr;
-                data_exec  = (uint8_t*)data_jit.rx_addr;
-                // Only use split-JIT if data_jit landed within ADRP ±4 GB of
-                // code_jit — otherwise ADRP patching will fail and data reads
-                // will fault (unmapped phantom range is worse than Rx mapped).
-                int64_t delta = (int64_t)data_exec - (int64_t)code_exec;
-                if (delta < 0) delta = -delta;
-                if ((uint64_t)delta < (4ULL * 1024 * 1024 * 1024)) {
-                    using_data_jit = true;
-                    compatLogFmt("JIT: data write=%p exec=%p size=0x%zx (stays Rw, delta=0x%llx)",
-                                 (void*)data_write, (void*)data_exec, data_jit_size,
-                                 (unsigned long long)delta);
-                } else {
-                    // Too far — ADRP can't reach. Fall back to single-JIT so data
-                    // pages are at least mapped (reads work even if writes fault).
-                    compatLogFmt("JIT: data_jit too far (delta=0x%llx) — single-JIT fallback",
-                                 (unsigned long long)delta);
-                    jitClose(&data_jit);
-                    data_write = data_exec = nullptr;
-                    // Expand code_jit to cover the full alloc by re-allocating.
-                    jitClose(&code_jit);
-                    using_jit = false;
-                    Result jit_rc2 = jitCreate(&code_jit, alloc_size);
-                    if (R_SUCCEEDED(jit_rc2) && R_SUCCEEDED(jitTransitionToWritable(&code_jit))) {
-                        using_jit  = true;
-                        code_write = (uint8_t*)code_jit.rw_addr;
-                        code_exec  = (uint8_t*)code_jit.rx_addr;
-                        code_jit_size = alloc_size;
-                        data_jit_size = 0;
-                        data_off_pg   = 0;
-                        compatLogFmt("JIT: single-JIT write=%p exec=%p size=0x%zx",
-                                     (void*)code_write, (void*)code_exec, alloc_size);
-                    } else {
-                        code_write = code_exec = (uint8_t*)memalign(0x1000, alloc_size);
-                        if (!code_write) { free(file_data); compatLog("ELF: memalign failed"); return nullptr; }
-                    }
-                }
+        Result jit_rc = jitCreate(&code_jit, code_jit_size);
+        if (R_SUCCEEDED(jit_rc)) {
+            Result w_rc = jitTransitionToWritable(&code_jit);
+            if (R_SUCCEEDED(w_rc)) {
+                using_jit  = true;
+                code_write = (uint8_t*)code_jit.rw_addr;
+                code_exec  = (uint8_t*)code_jit.rx_addr;
+                compatLogFmt("JIT: code write=%p exec=%p size=0x%zx",
+                             (void*)code_write, (void*)code_exec, code_jit_size);
             } else {
-                compatLogFmt("JIT: data jitTransitionToWritable 0x%08X", (uint32_t)d_rc);
-                jitClose(&data_jit);
+                compatLogFmt("JIT: code jitTransitionToWritable 0x%08X", w_rc);
+                jitClose(&code_jit);
             }
         } else {
-            compatLogFmt("JIT: data jitCreate 0x%08X — data writes will fault", (uint32_t)d_rc);
+            compatLogFmt("JIT: code jitCreate 0x%08X — heap fallback", (uint32_t)jit_rc);
+        }
+
+        if (!using_jit) {
+            code_write = code_exec = (uint8_t*)memalign(0x1000, alloc_size);
+            if (!code_write) { free(file_data); compatLog("ELF: memalign failed"); return nullptr; }
+        } else if (data_jit_size > 0) {
+            Result d_rc = jitCreate(&data_jit, data_jit_size);
+            if (R_SUCCEEDED(d_rc)) {
+                d_rc = jitTransitionToWritable(&data_jit);
+                if (R_SUCCEEDED(d_rc)) {
+                    data_write = (uint8_t*)data_jit.rw_addr;
+                    data_exec  = (uint8_t*)data_jit.rx_addr;
+                    int64_t delta = (int64_t)data_exec - (int64_t)code_exec;
+                    if (delta < 0) delta = -delta;
+                    if ((uint64_t)delta < (4ULL * 1024 * 1024 * 1024)) {
+                        using_data_jit = true;
+                        compatLogFmt("JIT: data write=%p exec=%p size=0x%zx (stays Rw, delta=0x%llx)",
+                                     (void*)data_write, (void*)data_exec, data_jit_size,
+                                     (unsigned long long)delta);
+                    } else {
+                        compatLogFmt("JIT: data_jit too far (delta=0x%llx) — single-JIT fallback",
+                                     (unsigned long long)delta);
+                        jitClose(&data_jit);
+                        data_write = data_exec = nullptr;
+                        jitClose(&code_jit);
+                        using_jit = false;
+                        Result jit_rc2 = jitCreate(&code_jit, alloc_size);
+                        if (R_SUCCEEDED(jit_rc2) && R_SUCCEEDED(jitTransitionToWritable(&code_jit))) {
+                            using_jit  = true;
+                            code_write = (uint8_t*)code_jit.rw_addr;
+                            code_exec  = (uint8_t*)code_jit.rx_addr;
+                            code_jit_size = alloc_size;
+                            data_jit_size = 0;
+                            data_off_pg   = 0;
+                            compatLogFmt("JIT: single-JIT write=%p exec=%p size=0x%zx",
+                                         (void*)code_write, (void*)code_exec, alloc_size);
+                        } else {
+                            code_write = code_exec = (uint8_t*)memalign(0x1000, alloc_size);
+                            if (!code_write) { free(file_data); compatLog("ELF: memalign failed"); return nullptr; }
+                        }
+                    }
+                } else {
+                    compatLogFmt("JIT: data jitTransitionToWritable 0x%08X", (uint32_t)d_rc);
+                    jitClose(&data_jit);
+                }
+            } else {
+                compatLogFmt("JIT: data jitCreate 0x%08X — data writes will fault", (uint32_t)d_rc);
+            }
         }
     }
 
@@ -487,8 +557,16 @@ LoadedSo* elfLoad(const char* path) {
     uint8_t* stage = (uint8_t*)malloc(alloc_size);
     if (!stage) {
         compatLog("ELF: malloc staging buffer OOM");
-        if (using_jit) { jitClose(&code_jit); if (using_data_jit) jitClose(&data_jit); }
-        else           free(code_write);
+        if (using_split_map) {
+            svcControlCodeMemory(split_h_code, CodeMapOperation_UnmapOwner, code_va_base, code_jit_size, 0);
+            svcControlCodeMemory(split_h_data, CodeMapOperation_UnmapOwner, data_va_base, data_jit_size, 0);
+            svcCloseHandle(split_h_code); svcCloseHandle(split_h_data);
+            free(code_heap_buf); free(data_heap_buf);
+        } else if (using_jit) {
+            jitClose(&code_jit); if (using_data_jit) jitClose(&data_jit);
+        } else {
+            free(code_write);
+        }
         free(file_data);
         return nullptr;
     }
@@ -662,8 +740,15 @@ LoadedSo* elfLoad(const char* path) {
                            (uint64_t)data_exec);
     }
 
-    // ── Copy stage → JIT regions ─────────────────────────────────────────────
-    if (using_jit) {
+    // ── Copy stage → final regions ───────────────────────────────────────────
+    if (using_split_map) {
+        // code_va_base and data_va_base are both Rw (MapOwner with Perm_Rw),
+        // backed by code_heap_buf/data_heap_buf physical pages.
+        compatLogFmt("ELF: SplitMap copy code→va %p size=0x%zx", (void*)code_va_base, code_jit_size);
+        memcpy(code_va_base, stage, code_jit_size);
+        compatLogFmt("ELF: SplitMap copy data→va %p size=0x%zx", (void*)data_va_base, data_jit_size);
+        memcpy(data_va_base, stage + data_off_pg, data_jit_size);
+    } else if (using_jit) {
         compatLogFmt("ELF: copy code→JIT write=%p size=0x%zx", (void*)code_write, code_jit_size);
         memcpy(code_write, stage, code_jit_size);
         if (using_data_jit) {
@@ -674,9 +759,23 @@ LoadedSo* elfLoad(const char* path) {
     free(stage);
     compatLog("ELF: stage freed");
 
-    // ── Transition code_jit to Rx; data_jit stays Rw ─────────────────────────
+    // ── Make code executable ─────────────────────────────────────────────────
     uint32_t this_svc_perm_code = 0;
-    if (using_jit) {
+    if (using_split_map) {
+        // Promote code VA to Rx: UnmapOwner (removes Rw mapping) then MapOwner
+        // with Perm_Rx.  Data VA is a SEPARATE CodeMemory handle never
+        // transitioned — it stays Rw so data reads AND writes both succeed.
+        Result rc_u = svcControlCodeMemory(split_h_code, CodeMapOperation_UnmapOwner,
+                                           code_va_base, code_jit_size, 0);
+        Result rc_x = R_SUCCEEDED(rc_u)
+                    ? svcControlCodeMemory(split_h_code, CodeMapOperation_MapOwner,
+                                           code_va_base, code_jit_size, Perm_Rx)
+                    : rc_u;
+        this_svc_perm_code = R_SUCCEEDED(rc_x) ? 0u : (uint32_t)rc_x;
+        compatLogFmt("SplitMap: code Rx %s (unmap=0x%08x map=0x%08x); data_va=%p stays Rw",
+                     R_SUCCEEDED(rc_x) ? "OK" : "FAILED",
+                     (uint32_t)rc_u, (uint32_t)rc_x, (void*)data_va_base);
+    } else if (using_jit) {
         Result exec_rc = jitTransitionToExecutable(&code_jit);
         so->jit_mem = code_jit;
         this_svc_perm_code = (uint32_t)exec_rc;
@@ -703,11 +802,12 @@ LoadedSo* elfLoad(const char* path) {
         return code_exec + rel;
     };
 
-    if (init_fn_vaddr && using_jit && this_svc_perm_code == 0) {
+    bool code_is_exec = (using_split_map || using_jit) && this_svc_perm_code == 0;
+    if (init_fn_vaddr && code_is_exec) {
         so->init_fn = (LoadedSo::InitFn)vaddr_to_exec(init_fn_vaddr);
         compatLogFmt("ELF: DT_INIT fn deferred @%p", (void*)so->init_fn);
     }
-    if (init_arr_vaddr && init_arr_sz && using_jit && this_svc_perm_code == 0) {
+    if (init_arr_vaddr && init_arr_sz && code_is_exec) {
         so->init_arr       = (LoadedSo::InitFn*)vaddr_to_exec(init_arr_vaddr);
         so->init_arr_count = init_arr_sz / sizeof(LoadedSo::InitFn);
         compatLogFmt("ELF: %zu constructors deferred (arr=%p)",
