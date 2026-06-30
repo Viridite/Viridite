@@ -344,6 +344,24 @@ LoadedSo* elfLoad(const char* path) {
 
     size_t alloc_size = (size_t)ALIGN_UP(max_vaddr - min_vaddr, 0x1000);
 
+    // Collect writable (non-exec) data segment page ranges.  After
+    // jitTransitionToExecutable the whole JIT region is RX; constructors and
+    // JNI_OnLoad need to write to global variables in these segments, so we set
+    // them back to RW (data pages don't need execute permission).
+    struct DataSegInfo { uint64_t page_offset; size_t page_size; };
+    std::vector<DataSegInfo> data_segs;
+    for (int i = 0; i < ehdr->e_phnum; i++) {
+        const Elf64_Phdr& ph = phdrs[i];
+        if (ph.p_type != PT_LOAD) continue;
+        if (!(ph.p_flags & PF_W) || (ph.p_flags & PF_X)) continue;
+        uint64_t seg_start = ALIGN_DOWN(ph.p_vaddr - min_vaddr, 0x1000);
+        uint64_t seg_end   = ALIGN_UP((ph.p_vaddr - min_vaddr) + ph.p_memsz, 0x1000);
+        compatLogFmt("ELF: data_seg[%d] page_offset=0x%llx size=0x%llx (will set RW)",
+                     i, (unsigned long long)seg_start,
+                     (unsigned long long)(seg_end - seg_start));
+        data_segs.push_back({seg_start, (size_t)(seg_end - seg_start)});
+    }
+
     // ── Allocate code memory via JIT API ─────────────────────────────────────
     // jitCreate() uses svcMapCodeMemory internally, which creates a dual-view
     // mapping: a writable (src_addr) side and an executable (dst_addr) side.
@@ -541,6 +559,20 @@ LoadedSo* elfLoad(const char* path) {
             compatLogFmt("JIT: jitTransitionToExecutable failed: 0x%08X", exec_rc);
         } else {
             compatLog("JIT: code memory is now executable");
+            // Re-apply RW to data segment pages so constructors and JNI_OnLoad
+            // can write to global variables.  The JIT transition makes the whole
+            // region RX; data pages don't need execute permission.
+            for (const auto& ds : data_segs) {
+                uint64_t ds_addr = (uint64_t)exec_alloc + ds.page_offset;
+                Result ds_rc = svcSetProcessMemoryPermission(
+                    envGetOwnProcessHandle(), ds_addr, (uint64_t)ds.page_size, Perm_Rw);
+                compatLogFmt("JIT: data_seg @0x%llx size=0x%zx -> Perm_Rw rc=0x%08X",
+                             (unsigned long long)ds_addr, ds.page_size, (unsigned int)ds_rc);
+                if (R_FAILED(ds_rc) && g_last_svc_perm_code == 0)
+                    g_last_svc_perm_code = (uint32_t)ds_rc;
+            }
+            if (!data_segs.empty())
+                compatLogFmt("JIT: %zu data seg(s) set to RW", data_segs.size());
         }
     } else {
         this_svc_perm_code = 0xD801;  // heap fallback — not executable
