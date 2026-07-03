@@ -105,6 +105,13 @@ void elfRunCtors(LoadedSo* so, ProgressCb cb) {
     compatUiSetPct(60);
 
     const size_t n = so->init_arr_count;
+    // Diagnostic: log first few init_arr values to see if they're populated
+    {
+        size_t nlog = n < 4 ? n : 4;
+        for (size_t di = 0; di < nlog; di++)
+            compatLogFmt("ELF: init_arr[%zu]=%p", di, (void*)(uintptr_t)so->init_arr[di]);
+        compatLogFlush();
+    }
     // Emit a UI update every ~50 ctors and at the end
     const size_t ui_interval = (n > 50) ? (n / 8) : n;
 
@@ -563,6 +570,10 @@ LoadedSo* elfLoad(const char* path, ProgressCb cb) {
         memcpy(seg_dst, file_data + ph.p_offset, ph.p_filesz);
     }
     compatLog("ELF: segs copied to stage");
+    {
+        uint32_t s0 = *(volatile uint32_t*)stage;
+        compatLogFmt("ELF: stage[0]=0x%08x after segs copy", s0);
+    }
 
     // ── Parse PT_DYNAMIC from staging buffer ─────────────────────────────────
     uint64_t strtab_vaddr = 0, symtab_vaddr = 0;
@@ -716,14 +727,32 @@ LoadedSo* elfLoad(const char* path, ProgressCb cb) {
         compatLogFmt("ELF: SplitMap memcpy code %p size=0x%zx", (void*)code_heap_buf, code_jit_size);
         compatLogFlush();
         memcpy(code_heap_buf, stage, code_jit_size);
-        armDCacheFlush(code_heap_buf, code_jit_size); // flush D-cache before kernel takes ownership
+        {
+            uint32_t pre = *(volatile uint32_t*)code_heap_buf;
+            compatLogFmt("SplitMap diag: code_heap_buf[0]=0x%08x after memcpy (pre-SVC)", pre);
+            compatLogFlush();
+        }
         compatLog("ELF: code memcpy done");
         compatLogFlush();
         compatUiLog("Copying data segment...");
         compatLogFmt("ELF: SplitMap memcpy data %p size=0x%zx", (void*)data_heap_buf, data_jit_size);
         compatLogFlush();
         memcpy(data_heap_buf, stage + data_off_pg, data_jit_size);
-        armDCacheFlush(data_heap_buf, data_jit_size); // flush D-cache before kernel takes ownership
+        {
+            uint64_t pre0  = *(volatile uint64_t*)data_heap_buf;
+            uint64_t pre_init = 0xdeadbeefdeadbeefULL;
+            uint64_t init_arr_off_in_data = 0;
+            if (init_arr_vaddr > min_vaddr + data_off_pg) {
+                init_arr_off_in_data = init_arr_vaddr - (min_vaddr + data_off_pg);
+                if (init_arr_off_in_data + 8 <= data_jit_size)
+                    pre_init = *(volatile uint64_t*)(data_heap_buf + init_arr_off_in_data);
+            }
+            compatLogFmt("SplitMap diag: data_heap_buf[0]=0x%llx  data_heap_buf[init_arr+0x%llx]=0x%llx (pre-SVC)",
+                         (unsigned long long)pre0,
+                         (unsigned long long)init_arr_off_in_data,
+                         (unsigned long long)pre_init);
+            compatLogFlush();
+        }
         compatLog("ELF: data memcpy done");
         compatLogFlush();
 
@@ -745,6 +774,28 @@ LoadedSo* elfLoad(const char* path, ProgressCb cb) {
             if (R_SUCCEEDED(rc_mc) && R_SUCCEEDED(rc_md)) {
                 compatLogFmt("SplitMap: code_va=%p Rx data_va=%p Rw mapped OK",
                              (void*)code_va_base, (void*)data_va_base);
+                compatLogFlush();
+                // Diagnostic: probe code_va and data_va to verify they're actually accessible
+                g_in_recover = true; g_recover_sig = 0; g_recover_esr = 0;
+                if (setjmp(g_recover_jmp) == 0) {
+                    uint32_t probe = *(volatile uint32_t*)code_va_base;
+                    g_in_recover = false;
+                    compatLogFmt("SplitMap diag: code_va[0]=0x%08x (readable)", probe);
+                } else {
+                    g_in_recover = false;
+                    compatLogFmt("SplitMap diag: code_va READ FAULT sig=%d esr=0x%08x — NOT mapped",
+                                 g_recover_sig, g_recover_esr);
+                }
+                g_in_recover = true; g_recover_sig = 0; g_recover_esr = 0;
+                if (setjmp(g_recover_jmp) == 0) {
+                    uint64_t probe = *(volatile uint64_t*)data_va_base;
+                    g_in_recover = false;
+                    compatLogFmt("SplitMap diag: data_va[0]=0x%llx (readable)", (unsigned long long)probe);
+                } else {
+                    g_in_recover = false;
+                    compatLogFmt("SplitMap diag: data_va READ FAULT sig=%d esr=0x%08x — NOT mapped",
+                                 g_recover_sig, g_recover_esr);
+                }
                 compatLogFlush();
             } else {
                 compatLogFmt("SplitMap: map FAILED rc_mc=0x%08x rc_md=0x%08x",

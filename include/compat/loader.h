@@ -178,7 +178,7 @@ void*        shimResolve(const char* name);
 // Called from jni_env.cpp to install JNI/VM tables into compat layer
 void         jniSetup(CompatLayer* cl);
 
-// Extract APK libs+assets to sdmc:/BareDroidNX/games/<pkg_name>/ and write
+// Extract APK libs+assets to sdmc:/AndroidHorizonNX/games/<pkg_name>/ and write
 // a .installed marker.  Returns false if the APK cannot be opened.
 // Safe to call even if already installed — just re-extracts.
 bool apkInstall(const std::string& apk_path,

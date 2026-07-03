@@ -372,7 +372,7 @@ ApkInfo parseApk(const std::string& path) {
 
 bool apkIsInstalled(const std::string& pkg_name) {
     if (pkg_name.empty()) return false;
-    std::string marker = std::string("sdmc:/BareDroidNX/games/") + pkg_name + "/.installed";
+    std::string marker = std::string("sdmc:/AndroidHorizonNX/games/") + pkg_name + "/.installed";
     struct stat st;
     return stat(marker.c_str(), &st) == 0;
 }

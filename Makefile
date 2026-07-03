@@ -10,14 +10,14 @@ TOPDIR ?= $(CURDIR)
 include $(DEVKITPRO)/libnx/switch_rules
 
 #---------------------------------------------------------------------------------
-TARGET		:=	BareDroidNX
+TARGET		:=	AndroidHorizonNX
 BUILD		:=	build
 SOURCES		:=	source source/compat
 DATA		:=	data
 INCLUDES	:=	include
 ROMFS		:=	romfs
 
-APP_TITLE	:= BareDroidNX
+APP_TITLE	:= Android Horizon
 APP_AUTHOR	:= aaronworld.uk
 APP_VERSION	:= 0.1.0
 

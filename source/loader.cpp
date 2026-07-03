@@ -280,7 +280,7 @@ static bool setupEGL(ANativeWindow* win) {
 
 // ─── apkInstall ──────────────────────────────────────────────────────────────
 bool apkInstall(const std::string& apk_path, const std::string& pkg_name, ProgressCb cb) {
-    std::string base_dir  = std::string("sdmc:/BareDroidNX/games/") + pkg_name;
+    std::string base_dir  = std::string("sdmc:/AndroidHorizonNX/games/") + pkg_name;
     mkdirp(base_dir);
     mkdirp(base_dir + "/lib/");
     mkdirp(base_dir + "/assets/");
@@ -304,14 +304,14 @@ LaunchResult launchApk(const std::string& apk_path, const std::string& pkg_name,
                        ProgressCb cb, bool already_installed) {
     LaunchResult result;
 
-    std::string log_path = "sdmc:/BareDroidNX/compat_log.txt";
+    std::string log_path = "sdmc:/AndroidHorizonNX/compat_log.txt";
     g_compat_log = fopen(log_path.c_str(), "w");
     g_log_start_t = armGetSystemTick();
     compatLogFmt("launchApk: %s  pkg=%s  installed=%d",
                  apk_path.c_str(), pkg_name.c_str(), (int)already_installed);
 
     // ── 1. Set up directories (always, mkdirp is idempotent) ─────────────────
-    std::string base_dir  = std::string("sdmc:/BareDroidNX/games/") + pkg_name;
+    std::string base_dir  = std::string("sdmc:/AndroidHorizonNX/games/") + pkg_name;
     std::string lib_dir   = base_dir + "/lib";
     std::string asset_dir = base_dir + "/assets";
     mkdirp(base_dir);

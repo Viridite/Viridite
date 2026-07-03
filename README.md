@@ -1,18 +1,18 @@
 <div align="center">
 
-<img src="https://aaronworld.uk/avatar.png" width="88" height="88" style="border-radius:50%" alt="Aaron's avatar" />
+<img src="AndroidHorizonNX.jpg" width="128" height="128" style="border-radius:16px" alt="Android Horizon logo" />
 
 # Android Horizon
 
 **Run Android games natively on Nintendo Switch Horizon OS — without Android**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/FascinatingPistachio/BareDroidNX?style=social)](https://github.com/FascinatingPistachio/BareDroidNX/stargazers)
+[![GitHub Stars](https://img.shields.io/github/stars/FascinatingPistachio/AndroidHorizonNX?style=social)](https://github.com/FascinatingPistachio/AndroidHorizonNX/stargazers)
 [![Status](https://img.shields.io/badge/status-pre--alpha-red.svg)](#status)
 [![Built with Claude AI](https://img.shields.io/badge/built%20with-Claude%20AI-orange.svg)](https://anthropic.com)
 [![Platform](https://img.shields.io/badge/platform-Nintendo%20Switch-red.svg)](#)
 
-*Made by [aaronworld.uk](https://aaronworld.uk) · [Give it a star ⭐](https://github.com/FascinatingPistachio/BareDroidNX/stargazers) if you find it interesting!*
+*Made by [aaronworld.uk](https://aaronworld.uk) · [Give it a star ⭐](https://github.com/FascinatingPistachio/AndroidHorizonNX/stargazers) if you find it interesting!*
 
 </div>
 
@@ -54,7 +54,7 @@ Our test target is **Hill Climb Racing 1.x** by Fingersoft — a simple 2D physi
 - **All 403 JMPREL entries resolve successfully** — confirmed in the latest test log
 - The on-screen progress display shows a **live feed of `compat_log.txt`** in real time, with an animated scan bar so the screen never looks frozen even during long silent phases (e.g. running 417 native constructors)
 - **Docked mode is detected** — the footer warns you when launched in docked mode, since games require touch screen input (handheld only)
-- Full diagnostic output is written to `sdmc:/BareDroidNX/compat_log.txt`
+- Full diagnostic output is written to `sdmc:/AndroidHorizonNX/compat_log.txt`
 
 The current frontier is **native constructors**: after JMPREL completes, 417 C++ constructors in `libgame.so` need to run before the game can start. We are working to determine if they succeed or where they stall.
 
@@ -80,11 +80,11 @@ The current frontier is **native constructors**: after JMPREL completes, 417 C++
 
 ## Setup
 
-1. Copy `BareDroidNX.nro` to `sdmc:/switch/`
-2. Place `.apk` files in `sdmc:/BareDroidNX/apks/`
+1. Copy `AndroidHorizonNX.nro` to `sdmc:/switch/`
+2. Place `.apk` files in `sdmc:/AndroidHorizonNX/apks/`
 3. Launch from hbmenu (Atmosphere CFW required)
 4. Navigate with D-pad or left stick, press **A** to launch
-5. If a launch fails, check `sdmc:/BareDroidNX/compat_log.txt` for the full error log
+5. If a launch fails, check `sdmc:/AndroidHorizonNX/compat_log.txt` for the full error log
 
 ---
 
@@ -97,7 +97,7 @@ export DEVKITPRO=/opt/devkitpro
 make
 ```
 
-Output: `BareDroidNX.nro`
+Output: `AndroidHorizonNX.nro`
 
 ### Dependencies (via pacman/devkitPro)
 
@@ -129,11 +129,11 @@ After JMPREL, the ELF loader was crashing on `memcpy(code_heap_buf, ...)` becaus
 
 After ELF loading, 417 C++ constructors in `libgame.so` need to run. The launcher logs each constructor address immediately before calling it and force-flushes to disk — look for the last `ELF: ctor[k/417] @0x...` line in `compat_log.txt` with no `OK` or `FAULT` after it to find which one stalls. We need a clean run showing `ELF: ctors done` to know where we stand.
 
-### 4. Background threads not supported
+### 5. Background threads not supported
 
 `pthread_create` is stubbed to return a fake handle and never actually spawn a thread. Games that rely on a separate render or physics thread will appear frozen or crash.
 
-### 5. Game may crash at runtime
+### 6. Game may crash at runtime
 
 Even with all symbols resolved and code executable, the game could crash during initialisation (NULL deref, bad GLES call, unimplemented JNI method, etc.). The next step is to get a crash address from the compat log and identify which code path is failing.
 
@@ -141,7 +141,7 @@ Even with all symbols resolved and code executable, the game could crash during 
 
 ## Performance Expectations (Hill Climb Racing 1.67.0)
 
-We're testing the `.apk` release of **Hill Climb Racing 1.67.0** specifically — the current Play Store release ships as a `.xapk`. BareDroidNX's APK parser only understands plain `.apk` files right now, so `.xapk` support is out of scope until a later phase.
+We're testing the `.apk` release of **Hill Climb Racing 1.67.0** specifically — the current Play Store release ships as a `.xapk`. Android Horizon's APK parser only understands plain `.apk` files right now, so `.xapk` support is out of scope until a later phase.
 
 There's no measured frame rate yet — the game hasn't booted far enough to render a single frame. Here's the theoretical ceiling based on the hardware alone:
 
@@ -218,7 +218,7 @@ This section gets replaced with real measured numbers once the game boots far en
 - [x] **SplitMap crash fixed** — root cause: `svcCreateCodeMemory` was called before `memcpy`, making the backing buffer inaccessible at userspace. Fixed by deferring `svcCreateCodeMemory` + `svcControlCodeMemory` to after the memcpy. All three `.so` files should now load past the ELF copy stage.
 - [x] **RELA/JMPREL logging dramatically reduced** — removed per-entry log lines (one `fflush` per entry on FAT32 was taking ~38 seconds for libapplovin alone). Now only unresolved symbols, WARN lines, and the end-of-table summary are logged — `applyRela` goes from ~8000 lines to ~30 per library.
 - [x] **+ button exits progress screen** — press **+** at any time during ELF loading to stop waiting and return to the APK list
-- [x] **Renamed to Android Horizon** — reflects the project's purpose (Android on HorizonOS) more clearly
+- [x] **Renamed to Android Horizon / AndroidHorizonNX** — reflects the project's purpose (Android on HorizonOS) more clearly
 - [x] **Live animated progress screen** — loader now runs on a background libnx thread; main thread renders at ~60fps with: animated scan bar (always moving, independent of load progress), live tail of `compat_log.txt` (13 lines, colour-coded for errors/warnings), elapsed time display per stage, "still working" notice after 30s
 - [x] **Log timestamps** — every `compat_log.txt` entry prefixed with `[Xs]` seconds-since-launch
 - [x] **Immediate constructor logging** — each `ELF: ctor[k/417] @ptr` is force-flushed to disk and the live display the instant before the constructor runs, so a hanging constructor is immediately identifiable

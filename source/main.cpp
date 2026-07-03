@@ -16,8 +16,8 @@
 #include "build_number.h"
 #include "avatar.h"
 
-static const char* APK_DIR  = "sdmc:/BareDroidNX/apks";
-static const char* LOG_FILE = "sdmc:/BareDroidNX/log.txt";
+static const char* APK_DIR  = "sdmc:/AndroidHorizonNX/apks";
+static const char* LOG_FILE = "sdmc:/AndroidHorizonNX/log.txt";
 
 // ---------------------------------------------------------------------------
 // Layout (1280×720)
@@ -149,9 +149,9 @@ struct App {
 
     // ------------------------------------------------------------------
     bool init() {
-        mkdir("sdmc:/BareDroidNX", 0777);
+        mkdir("sdmc:/AndroidHorizonNX", 0777);
         logOpen();
-        logMsg("BareDroidNX starting");
+        logMsg("Android Horizon starting");
         socketInitializeDefault();
 
         if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) != 0) {
@@ -164,7 +164,7 @@ struct App {
             logSDL("TTF_Init failed"); logClose(); return false;
         }
 
-        win = SDL_CreateWindow("BareDroidNX",
+        win = SDL_CreateWindow("Android Horizon",
             SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
             SW, SH, SDL_WINDOW_SHOWN);
         if (!win) { logSDL("CreateWindow failed"); logClose(); return false; }
@@ -321,7 +321,7 @@ struct App {
 
         if (apks.empty()) {
             drawText(fSm,
-                "No APKs found — place .apk files in sdmc:/BareDroidNX/apks/",
+                "No APKs found — place .apk files in sdmc:/AndroidHorizonNX/apks/",
                 C_GRAY, 30, LIST_Y + 30);
         } else {
             int end = std::min((int)apks.size(), scroll + VISIBLE);
@@ -537,7 +537,7 @@ struct App {
         }
 
         fill(0, SH - FOOTER_H, SW, FOOTER_H, C_FOOTER);
-        drawText(fSm, "Please wait — sdmc:/BareDroidNX/compat_log.txt",
+        drawText(fSm, "Please wait — sdmc:/AndroidHorizonNX/compat_log.txt",
                  C_DIM, 30, SH - FOOTER_H + (FOOTER_H - 18) / 2);
 
         SDL_RenderPresent(rdr);
@@ -654,7 +654,7 @@ struct App {
                          C_GRAY, 60, y); y += 28;
             }
             y += 8;
-            drawText(fSm, "Full log: sdmc:/BareDroidNX/compat_log.txt", C_DIM, 60, y);
+            drawText(fSm, "Full log: sdmc:/AndroidHorizonNX/compat_log.txt", C_DIM, 60, y);
 
             fill(0, SH - FOOTER_H, SW, FOOTER_H, C_FOOTER);
             drawText(fSm, "B: Back to menu",

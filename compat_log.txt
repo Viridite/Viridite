@@ -6,7 +6,7 @@
 [  0s] Setting up JNI environment...
 [  0s] Loading: libapplovin-native-crash-reporter.so
 [  0s] ELF: loading sdmc:/BareDroidNX/games/com.fingersoft.hillclimb/lib/libapplovin-native-crash-reporter.so
-[  0s] SplitMap: reserved code_va=0x2e7aba000 data_va=0x2e7b89000 csz=0xcf000 dsz=0xf000
+[  0s] SplitMap: reserved code_va=0x5e2fc3000 data_va=0x5e3092000 csz=0xcf000 dsz=0xf000
 [  0s] ELF: stage alloc OK
 [  0s] ELF: stage zeroed
 [  0s] ELF: seg[1] vaddr=0x0 filesz=0xcbac0 memsz=0xcbac0 flags=0x5
@@ -23,17 +23,19 @@
 [  0s] JMPREL: all 403 entries processed
 [  0s] ELF: jmprel done
 [  0s] ELF: strtab/symtab copied
-[  0s] ELF: SplitMap memcpy code 0x4133f2000 size=0xcf000
+[  0s] ELF: SplitMap memcpy code 0x2488c5000 size=0xcf000
 [  0s] ELF: code memcpy done
-[  0s] ELF: SplitMap memcpy data 0x41304d000 size=0xf000
+[  0s] ELF: SplitMap memcpy data 0x2487b8000 size=0xf000
 [  0s] ELF: data memcpy done
-[  0s] SplitMap: code_va=0x2e7aba000 Rx data_va=0x2e7b89000 Rw mapped OK
+[  0s] SplitMap: code_va=0x5e2fc3000 Rx data_va=0x5e3092000 Rw mapped OK
+[  0s] SplitMap diag: code_va[0]=0xffffffff (readable)
+[  0s] SplitMap diag: data_va[0]=0xffffffffffffffff (readable)
 [  0s] ELF: JIT copy done, stage freed
-[  0s] ELF: 1 constructors deferred (arr=0x2e7b900f0)
-[  0s] ELF: loaded OK code_exec=0x2e7aba000 data_exec=0x2e7b89000 sym_count=3631 unresolved=0
+[  0s] ELF: 1 constructors deferred (arr=0x5e30990f0)
+[  0s] ELF: loaded OK code_exec=0x5e2fc3000 data_exec=0x5e3092000 sym_count=3631 unresolved=0
 [  0s] Loading: libquack.so
 [  0s] ELF: loading sdmc:/BareDroidNX/games/com.fingersoft.hillclimb/lib/libquack.so
-[  0s] SplitMap: reserved code_va=0xdc5eb000 data_va=0xdc71e000 csz=0x133000 dsz=0xc000
+[  0s] SplitMap: reserved code_va=0xc74bdd000 data_va=0xc74d10000 csz=0x133000 dsz=0xc000
 [  0s] ELF: stage alloc OK
 [  0s] ELF: stage zeroed
 [  0s] ELF: seg[0] vaddr=0x0 filesz=0x132090 memsz=0x132090 flags=0x5
@@ -49,16 +51,18 @@
 [  0s] JMPREL: all 341 entries processed
 [  0s] ELF: jmprel done
 [  0s] ELF: strtab/symtab copied
-[  0s] ELF: SplitMap memcpy code 0x41389c000 size=0x133000
+[  0s] ELF: SplitMap memcpy code 0x248df5000 size=0x133000
 [  0s] ELF: code memcpy done
-[  0s] ELF: SplitMap memcpy data 0x413114000 size=0xc000
+[  0s] ELF: SplitMap memcpy data 0x248c4c000 size=0xc000
 [  0s] ELF: data memcpy done
-[  0s] SplitMap: code_va=0xdc5eb000 Rx data_va=0xdc71e000 Rw mapped OK
+[  0s] SplitMap: code_va=0xc74bdd000 Rx data_va=0xc74d10000 Rw mapped OK
+[  0s] SplitMap diag: code_va[0]=0xffffffff (readable)
+[  0s] SplitMap diag: data_va[0]=0xffffffffffffffff (readable)
 [  0s] ELF: JIT copy done, stage freed
-[  0s] ELF: loaded OK code_exec=0xdc5eb000 data_exec=0xdc71e000 sym_count=848 unresolved=0
+[  0s] ELF: loaded OK code_exec=0xc74bdd000 data_exec=0xc74d10000 sym_count=848 unresolved=0
 [  0s] Loading: libgame.so
 [  0s] ELF: loading sdmc:/BareDroidNX/games/com.fingersoft.hillclimb/lib/libgame.so
-[  0s] SplitMap: reserved code_va=0xbe3c87000 data_va=0xbe43cf000 csz=0x748000 dsz=0xcf000
+[  0s] SplitMap: reserved code_va=0xc29862000 data_va=0xc29faa000 csz=0x748000 dsz=0xcf000
 [  0s] ELF: stage alloc OK
 [  0s] ELF: stage zeroed
 [  0s] ELF: seg[0] vaddr=0x0 filesz=0x746780 memsz=0x746780 flags=0x5
@@ -74,17 +78,23 @@
 [  0s] JMPREL: all 912 entries processed
 [  0s] ELF: jmprel done
 [  0s] ELF: strtab/symtab copied
-[  0s] ELF: SplitMap memcpy code 0x414180000 size=0x748000
+[  0s] ELF: SplitMap memcpy code 0x2496d9000 size=0x748000
 [  0s] ELF: code memcpy done
-[  0s] ELF: SplitMap memcpy data 0x4134dd000 size=0xcf000
+[  0s] ELF: SplitMap memcpy data 0x248ca5000 size=0xcf000
 [  0s] ELF: data memcpy done
-[  0s] SplitMap: code_va=0xbe3c87000 Rx data_va=0xbe43cf000 Rw mapped OK
+[  0s] SplitMap: code_va=0xc29862000 Rx data_va=0xc29faa000 Rw mapped OK
+[  0s] SplitMap diag: code_va[0]=0xffffffff (readable)
+[  0s] SplitMap diag: data_va[0]=0xffffffffffffffff (readable)
 [  0s] ELF: JIT copy done, stage freed
-[  0s] ELF: 417 constructors deferred (arr=0xbe43cf658)
-[  0s] ELF: loaded OK code_exec=0xbe3c87000 data_exec=0xbe43cf000 sym_count=2944 unresolved=0
+[  0s] ELF: 417 constructors deferred (arr=0xc29faa658)
+[  0s] ELF: loaded OK code_exec=0xc29862000 data_exec=0xc29faa000 sym_count=2944 unresolved=0
 [  0s] CTORS: starting 418 constructors — this may take 30-120s, please wait
 [  0s] ELF: libapplovin-native-crash-reporter.so: SKIP constructors (crash-reporter, not needed)
 [  0s] ELF: libgame.so: running 417 constructors
+[  0s] ELF: init_arr[0]=0xffffffffffffffff
+[  0s] ELF: init_arr[1]=0xffffffffffffffff
+[  0s] ELF: init_arr[2]=0xffffffffffffffff
+[  0s] ELF: init_arr[3]=0xffffffffffffffff
 [  0s] ELF: libgame.so: ctors done ok=0 failed=0 skipped=417
 [  0s] Setting up window...
 [  0s] EGL: version 1.4
@@ -92,77 +102,77 @@
 [  0s] EGL setup failed — continuing anyway (game may initialise EGL itself)
 [  0s] Setting up ANativeActivity...
 [  0s] Scanning for Java_ native methods in main .so...
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_closeWithEulaDecline @0xbe40e3214
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onPaymentWallAdsUpdated @0xbe3fed00c
-[  0s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesMove @0xbe4129200
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_userHasGivenConsentForTargetedAds @0xbe3fece94
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getPlayerInfoAdFreeStatus @0xbe3fedf10
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoStartedFail @0xbe3fedf6c
-[  0s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSignInCompleted @0xbe4072778
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItemEnabled @0xbe3fecd8c
-[  0s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeKeyDown @0xbe4129478
-[  0s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeOnResume @0xbe4128a18
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getPlayerInfoGDPRValue @0xbe3fedecc
-[  0s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDataLoadedGarage @0xbe40728d8
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_passGDPRConsentValueToNativeSide @0xbe3fecec0
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_consentFormHasBeenShown @0xbe3fedf54
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_updateRingerStateAndVolumeLevel @0xbe40e2dd4
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setPromoClosed @0xbe40e3210
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItemPrice @0xbe3feca84
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_eulaHasBeenAccepted @0xbe40e3230
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoStartedSuccess @0xbe3fedf84
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_createRewardedInterstitialFrequencyCap @0xbe40e31a8
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_userHasNotGivenConsentForTargetedAds @0xbe3feceac
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_crossPromoShowing @0xbe40e2dcc
-[  0s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxBitmap_nativeInitBitmapDC @0xbe4128320
-[  0s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit @0xbe3dfefb8
-[  0s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeDeleteBackward @0xbe4128908
-[  0s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInsertText @0xbe4128894
-[  0s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeResize @0xbe3dfef6c
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getPlayerConsentLocation @0xbe3fedff0
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_interstialClosed @0xbe40e2d38
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_createInterstitialFrequencyCap @0xbe40e3158
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setNativePlayerGDPRStatus @0xbe3fee450
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getContentVersionFromGlobalH @0xbe4072770
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnCountryCode @0xbe3fedff4
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoCompletedSuccess @0xbe3fedfb4
-[  0s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesBegin @0xbe4129128
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnFileDownloadResult @0xbe3feddf4
-[  0s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeGetContentText @0xbe412891c
-[  0s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxActivity_nativeSetPaths @0xbe4128e48
-[  0s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDataLoaded @0xbe40727f0
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onControllerKeyEvent @0xbe3e9a6ac
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItem @0xbe3fecbc4
-[  0s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDeviceLimitReached @0xbe40727a0
-[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnMissionJson @0xbe3fedc58
-[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_isTestingMode @0xbe4072768
-[  1s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeOnPause @0xbe41289cc
-[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setServerTime @0xbe3fecdec
-[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoCompletedFail @0xbe3fedf9c
-[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_startPopupOfferHandler @0xbe3fedeb4
-[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_clearStoreItems @0xbe3fecf3c
-[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onRewardedInterstitialCompleted @0xbe3fedfcc
-[  1s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesEnd @0xbe4129194
-[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onControllerConnectionEvent @0xbe3e9a9ec
-[  1s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesCancel @0xbe412933c
-[  1s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeRender @0xbe41289b0
-[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnPopupOfferJson @0xbe3fedd30
-[  1s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDataLoadedSkins @0xbe40729c0
-[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setCustomRewardVideoAdCompleted @0xbe3fece80
-[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_crossPromoClosed @0xbe40e2dd0
-[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_reportConsentDialogDismissed @0xbe3fedf68
-[  1s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onAchievementProgressLoaded @0xbe4072aa8
-[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItemCurrencyCode @0xbe3fecb24
-[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_UpdateLevelBattles @0xbe3feca70
+[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_closeWithEulaDecline @0xc29cbe214
+[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onPaymentWallAdsUpdated @0xc29bc800c
+[  0s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesMove @0xc29d04200
+[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_userHasGivenConsentForTargetedAds @0xc29bc7e94
+[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getPlayerInfoAdFreeStatus @0xc29bc8f10
+[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoStartedFail @0xc29bc8f6c
+[  0s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSignInCompleted @0xc29c4d778
+[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItemEnabled @0xc29bc7d8c
+[  0s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeKeyDown @0xc29d04478
+[  0s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeOnResume @0xc29d03a18
+[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getPlayerInfoGDPRValue @0xc29bc8ecc
+[  0s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDataLoadedGarage @0xc29c4d8d8
+[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_passGDPRConsentValueToNativeSide @0xc29bc7ec0
+[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_consentFormHasBeenShown @0xc29bc8f54
+[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_updateRingerStateAndVolumeLevel @0xc29cbddd4
+[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setPromoClosed @0xc29cbe210
+[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItemPrice @0xc29bc7a84
+[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_eulaHasBeenAccepted @0xc29cbe230
+[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoStartedSuccess @0xc29bc8f84
+[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_createRewardedInterstitialFrequencyCap @0xc29cbe1a8
+[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_userHasNotGivenConsentForTargetedAds @0xc29bc7eac
+[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_crossPromoShowing @0xc29cbddcc
+[  0s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxBitmap_nativeInitBitmapDC @0xc29d03320
+[  0s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit @0xc299d9fb8
+[  0s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeDeleteBackward @0xc29d03908
+[  0s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInsertText @0xc29d03894
+[  0s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeResize @0xc299d9f6c
+[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getPlayerConsentLocation @0xc29bc8ff0
+[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_interstialClosed @0xc29cbdd38
+[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_createInterstitialFrequencyCap @0xc29cbe158
+[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setNativePlayerGDPRStatus @0xc29bc9450
+[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getContentVersionFromGlobalH @0xc29c4d770
+[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnCountryCode @0xc29bc8ff4
+[  0s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoCompletedSuccess @0xc29bc8fb4
+[  1s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesBegin @0xc29d04128
+[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnFileDownloadResult @0xc29bc8df4
+[  1s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeGetContentText @0xc29d0391c
+[  1s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxActivity_nativeSetPaths @0xc29d03e48
+[  1s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDataLoaded @0xc29c4d7f0
+[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onControllerKeyEvent @0xc29a756ac
+[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItem @0xc29bc7bc4
+[  1s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDeviceLimitReached @0xc29c4d7a0
+[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnMissionJson @0xc29bc8c58
+[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_isTestingMode @0xc29c4d768
+[  1s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeOnPause @0xc29d039cc
+[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setServerTime @0xc29bc7dec
+[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoCompletedFail @0xc29bc8f9c
+[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_startPopupOfferHandler @0xc29bc8eb4
+[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_clearStoreItems @0xc29bc7f3c
+[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onRewardedInterstitialCompleted @0xc29bc8fcc
+[  1s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesEnd @0xc29d04194
+[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onControllerConnectionEvent @0xc29a759ec
+[  1s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesCancel @0xc29d0433c
+[  1s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeRender @0xc29d039b0
+[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnPopupOfferJson @0xc29bc8d30
+[  1s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDataLoadedSkins @0xc29c4d9c0
+[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setCustomRewardVideoAdCompleted @0xc29bc7e80
+[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_crossPromoClosed @0xc29cbddd0
+[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_reportConsentDialogDismissed @0xc29bc8f68
+[  1s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onAchievementProgressLoaded @0xc29c4daa8
+[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItemCurrencyCode @0xc29bc7b24
+[  1s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_UpdateLevelBattles @0xc29bc7a70
 [  1s] JAVA_METHOD: 62 total Java_ symbols found
-[  1s] Calling JNI_OnLoad @0xbe3dfed78 ...
+[  1s] Calling JNI_OnLoad @0xc299d9d78 ...
 [  1s] JNI_OnLoad FAULT sig=256 — skipped
 [  1s] ANativeActivity_onCreate not found — trying GameActivity entry point
 [  1s] No NativeActivity — attempting Cocos2d-x direct Java_ call
-[  1s] Cocos2d-x: nativeSetPaths @0xbe4128e48 apk=sdmc:/BareDroidNX/apks/Hill+Climb+Racing_1.67.0_APKPure.apk data=sdmc:/BareDroidNX/games/com.fingersoft.hillclimb
-[  1s] Cocos2d-x: nativeSetPaths FAULT sig=256 esr=0x02000000 pc=0xbe4128e48
-[  1s] Cocos2d-x: nativeInit @0xbe3dfefb8 1280x720
-[  1s] Cocos2d-x: nativeInit FAULT sig=256 esr=0x02000000 pc=0xbe3dfefb8
-[  1s] Cocos2d-x: nativeRender @0xbe41289b0 — game loop start
+[  1s] Cocos2d-x: nativeSetPaths @0xc29d03e48 apk=sdmc:/BareDroidNX/apks/Hill+Climb+Racing_1.67.0_APKPure.apk data=sdmc:/BareDroidNX/games/com.fingersoft.hillclimb
+[  1s] Cocos2d-x: nativeSetPaths FAULT sig=256 esr=0x02000000 pc=0xc29d03e48
+[  1s] Cocos2d-x: nativeInit @0xc299d9fb8 1280x720
+[  1s] Cocos2d-x: nativeInit FAULT sig=256 esr=0x02000000 pc=0xc299d9fb8
+[  1s] Cocos2d-x: nativeRender @0xc29d039b0 — game loop start
 [  1s] Cocos2d-x: nativeRender FAULT sig=256 esr=0x02000000 frame=0 — stop
 [  1s] Cocos2d-x: loop done frames=0
