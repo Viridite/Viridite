@@ -7,12 +7,12 @@
 **Run Android games natively on Nintendo Switch Horizon OS — without Android**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/FascinatingPistachio/AndroidHorizonNX?style=social)](https://github.com/FascinatingPistachio/AndroidHorizonNX/stargazers)
+[![GitHub Stars](https://img.shields.io/github/stars/Aaronateataco/AndroidHorizonNX?style=social)](https://github.com/Aaronateataco/AndroidHorizonNX/stargazers)
 [![Status](https://img.shields.io/badge/status-pre--alpha-red.svg)](#status)
 [![Built with Claude AI](https://img.shields.io/badge/built%20with-Claude%20AI-orange.svg)](https://anthropic.com)
 [![Platform](https://img.shields.io/badge/platform-Nintendo%20Switch-red.svg)](#)
 
-*Made by [aaronworld.uk](https://aaronworld.uk) · [Give it a star ⭐](https://github.com/FascinatingPistachio/AndroidHorizonNX/stargazers) if you find it interesting!*
+*Made by [aaronworld.uk](https://aaronworld.uk) · [Give it a star ⭐](https://github.com/Aaronateataco/AndroidHorizonNX/stargazers) if you find it interesting!*
 
 </div>
 
@@ -223,7 +223,7 @@ This section gets replaced with real measured numbers once the game boots far en
 - [x] **Log timestamps** — every `compat_log.txt` entry prefixed with `[Xs]` seconds-since-launch
 - [x] **Immediate constructor logging** — each `ELF: ctor[k/417] @ptr` is force-flushed to disk and the live display the instant before the constructor runs, so a hanging constructor is immediately identifiable
 - [x] **"Please wait" patience notice** — log and screen show total constructor count and estimated time before the phase begins
-- [x] **Avatar fix** — `socketInitializeDefault()` added so curl/BSD sockets work in homebrew; GitHub URL corrected to FascinatingPistachio
+- [x] **Avatar fix** — `socketInitializeDefault()` added so curl/BSD sockets work in homebrew; GitHub URL corrected to Aaronateataco
 - [x] **Expanded log ring buffer** (5×92 → 20×128 bytes) for richer in-memory log feed
 - [x] **All 403 JMPREL entries resolve** — hardware-confirmed; constructors are now the active frontier
 - [x] **Android Horizon icon** — green planet with "ANDROID HORIZON" curved above the horizon, space background with stars
