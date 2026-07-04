@@ -561,6 +561,11 @@ void runGameOnMainThread(void* game_so_ptr,
     LoadedSo* so = (LoadedSo*)game_so_ptr;
     SDL_Window* win = (SDL_Window*)sdl_win;
 
+    // Re-install fake Android TLS on THIS thread.  TPIDR_EL0 is per-thread;
+    // launchApk set it on its thread (the background worker) for ctors, but
+    // runGameOnMainThread runs on the main thread where TPIDR_EL0 is still 0.
+    androidTlsInstall();
+
     // Capture SDL2's active EGL context (current on this main thread).
     g_egl_display = eglGetCurrentDisplay();
     g_egl_surface = eglGetCurrentSurface(EGL_DRAW);

@@ -4,6 +4,9 @@
 #include <cstdio>
 #include <cstdlib>
 #include <vector>
+#include <unordered_map>
+#include <string>
+#include <set>
 
 extern void compatLog(const char* msg);
 extern void compatLogFmt(const char* fmt, ...);
@@ -20,6 +23,32 @@ static std::vector<JNINativeMethod> g_native_methods;
 #define DUMMY_CLASS  ((void*)0x1001)
 #define DUMMY_METHOD ((void*)0x2001)
 #define DUMMY_FIELD  ((void*)0x3001)
+
+// ─── Method registry ─────────────────────────────────────────────────────────
+// Each unique (name, sig) pair gets a stable MethodEntry pointer used as jmethodID.
+struct MethodEntry { char name[80]; char sig[128]; };
+static MethodEntry g_method_pool[512];
+static int g_method_count = 0;
+
+static MethodEntry* lookupOrCreateMethod(const char* n, const char* sg) {
+    for (int i = 0; i < g_method_count; i++) {
+        if (strcmp(g_method_pool[i].name, n ? n : "") == 0 &&
+            strcmp(g_method_pool[i].sig,  sg ? sg : "") == 0)
+            return &g_method_pool[i];
+    }
+    if (g_method_count < 512) {
+        MethodEntry* e = &g_method_pool[g_method_count++];
+        strncpy(e->name, n  ? n  : "", 79);  e->name[79]  = 0;
+        strncpy(e->sig,  sg ? sg : "", 127); e->sig[127]  = 0;
+        return e;
+    }
+    return nullptr;
+}
+
+// ─── UserDefault in-memory store (Cocos2d-x SharedPreferences emulation) ─────
+static std::unordered_map<std::string, int>         g_int_store;
+static std::unordered_map<std::string, std::string> g_str_store;
+static std::set<std::string> g_logged_int_keys;   // suppress per-call spam
 
 // ─── All JNI stubs (must be defined before jniSetup uses their addresses) ─────
 
@@ -54,11 +83,13 @@ static jboolean s_IsInstanceOf(JNIEnv*, jobject, jclass){ return JNI_TRUE; }
 
 static jmethodID s_GetMethodID(JNIEnv*, jclass, const char* n, const char* sg) {
     compatLogFmt("JNI GetMethodID: %s %s", n ? n : "?", sg ? sg : "?");
-    return DUMMY_METHOD;
+    MethodEntry* e = lookupOrCreateMethod(n, sg);
+    return e ? (jmethodID)e : (jmethodID)DUMMY_METHOD;
 }
 static jmethodID s_GetStaticMethodID(JNIEnv*, jclass, const char* n, const char* sg) {
     compatLogFmt("JNI GetStaticMethodID: %s %s", n ? n : "?", sg ? sg : "?");
-    return DUMMY_METHOD;
+    MethodEntry* e = lookupOrCreateMethod(n, sg);
+    return e ? (jmethodID)e : (jmethodID)DUMMY_METHOD;
 }
 static jfieldID s_GetFieldID(JNIEnv*, jclass, const char* n, const char* sg) {
     compatLogFmt("JNI GetFieldID: %s %s", n ? n : "?", sg ? sg : "?");
@@ -85,30 +116,18 @@ static jdouble  s_RetDoubleV(JNIEnv*, jobject, jmethodID, va_list) { return 0.0;
 static void     s_RetVoid(JNIEnv*, ...)   {}
 static void     s_RetVoidV(JNIEnv*, jobject, jmethodID, va_list) {}
 
-// Named Call*Method stubs — log the call type so we can see where JNI_OnLoad hangs.
+// ─── Instance-method call stubs ───────────────────────────────────────────────
 static jobject s_CallObjectMethod(JNIEnv*, jobject, jmethodID, ...) {
-    compatLog("JNI CallObjectMethod");  return nullptr;
+    compatLog("JNI CallObjectMethod"); return (jobject)"";
 }
 static jobject s_CallObjectMethodV(JNIEnv*, jobject, jmethodID, va_list) {
-    compatLog("JNI CallObjectMethodV"); return nullptr;
-}
-static jobject s_CallStaticObjectMethod(JNIEnv*, jclass, jmethodID, ...) {
-    compatLog("JNI CallStaticObjectMethod");  return nullptr;
-}
-static jobject s_CallStaticObjectMethodV(JNIEnv*, jclass, jmethodID, va_list) {
-    compatLog("JNI CallStaticObjectMethodV"); return nullptr;
+    compatLog("JNI CallObjectMethodV"); return (jobject)"";
 }
 static void s_CallVoidMethod(JNIEnv*, jobject, jmethodID, ...) {
     compatLog("JNI CallVoidMethod");
 }
 static void s_CallVoidMethodV(JNIEnv*, jobject, jmethodID, va_list) {
     compatLog("JNI CallVoidMethodV");
-}
-static void s_CallStaticVoidMethod(JNIEnv*, jclass, jmethodID, ...) {
-    compatLog("JNI CallStaticVoidMethod");
-}
-static void s_CallStaticVoidMethodV(JNIEnv*, jclass, jmethodID, va_list) {
-    compatLog("JNI CallStaticVoidMethodV");
 }
 static jboolean s_CallBoolMethod(JNIEnv*, jobject, jmethodID, ...) {
     compatLog("JNI CallBooleanMethod"); return JNI_FALSE;
@@ -121,6 +140,128 @@ static jlong s_CallLongMethod(JNIEnv*, jobject, jmethodID, ...) {
 }
 static jobject s_NewObject(JNIEnv*, jclass, jmethodID, ...) {
     compatLog("JNI NewObject"); return nullptr;
+}
+
+// ─── Static-method dispatching stubs ─────────────────────────────────────────
+// Helper: resolve a jmethodID to its MethodEntry (guards against DUMMY_METHOD)
+static inline MethodEntry* methodEntry(jmethodID mid) {
+    return (mid == (jmethodID)DUMMY_METHOD) ? nullptr : (MethodEntry*)mid;
+}
+
+static jint s_CallStaticIntMethodV(JNIEnv*, jclass, jmethodID mid, va_list args) {
+    MethodEntry* e = methodEntry(mid);
+    if (e && strcmp(e->name, "getIntegerForKey") == 0) {
+        const char* key = (const char*)va_arg(args, jstring);
+        jint defval    = va_arg(args, jint);
+        if (key) {
+            auto it = g_int_store.find(key);
+            if (it != g_int_store.end()) {
+                compatLogFmt("JNI getIntegerForKey(%s) → %d (stored)", key, it->second);
+                return it->second;
+            }
+            // Log each new key once to avoid log spam during the tight loop
+            if (g_logged_int_keys.insert(key).second)
+                compatLogFmt("JNI getIntegerForKey(%s) → %d (default)", key, defval);
+        }
+        return defval;
+    }
+    return 0;
+}
+static jint s_CallStaticIntMethod(JNIEnv* env, jclass cls, jmethodID mid, ...) {
+    va_list a; va_start(a, mid);
+    jint r = s_CallStaticIntMethodV(env, cls, mid, a);
+    va_end(a);
+    return r;
+}
+
+static jboolean s_CallStaticBoolMethodV(JNIEnv*, jclass, jmethodID mid, va_list) {
+    MethodEntry* e = methodEntry(mid);
+    if (e) {
+        // EULA/network checks — return true so the game doesn't wait forever
+        if (strcmp(e->name, "eulaHasBeenAccepted") == 0 ||
+            strcmp(e->name, "isNetworkAvailable")   == 0 ||
+            strcmp(e->name, "hasUserConsented")      == 0) {
+            compatLogFmt("JNI %s() → true", e->name);
+            return JNI_TRUE;
+        }
+        compatLogFmt("JNI CallStaticBooleanMethodV: %s → false", e->name);
+    }
+    return JNI_FALSE;
+}
+static jboolean s_CallStaticBoolMethod(JNIEnv* env, jclass cls, jmethodID mid, ...) {
+    va_list a; va_start(a, mid);
+    jboolean r = s_CallStaticBoolMethodV(env, cls, mid, a);
+    va_end(a);
+    return r;
+}
+
+static void s_CallStaticVoidMethodV(JNIEnv*, jclass, jmethodID mid, va_list args) {
+    MethodEntry* e = methodEntry(mid);
+    if (!e) { compatLog("JNI CallStaticVoidMethodV"); return; }
+
+    if (strcmp(e->name, "setIntegerForKey") == 0) {
+        const char* key = (const char*)va_arg(args, jstring);
+        jint val        = va_arg(args, jint);
+        compatLogFmt("JNI setIntegerForKey(%s, %d)", key ? key : "?", val);
+        if (key) { g_int_store[key] = val; g_logged_int_keys.erase(key); }
+        return;
+    }
+    if (strcmp(e->name, "setStringForKey") == 0) {
+        const char* key = (const char*)va_arg(args, jstring);
+        const char* val = (const char*)va_arg(args, jstring);
+        compatLogFmt("JNI setStringForKey(%s, \"%s\")", key ? key : "?", val ? val : "null");
+        if (key) g_str_store[key] = val ? val : "";
+        return;
+    }
+    if (strcmp(e->name, "flush") == 0) {
+        compatLog("JNI UserDefault.flush (no-op)");
+        return;
+    }
+    compatLogFmt("JNI CallStaticVoidMethodV: %s %s", e->name, e->sig);
+}
+static void s_CallStaticVoidMethod(JNIEnv* env, jclass cls, jmethodID mid, ...) {
+    va_list a; va_start(a, mid);
+    s_CallStaticVoidMethodV(env, cls, mid, a);
+    va_end(a);
+}
+
+static jobject s_CallStaticObjectMethodV(JNIEnv*, jclass, jmethodID mid, va_list args) {
+    MethodEntry* e = methodEntry(mid);
+    if (!e) { compatLog("JNI CallStaticObjectMethodV"); return (jobject)""; }
+
+    if (strcmp(e->name, "getStringForKey") == 0) {
+        const char* key    = (const char*)va_arg(args, jstring);
+        const char* defval = (const char*)va_arg(args, jstring);
+        if (key) {
+            auto it = g_str_store.find(key);
+            if (it != g_str_store.end()) {
+                compatLogFmt("JNI getStringForKey(%s) → stored", key);
+                return (jobject)it->second.c_str();
+            }
+        }
+        return (jobject)(defval ? defval : "");
+    }
+    if (strcmp(e->name, "retrieveDefaultsString") == 0) {
+        const char* key = (const char*)va_arg(args, jstring);
+        if (key) {
+            auto it = g_str_store.find(key);
+            if (it != g_str_store.end()) return (jobject)it->second.c_str();
+        }
+        return (jobject)"";
+    }
+    if (strcmp(e->name, "aesDecrypt") == 0 || strcmp(e->name, "aesEncrypt") == 0) {
+        const char* data = (const char*)va_arg(args, jstring);
+        // Return input unchanged — identity cipher so round-trips are consistent
+        return (jobject)(data ? data : "");
+    }
+    compatLogFmt("JNI CallStaticObjectMethodV: %s %s → \"\"", e->name, e->sig);
+    return (jobject)"";
+}
+static jobject s_CallStaticObjectMethod(JNIEnv* env, jclass cls, jmethodID mid, ...) {
+    va_list a; va_start(a, mid);
+    jobject r = s_CallStaticObjectMethodV(env, cls, mid, a);
+    va_end(a);
+    return r;
 }
 
 // Fields (get/set)
@@ -323,14 +464,14 @@ void jniSetup(CompatLayer* cl) {
     // CallStaticXxxMethod 114-143
     g_jni_funcs[114] = (void*)s_CallStaticObjectMethod;
     g_jni_funcs[115] = (void*)s_CallStaticObjectMethodV;
-    g_jni_funcs[116] = (void*)s_CallStaticObjectMethod;
-    g_jni_funcs[117] = (void*)s_RetBool;
-    g_jni_funcs[118] = (void*)s_RetBoolV;
-    g_jni_funcs[119] = (void*)s_RetBool;
-    for (int i = 120; i <= 128; i++) g_jni_funcs[i] = (void*)s_RetInt;
-    g_jni_funcs[129] = (void*)s_RetInt;
-    g_jni_funcs[130] = (void*)s_RetIntV;
-    g_jni_funcs[131] = (void*)s_RetInt;
+    g_jni_funcs[116] = (void*)s_CallStaticObjectMethod;  // A variant
+    g_jni_funcs[117] = (void*)s_CallStaticBoolMethod;
+    g_jni_funcs[118] = (void*)s_CallStaticBoolMethodV;
+    g_jni_funcs[119] = (void*)s_CallStaticBoolMethod;    // A variant
+    for (int i = 120; i <= 128; i++) g_jni_funcs[i] = (void*)s_RetInt; // byte/char/short
+    g_jni_funcs[129] = (void*)s_CallStaticIntMethod;
+    g_jni_funcs[130] = (void*)s_CallStaticIntMethodV;
+    g_jni_funcs[131] = (void*)s_CallStaticIntMethod;     // A variant
     g_jni_funcs[132] = (void*)s_RetLong;
     g_jni_funcs[133] = (void*)s_RetLongV;
     g_jni_funcs[134] = (void*)s_RetLong;
@@ -342,7 +483,7 @@ void jniSetup(CompatLayer* cl) {
     g_jni_funcs[140] = (void*)s_RetDouble;
     g_jni_funcs[141] = (void*)s_CallStaticVoidMethod;
     g_jni_funcs[142] = (void*)s_CallStaticVoidMethodV;
-    g_jni_funcs[143] = (void*)s_CallStaticVoidMethod;
+    g_jni_funcs[143] = (void*)s_CallStaticVoidMethod;    // A variant
     // GetStaticFieldID + Get/SetStaticXxxField 144-162
     g_jni_funcs[144] = (void*)s_GetStaticFieldID;
     g_jni_funcs[145] = (void*)s_GetStaticObjField;
