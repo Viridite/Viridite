@@ -564,9 +564,11 @@ void runGameOnMainThread(void* game_so_ptr,
             compatLogFmt("JNI_OnLoad returned: 0x%X", ver);
         } else {
             g_in_recover = false;
-            compatLogFmt("JNI_OnLoad FAULT sig=%d esr=0x%08x pc=%p far=%p — skipped",
+            char sym_buf[160];
+            elfNearestSym(so, g_recover_pc - (uint64_t)so->base, sym_buf, sizeof(sym_buf));
+            compatLogFmt("JNI_OnLoad FAULT sig=%d esr=0x%08x pc=%p far=%p sym=%s — skipped",
                          g_recover_sig, g_recover_esr,
-                         (void*)g_recover_pc, (void*)g_recover_far);
+                         (void*)g_recover_pc, (void*)g_recover_far, sym_buf);
         }
         compatLogFlush();
     }
@@ -621,9 +623,11 @@ void runGameOnMainThread(void* game_so_ptr,
             compatLog("Cocos2d-x: nativeSetPaths OK");
         } else {
             g_in_recover = false;
-            compatLogFmt("Cocos2d-x: nativeSetPaths FAULT sig=%d esr=0x%08x pc=%p far=%p",
+            char sym_buf[160];
+            elfNearestSym(so, g_recover_pc - (uint64_t)so->base, sym_buf, sizeof(sym_buf));
+            compatLogFmt("Cocos2d-x: nativeSetPaths FAULT sig=%d esr=0x%08x pc=%p far=%p sym=%s",
                          g_recover_sig, g_recover_esr,
-                         (void*)g_recover_pc, (void*)g_recover_far);
+                         (void*)g_recover_pc, (void*)g_recover_far, sym_buf);
         }
         compatLogFlush();
     }
@@ -643,9 +647,11 @@ void runGameOnMainThread(void* game_so_ptr,
             compatLog("Cocos2d-x: nativeInit OK");
         } else {
             g_in_recover = false;
-            compatLogFmt("Cocos2d-x: nativeInit FAULT sig=%d esr=0x%08x pc=%p far=%p",
+            char sym_buf[160];
+            elfNearestSym(so, g_recover_pc - (uint64_t)so->base, sym_buf, sizeof(sym_buf));
+            compatLogFmt("Cocos2d-x: nativeInit FAULT sig=%d esr=0x%08x pc=%p far=%p sym=%s",
                          g_recover_sig, g_recover_esr,
-                         (void*)g_recover_pc, (void*)g_recover_far);
+                         (void*)g_recover_pc, (void*)g_recover_far, sym_buf);
         }
         compatLogFlush();
     }
@@ -672,9 +678,11 @@ void runGameOnMainThread(void* game_so_ptr,
                 g_in_recover = false;
             } else {
                 g_in_recover = false;
-                compatLogFmt("Cocos2d-x: nativeRender FAULT sig=%d esr=0x%08x pc=%p far=%p frame=%d — stop",
+                char sym_buf[160];
+                elfNearestSym(so, g_recover_pc - (uint64_t)so->base, sym_buf, sizeof(sym_buf));
+                compatLogFmt("Cocos2d-x: nativeRender FAULT sig=%d esr=0x%08x pc=%p far=%p sym=%s frame=%d — stop",
                              g_recover_sig, g_recover_esr,
-                             (void*)g_recover_pc, (void*)g_recover_far, frame);
+                             (void*)g_recover_pc, (void*)g_recover_far, sym_buf, frame);
                 goto game_loop_done;
             }
 

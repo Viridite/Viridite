@@ -263,18 +263,22 @@ static int pt_join(void*, void** ret)   { if (ret) *ret = nullptr; return 0; }
 static int pt_detach(void*)             { return 0; }
 static void* pt_self(void)             { return (void*)0x1; }
 static int pt_equal(void* a, void* b)  { return a == b ? 1 : 0; }
-static int pt_key_create(int* k, void (*)(void*)) {
+static int pt_key_create(int* k, void (*dtor)(void*)) {
     if (g_tls_key_count >= 64) return 11; // EAGAIN
     *k = g_tls_key_count++;
+    compatLogFmt("pthread_key_create → key=%d dtor=%p", *k, (void*)dtor);
     return 0;
 }
 static int pt_key_delete(int) { return 0; }
 static void* pt_getspecific(int k) {
-    return (k >= 0 && k < 64) ? g_pthread_tls[k] : nullptr;
+    void* v = (k >= 0 && k < 64) ? g_pthread_tls[k] : nullptr;
+    if (!v) compatLogFmt("pthread_getspecific(key=%d) → NULL", k);
+    return v;
 }
 static int pt_setspecific(int k, const void* v) {
     if (k < 0 || k >= 64) return 22; // EINVAL
     g_pthread_tls[k] = (void*)v;
+    compatLogFmt("pthread_setspecific(key=%d, val=%p)", k, v);
     return 0;
 }
 static int pt_once(int* ctrl, void (*fn)(void)) {

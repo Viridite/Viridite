@@ -59,6 +59,31 @@ void elfResetCounts() {
     g_last_svc_perm_code = 0;
 }
 
+// ─── elfNearestSym ───────────────────────────────────────────────────────────
+const char* elfNearestSym(const LoadedSo* so, uint64_t vaddr, char* buf, size_t sz) {
+    if (!so || !so->symtab_heap || !so->strtab_heap || so->sym_count == 0) {
+        snprintf(buf, sz, "0x%llx", (unsigned long long)vaddr);
+        return buf;
+    }
+    uint64_t best_val  = 0;
+    const char* best   = nullptr;
+    for (uint32_t i = 0; i < so->sym_count; i++) {
+        const Elf64_Sym& s = so->symtab_heap[i];
+        if (s.st_value == 0 || !s.st_name || s.st_name >= so->strsz) continue;
+        if (s.st_value > vaddr) continue;
+        if (s.st_value >= best_val) {
+            best_val = s.st_value;
+            best     = so->strtab_heap + s.st_name;
+        }
+    }
+    if (!best || best[0] == '\0')
+        snprintf(buf, sz, "0x%llx", (unsigned long long)vaddr);
+    else
+        snprintf(buf, sz, "%.80s+0x%llx", best,
+                 (unsigned long long)(vaddr - best_val));
+    return buf;
+}
+
 // ─── elfRunCtors ──────────────────────────────────────────────────────────────
 // Run DT_INIT_ARRAY constructors stored by elfLoad.  Logs each entry before
 // calling it (and flushes via compatLog) so the crash site is visible in the
@@ -131,9 +156,12 @@ void elfRunCtors(LoadedSo* so, ProgressCb cb) {
             ok++;
         } else {
             g_in_recover = false;
-            compatLogFmt("ELF: ctor[%zu/%zu] FAULT sig=%d esr=0x%08x pc=%p far=%p — skipped",
+            char sym_buf[160];
+            uint64_t fault_vaddr = g_recover_pc - (uint64_t)so->base;
+            elfNearestSym(so, fault_vaddr, sym_buf, sizeof(sym_buf));
+            compatLogFmt("ELF: ctor[%zu/%zu] FAULT sig=%d esr=0x%08x pc=%p far=%p sym=%s — skipped",
                          k + 1, n, g_recover_sig, g_recover_esr,
-                         (void*)g_recover_pc, (void*)g_recover_far);
+                         (void*)g_recover_pc, (void*)g_recover_far, sym_buf);
             failed++;
         }
 

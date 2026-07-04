@@ -178,6 +178,11 @@ uint32_t     elfGetLastSvcPermCode();
 // Resolve a symbol across all loaded .so files, then shim table
 void*        shimResolve(const char* name);
 
+// Find the nearest symbol at or before `vaddr` (ELF virtual address) in `so`.
+// Writes "symbol+0x<offset>" (or "0x<vaddr>" if none found) into buf[sz].
+// Returns buf. buf must be at least 128 bytes.
+const char*  elfNearestSym(const LoadedSo* so, uint64_t vaddr, char* buf, size_t sz);
+
 // Run JNI_OnLoad + Cocos2d-x game loop from the MAIN thread (which has SDL2's
 // EGL context active).  sdl_win is SDL_Window* for buffer swap after each frame.
 // apk_path and data_path are the strings passed to nativeSetPaths.
