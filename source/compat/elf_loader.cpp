@@ -408,18 +408,20 @@ LoadedSo* elfLoad(const char* path, ProgressCb cb) {
     // instructions in the code segment naturally reach data with no patching.
     // Code VA is promoted to Rx; data VA stays Rw permanently.
     bool     using_split_map = false;
-    uint8_t* code_heap_buf   = nullptr;        // heap backing for code
-    uint8_t* data_heap_buf   = nullptr;        // heap backing for data
-    uint8_t* code_va_base    = nullptr;        // code VA (promoted to Rx)
-    uint8_t* data_va_base    = nullptr;        // data VA (permanently Rw)
-    Handle   split_h_code    = INVALID_HANDLE; // CodeMemory handle for code
-    Handle   split_h_data    = INVALID_HANDLE; // CodeMemory handle for data
-    VirtmemReservation* split_va_rv = nullptr; // held until after memcpy
+    uint8_t* code_heap_buf   = nullptr;        // heap placeholder for svcCreateCodeMemory
+    uint8_t* data_heap_buf   = nullptr;        // heap placeholder for svcCreateCodeMemory
+    uint8_t* code_va_base    = nullptr;        // code VA (MapSlave → Rx exec alias)
+    uint8_t* data_va_base    = nullptr;        // data VA (MapOwner → Rw, permanent)
+    uint8_t* code_write_va   = nullptr;        // temporary MapOwner write alias for code
+    Handle   split_h_code    = INVALID_HANDLE;
+    Handle   split_h_data    = INVALID_HANDLE;
+    VirtmemReservation* split_va_rv         = nullptr;
+    VirtmemReservation* split_code_write_rv = nullptr;
 
-    // Reserve the VA range early (needed for exec_base during relocation).
-    // svcCreateCodeMemory is deferred until AFTER we memcpy the relocated code
-    // into the backing buffers — the kernel takes ownership of the pages on
-    // svcCreateCodeMemory, making the original VA inaccessible.
+    // Reserve adjacent exec+data VAs and a separate write VA for code.
+    // Writes go through MapOwner aliases AFTER svcCreateCodeMemory so they
+    // reach the physical pages the kernel maps — the heap backing buffers are
+    // only placeholders and their content does not matter.
     if (data_off_pg > 0 && data_jit_size > 0) {
         code_heap_buf = (uint8_t*)memalign(0x1000, code_jit_size);
         data_heap_buf = (uint8_t*)memalign(0x1000, data_jit_size);
@@ -427,12 +429,22 @@ LoadedSo* elfLoad(const char* path, ProgressCb cb) {
             virtmemLock();
             void* va = virtmemFindCodeMemory(alloc_size, 0x1000);
             if (va) {
-                split_va_rv  = virtmemAddReservation(va, alloc_size);
-                using_split_map = true;
-                code_va_base = (uint8_t*)va;
-                data_va_base = code_va_base + code_jit_size;
-                compatLogFmt("SplitMap: reserved code_va=%p data_va=%p csz=0x%zx dsz=0x%zx",
-                             code_va_base, data_va_base, code_jit_size, data_jit_size);
+                split_va_rv = virtmemAddReservation(va, alloc_size);
+                // Find write VA while exec reservation is held (prevents overlap)
+                void* wva = virtmemFindCodeMemory(code_jit_size, 0x1000);
+                if (wva) {
+                    split_code_write_rv = virtmemAddReservation(wva, code_jit_size);
+                    using_split_map = true;
+                    code_va_base  = (uint8_t*)va;
+                    data_va_base  = code_va_base + code_jit_size;
+                    code_write_va = (uint8_t*)wva;
+                    compatLogFmt("SplitMap: reserved code_va=%p data_va=%p write_va=%p csz=0x%zx dsz=0x%zx",
+                                 code_va_base, data_va_base, code_write_va, code_jit_size, data_jit_size);
+                } else {
+                    compatLog("SplitMap: no write VA found");
+                    virtmemRemoveReservation(split_va_rv);
+                    split_va_rv = nullptr;
+                }
             } else {
                 compatLog("SplitMap: virtmemFindCodeMemory failed");
             }
@@ -720,92 +732,73 @@ LoadedSo* elfLoad(const char* path, ProgressCb cb) {
 
     // ── Copy stage → final regions then map executable ───────────────────────
     if (using_split_map) {
-        // Backing buffers are writable heap until svcCreateCodeMemory is called.
-        // memcpy first, then hand them to the kernel.
-        compatUiLog("Copying code segment...");
-        if (cb) cb("Loading ELF library", "Copying code segment");
-        compatLogFmt("ELF: SplitMap memcpy code %p size=0x%zx", (void*)code_heap_buf, code_jit_size);
-        compatLogFlush();
-        memcpy(code_heap_buf, stage, code_jit_size);
-        {
-            uint32_t pre = *(volatile uint32_t*)code_heap_buf;
-            compatLogFmt("SplitMap diag: code_heap_buf[0]=0x%08x after memcpy (pre-SVC)", pre);
-            compatLogFlush();
-        }
-        compatLog("ELF: code memcpy done");
-        compatLogFlush();
-        compatUiLog("Copying data segment...");
-        compatLogFmt("ELF: SplitMap memcpy data %p size=0x%zx", (void*)data_heap_buf, data_jit_size);
-        compatLogFlush();
-        memcpy(data_heap_buf, stage + data_off_pg, data_jit_size);
-        {
-            uint64_t pre0  = *(volatile uint64_t*)data_heap_buf;
-            uint64_t pre_init = 0xdeadbeefdeadbeefULL;
-            uint64_t init_arr_off_in_data = 0;
-            if (init_arr_vaddr > min_vaddr + data_off_pg) {
-                init_arr_off_in_data = init_arr_vaddr - (min_vaddr + data_off_pg);
-                if (init_arr_off_in_data + 8 <= data_jit_size)
-                    pre_init = *(volatile uint64_t*)(data_heap_buf + init_arr_off_in_data);
-            }
-            compatLogFmt("SplitMap diag: data_heap_buf[0]=0x%llx  data_heap_buf[init_arr+0x%llx]=0x%llx (pre-SVC)",
-                         (unsigned long long)pre0,
-                         (unsigned long long)init_arr_off_in_data,
-                         (unsigned long long)pre_init);
-            compatLogFlush();
-        }
-        compatLog("ELF: data memcpy done");
-        compatLogFlush();
-
-        // Hand backing buffers to kernel — after this they are inaccessible from userspace.
+        // Create handles from the placeholder heap buffers.  Their content is
+        // irrelevant — we write the real code/data through MapOwner aliases
+        // AFTER the SVCs so the writes actually reach the physical pages the
+        // kernel maps.  Writing to the original heap buffer before
+        // svcCreateCodeMemory only reaches D-cache; the physical RAM (which
+        // the kernel captures) still holds stale bytes.
         Result rc_hc = svcCreateCodeMemory(&split_h_code, code_heap_buf, code_jit_size);
         Result rc_hd = R_SUCCEEDED(rc_hc)
                      ? svcCreateCodeMemory(&split_h_data, data_heap_buf, data_jit_size)
                      : rc_hc;
+
+        // Release all VA reservations — kernel needs these VAs free in its page table
         virtmemLock();
-        if (split_va_rv) { virtmemRemoveReservation(split_va_rv); split_va_rv = nullptr; }
+        if (split_va_rv)         { virtmemRemoveReservation(split_va_rv);         split_va_rv         = nullptr; }
+        if (split_code_write_rv) { virtmemRemoveReservation(split_code_write_rv); split_code_write_rv = nullptr; }
         virtmemUnlock();
+
         if (R_SUCCEEDED(rc_hc) && R_SUCCEEDED(rc_hd)) {
-            Result rc_mc = svcControlCodeMemory(split_h_code,
-                               CodeMapOperation_MapSlave, code_va_base, code_jit_size, Perm_Rx);
-            Result rc_md = R_SUCCEEDED(rc_mc)
+            // Map code handle as temporary MapOwner (Rw write alias) at code_write_va
+            Result rc_wc = svcControlCodeMemory(split_h_code,
+                               CodeMapOperation_MapOwner, code_write_va, code_jit_size, Perm_Rw);
+            // Map data handle as MapOwner (Rw) at data_va_base — stays Rw permanently
+            Result rc_wd = R_SUCCEEDED(rc_wc)
                          ? svcControlCodeMemory(split_h_data,
                                CodeMapOperation_MapOwner, data_va_base, data_jit_size, Perm_Rw)
-                         : rc_mc;
-            if (R_SUCCEEDED(rc_mc) && R_SUCCEEDED(rc_md)) {
-                compatLogFmt("SplitMap: code_va=%p Rx data_va=%p Rw mapped OK",
-                             (void*)code_va_base, (void*)data_va_base);
-                compatLogFlush();
-                // Diagnostic: probe code_va and data_va to verify they're actually accessible
-                g_in_recover = true; g_recover_sig = 0; g_recover_esr = 0;
-                if (setjmp(g_recover_jmp) == 0) {
-                    uint32_t probe = *(volatile uint32_t*)code_va_base;
-                    g_in_recover = false;
-                    compatLogFmt("SplitMap diag: code_va[0]=0x%08x (readable)", probe);
+                         : rc_wc;
+
+            if (R_SUCCEEDED(rc_wc) && R_SUCCEEDED(rc_wd)) {
+                // Write code and data through MapOwner aliases → reaches physical pages
+                compatUiLog("Copying code segment...");
+                if (cb) cb("Loading ELF library", "Copying code segment");
+                memcpy(code_write_va, stage, code_jit_size);
+                compatUiLog("Copying data segment...");
+                memcpy(data_va_base, stage + data_off_pg, data_jit_size);
+                armDCacheFlush(code_write_va, code_jit_size);
+
+                // Promote code: remove write alias, add MapSlave (Rx exec alias)
+                svcControlCodeMemory(split_h_code,
+                    CodeMapOperation_UnmapOwner, code_write_va, code_jit_size, Perm_None);
+                Result rc_mc = svcControlCodeMemory(split_h_code,
+                                   CodeMapOperation_MapSlave, code_va_base, code_jit_size, Perm_Rx);
+
+                if (R_SUCCEEDED(rc_mc)) {
+                    armICacheInvalidate(code_va_base, code_jit_size);
+                    compatLogFmt("SplitMap: code_va=%p Rx data_va=%p Rw OK",
+                                 (void*)code_va_base, (void*)data_va_base);
+                    compatLogFlush();
                 } else {
-                    g_in_recover = false;
-                    compatLogFmt("SplitMap diag: code_va READ FAULT sig=%d esr=0x%08x — NOT mapped",
-                                 g_recover_sig, g_recover_esr);
+                    compatLogFmt("SplitMap: MapSlave FAILED 0x%08x", (uint32_t)rc_mc);
+                    compatLogFlush();
+                    svcControlCodeMemory(split_h_data, CodeMapOperation_UnmapOwner,
+                                         data_va_base, data_jit_size, Perm_None);
+                    svcCloseHandle(split_h_code);
+                    svcCloseHandle(split_h_data);
+                    free(stage); free(file_data);
+                    g_loaded_sos.pop_back(); delete so;
+                    return nullptr;
                 }
-                g_in_recover = true; g_recover_sig = 0; g_recover_esr = 0;
-                if (setjmp(g_recover_jmp) == 0) {
-                    uint64_t probe = *(volatile uint64_t*)data_va_base;
-                    g_in_recover = false;
-                    compatLogFmt("SplitMap diag: data_va[0]=0x%llx (readable)", (unsigned long long)probe);
-                } else {
-                    g_in_recover = false;
-                    compatLogFmt("SplitMap diag: data_va READ FAULT sig=%d esr=0x%08x — NOT mapped",
-                                 g_recover_sig, g_recover_esr);
-                }
-                compatLogFlush();
             } else {
-                compatLogFmt("SplitMap: map FAILED rc_mc=0x%08x rc_md=0x%08x",
-                             (uint32_t)rc_mc, (uint32_t)rc_md);
+                compatLogFmt("SplitMap: MapOwner FAILED rc_wc=0x%08x rc_wd=0x%08x",
+                             (uint32_t)rc_wc, (uint32_t)rc_wd);
                 compatLogFlush();
-                if (R_SUCCEEDED(rc_mc))
-                    svcControlCodeMemory(split_h_code, CodeMapOperation_UnmapSlave,
-                                         code_va_base, code_jit_size, 0);
-                if (R_SUCCEEDED(rc_hc)) svcCloseHandle(split_h_code);
-                if (R_SUCCEEDED(rc_hd)) svcCloseHandle(split_h_data);
+                if (R_SUCCEEDED(rc_wc))
+                    svcControlCodeMemory(split_h_code, CodeMapOperation_UnmapOwner,
+                                         code_write_va, code_jit_size, Perm_None);
+                svcCloseHandle(split_h_code);
+                svcCloseHandle(split_h_data);
                 free(stage); free(file_data);
                 g_loaded_sos.pop_back(); delete so;
                 return nullptr;
@@ -851,10 +844,8 @@ LoadedSo* elfLoad(const char* path, ProgressCb cb) {
     if (g_last_svc_perm_code == 0 && this_svc_perm_code != 0)
         g_last_svc_perm_code = this_svc_perm_code;
 
-    // Ensure I-cache at exec VA sees the code written through the backing buffer.
-    // armDCacheFlush on the write VA (done above before svcCreateCodeMemory) handled the D-cache;
-    // armICacheInvalidate here ensures the CPU fetches fresh instructions from physical memory.
-    if (using_split_map || using_jit)
+    // I-cache invalidate for JIT path (split_map does this inside its own block after MapSlave)
+    if (using_jit)
         armICacheInvalidate(code_exec, code_jit_size);
 
     // ── Store DT_INIT / DT_INIT_ARRAY for deferred constructor run ──────────
