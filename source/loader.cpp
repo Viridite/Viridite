@@ -569,6 +569,9 @@ void runGameOnMainThread(void* game_so_ptr,
             compatLogFmt("JNI_OnLoad FAULT sig=%d esr=0x%08x pc=%p far=%p sym=%s — skipped",
                          g_recover_sig, g_recover_esr,
                          (void*)g_recover_pc, (void*)g_recover_far, sym_buf);
+            const uint32_t* insn = (const uint32_t*)(uintptr_t)g_recover_pc;
+            compatLogFmt("INSN: [pc-12]=%08x [pc-8]=%08x [pc-4]=%08x [pc]=%08x [pc+4]=%08x",
+                         insn[-3], insn[-2], insn[-1], insn[0], insn[1]);
         }
         compatLogFlush();
     }
@@ -628,6 +631,9 @@ void runGameOnMainThread(void* game_so_ptr,
             compatLogFmt("Cocos2d-x: nativeSetPaths FAULT sig=%d esr=0x%08x pc=%p far=%p sym=%s",
                          g_recover_sig, g_recover_esr,
                          (void*)g_recover_pc, (void*)g_recover_far, sym_buf);
+            { const uint32_t* insn = (const uint32_t*)(uintptr_t)g_recover_pc;
+              compatLogFmt("INSN: [pc-12]=%08x [pc-8]=%08x [pc-4]=%08x [pc]=%08x [pc+4]=%08x",
+                           insn[-3], insn[-2], insn[-1], insn[0], insn[1]); }
         }
         compatLogFlush();
     }
@@ -652,6 +658,9 @@ void runGameOnMainThread(void* game_so_ptr,
             compatLogFmt("Cocos2d-x: nativeInit FAULT sig=%d esr=0x%08x pc=%p far=%p sym=%s",
                          g_recover_sig, g_recover_esr,
                          (void*)g_recover_pc, (void*)g_recover_far, sym_buf);
+            { const uint32_t* insn = (const uint32_t*)(uintptr_t)g_recover_pc;
+              compatLogFmt("INSN: [pc-12]=%08x [pc-8]=%08x [pc-4]=%08x [pc]=%08x [pc+4]=%08x",
+                           insn[-3], insn[-2], insn[-1], insn[0], insn[1]); }
         }
         compatLogFlush();
     }
@@ -683,6 +692,9 @@ void runGameOnMainThread(void* game_so_ptr,
                 compatLogFmt("Cocos2d-x: nativeRender FAULT sig=%d esr=0x%08x pc=%p far=%p sym=%s frame=%d — stop",
                              g_recover_sig, g_recover_esr,
                              (void*)g_recover_pc, (void*)g_recover_far, sym_buf, frame);
+                { const uint32_t* insn = (const uint32_t*)(uintptr_t)g_recover_pc;
+                  compatLogFmt("INSN: [pc-12]=%08x [pc-8]=%08x [pc-4]=%08x [pc]=%08x [pc+4]=%08x",
+                               insn[-3], insn[-2], insn[-1], insn[0], insn[1]); }
                 goto game_loop_done;
             }
 

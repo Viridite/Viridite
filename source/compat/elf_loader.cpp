@@ -162,6 +162,10 @@ void elfRunCtors(LoadedSo* so, ProgressCb cb) {
             compatLogFmt("ELF: ctor[%zu/%zu] FAULT sig=%d esr=0x%08x pc=%p far=%p sym=%s — skipped",
                          k + 1, n, g_recover_sig, g_recover_esr,
                          (void*)g_recover_pc, (void*)g_recover_far, sym_buf);
+            // Dump surrounding instructions to diagnose root cause
+            const uint32_t* insn = (const uint32_t*)(uintptr_t)g_recover_pc;
+            compatLogFmt("ELF: INSN: [pc-12]=%08x [pc-8]=%08x [pc-4]=%08x [pc]=%08x [pc+4]=%08x",
+                         insn[-3], insn[-2], insn[-1], insn[0], insn[1]);
             failed++;
         }
 
