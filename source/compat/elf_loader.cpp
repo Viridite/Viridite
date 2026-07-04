@@ -170,6 +170,9 @@ void* LoadedSo::findSym(const char* name) const {
         // Those fake entries can have wild st_name values that walk off the end
         // of the string table — guard before dereferencing.
         if (strsz > 0 && (uint64_t)s.st_name >= strsz) continue;
+        // Garbage entries past real dynsym (from .gnu.version etc.) often have
+        // st_value >> alloc_size.  Reject them to prevent wrong cross-library resolution.
+        if (alloc_size > 0 && s.st_value >= alloc_size) continue;
         const char* sname = strtab + s.st_name;
         if (strcmp(sname, name) == 0) {
             if (data_alloc && data_vaddr > 0 && s.st_value >= data_vaddr)
@@ -767,6 +770,22 @@ LoadedSo* elfLoad(const char* path, ProgressCb cb) {
                 compatUiLog("Copying data segment...");
                 memcpy(data_va_base, stage + data_off_pg, data_jit_size);
                 armDCacheFlush(code_write_va, code_jit_size);
+                armDCacheFlush(data_va_base, data_jit_size);
+
+                // Probe first 5 JMPREL GOT entries to confirm values reached data_va_base
+                if (jmprel_vaddr && jmprel_sz) {
+                    const Elf64_Rela* jr = (const Elf64_Rela*)(stage_base + jmprel_vaddr);
+                    size_t njr = jmprel_sz / sizeof(Elf64_Rela);
+                    for (size_t ji = 0; ji < 5 && ji < njr; ji++) {
+                        uint64_t off = jr[ji].r_offset;
+                        if (off >= data_off_pg && off + 8 <= data_off_pg + data_jit_size) {
+                            uint64_t val = *(const uint64_t*)(data_va_base + (off - data_off_pg));
+                            compatLogFmt("GOT[%zu] @va+0x%llx = %p",
+                                         ji, (unsigned long long)(off - data_off_pg), (void*)val);
+                        }
+                    }
+                    compatLogFlush();
+                }
 
                 // Promote code: remove write alias, add MapSlave (Rx exec alias)
                 svcControlCodeMemory(split_h_code,
