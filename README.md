@@ -73,8 +73,8 @@ Android Horizon captures these **automatically on real hardware** — the launch
 |---|---|
 | ![APK browser](docs/screenshots/ui_menu.png) | ![Loading screen](docs/screenshots/ui_loading.png) |
 | *APK browser — starfield, planet horizon, HOS button glyphs* | *Live loading screen with real-time compat log* |
-| ![Game rendering](docs/screenshots/game_frame300.png) | ![Result screen](docs/screenshots/ui_result.png) |
-| *Hill Climb Racing rendering on Horizon OS (frame 300)* | *Launch result diagnostics* |
+| ![Fingersoft splash](docs/screenshots/game_frame30.png) | ![Game loading screen](docs/screenshots/game_frame300.png) |
+| *Fingersoft splash animating (game frame 30)* | *Hill Climb Racing loading screen rendering on Horizon OS (frame 300)* |
 
 ---
 
