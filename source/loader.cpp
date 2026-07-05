@@ -700,25 +700,37 @@ void runGameOnMainThread(void* game_so_ptr,
     if (nativeRender) {
         compatLogFmt("Cocos2d-x: nativeRender @%p — game loop", (void*)nativeRender);
         compatLogFlush();
-        int frame = 0;
+        volatile int frame = 0;
         while (appletMainLoop()) {
-            // Poll SDL events so + button exits
-            SDL_Event ev;
-            while (SDL_PollEvent(&ev)) {
-                if (ev.type == SDL_QUIT) goto game_loop_done;
-                if (ev.type == SDL_JOYBUTTONDOWN && ev.jbutton.button == 10 /*PLUS*/)
-                    goto game_loop_done;
-            }
-
+            // Recovery window covers the whole iteration (event poll, render,
+            // swap) — a fault inside eglSwapBuffers/SDL used to rethrow to the
+            // OS with nothing in the log.
             g_in_recover = true; g_recover_sig = 0; g_recover_esr = 0; g_recover_far = 0;
             if (setjmp(g_recover_jmp) == 0) {
+                // Poll SDL events so + button exits
+                SDL_Event ev;
+                while (SDL_PollEvent(&ev)) {
+                    if (ev.type == SDL_QUIT ||
+                        (ev.type == SDL_JOYBUTTONDOWN && ev.jbutton.button == 10 /*PLUS*/)) {
+                        g_in_recover = false;
+                        goto game_loop_done;
+                    }
+                }
+
                 nativeRender(env, obj);
+
+                // Swap buffers (Cocos2d-x doesn't call eglSwapBuffers itself)
+                if (g_egl_display != EGL_NO_DISPLAY && g_egl_surface != EGL_NO_SURFACE)
+                    eglSwapBuffers(g_egl_display, g_egl_surface);
+                else if (win)
+                    SDL_GL_SwapWindow(win);
+
                 g_in_recover = false;
             } else {
                 g_in_recover = false;
                 char sym_buf[160];
                 elfNearestSym(so, g_recover_pc - (uint64_t)so->base, sym_buf, sizeof(sym_buf));
-                compatLogFmt("Cocos2d-x: nativeRender FAULT sig=%d esr=0x%08x pc=%p far=%p sym=%s frame=%d — stop",
+                compatLogFmt("Cocos2d-x: game loop FAULT sig=%d esr=0x%08x pc=%p far=%p sym=%s frame=%d — stop",
                              g_recover_sig, g_recover_esr,
                              (void*)g_recover_pc, (void*)g_recover_far, sym_buf, frame);
                 { const uint32_t* insn = (const uint32_t*)(uintptr_t)g_recover_pc;
@@ -726,12 +738,6 @@ void runGameOnMainThread(void* game_so_ptr,
                                insn[-3], insn[-2], insn[-1], insn[0], insn[1]); }
                 goto game_loop_done;
             }
-
-            // Swap buffers (Cocos2d-x doesn't call eglSwapBuffers itself)
-            if (g_egl_display != EGL_NO_DISPLAY && g_egl_surface != EGL_NO_SURFACE)
-                eglSwapBuffers(g_egl_display, g_egl_surface);
-            else if (win)
-                SDL_GL_SwapWindow(win);
 
             ++frame;
             if (frame % 300 == 0) {

@@ -103,7 +103,6 @@ static int stub___FD_ISSET_chk(int fd, const void* set, size_t /*setsize*/) {
 static int stub_fork()                              { return -1; }
 static int stub_execve(const char*, char* const*, char* const*) { errno = ENOSYS; return -1; }
 static int stub_waitpid(int, int*, int)             { errno = ECHILD; return -1; }
-static void stub__exit(int code)                    { exit(code); }
 // Filesystem stubs missing from existing table
 static int stub_symlink(const char*, const char*)   { errno = ENOSYS; return -1; }
 static int stub_utimes(const char*, const void*)    { return 0; }
@@ -184,6 +183,25 @@ static FILE* stub_tmpfile()                      { return tmpfile(); }
 
 extern void compatLog(const char* msg);
 extern void compatLogFmt(const char* fmt, ...);
+extern void compatLogFlush();
+
+// Game-initiated termination is otherwise invisible (process just returns to
+// the Home menu with nothing in the log) — record it before actually dying.
+static void sh_exit(int code) {
+    compatLogFmt("game called exit(%d)", code);
+    compatLogFlush();
+    exit(code);
+}
+static void sh_abort() {
+    compatLog("game called abort()");
+    compatLogFlush();
+    abort();
+}
+static void sh_exit_raw(int code) {
+    compatLogFmt("game called _exit(%d)", code);
+    compatLogFlush();
+    exit(code);
+}
 
 // fopen wrapper — logs failed opens so we can see what paths game code requests
 static FILE* stub_fopen(const char* path, const char* mode) {
@@ -802,8 +820,8 @@ static const ShimEntry g_shims[] = {
     {"opendir",     (void*)opendir},
     {"readdir",     (void*)readdir},
     {"closedir",    (void*)closedir},
-    {"abort",       (void*)abort},
-    {"exit",        (void*)exit},
+    {"abort",       (void*)sh_abort},
+    {"exit",        (void*)sh_exit},
     {"qsort",       (void*)qsort},
     {"bsearch",     (void*)bsearch},
     {"rand",        (void*)rand},
@@ -1454,7 +1472,7 @@ static const ShimEntry g_shims[] = {
     {"fork",            (void*)stub_fork},
     {"execve",          (void*)stub_execve},
     {"waitpid",         (void*)stub_waitpid},
-    {"_exit",           (void*)stub__exit},
+    {"_exit",           (void*)sh_exit_raw},
     {"setuid",          (void*)stub_setuid},
     {"setgid",          (void*)stub_setgid},
     // filesystem

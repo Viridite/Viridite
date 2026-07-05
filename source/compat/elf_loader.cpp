@@ -24,6 +24,8 @@ volatile uint32_t g_recover_esr = 0;
 volatile uint64_t g_recover_pc  = 0;
 volatile uint64_t g_recover_far = 0;  // Fault Address Register
 
+static void logUnrecoveredFault(ThreadExceptionDump* ctx);
+
 extern "C" void __libnx_exception_handler(ThreadExceptionDump* ctx) {
     uint32_t esr = ctx->esr;
 
@@ -34,6 +36,7 @@ extern "C" void __libnx_exception_handler(ThreadExceptionDump* ctx) {
         g_recover_far = ctx->far.x;
         longjmp(g_recover_jmp, 1);
     }
+    logUnrecoveredFault(ctx);
     extern ThreadExceptionDump __nx_exceptiondump;
     __nx_exceptiondump = *ctx;
     svcReturnFromException(0xf801);
@@ -193,6 +196,32 @@ void elfRunCtors(LoadedSo* so, ProgressCb cb) {
 
 // All successfully loaded .so files (for cross-library symbol resolution)
 static std::vector<LoadedSo*> g_loaded_sos;
+
+// Last chance to get the crash PC on disk before svcReturnFromException kills
+// the process. Runs on the exception stack; must not fault again (guard flag).
+static void logUnrecoveredFault(ThreadExceptionDump* ctx) {
+    static bool logged = false;
+    if (logged) return;
+    logged = true;
+    uint64_t pc = ctx->pc.x;
+    compatLogFmt("UNRECOVERED FAULT desc=0x%x esr=0x%08x pc=%p far=%p lr=%p sp=%p",
+                 (unsigned)ctx->error_desc, ctx->esr, (void*)pc, (void*)ctx->far.x,
+                 (void*)ctx->lr.x, (void*)ctx->sp.x);
+    bool in_so = false;
+    for (LoadedSo* so : g_loaded_sos) {
+        if (pc >= (uint64_t)so->alloc && pc < (uint64_t)so->alloc + so->alloc_size) {
+            char sym_buf[160];
+            elfNearestSym(so, pc - (uint64_t)so->base, sym_buf, sizeof(sym_buf));
+            compatLogFmt("UNRECOVERED FAULT: %s +0x%lx sym=%s",
+                         so->path.c_str(), pc - (uint64_t)so->base, sym_buf);
+            in_so = true;
+            break;
+        }
+    }
+    if (!in_so)
+        compatLog("UNRECOVERED FAULT: pc not in any loaded .so (host/nro code)");
+    compatLogFlush();
+}
 
 // ─── LoadedSo::findSym ────────────────────────────────────────────────────────
 void* LoadedSo::findSym(const char* name) const {

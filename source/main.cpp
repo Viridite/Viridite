@@ -32,19 +32,20 @@ static const int ITEM_H   = 108;
 static const int ICON_SZ  = 84;
 static const int VISIBLE  = LIST_H / ITEM_H;
 
-// Colors
-static const SDL_Color C_BG     = {15,  15,  26,  255};
-static const SDL_Color C_HEADER = {22,  22,  56,  255};
-static const SDL_Color C_FOOTER = {10,  10,  20,  255};
-static const SDL_Color C_SEL    = {38,  68, 128,  255};
-static const SDL_Color C_DIV    = {35,  35,  65,  255};
+// Colors — matched to the app icon: deep-space indigo sky + horizon green planet
+static const SDL_Color C_BG     = {13,  12,  46,  255};   // space navy
+static const SDL_Color C_HEADER = {24,  22,  86,  255};   // icon sky indigo
+static const SDL_Color C_FOOTER = {9,   8,   34,  255};
+static const SDL_Color C_SEL    = {41,  37,  128, 255};   // indigo highlight
+static const SDL_Color C_DIV    = {40,  37,  108, 255};
 static const SDL_Color C_WHITE  = {255, 255, 255, 255};
-static const SDL_Color C_GRAY   = {160, 160, 180, 255};
-static const SDL_Color C_DIM    = {100, 100, 120, 255};
-static const SDL_Color C_OK     = {80,  200, 80,  255};
-static const SDL_Color C_ERR    = {220, 80,  80,  255};
-static const SDL_Color C_WARN   = {220, 180, 60,  255};
-static const SDL_Color C_INST   = {60,  200, 100, 255};
+static const SDL_Color C_GRAY   = {168, 170, 205, 255};
+static const SDL_Color C_DIM    = {116, 116, 168, 255};
+static const SDL_Color C_OK     = {52,  230, 134, 255};   // planet-rim green
+static const SDL_Color C_ERR    = {235, 90,  90,  255};
+static const SDL_Color C_WARN   = {230, 190, 70,  255};
+static const SDL_Color C_INST   = {47,  223, 124, 255};
+static const SDL_Color C_RIM    = {52,  230, 134, 255};   // horizon accent line
 
 // ---------------------------------------------------------------------------
 static FILE* g_log = nullptr;
@@ -305,6 +306,7 @@ struct App {
     void render() {
         fill(0, 0, SW, SH, C_BG);
         fill(0, 0, SW, HEADER_H, C_HEADER);
+        fill(0, HEADER_H - 3, SW, 3, C_RIM);
         drawText(fLg, "Android Horizon", C_WHITE, 30, (HEADER_H - 28) / 2);
         {
             int tw = 0, th = 0;
@@ -327,7 +329,10 @@ struct App {
             int end = std::min((int)apks.size(), scroll + VISIBLE);
             for (int i = scroll; i < end; i++) {
                 int iy = LIST_Y + (i - scroll) * ITEM_H;
-                if (i == selected) fill(0, iy, SW, ITEM_H, C_SEL);
+                if (i == selected) {
+                    fill(0, iy, SW, ITEM_H, C_SEL);
+                    fill(0, iy, 5, ITEM_H, C_RIM);
+                }
                 SDL_SetRenderDrawColor(rdr, C_DIV.r, C_DIV.g, C_DIV.b, 255);
                 SDL_RenderDrawLine(rdr, 0, iy + ITEM_H - 1, SW, iy + ITEM_H - 1);
 
@@ -348,7 +353,7 @@ struct App {
                     int bw = 0, bh = 0;
                     TTF_SizeUTF8(fSm, INST.c_str(), &bw, &bh);
                     int bx = SW - bw - 30;
-                    fill(bx - 6, iy + 14, bw + 12, bh, {20, 60, 30, 200});
+                    fill(bx - 6, iy + 14, bw + 12, bh, {13, 72, 40, 200});
                     drawText(fSm, INST, C_INST, bx, iy + 14);
                 }
 
@@ -363,11 +368,12 @@ struct App {
             if ((int)apks.size() > VISIBLE) {
                 int barH = LIST_H * VISIBLE / (int)apks.size();
                 int barY = LIST_Y + LIST_H * scroll / (int)apks.size();
-                fill(SW - 6, barY, 6, barH, {80, 80, 130, 200});
+                fill(SW - 6, barY, 6, barH, {72, 66, 170, 200});
             }
         }
 
         fill(0, SH - FOOTER_H, SW, FOOTER_H, C_FOOTER);
+        fill(0, SH - FOOTER_H, SW, 2, C_RIM);
         if (appletGetOperationMode() == AppletOperationMode_Console) {
             drawText(fSm, "Docked — games need handheld (touch screen)     +: Quit",
                 C_WARN, 30, SH - FOOTER_H + (FOOTER_H - 18) / 2);
@@ -419,6 +425,7 @@ struct App {
         // ── Background ──
         fill(0, 0, SW, SH, C_BG);
         fill(0, 0, SW, HEADER_H, C_HEADER);
+        fill(0, HEADER_H - 3, SW, 3, C_RIM);
         drawText(fLg, "Android Horizon", C_WHITE, 30, (HEADER_H - 28) / 2);
 
         // Animated spinner in header (4-frame ASCII, cycles every 150ms)
@@ -439,9 +446,9 @@ struct App {
 
         // ── Progress bar ──
         const int BAR_X = 40, BAR_W = SW - 80, BAR_H = 18;
-        fill(BAR_X, y, BAR_W, BAR_H, {18, 18, 44, 255});
+        fill(BAR_X, y, BAR_W, BAR_H, {20, 18, 66, 255});
         int fw = g_ui_pct > 0 ? BAR_W * g_ui_pct / 100 : 0;
-        if (fw > 0) fill(BAR_X, y, fw, BAR_H, {66, 133, 244, 255});
+        if (fw > 0) fill(BAR_X, y, fw, BAR_H, {45, 205, 118, 255});
         SDL_SetRenderDrawColor(rdr, 55, 55, 110, 255);
         SDL_Rect bb = {BAR_X, y, BAR_W, BAR_H};
         SDL_RenderDrawRect(rdr, &bb);
@@ -451,18 +458,18 @@ struct App {
 
         // ── Activity scan bar — sweeps left→right every 2s regardless of progress ──
         const int SCAN_H = 8;
-        fill(BAR_X, y, BAR_W, SCAN_H, {12, 12, 32, 255});
+        fill(BAR_X, y, BAR_W, SCAN_H, {10, 9, 38, 255});
         // Bright highlight travels across the bar width in a 2s cycle
         const int GLOW_W = 120;
         int sweep = (int)((Uint64)(now % 2000) * (BAR_W + GLOW_W * 2) / 2000) - GLOW_W;
         int sx0 = std::max(BAR_X, BAR_X + sweep);
         int sx1 = std::min(BAR_X + BAR_W, BAR_X + sweep + GLOW_W);
         if (sx1 > sx0)
-            fill(sx0, y, sx1 - sx0, SCAN_H, {100, 190, 255, 200});
+            fill(sx0, y, sx1 - sx0, SCAN_H, {90, 230, 160, 200});
         // Brighter leading edge
         if (sx1 > sx0) {
             int edge = std::max(sx0, sx1 - 18);
-            fill(edge, y, sx1 - edge, SCAN_H, {200, 230, 255, 230});
+            fill(edge, y, sx1 - edge, SCAN_H, {200, 255, 225, 230});
         }
         y += SCAN_H + 16;
 
@@ -473,24 +480,24 @@ struct App {
         const int N_SHOW = 13;   // visible log lines inside the box
         const int BOX_H  = LH * (N_SHOW + 1) + 14; // +1 for title bar, +14 padding
 
-        fill(BOX_X, y, BOX_W, BOX_H, {8, 8, 20, 230});
+        fill(BOX_X, y, BOX_W, BOX_H, {7, 6, 26, 230});
         // Title bar
-        fill(BOX_X, y, BOX_W, LH + 4, {22, 22, 52, 240});
-        drawText(fSm, "  compat_log.txt", {70, 100, 160, 255}, BOX_X + 8, y + 3);
+        fill(BOX_X, y, BOX_W, LH + 4, {24, 22, 80, 240});
+        drawText(fSm, "  compat_log.txt", {120, 140, 225, 255}, BOX_X + 8, y + 3);
         // Pulsing dot to show file is being read live
         Uint32 dotPhase = (now / 600) % 3;
         std::string liveDots = std::string(dotPhase > 0 ? "." : " ")
                              + std::string(dotPhase > 1 ? "." : " ")
                              + std::string(dotPhase > 2 ? "." : " ");
-        drawText(fSm, "live" + liveDots, {60, 180, 80, 255}, BOX_X + BOX_W - 110, y + 3);
+        drawText(fSm, "live" + liveDots, {52, 230, 134, 255}, BOX_X + BOX_W - 110, y + 3);
         y += LH + 8;
 
         // Log lines from in-memory detail buffer (written by every compatLog call)
         std::vector<std::string> logLines;
         snapDetailLog(logLines, N_SHOW);
 
-        const SDL_Color C_LOG      = {90,  150, 210, 255};
-        const SDL_Color C_LOG_NEW  = {210, 235, 255, 255};
+        const SDL_Color C_LOG      = {125, 150, 230, 255};
+        const SDL_Color C_LOG_NEW  = {225, 238, 255, 255};
         const SDL_Color C_LOG_WARN = {220, 170, 60,  255};
         const SDL_Color C_LOG_ERR  = {220, 100, 80,  255};
 
@@ -537,6 +544,7 @@ struct App {
         }
 
         fill(0, SH - FOOTER_H, SW, FOOTER_H, C_FOOTER);
+        fill(0, SH - FOOTER_H, SW, 2, C_RIM);
         drawText(fSm, "Please wait — sdmc:/AndroidHorizonNX/compat_log.txt",
                  C_DIM, 30, SH - FOOTER_H + (FOOTER_H - 18) / 2);
 
@@ -612,6 +620,7 @@ struct App {
 
             fill(0, 0, SW, SH, C_BG);
             fill(0, 0, SW, HEADER_H, C_HEADER);
+            fill(0, HEADER_H - 3, SW, 3, C_RIM);
             drawText(fLg, "Android Horizon", C_WHITE, 30, (HEADER_H - 28) / 2);
 
             int iconSz = 112;
@@ -665,6 +674,8 @@ struct App {
             drawText(fSm, "Full log: sdmc:/AndroidHorizonNX/compat_log.txt", C_DIM, 60, y);
 
             fill(0, SH - FOOTER_H, SW, FOOTER_H, C_FOOTER);
+            fill(0, SH - FOOTER_H, SW, 2, C_RIM);
+        fill(0, SH - FOOTER_H, SW, 2, C_RIM);
             drawText(fSm, "B: Back to menu",
                      C_DIM, 30, SH - FOOTER_H + (FOOTER_H - 18) / 2);
 
@@ -700,6 +711,7 @@ struct App {
 
             fill(0, 0, SW, SH, C_BG);
             fill(0, 0, SW, HEADER_H, C_HEADER);
+            fill(0, HEADER_H - 3, SW, 3, C_RIM);
             drawText(fLg, "Android Horizon", C_WHITE, 30, (HEADER_H - 28) / 2);
 
             int avSz = 160;
@@ -731,6 +743,8 @@ struct App {
             center(fSm, "Android NDK compatibility layer for Nintendo Switch (HorizonOS)", C_GRAY);
 
             fill(0, SH - FOOTER_H, SW, FOOTER_H, C_FOOTER);
+            fill(0, SH - FOOTER_H, SW, 2, C_RIM);
+        fill(0, SH - FOOTER_H, SW, 2, C_RIM);
             drawText(fSm, "B: Back to menu",
                      C_DIM, 30, SH - FOOTER_H + (FOOTER_H - 18) / 2);
 
