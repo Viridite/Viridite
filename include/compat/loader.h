@@ -194,6 +194,16 @@ void runGameOnMainThread(void* game_so_ptr,
 // Called from jni_env.cpp to install JNI/VM tables into compat layer
 void         jniSetup(CompatLayer* cl);
 
+// Find an exported symbol in the currently running game .so (nullptr if no
+// game is running or the symbol doesn't exist). Used by jni_env.cpp to invoke
+// the game's registered Java_ native callbacks.
+void*        compatFindGameSym(const char* name);
+
+// UserDefault persistence (jni_env.cpp): loaded before nativeInit, saved on
+// every UserDefault.flush and at game exit.
+void jniUserDefaultsLoad(const char* path);
+void jniUserDefaultsSave();
+
 // ─── SimpleAudioEngine backend (audio.cpp, SDL2_mixer) ───────────────────────
 // jni_env.cpp forwards the Cocos2dxSound/Cocos2dxMusic JNI calls here.
 void  compatAudioSetAssetsDir(const char* dir);
@@ -207,7 +217,7 @@ void  compatAudioSetMusicVolume(float v);
 bool  compatAudioMusicPlaying();
 void  compatAudioPreloadEffect(const char* path);
 void  compatAudioUnloadEffect(const char* path);
-int   compatAudioPlayEffect(const char* path, bool loop);
+int   compatAudioPlayEffect(const char* path, bool loop, float gain = 1.0f);
 void  compatAudioStopEffect(int id);
 void  compatAudioPauseEffect(int id);
 void  compatAudioResumeEffect(int id);

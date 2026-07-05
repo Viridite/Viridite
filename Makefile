@@ -38,7 +38,7 @@ ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
 LIBS	:=	-lSDL2_ttf -lSDL2_image -lSDL2_mixer -lSDL2main -lSDL2 \
-			-lopusfile -lopus -lFLAC -lvorbisfile -lvorbis -logg -lmpg123 -lmodplug \
+			-lopusfile -lopus -lFLAC -lvorbisidec -logg -lmpg123 -lmodplug \
 			-lfreetype -lharfbuzz \
 			-lpng -ljpeg -lwebp -lwebpdemux \
 			-lminizip -lbz2 -lz \

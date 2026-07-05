@@ -126,13 +126,15 @@ void compatAudioUnloadEffect(const char* p) {
     }
 }
 
-int compatAudioPlayEffect(const char* p, bool loop) {
+int compatAudioPlayEffect(const char* p, bool loop, float gain) {
     AudioLock al;
     if (!ensureInit()) return -1;
     Mix_Chunk* c = getChunk(resolve(p));
     if (!c) return -1;
-    Mix_VolumeChunk(c, (int)(g_fx_vol * MIX_MAX_VOLUME));
-    return Mix_PlayChannel(-1, c, loop ? -1 : 0);
+    if (gain < 0) gain = 0; else if (gain > 1) gain = 1;
+    int ch = Mix_PlayChannel(-1, c, loop ? -1 : 0);
+    if (ch >= 0) Mix_Volume(ch, (int)(g_fx_vol * gain * MIX_MAX_VOLUME));
+    return ch;
 }
 
 void compatAudioStopEffect(int ch)   { AudioLock al; if (g_inited && ch >= 0) Mix_HaltChannel(ch); }

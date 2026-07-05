@@ -58,11 +58,108 @@ struct StoreLock {
     ~StoreLock() { mutexUnlock(&g_store_lock); }
 };
 
+// Log-once helper: JNI lookups fire tens of thousands of times during loading
+// and every compat log line fsyncs to the SD card — that I/O was the actual
+// loading-screen bottleneck (~90 save-keys/second, build 64 log). Log each
+// unique message once; repeats are silent.
+static bool logOnce(const char* prefix, const char* a, const char* b = nullptr) {
+    static std::set<std::string> seen;
+    std::string key = std::string(prefix) + "|" + (a ? a : "") + "|" + (b ? b : "");
+    StoreLock sl;
+    return seen.insert(key).second;
+}
+
+static std::unordered_map<std::string, float> g_float_store;
+static std::string g_ud_path;
+static bool        g_ud_dirty = false;
+
+// ─── UserDefault persistence ─────────────────────────────────────────────────
+// The store was RAM-only, so every launch looked like a first run (ToS screen
+// again, progress gone). Serialize to <game>/userdefaults.bin on every
+// UserDefault.flush and at game exit; load before nativeInit.
+// Record: [u8 type I/S/F][u32 klen][key][u32 vlen][value]
+static void udWrite(FILE* f, char t, const std::string& k, const void* v, uint32_t vlen) {
+    uint32_t klen = (uint32_t)k.size();
+    fwrite(&t, 1, 1, f);
+    fwrite(&klen, 4, 1, f);
+    fwrite(k.data(), 1, klen, f);
+    fwrite(&vlen, 4, 1, f);
+    fwrite(v, 1, vlen, f);
+}
+void jniUserDefaultsSave() {
+    StoreLock sl;
+    if (g_ud_path.empty() || !g_ud_dirty) return;
+    std::string tmp = g_ud_path + ".tmp";
+    FILE* f = fopen(tmp.c_str(), "wb");
+    if (!f) { compatLogFmt("UserDefaults: save open FAIL %s", tmp.c_str()); return; }
+    for (auto& kv : g_int_store) {
+        int32_t v = kv.second;
+        udWrite(f, 'I', kv.first, &v, 4);
+    }
+    for (auto& kv : g_float_store) {
+        float v = kv.second;
+        udWrite(f, 'F', kv.first, &v, 4);
+    }
+    for (auto& kv : g_str_store)
+        udWrite(f, 'S', kv.first, kv.second.data(), (uint32_t)kv.second.size());
+    fclose(f);
+    remove(g_ud_path.c_str());
+    rename(tmp.c_str(), g_ud_path.c_str());
+    g_ud_dirty = false;
+    compatLogFmt("UserDefaults: saved %zu ints, %zu floats, %zu strings",
+                 g_int_store.size(), g_float_store.size(), g_str_store.size());
+}
+void jniUserDefaultsLoad(const char* path) {
+    StoreLock sl;
+    g_ud_path = path ? path : "";
+    g_ud_dirty = false;
+    FILE* f = fopen(g_ud_path.c_str(), "rb");
+    if (!f) { compatLogFmt("UserDefaults: no save file (fresh run)"); return; }
+    for (;;) {
+        char t; uint32_t klen = 0, vlen = 0;
+        if (fread(&t, 1, 1, f) != 1) break;
+        if (fread(&klen, 4, 1, f) != 1 || klen > 4096) break;
+        std::string key(klen, '\0');
+        if (fread(&key[0], 1, klen, f) != klen) break;
+        if (fread(&vlen, 4, 1, f) != 1 || vlen > 1u << 20) break;
+        std::string val(vlen, '\0');
+        if (vlen && fread(&val[0], 1, vlen, f) != vlen) break;
+        if (t == 'I' && vlen == 4) g_int_store[key]   = *(const int32_t*)val.data();
+        else if (t == 'F' && vlen == 4) g_float_store[key] = *(const float*)val.data();
+        else if (t == 'S') g_str_store[key] = val;
+    }
+    fclose(f);
+    compatLogFmt("UserDefaults: loaded %zu ints, %zu floats, %zu strings",
+                 g_int_store.size(), g_float_store.size(), g_str_store.size());
+}
+
+// ─── Network state ────────────────────────────────────────────────────────────
+// Report the Switch's REAL connectivity (nifm). Games handle "offline" via
+// their normal Android code paths — pretending to be online sends them into
+// ad/IAP/network flows that hit stubs.
+static bool netAvailable() {
+    static int cached = -1;
+    if (cached < 0) {
+        cached = 0;
+        if (R_SUCCEEDED(nifmInitialize(NifmServiceType_User))) {
+            NifmInternetConnectionType ct;
+            u32 strength = 0;
+            NifmInternetConnectionStatus st;
+            if (R_SUCCEEDED(nifmGetInternetConnectionStatus(&ct, &strength, &st)) &&
+                st == NifmInternetConnectionStatus_Connected)
+                cached = 1;
+            nifmExit();
+        }
+        compatLogFmt("net: internet %s (nifm)", cached ? "CONNECTED" : "not connected");
+    }
+    return cached == 1;
+}
+
 // ─── All JNI stubs (must be defined before jniSetup uses their addresses) ─────
 
 static jint     s_GetVersion(JNIEnv*)            { return JNI_VERSION_1_6; }
 static jclass   s_FindClass(JNIEnv*, const char* n) {
-    compatLogFmt("JNI FindClass: %s", n ? n : "?");
+    if (logOnce("FindClass", n)) compatLogFmt("JNI FindClass: %s", n ? n : "?");
     return DUMMY_CLASS;
 }
 static jclass   s_GetSuperclass(JNIEnv*, jclass)        { return DUMMY_CLASS; }
@@ -90,17 +187,20 @@ static jclass   s_GetObjectClass(JNIEnv*, jobject)      { return DUMMY_CLASS; }
 static jboolean s_IsInstanceOf(JNIEnv*, jobject, jclass){ return JNI_TRUE; }
 
 static jmethodID s_GetMethodID(JNIEnv*, jclass, const char* n, const char* sg) {
-    compatLogFmt("JNI GetMethodID: %s %s", n ? n : "?", sg ? sg : "?");
+    if (logOnce("GetMethodID", n, sg))
+        compatLogFmt("JNI GetMethodID: %s %s", n ? n : "?", sg ? sg : "?");
     MethodEntry* e = lookupOrCreateMethod(n, sg);
     return e ? (jmethodID)e : (jmethodID)DUMMY_METHOD;
 }
 static jmethodID s_GetStaticMethodID(JNIEnv*, jclass, const char* n, const char* sg) {
-    compatLogFmt("JNI GetStaticMethodID: %s %s", n ? n : "?", sg ? sg : "?");
+    if (logOnce("GetStaticMethodID", n, sg))
+        compatLogFmt("JNI GetStaticMethodID: %s %s", n ? n : "?", sg ? sg : "?");
     MethodEntry* e = lookupOrCreateMethod(n, sg);
     return e ? (jmethodID)e : (jmethodID)DUMMY_METHOD;
 }
 static jfieldID s_GetFieldID(JNIEnv*, jclass, const char* n, const char* sg) {
-    compatLogFmt("JNI GetFieldID: %s %s", n ? n : "?", sg ? sg : "?");
+    if (logOnce("GetFieldID", n, sg))
+        compatLogFmt("JNI GetFieldID: %s %s", n ? n : "?", sg ? sg : "?");
     return DUMMY_FIELD;
 }
 static jfieldID s_GetStaticFieldID(JNIEnv*, jclass, const char* n, const char* sg) {
@@ -162,15 +262,14 @@ static jint s_CallStaticIntMethodV(JNIEnv*, jclass, jmethodID mid, va_list args)
         const char* key = (const char*)va_arg(args, jstring);
         jint defval    = va_arg(args, jint);
         if (key) {
+            // Reads are silent (thousands during loading; each log line fsyncs
+            // to SD). A periodic counter shows liveness in the log instead.
+            static int reads = 0;
+            if (++reads % 2000 == 0)
+                compatLogFmt("JNI getIntegerForKey: %d reads", reads);
             StoreLock sl;
             auto it = g_int_store.find(key);
-            if (it != g_int_store.end()) {
-                compatLogFmt("JNI getIntegerForKey(%s) → %d (stored)", key, it->second);
-                return it->second;
-            }
-            // Log each new key once to avoid log spam during the tight loop
-            if (g_logged_int_keys.insert(key).second)
-                compatLogFmt("JNI getIntegerForKey(%s) → %d (default)", key, defval);
+            if (it != g_int_store.end()) return it->second;
         }
         return defval;
     }
@@ -178,7 +277,12 @@ static jint s_CallStaticIntMethodV(JNIEnv*, jclass, jmethodID mid, va_list args)
     if (e && strcmp(e->name, "playEffect") == 0) {
         const char* p = (const char*)va_arg(args, jstring);
         int loop      = va_arg(args, int);
-        return compatAudioPlayEffect(p, loop != 0);
+        // (Ljava/lang/String;ZFF)I → the trailing floats are pitch and gain;
+        // apply gain per channel (pitch shifting is unsupported in SDL_mixer)
+        double pitch = 1.0, gain = 1.0;
+        if (strstr(e->sig, "ZFF")) { pitch = va_arg(args, double); gain = va_arg(args, double); }
+        (void)pitch;
+        return compatAudioPlayEffect(p, loop != 0, (float)gain);
     }
     return 0;
 }
@@ -189,19 +293,57 @@ static jint s_CallStaticIntMethod(JNIEnv* env, jclass cls, jmethodID mid, ...) {
     return r;
 }
 
-static jboolean s_CallStaticBoolMethodV(JNIEnv*, jclass, jmethodID mid, va_list) {
+static jfloat s_CallStaticFloatMethodV(JNIEnv*, jclass, jmethodID mid, va_list args) {
+    MethodEntry* e = methodEntry(mid);
+    if (!e) return 0.0f;
+    if (strcmp(e->name, "getFloatForKey") == 0 || strcmp(e->name, "getDoubleForKey") == 0) {
+        const char* key = (const char*)va_arg(args, jstring);
+        double defval   = va_arg(args, double);
+        if (key) {
+            StoreLock sl;
+            auto it = g_float_store.find(key);
+            if (it != g_float_store.end()) return it->second;
+        }
+        return (jfloat)defval;
+    }
+    if (strcmp(e->name, "getEffectsVolume") == 0)         return compatAudioGetEffectsVolume();
+    if (strcmp(e->name, "getBackgroundMusicVolume") == 0) return compatAudioGetMusicVolume();
+    if (logOnce("FloatV", e->name, e->sig))
+        compatLogFmt("JNI CallStaticFloatMethodV: %s %s → 0", e->name, e->sig);
+    return 0.0f;
+}
+static jfloat s_CallStaticFloatMethod(JNIEnv* env, jclass c, jmethodID m, ...) {
+    va_list a; va_start(a, m);
+    jfloat r = s_CallStaticFloatMethodV(env, c, m, a);
+    va_end(a);
+    return r;
+}
+
+static jboolean s_CallStaticBoolMethodV(JNIEnv*, jclass, jmethodID mid, va_list args) {
     MethodEntry* e = methodEntry(mid);
     if (e) {
-        // EULA/network checks — return true so the game doesn't wait forever
+        // EULA/consent checks — return true so the game doesn't wait forever
         if (strcmp(e->name, "eulaHasBeenAccepted") == 0 ||
-            strcmp(e->name, "isNetworkAvailable")   == 0 ||
             strcmp(e->name, "hasUserConsented")      == 0) {
-            compatLogFmt("JNI %s() → true", e->name);
+            if (logOnce("BoolT", e->name)) compatLogFmt("JNI %s() → true", e->name);
             return JNI_TRUE;
+        }
+        if (strcmp(e->name, "isNetworkAvailable") == 0)
+            return netAvailable() ? JNI_TRUE : JNI_FALSE;
+        if (strcmp(e->name, "getBoolForKey") == 0) {
+            const char* key = (const char*)va_arg(args, jstring);
+            jint defval     = va_arg(args, int);
+            if (key) {
+                StoreLock sl;
+                auto it = g_int_store.find(std::string("b:") + key);
+                if (it != g_int_store.end()) return it->second ? JNI_TRUE : JNI_FALSE;
+            }
+            return defval ? JNI_TRUE : JNI_FALSE;
         }
         if (strcmp(e->name, "isBackgroundMusicPlaying") == 0)
             return compatAudioMusicPlaying() ? JNI_TRUE : JNI_FALSE;
-        compatLogFmt("JNI CallStaticBooleanMethodV: %s → false", e->name);
+        if (logOnce("BoolV", e->name))
+            compatLogFmt("JNI CallStaticBooleanMethodV: %s → false", e->name);
     }
     return JNI_FALSE;
 }
@@ -219,24 +361,52 @@ static void s_CallStaticVoidMethodV(JNIEnv*, jclass, jmethodID mid, va_list args
     if (strcmp(e->name, "setIntegerForKey") == 0) {
         const char* key = (const char*)va_arg(args, jstring);
         jint val        = va_arg(args, jint);
-        compatLogFmt("JNI setIntegerForKey(%s, %d)", key ? key : "?", val);
-        if (key) { StoreLock sl; g_int_store[key] = val; g_logged_int_keys.erase(key); }
+        if (logOnce("setInt", key ? key : "?"))
+            compatLogFmt("JNI setIntegerForKey(%s, %d)", key ? key : "?", val);
+        if (key) { StoreLock sl; g_int_store[key] = val; g_ud_dirty = true; }
         return;
     }
     if (strcmp(e->name, "setStringForKey") == 0) {
         const char* key = (const char*)va_arg(args, jstring);
         const char* val = (const char*)va_arg(args, jstring);
-        compatLogFmt("JNI setStringForKey(%s, \"%s\")", key ? key : "?", val ? val : "null");
-        if (key) { StoreLock sl; g_str_store[key] = val ? val : ""; }
+        if (logOnce("setStr", key ? key : "?"))
+            compatLogFmt("JNI setStringForKey(%s, \"%s\")", key ? key : "?", val ? val : "null");
+        if (key) { StoreLock sl; g_str_store[key] = val ? val : ""; g_ud_dirty = true; }
+        return;
+    }
+    if (strcmp(e->name, "setBoolForKey") == 0) {
+        const char* key = (const char*)va_arg(args, jstring);
+        int val         = va_arg(args, int);
+        if (key) { StoreLock sl; g_int_store[std::string("b:") + key] = val ? 1 : 0; g_ud_dirty = true; }
+        return;
+    }
+    if (strcmp(e->name, "setFloatForKey") == 0 || strcmp(e->name, "setDoubleForKey") == 0) {
+        const char* key = (const char*)va_arg(args, jstring);
+        double val      = va_arg(args, double);
+        if (key) { StoreLock sl; g_float_store[key] = (float)val; g_ud_dirty = true; }
         return;
     }
     if (strcmp(e->name, "flush") == 0) {
-        compatLog("JNI UserDefault.flush (no-op)");
+        jniUserDefaultsSave();
         return;
     }
     if (strcmp(e->name, "debugStringOnAndroid") == 0) {
         const char* msg = (const char*)va_arg(args, jstring);
-        compatLogFmt("game debug: %s", msg ? msg : "null");
+        if (logOnce("gdbg", msg ? msg : "null"))
+            compatLogFmt("game debug: %s", msg ? msg : "null");
+        return;
+    }
+
+    // fetchCountryCode: on Android this is an async Java web request whose
+    // result comes back via the native returnCountryCode(jstring) — without a
+    // reply the post-EULA flow spins forever. Answer immediately with "US"
+    // (also keeps the game on the non-GDPR consent path).
+    if (strcmp(e->name, "fetchCountryCode") == 0) {
+        typedef void (*RetCC_fn)(JNIEnv*, jobject, jstring);
+        RetCC_fn f = (RetCC_fn)compatFindGameSym(
+            "Java_com_fingersoft_game_MainActivity_returnCountryCode");
+        compatLogFmt("JNI fetchCountryCode → returnCountryCode(\"US\") cb=%p", (void*)f);
+        if (f) f((JNIEnv*)g_jni_outer, nullptr, (jstring)"US");
         return;
     }
 
@@ -277,7 +447,8 @@ static void s_CallStaticVoidMethodV(JNIEnv*, jclass, jmethodID mid, va_list args
     if (strcmp(e->name, "resumeAllEffects") == 0){ compatAudioResumeAllEffects(); return; }
     if (strcmp(e->name, "end") == 0) { compatAudioStopMusic(); compatAudioStopAllEffects(); return; }
 
-    compatLogFmt("JNI CallStaticVoidMethodV: %s %s", e->name, e->sig);
+    if (logOnce("VoidV", e->name, e->sig))
+        compatLogFmt("JNI CallStaticVoidMethodV: %s %s", e->name, e->sig);
 }
 static void s_CallStaticVoidMethod(JNIEnv* env, jclass cls, jmethodID mid, ...) {
     va_list a; va_start(a, mid);
@@ -295,10 +466,7 @@ static jobject s_CallStaticObjectMethodV(JNIEnv*, jclass, jmethodID mid, va_list
         if (key) {
             StoreLock sl;
             auto it = g_str_store.find(key);
-            if (it != g_str_store.end()) {
-                compatLogFmt("JNI getStringForKey(%s) → stored", key);
-                return (jobject)it->second.c_str();
-            }
+            if (it != g_str_store.end()) return (jobject)it->second.c_str();
         }
         return (jobject)(defval ? defval : "");
     }
@@ -316,7 +484,8 @@ static jobject s_CallStaticObjectMethodV(JNIEnv*, jclass, jmethodID mid, va_list
         // Return input unchanged — identity cipher so round-trips are consistent
         return (jobject)(data ? data : "");
     }
-    compatLogFmt("JNI CallStaticObjectMethodV: %s %s → \"\"", e->name, e->sig);
+    if (logOnce("ObjV", e->name, e->sig))
+        compatLogFmt("JNI CallStaticObjectMethodV: %s %s → \"\"", e->name, e->sig);
     return (jobject)"";
 }
 static jobject s_CallStaticObjectMethod(JNIEnv* env, jclass cls, jmethodID mid, ...) {
@@ -554,9 +723,9 @@ void jniSetup(CompatLayer* cl) {
     g_jni_funcs[132] = (void*)s_RetLong;
     g_jni_funcs[133] = (void*)s_RetLongV;
     g_jni_funcs[134] = (void*)s_RetLong;
-    g_jni_funcs[135] = (void*)s_RetFloat;
-    g_jni_funcs[136] = (void*)s_RetFloatV;
-    g_jni_funcs[137] = (void*)s_RetFloat;
+    g_jni_funcs[135] = (void*)s_CallStaticFloatMethod;
+    g_jni_funcs[136] = (void*)s_CallStaticFloatMethodV;
+    g_jni_funcs[137] = (void*)s_CallStaticFloatMethod;   // A variant
     g_jni_funcs[138] = (void*)s_RetDouble;
     g_jni_funcs[139] = (void*)s_RetDoubleV;
     g_jni_funcs[140] = (void*)s_RetDouble;

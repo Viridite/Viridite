@@ -245,6 +245,32 @@ First real measured numbers from hardware:
 
 > Most recent first.
 
+### 0.1.68 — IT'S PLAYABLE + persistent saves
+
+- [x] **HILL CLIMB RACING IS PLAYABLE ON SWITCH** — driving with touch steering, engine sounds, music, 60 fps. Confirmed on hardware. Known issues from the playtest below.
+- [x] **Saves now persist** — the UserDefault store was RAM-only, so every launch looked like a first run (ToS screen again, progress lost). It now loads from `<game>/userdefaults.bin` before the game starts and saves on every `UserDefault.flush` and at exit. Ints, floats, bools, and strings all covered (floats/bools weren't even stored before).
+- [x] **Real connectivity reported** — `isNetworkAvailable` now asks the Switch (nifm) instead of always claiming "online". An offline Switch gets Android's normal offline code paths — the game handles that natively, and it likely defuses the shop's network/IAP flows (the playtest's only crash).
+- [x] **Effect volume fixed** — `playEffect`'s gain parameter was discarded, so looping effects (the engine!) played at 100%. Gain is now applied per channel. (Pitch modulation isn't supported by SDL_mixer, so the engine is volume-correct but monotone for now.)
+- [x] **Relaunch guard** — launching a second game session in one app run crashes the loader (leftover JIT regions/threads from the first session; "not an ARM binary"). Until real unloading exists, a second launch shows a "restart Android Horizon to play again" notice instead of crashing.
+- [x] Async Java callback pattern established (`compatFindGameSym`) — used for `returnCountryCode`, ready for `setServerTime`/`returnMissionJson`/`returnFileDownloadResult` if the game stalls on them.
+
+### 0.1.66 — Touch confirmed + post-EULA spinner fixed
+
+- [x] **TOUCH CONFIRMED WORKING** — the Terms-of-Service screen was accepted by tapping on hardware. Also: the logging diet pushed the game loop to a solid **60 fps** (frame counter: 300 frames per 5 s) — the SD-card fsyncs were throttling rendering too.
+- [x] **Post-EULA spinner root-caused** — after accepting, the game calls `fetchCountryCode()`; on Android that's an async Java web request answered via the native callback `returnCountryCode(jstring)`. No reply = infinite spinner. The JNI layer now invokes the game's registered callback immediately with `"US"` (which also keeps the game on the simpler non-GDPR consent path).
+- [x] **Music no longer keeps playing after quitting the game** — the mixer is silenced when the game loop exits back to the APK browser.
+
+### 0.1.65 — Audio works! + loading-screen speedup
+
+- [x] **AUDIO CONFIRMED WORKING ON HARDWARE** — build 64's Tremor fix holds: menu music (`bgmusic00.ogg`) loops from the Switch speakers while the game renders. First sound ever from an Android game on Horizon OS via this layer.
+- [x] **"Stuck" loading screen root-caused: it wasn't stuck** — the game reads thousands of per-vehicle/per-stage save keys, and every read produced 3 compat-log lines each fsync'd to the SD card (~90 keys/second measured). The run was minutes from finishing when it looked frozen.
+- [x] **JNI logging diet** — class/method/field lookups and repeated calls log once per unique message; save-key reads are silent with a periodic progress counter; writes log once per key. Loading should now be dramatically faster.
+
+### 0.1.64 — The real frame-2 killer: vorbis ABI mismatch
+
+- [x] **Frame-2 crash fully root-caused** — build 63 still crashed, and the forensics narrowed it to `_free_r` freeing SDL_mixer's own `sdl_seek_func` (an OGG callback *function*). Disassembling portlibs' `libSDL2_mixer.a` showed its OGG decoder calls `ov_read` with 4 arguments — the **Tremor** (`libvorbisidec`) ABI — while we linked regular `libvorbisfile`, whose `ov_read` takes 7 arguments and whose `OggVorbis_File` struct is a different size. `ov_open_callbacks` scribbled past the mixer's smaller struct on the first `preloadEffect(*.ogg)`, corrupting the heap.
+- [x] **Fix:** link `-lvorbisidec` (Tremor) instead of `-lvorbisfile -lvorbis`, matching what SDL2_mixer was compiled against.
+
 ### 0.1.63 — Allocator crash root-caused: JNI string constants
 
 - [x] **Build 59/60 frame-2 crash root-caused via the new forensics** — `svcQueryMemory` + host-symbol anchoring resolved the fault to newlib's `_free_r` writing a free-list link into our NRO's read-only segment: the game `free()`d a JNI string we handed it. On real Android, `GetStringUTFChars` returns a malloc'd copy (so game code that `free()`s it instead of calling `ReleaseStringUTFChars` gets away with it); ours returned the string constant itself.

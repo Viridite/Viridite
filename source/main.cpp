@@ -141,6 +141,12 @@ struct App {
     // One-shot README screenshot flags (each screen captured once per run)
     bool shotMenu = false, shotLoading = false, shotResult = false, shotAbout = false;
 
+    // A game session leaves JIT regions and worker threads behind that we
+    // can't fully unload yet — a second launch reads garbage ("not an ARM
+    // binary"). Block relaunch until the app is restarted.
+    bool   gameRanOnce = false;
+    Uint32 noticeUntil = 0;
+
     // Save the composed frame (call just before SDL_RenderPresent) as a PNG in
     // sdmc:/AndroidHorizonNX/screenshots/ — showcase material for the README.
     void saveScreenshot(const char* name) {
@@ -582,6 +588,14 @@ struct App {
             cnt = std::to_string(apks.size()) + (apks.size() == 1 ? " APK" : " APKs");
         drawHeaderBar(cnt);
 
+        if (noticeUntil && now < noticeUntil) {
+            const char* msg = "One game session per launch for now — restart Android Horizon to play again";
+            int w = 0, h = 0;
+            TTF_SizeUTF8(fSm, msg, &w, &h);
+            fill((SW - w) / 2 - 16, SH - FOOTER_H - 44, w + 32, 34, {60, 18, 14, 235});
+            drawText(fSm, msg, C_WARN, (SW - w) / 2, SH - FOOTER_H - 36);
+        }
+
         bool docked = appletGetOperationMode() == AppletOperationMode_Console;
         drawFooterBar({{BG(GLYPH_A, "A"), "Launch"}, {BG(GLYPH_X, "X"), "Reinstall"},
                        {BG(GLYPH_Y, "Y"), "Rescan"}, {BG(GLYPH_MINUS, "-"), "About"},
@@ -806,6 +820,7 @@ struct App {
         if (ctx.result.game_so) {
             std::string base_dir = std::string("sdmc:/AndroidHorizonNX/games/") + pkg;
             runGameOnMainThread(ctx.result.game_so, win, ctx.apk_path, base_dir);
+            gameRanOnce = true;
         }
 
         return ctx.result;
@@ -1001,6 +1016,7 @@ int main(int, char**) {
                         break;
 
                     case BTN_A:
+                        if (app.gameRanOnce) { app.noticeUntil = SDL_GetTicks() + 4000; break; }
                         if (!app.apks.empty()) {
                             const ApkInfo& apk = app.apks[app.selected];
                             bool skip = apk.installed;
@@ -1011,6 +1027,7 @@ int main(int, char**) {
                         break;
 
                     case BTN_X:
+                        if (app.gameRanOnce) { app.noticeUntil = SDL_GetTicks() + 4000; break; }
                         if (!app.apks.empty()) {
                             const ApkInfo& apk = app.apks[app.selected];
                             LaunchResult res = app.runLaunch(apk, false);

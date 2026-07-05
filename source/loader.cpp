@@ -38,6 +38,14 @@ extern volatile uint64_t g_recover_far;
 static std::string g_base_dir_stored;
 static std::string g_apk_path_stored;
 
+// The running game's LoadedSo — lets jni_env.cpp invoke the game's registered
+// Java_ native callbacks (async replies the Java side would normally deliver,
+// e.g. returnCountryCode after fetchCountryCode).
+static LoadedSo* g_game_so = nullptr;
+void* compatFindGameSym(const char* name) {
+    return g_game_so ? g_game_so->findSym(name) : nullptr;
+}
+
 // ─── Logging ──────────────────────────────────────────────────────────────────
 static FILE*   g_compat_log   = nullptr;
 static uint64_t g_log_start_t = 0;   // armGetSystemTick() at launch start
@@ -585,6 +593,7 @@ void runGameOnMainThread(void* game_so_ptr,
                          const std::string& data_path) {
     LoadedSo* so = (LoadedSo*)game_so_ptr;
     SDL_Window* win = (SDL_Window*)sdl_win;
+    g_game_so = so;   // for compatFindGameSym (JNI → native callbacks)
 
     // Re-install fake Android TLS on THIS thread.  TPIDR_EL0 is per-thread;
     // launchApk set it on its thread (the background worker) for ctors, but
@@ -596,6 +605,9 @@ void runGameOnMainThread(void* game_so_ptr,
     // loop's recovery window (lazy init mid-frame is a fault suspect).
     compatAudioSetAssetsDir((data_path + "/assets").c_str());
     compatAudioWarmup();
+
+    // Restore the game's saved state (UserDefaults) from the previous session
+    jniUserDefaultsLoad((data_path + "/userdefaults.bin").c_str());
 
     // Capture SDL2's active EGL context (current on this main thread).
     g_egl_display = eglGetCurrentDisplay();
@@ -857,6 +869,12 @@ void runGameOnMainThread(void* game_so_ptr,
         }
         game_loop_done:
         compatLogFmt("Cocos2d-x: loop done frames=%d", frame);
+        // The mixer outlives the game (it belongs to the launcher process) —
+        // silence it so music doesn't keep playing over the APK browser.
+        compatAudioStopMusic();
+        compatAudioStopAllEffects();
+        jniUserDefaultsSave();
+        g_game_so = nullptr;
     } else {
         compatLog("Cocos2d-x: nativeRender not found");
     }
