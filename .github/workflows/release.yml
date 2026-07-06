@@ -75,19 +75,8 @@ jobs:
             # nobody's submitted anything yet, rather than showing an empty
             # heading in the About screen.
             resp=$(curl -s "https://raw.githubusercontent.com/AndroidHorizon/compat-reports/main/data/games.json")
-            names=$(echo "$resp" | python3 -c "
-import json, sys
-try:
-    games = json.load(sys.stdin)
-except Exception:
-    games = []
-seen = []
-for g in games:
-    u = g.get('submitted_by')
-    if u and u not in seen:
-        seen.append(u)
-print('\n'.join(seen))
-")
+            names=$(echo "$resp" | grep -o '"submitted_by": *"[^"]*"' \
+              | sed -E 's/.*"submitted_by": *"([^"]*)"/\1/' | sort -u)
             if [ -n "$names" ]; then
               echo "#Testers"
               echo "$names"
