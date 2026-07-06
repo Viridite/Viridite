@@ -791,6 +791,14 @@ struct App {
         ctx.skip_install = skipInstall;
         g_loader_ctx    = &ctx;
 
+        // The loader thread is pure CPU work (APK unzip, ELF relocation, JIT
+        // dual-mapping) with nothing meaningful on screen but our own idle
+        // progress UI — no GPU work competing for clocks. Real Switch titles
+        // use this exact FastLoad boost mode during their own load screens
+        // for the same reason. Reset back to Normal before the game (which
+        // *does* need real GPU clocks) ever gets control.
+        appletSetCpuBoostMode(ApmCpuBoostMode_FastLoad);
+
         Thread t;
         threadCreate(&t, loaderThreadFn, nullptr, nullptr,
                      0x100000 /*1MB stack*/, 0x2C, 1 /*CPU 1*/);
@@ -814,6 +822,11 @@ struct App {
         threadWaitForExit(&t);
         threadClose(&t);
         g_loader_ctx = nullptr;
+
+        // FastLoad throttles the GPU to its minimum clock — fine while we're
+        // just drawing a static progress bar, disastrous once real gameplay
+        // starts. Always drop back to Normal here, even if loading failed.
+        appletSetCpuBoostMode(ApmCpuBoostMode_Normal);
 
         // If game loaded OK, run it here on the main thread (SDL2's EGL context
         // is current on this thread, so GL calls reach the screen).

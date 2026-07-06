@@ -1,5 +1,6 @@
 #include "compat/loader.h"
 #include "compat/android.h"
+#include "compat/sensors.h"
 #include <switch.h>
 #include <GLES2/gl2.h>
 #include <GLES3/gl3.h>
@@ -312,7 +313,15 @@ static ssize_t sh_write(int fd, const void* buf, size_t n) {
 // fopen wrapper — logs failed opens so we can see what paths game code requests
 static FILE* stub_fopen(const char* path, const char* mode) {
     FILE* f = fopen(path, mode);
-    if (!f) compatLogFmt("fopen FAIL: %s (mode=%s)", path ? path : "?", mode ? mode : "?");
+    if (!f) { compatLogFmt("fopen FAIL: %s (mode=%s)", path ? path : "?", mode ? mode : "?"); return f; }
+    // Default newlib stdio buffer is small (~1KB), so reading a single
+    // texture PNG off the SD card means dozens of small reads — each one a
+    // real IPC round-trip to the FS sysmodule, not free like a page-cached
+    // read on real Android. A 64KB buffer collapses that into a handful of
+    // syscalls for the sequential top-to-bottom access pattern decoders use
+    // (libpng, asset parsers, ...). NULL buf: newlib allocates/frees it
+    // itself, tied to the FILE*'s own lifetime, so no leak on fclose.
+    setvbuf(f, nullptr, _IOFBF, 64 * 1024);
     return f;
 }
 // open() wrapper — logs every call so we can trace early constructor I/O
@@ -970,7 +979,10 @@ static int sh_vfprintf(FILE* f, const char* fmt, va_list va) {
     if (isFakeStdio(f)) {
         char buf[512];
         vsnprintf(buf, sizeof(buf), fmt ? fmt : "", va);
-        compatLogFmt("game stdio: %s", buf);
+        // tid tags which thread produced this — e.g. lets us tell whether a
+        // libpng decode warning fired on the main/render thread (a real
+        // stutter suspect) or a background asset-loader thread (harmless).
+        compatLogFmt("game stdio[tid=%p]: %s", (void*)threadGetSelf(), buf);
         return (int)strlen(buf);
     }
     return vfprintf(f, fmt, va);
@@ -982,7 +994,7 @@ static int sh_fprintf(FILE* f, const char* fmt, ...) {
     return r;
 }
 static int sh_fputs(const char* s, FILE* f) {
-    if (isFakeStdio(f)) { compatLogFmt("game stdio: %s", s ? s : ""); return 0; }
+    if (isFakeStdio(f)) { compatLogFmt("game stdio[tid=%p]: %s", (void*)threadGetSelf(), s ? s : ""); return 0; }
     return fputs(s, f);
 }
 static size_t sh_fwrite(const void* p, size_t sz, size_t n, FILE* f) {
@@ -990,7 +1002,7 @@ static size_t sh_fwrite(const void* p, size_t sz, size_t n, FILE* f) {
         char buf[512];
         size_t c = sz * n < sizeof(buf) - 1 ? sz * n : sizeof(buf) - 1;
         memcpy(buf, p, c); buf[c] = '\0';
-        compatLogFmt("game stdio: %s", buf);
+        compatLogFmt("game stdio[tid=%p]: %s", (void*)threadGetSelf(), buf);
         return n;
     }
     return fwrite(p, sz, n, f);
@@ -1281,6 +1293,23 @@ static const ShimEntry g_shims[] = {
     {"eglMakeCurrent",      (void*)eglMakeCurrent},
     {"eglSwapBuffers",      (void*)eglSwapBuffers},
     {"eglSwapInterval",     (void*)eglSwapInterval},
+
+    // ── Android NDK Sensor API (source/compat/sensors.cpp) — real accelerometer ──
+    {"ASensorManager_getInstance",           (void*)ASensorManager_getInstance},
+    {"ASensorManager_getInstanceForPackage", (void*)ASensorManager_getInstanceForPackage},
+    {"ASensorManager_getSensorList",         (void*)ASensorManager_getSensorList},
+    {"ASensorManager_getDefaultSensor",      (void*)ASensorManager_getDefaultSensor},
+    {"ASensorManager_createEventQueue",      (void*)ASensorManager_createEventQueue},
+    {"ASensorManager_destroyEventQueue",     (void*)ASensorManager_destroyEventQueue},
+    {"ASensorEventQueue_enableSensor",       (void*)ASensorEventQueue_enableSensor},
+    {"ASensorEventQueue_disableSensor",      (void*)ASensorEventQueue_disableSensor},
+    {"ASensorEventQueue_setEventRate",       (void*)ASensorEventQueue_setEventRate},
+    {"ASensorEventQueue_getEvents",          (void*)ASensorEventQueue_getEvents},
+    {"ASensor_getType",                      (void*)ASensor_getType},
+    {"ASensor_getName",                      (void*)ASensor_getName},
+    {"ASensor_getVendor",                    (void*)ASensor_getVendor},
+    {"ASensor_getResolution",                (void*)ASensor_getResolution},
+    {"ASensor_getMinDelay",                  (void*)ASensor_getMinDelay},
     {"eglGetCurrentContext",(void*)eglGetCurrentContext},
     {"eglGetCurrentSurface",(void*)eglGetCurrentSurface},
     {"eglGetCurrentDisplay",(void*)eglGetCurrentDisplay},

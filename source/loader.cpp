@@ -706,7 +706,7 @@ void compatMarkSplashDone() { g_splash_active = false; }
 static volatile int g_force_back_frames = 0;
 void compatBlockShopEntry() {
     g_force_back_frames = 90;  // ~1.5s at 60fps — several chances to register
-    compatLog("shop-guard: trackPage looked like Shop — forcing BACK for ~1.5s");
+    compatLog("iap-guard: trackPage looked like Shop/IAP — forcing BACK for ~1.5s");
 }
 
 namespace {
@@ -1110,6 +1110,24 @@ static void resetGLStateForLauncher(int screenW, int screenH) {
 }
 } // namespace
 
+// See loader.h doc comment. Definitive "hide the overlay for good" trigger —
+// pixel-fingerprinting alone matched vehicle-select/garage/upgrade screens
+// too (same dark-vignette corners as the loading screen, confirmed on
+// hardware holding a MATCH for 80+ seconds past when loading actually
+// finished), so trackPage firing at all — something the loading screen
+// itself never does — is the reliable signal instead.
+void compatMarkPastLoading() {
+    if (g_brand.failed) return;
+    g_brand.failed = true;
+    compatLog("branding: trackPage fired — definitely past loading, overlay off for rest of session");
+
+    // Real menus/gameplay start drawing for real now — FastLoad throttles the
+    // GPU to its minimum clock, which was fine while the engine was just
+    // unpacking assets behind a loading bar, but would tank fps from here on.
+    appletSetCpuBoostMode(ApmCpuBoostMode_Normal);
+    compatLog("perf: CPU boost mode -> Normal (leaving loading, GPU clocks restored)");
+}
+
 // ─── runGameOnMainThread ─────────────────────────────────────────────────────
 // Called from the MAIN thread (SDL2's EGL context is current on this thread).
 // Captures SDL2's EGL context, runs JNI_OnLoad, nativeSetPaths, nativeInit,
@@ -1122,6 +1140,14 @@ void runGameOnMainThread(void* game_so_ptr,
     LoadedSo* so = (LoadedSo*)game_so_ptr;
     SDL_Window* win = (SDL_Window*)sdl_win;
     g_game_so = so;   // for compatFindGameSym (JNI → native callbacks)
+
+    // JNI_OnLoad/nativeInit and the engine's own splash+loading screen are
+    // pure CPU work (asset decompression, scene graph setup) with nothing
+    // real on screen yet — same shape as our own loader thread. Boost CPU
+    // clocks here; compatMarkPastLoading() (trackPage firing) drops it back
+    // to Normal the moment real gameplay/menu rendering needs the GPU back.
+    appletSetCpuBoostMode(ApmCpuBoostMode_FastLoad);
+    compatLog("perf: CPU boost mode -> FastLoad (game startup/loading, GPU throttled)");
 
     // Re-install fake Android TLS on THIS thread.  TPIDR_EL0 is per-thread;
     // launchApk set it on its thread (the background worker) for ctors, but
@@ -1147,6 +1173,10 @@ void runGameOnMainThread(void* game_so_ptr,
     } else {
         compatLog("EGL: SDL2 context not current — GL calls may fail");
     }
+    // Reference point for "game stdio[tid=...]" lines below — anything tagged
+    // with this exact tid ran on the render thread (a real stutter suspect if
+    // it's doing decode work); anything else ran on a background thread.
+    compatLogFmt("main/render thread tid=%p", (void*)threadGetSelf());
     compatLogFlush();
 
     JNIEnv* env = (JNIEnv*)g_compat.env_outer;
@@ -1437,7 +1467,7 @@ void runGameOnMainThread(void* game_so_ptr,
         // silence it so music doesn't keep playing over the APK browser.
         compatAudioStopMusic();
         compatAudioStopAllEffects();
-        jniUserDefaultsSave();
+        jniUserDefaultsSave(/*force=*/true);
         g_game_so = nullptr;
         // Reset GL to sane defaults before the launcher's SDL_Renderer draws
         // again on this same context — see resetGLStateForLauncher's comment.

@@ -40,9 +40,21 @@ extern "C" void __libnx_exception_handler(ThreadExceptionDump* ctx) {
         longjmp(g_recover_jmp, 1);
     }
     logUnrecoveredFault(ctx);
+    // This fires for a fault on any thread OTHER than the one the main game
+    // loop armed recovery on (e.g. the game's own background asset-loader
+    // thread) — svcReturnFromException(0xf801) tells Horizon "unhandled,
+    // kill the process", which it does, but asynchronously: the main thread
+    // isn't told to stop, so it can keep polling/rendering for a bit while
+    // the OS is mid-way through tearing the process down. That race window
+    // — rendering against a display surface that's actively being torn down
+    // — fits a reported flicker that happened outside the main-loop crash
+    // path this build's exit(0) fix was verified against. Call exit()
+    // directly instead: it terminates the whole process immediately and
+    // synchronously from here, so there's no window for the main thread to
+    // render even one more frame after a fault anywhere in the process.
     extern ThreadExceptionDump __nx_exceptiondump;
     __nx_exceptiondump = *ctx;
-    svcReturnFromException(0xf801);
+    exit(0);
 }
 
 static void ctor_crash_handler(int sig) {

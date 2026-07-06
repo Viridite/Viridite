@@ -88,9 +88,21 @@ static void udWrite(FILE* f, char t, const std::string& k, const void* v, uint32
     fwrite(&vlen, 4, 1, f);
     fwrite(v, 1, vlen, f);
 }
-void jniUserDefaultsSave() {
+void jniUserDefaultsSave(bool force) {
     StoreLock sl;
     if (g_ud_path.empty() || !g_ud_dirty) return;
+    // The game calls UserDefault.flush() after each init phase (masteries,
+    // event assets, IAP, ...) — on a fresh save that's several flushes within
+    // a few seconds, and each one was re-serializing + rewriting the ENTIRE
+    // store (thousands of keys) to the SD card, real disk I/O completely
+    // independent of CPU clock speed. Collapse bursts to one real write every
+    // 2s; the exit-time call passes force=true so the final state is never lost.
+    static uint64_t s_lastSaveTick = 0;
+    if (!force && s_lastSaveTick != 0) {
+        uint64_t now = armGetSystemTick();
+        uint64_t elapsedMs = (now - s_lastSaveTick) * 1000 / armGetSystemTickFreq();
+        if (elapsedMs < 2000) return;  // stays dirty — a later call will flush it
+    }
     std::string tmp = g_ud_path + ".tmp";
     FILE* f = fopen(tmp.c_str(), "wb");
     if (!f) { compatLogFmt("UserDefaults: save open FAIL %s", tmp.c_str()); return; }
@@ -108,6 +120,7 @@ void jniUserDefaultsSave() {
     remove(g_ud_path.c_str());
     rename(tmp.c_str(), g_ud_path.c_str());
     g_ud_dirty = false;
+    s_lastSaveTick = armGetSystemTick();
     compatLogFmt("UserDefaults: saved %zu ints, %zu floats, %zu strings",
                  g_int_store.size(), g_float_store.size(), g_str_store.size());
 }
@@ -155,6 +168,33 @@ static bool netAvailable() {
         compatLogFmt("net: internet %s (nifm)", cached ? "CONNECTED" : "not connected");
     }
     return cached == 1;
+}
+
+// ─── Battery ──────────────────────────────────────────────────────────────────
+// Unlike the accelerometer, there's no pure-NDK battery API on real Android —
+// apps only get this via JNI (Java's BatteryManager, or a BATTERY_CHANGED
+// broadcast receiver), and the exact method name an app/SDK uses for it isn't
+// standardized. No current test game calls any of these, so this is
+// forward-looking: real Switch battery data wired up under the handful of
+// naming patterns actually seen across Android game SDKs, so a future game
+// (or a bundled ad/analytics SDK) that happens to match gets real data
+// instead of silently getting 0/false from the generic fallback.
+static bool batteryPercent(u32* outPct) {
+    static bool inited = false, ok = false;
+    if (!inited) {
+        inited = true;
+        ok = R_SUCCEEDED(psmInitialize());
+        if (ok) compatLog("battery: psm initialized");
+        else    compatLog("battery: psmInitialize FAIL — battery queries will return 100");
+    }
+    if (ok && R_SUCCEEDED(psmGetBatteryChargePercentage(outPct))) return true;
+    *outPct = 100;
+    return false;
+}
+static bool batteryCharging() {
+    PsmChargerType t;
+    if (R_SUCCEEDED(psmGetChargerType(&t))) return t != PsmChargerType_Unconnected;
+    return false;
 }
 
 // ─── All JNI stubs (must be defined before jniSetup uses their addresses) ─────
@@ -275,6 +315,14 @@ static jint s_CallStaticIntMethodV(JNIEnv*, jclass, jmethodID mid, va_list args)
         }
         return defval;
     }
+    if (e && (strcmp(e->name, "getBatteryLevel") == 0 ||
+              strcmp(e->name, "getBatteryPercentage") == 0 ||
+              strcmp(e->name, "getBatteryPercent") == 0)) {
+        u32 pct = 100;
+        batteryPercent(&pct);
+        compatLogFmt("JNI %s() → %u", e->name, pct);
+        return (jint)pct;
+    }
     // SimpleAudioEngine: playEffect(path, loop, pitch, pan[, gain]) → effect id
     if (e && strcmp(e->name, "playEffect") == 0) {
         const char* p = (const char*)va_arg(args, jstring);
@@ -344,6 +392,12 @@ static jboolean s_CallStaticBoolMethodV(JNIEnv*, jclass, jmethodID mid, va_list 
         }
         if (strcmp(e->name, "isBackgroundMusicPlaying") == 0)
             return compatAudioMusicPlaying() ? JNI_TRUE : JNI_FALSE;
+        if (strcmp(e->name, "isCharging") == 0 || strcmp(e->name, "isBatteryCharging") == 0 ||
+            strcmp(e->name, "isPlugged") == 0) {
+            bool charging = batteryCharging();
+            compatLogFmt("JNI %s() → %s", e->name, charging ? "true" : "false");
+            return charging ? JNI_TRUE : JNI_FALSE;
+        }
         if (logOnce("BoolV", e->name))
             compatLogFmt("JNI CallStaticBooleanMethodV: %s → false", e->name);
     }
@@ -379,12 +433,19 @@ static void s_CallStaticVoidMethodV(JNIEnv*, jclass, jmethodID mid, va_list args
     if (strcmp(e->name, "setBoolForKey") == 0) {
         const char* key = (const char*)va_arg(args, jstring);
         int val         = va_arg(args, int);
+        // Was completely silent — this is likely how a mute/volume-on-off
+        // toggle persists. Log every call (not logOnce) since we specifically
+        // need to see the value change across calls, not just the first one.
+        if (key) compatLogFmt("JNI setBoolForKey(%s, %d)", key, val);
         if (key) { StoreLock sl; g_int_store[std::string("b:") + key] = val ? 1 : 0; g_ud_dirty = true; }
         return;
     }
     if (strcmp(e->name, "setFloatForKey") == 0 || strcmp(e->name, "setDoubleForKey") == 0) {
         const char* key = (const char*)va_arg(args, jstring);
         double val      = va_arg(args, double);
+        // Same gap as setBoolForKey above — a volume slider is almost
+        // certainly persisted as a float and we couldn't see its value.
+        if (key) compatLogFmt("JNI setFloatForKey(%s, %f)", key, val);
         if (key) { StoreLock sl; g_float_store[key] = (float)val; g_ud_dirty = true; }
         return;
     }
@@ -417,22 +478,31 @@ static void s_CallStaticVoidMethodV(JNIEnv*, jclass, jmethodID mid, va_list args
         }
         return;
     }
-    // trackPage(pageName) fires as the game enters a new screen. The Shop
-    // screen has a confirmed, deterministic crash (same PC/offset across
-    // multiple hardware runs) we can't fix without the game's source or a
-    // disassembler on the actual .so — so instead of guessing at the Shop
-    // button's on-screen touch region (position isn't known), catch this
-    // and force our way back out before the crash-prone code runs. jstring
-    // is literally a `const char*` in this JNI layer (see s_NewStringUTF),
-    // so the page name is directly readable without GetStringUTFChars.
+    // trackPage(pageName) fires as the game enters a new screen. Any
+    // IAP/purchase-related screen has a confirmed, deterministic crash (same
+    // PC/offset on hardware every time, disassembly shows a generic inlined
+    // std::vector append reading a dangling reference — consistent with
+    // populating some product/offer list). First seen on the Shop screen
+    // itself, then again from a DIFFERENT page, "iap/playstore/view" — same
+    // exact crash, confirming it's the whole IAP surface, not just Shop.
+    // Can't fix without the game's source or a disassembler-level patch, so
+    // instead of guessing at each button's on-screen touch region, catch any
+    // page name that smells like IAP and force our way back out before the
+    // crash-prone code runs. jstring is literally a `const char*` in this
+    // JNI layer (see s_NewStringUTF), so the page name is directly readable
+    // without GetStringUTFChars.
     if (strcmp(e->name, "trackPage") == 0) {
         const char* page = (const char*)va_arg(args, jstring);
         compatLogFmt("JNI trackPage(%s)", page ? page : "null");
+        compatMarkPastLoading();
         if (page) {
             char lower[64]; size_t n = 0;
             for (; page[n] && n < sizeof(lower) - 1; n++) lower[n] = (char)tolower((unsigned char)page[n]);
             lower[n] = '\0';
-            if (strstr(lower, "shop")) compatBlockShopEntry();
+            if (strstr(lower, "shop") || strstr(lower, "iap") ||
+                strstr(lower, "playstore") || strstr(lower, "purchase") ||
+                strstr(lower, "store"))
+                compatBlockShopEntry();
         }
         return;
     }
@@ -464,7 +534,9 @@ static void s_CallStaticVoidMethodV(JNIEnv*, jclass, jmethodID mid, va_list args
     if (strcmp(e->name, "resumeBackgroundMusic") == 0)  { compatAudioResumeMusic(); return; }
     if (strcmp(e->name, "rewindBackgroundMusic") == 0)  { compatAudioRewindMusic(); return; }
     if (strcmp(e->name, "setBackgroundMusicVolume") == 0) {
-        compatAudioSetMusicVolume((float)va_arg(args, double));
+        float v = (float)va_arg(args, double);
+        compatLogFmt("JNI setBackgroundMusicVolume(%f)", v);
+        compatAudioSetMusicVolume(v);
         return;
     }
     if (strcmp(e->name, "preloadEffect") == 0) {
@@ -476,7 +548,9 @@ static void s_CallStaticVoidMethodV(JNIEnv*, jclass, jmethodID mid, va_list args
         return;
     }
     if (strcmp(e->name, "setEffectsVolume") == 0) {
-        compatAudioSetEffectsVolume((float)va_arg(args, double));
+        float v = (float)va_arg(args, double);
+        compatLogFmt("JNI setEffectsVolume(%f)", v);
+        compatAudioSetEffectsVolume(v);
         return;
     }
     if (strcmp(e->name, "stopEffect") == 0)      { compatAudioStopEffect(va_arg(args, int)); return; }
@@ -491,6 +565,16 @@ static void s_CallStaticVoidMethodV(JNIEnv*, jclass, jmethodID mid, va_list args
     if (strcmp(e->name, "setEffectVolume") == 0) {
         int id     = va_arg(args, int);
         double vol = va_arg(args, double);
+        // Called continuously (RPM ramp) — same changing-value dedup problem
+        // as debugStringOnAndroid above, so throttle logging, not the actual
+        // volume call (that must still apply every time).
+        static uint64_t s_lastTick = 0;
+        uint64_t now = armGetSystemTick();
+        uint64_t elapsedMs = (now - s_lastTick) * 1000 / armGetSystemTickFreq();
+        if (elapsedMs >= 500) {
+            compatLogFmt("JNI setEffectVolume(id=%d, vol=%f)", id, vol);
+            s_lastTick = now;
+        }
         compatAudioSetEffectVolume(id, (float)vol);
         return;
     }

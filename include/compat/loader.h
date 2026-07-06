@@ -220,10 +220,23 @@ void         compatMarkSplashDone();
 // of the Shop scene before whatever it does next has a chance to crash.
 void         compatBlockShopEntry();
 
+// Called by jni_env.cpp the FIRST time trackPage(...) ever fires, regardless
+// of page name. The pixel-fingerprint used to hide the branding overlay
+// turned out to be insufficient — vehicle-select/garage/upgrade screens
+// share the same dark-vignette corners as the loading screen (confirmed on
+// hardware: the probe kept matching for 80+ seconds after loading actually
+// finished). trackPage firing at all is a reliable semantic signal that
+// we've navigated to a REAL, named screen — the loading screen itself never
+// calls this — so it's a much better "hide for good" trigger than more
+// pixel-probe tuning.
+void         compatMarkPastLoading();
+
 // UserDefault persistence (jni_env.cpp): loaded before nativeInit, saved on
 // every UserDefault.flush and at game exit.
 void jniUserDefaultsLoad(const char* path);
-void jniUserDefaultsSave();
+// force=true bypasses the 2s write-debounce (used at game exit so the final
+// state is never dropped); a plain flush() call from the game leaves it false.
+void jniUserDefaultsSave(bool force = false);
 
 // ─── SimpleAudioEngine backend (audio.cpp, SDL2_mixer) ───────────────────────
 // jni_env.cpp forwards the Cocos2dxSound/Cocos2dxMusic JNI calls here.

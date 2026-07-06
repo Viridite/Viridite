@@ -179,6 +179,7 @@ shim_table.o: \
  /home/aaron/.local/share/containers/storage/overlay/5092c05c9c72443b0c1023904ca3095dd98da391290c48e57581e011fb44576a/diff/opt/devkitpro/libnx/include/switch/crypto/sha1.h \
  /home/aaron/.local/share/containers/storage/overlay/5092c05c9c72443b0c1023904ca3095dd98da391290c48e57581e011fb44576a/diff/opt/devkitpro/libnx/include/switch/crypto/hmac.h \
  /home/aaron/.local/share/containers/storage/overlay/5092c05c9c72443b0c1023904ca3095dd98da391290c48e57581e011fb44576a/diff/opt/devkitpro/libnx/include/switch/crypto/crc.h \
+ /home/aaron/Documents/Github/BareDroidNX/include/compat/sensors.h \
  /home/aaron/.local/share/containers/storage/overlay/5092c05c9c72443b0c1023904ca3095dd98da391290c48e57581e011fb44576a/diff/opt/devkitpro/portlibs/switch/include/GLES2/gl2.h \
  /home/aaron/.local/share/containers/storage/overlay/5092c05c9c72443b0c1023904ca3095dd98da391290c48e57581e011fb44576a/diff/opt/devkitpro/portlibs/switch/include/GLES2/gl2platform.h \
  /home/aaron/.local/share/containers/storage/overlay/5092c05c9c72443b0c1023904ca3095dd98da391290c48e57581e011fb44576a/diff/opt/devkitpro/portlibs/switch/include/GLES3/gl3.h \
@@ -366,6 +367,7 @@ shim_table.o: \
 /home/aaron/.local/share/containers/storage/overlay/5092c05c9c72443b0c1023904ca3095dd98da391290c48e57581e011fb44576a/diff/opt/devkitpro/libnx/include/switch/crypto/sha1.h:
 /home/aaron/.local/share/containers/storage/overlay/5092c05c9c72443b0c1023904ca3095dd98da391290c48e57581e011fb44576a/diff/opt/devkitpro/libnx/include/switch/crypto/hmac.h:
 /home/aaron/.local/share/containers/storage/overlay/5092c05c9c72443b0c1023904ca3095dd98da391290c48e57581e011fb44576a/diff/opt/devkitpro/libnx/include/switch/crypto/crc.h:
+/home/aaron/Documents/Github/BareDroidNX/include/compat/sensors.h:
 /home/aaron/.local/share/containers/storage/overlay/5092c05c9c72443b0c1023904ca3095dd98da391290c48e57581e011fb44576a/diff/opt/devkitpro/portlibs/switch/include/GLES2/gl2.h:
 /home/aaron/.local/share/containers/storage/overlay/5092c05c9c72443b0c1023904ca3095dd98da391290c48e57581e011fb44576a/diff/opt/devkitpro/portlibs/switch/include/GLES2/gl2platform.h:
 /home/aaron/.local/share/containers/storage/overlay/5092c05c9c72443b0c1023904ca3095dd98da391290c48e57581e011fb44576a/diff/opt/devkitpro/portlibs/switch/include/GLES3/gl3.h:
