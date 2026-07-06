@@ -205,6 +205,11 @@ void*        compatFindGameSym(const char* name);
 // thread died while holding the normal logger's mutex.
 void         compatLogRaw(const char* msg);
 
+// Called by jni_env.cpp when the game signals its own loading/splash screen
+// is done (splashScreenHasCompleted). Hides the Android Horizon branding
+// overlay drawn over the game's loading screen (see loader.cpp).
+void         compatMarkSplashDone();
+
 // UserDefault persistence (jni_env.cpp): loaded before nativeInit, saved on
 // every UserDefault.flush and at game exit.
 void jniUserDefaultsLoad(const char* path);

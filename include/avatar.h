@@ -2,15 +2,13 @@
 #include <cstdint>
 #include <vector>
 
-// Background HTTPS fetcher for the user's live GitHub avatar (About screen).
-// Starts a worker thread that fetches once immediately (or loads the SD
-// cache if offline) and then re-fetches every few minutes for as long as
-// the app runs, so the picture shown in-app stays in sync with reality
-// without ever blocking the UI thread.
+// Static, bundled GitHub avatar for the About screen (romfs:/avatar.png,
+// baked into the NRO at build time). No network fetch, no cache file, no
+// background thread — the picture never changes at runtime.
 void avatarStart();
 void avatarStop();
 
 // Call once per frame while the About screen is visible. Returns true and
-// fills `out` with PNG/JPEG bytes (ready for IMG_Load_RW) the first time a
-// new image becomes available; false otherwise (nothing changed yet).
+// fills `out` with the bundled PNG bytes (ready for IMG_Load_RW) exactly
+// once after avatarStart(); false every call after that.
 bool avatarPollNewImage(std::vector<uint8_t>& out);

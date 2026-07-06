@@ -390,6 +390,11 @@ static void s_CallStaticVoidMethodV(JNIEnv*, jclass, jmethodID mid, va_list args
         jniUserDefaultsSave();
         return;
     }
+    if (strcmp(e->name, "splashScreenHasCompleted") == 0) {
+        compatLog("JNI splashScreenHasCompleted — hiding branding overlay");
+        compatMarkSplashDone();
+        return;
+    }
     if (strcmp(e->name, "debugStringOnAndroid") == 0) {
         const char* msg = (const char*)va_arg(args, jstring);
         if (logOnce("gdbg", msg ? msg : "null"))

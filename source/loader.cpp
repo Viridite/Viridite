@@ -1,8 +1,10 @@
 #include "compat/loader.h"
 #include "compat/android.h"
+#include "build_number.h"
 #include <switch.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <GLES2/gl2.h>
 #include <minizip/unzip.h>
 #include <sys/stat.h>
@@ -599,6 +601,282 @@ LaunchResult launchApk(const std::string& apk_path, const std::string& pkg_name,
     return result;
 }
 
+// ─── Branding overlay ─────────────────────────────────────────────────────────
+// Draws "Android Horizon vX.Y.Z" over the game's own loading screen — a small
+// GLES2 textured quad composited directly into the game's frame, right after
+// nativeRender() returns and before the buffer swap. We can't reuse the
+// game's own bitmap font without reverse-engineering its asset pipeline, so
+// this renders our own app font once into a texture instead (matching the
+// launcher's colour scheme: white "Android" + icon-green "Horizon").
+// Hidden automatically once the game calls splashScreenHasCompleted (see
+// compatMarkSplashDone below) so it never overlaps actual gameplay.
+static volatile bool g_splash_active = true;
+void compatMarkSplashDone() { g_splash_active = false; }
+
+namespace {
+struct BrandOverlay {
+    bool     ready   = false;
+    bool     failed  = false;
+    GLuint   prog    = 0;
+    GLuint   tex     = 0;
+    GLuint   vbo     = 0;
+    GLint    aPos = -1, aUV = -1, uRect = -1, uScreen = -1, uTex = -1;
+    int      texW = 0, texH = 0;
+};
+static BrandOverlay g_brand;
+
+static GLuint compileShader(GLenum type, const char* src) {
+    GLuint s = glCreateShader(type);
+    glShaderSource(s, 1, &src, nullptr);
+    glCompileShader(s);
+    GLint ok = 0;
+    glGetShaderiv(s, GL_COMPILE_STATUS, &ok);
+    if (!ok) {
+        char log[256];
+        glGetShaderInfoLog(s, sizeof(log), nullptr, log);
+        compatLogFmt("branding: shader compile FAIL: %s", log);
+        glDeleteShader(s);
+        return 0;
+    }
+    return s;
+}
+
+static void initBrandOverlay() {
+    g_brand.failed = true;  // reset to false only on full success below
+
+    // Render the text once into an SDL surface using the same fonts the
+    // launcher UI uses (system BFTTF, falling back to the bundled romfs font).
+    PlFontData fd = {};
+    TTF_Font* font = nullptr;
+    if (plGetSharedFontByType(&fd, PlSharedFontType_Standard) == 0 && fd.size > 8) {
+        SDL_RWops* rw = SDL_RWFromConstMem((const uint8_t*)fd.address + 8, (int)fd.size - 8);
+        font = TTF_OpenFontRW(rw, 1, 26);
+    }
+    if (!font) {
+        romfsInit();
+        font = TTF_OpenFont("romfs:/fonts/DejaVuSans.ttf", 26);
+    }
+    if (!font) { compatLog("branding: font load FAIL — overlay disabled"); return; }
+    // HCR's own version text is a bold condensed display font — our system
+    // font isn't that shape, but bold at least matches its weight better
+    // than a thin regular face sitting right next to it.
+    TTF_SetFontStyle(font, TTF_STYLE_BOLD);
+
+    const SDL_Color white = {255, 255, 255, 255};
+    const SDL_Color green = {52,  230, 134, 255};
+    const SDL_Color dim   = {180, 182, 205, 255};
+
+    SDL_Surface* a = TTF_RenderUTF8_Blended(font, "Android ", white);
+    SDL_Surface* b = TTF_RenderUTF8_Blended(font, "Horizon", green);
+    std::string verStr = std::string(" ") + BUILD_VERSION;
+    SDL_Surface* c = TTF_RenderUTF8_Blended(font, verStr.c_str(), dim);
+    TTF_CloseFont(font);
+    if (!a || !b || !c) { compatLog("branding: text render FAIL — overlay disabled"); return; }
+
+    SDL_Surface* parts[3] = {a, b, c};
+    int w = a->w + b->w + c->w, h = a->h;
+    for (int i = 0; i < 3; i++) if (parts[i]->h > h) h = parts[i]->h;
+    SDL_Surface* combo = SDL_CreateRGBSurfaceWithFormat(0, w, h, 32, SDL_PIXELFORMAT_ABGR8888);
+    if (!combo) {
+        compatLog("branding: combo surface FAIL");
+        for (int i = 0; i < 3; i++) SDL_FreeSurface(parts[i]);
+        return;
+    }
+    SDL_FillRect(combo, nullptr, SDL_MapRGBA(combo->format, 0, 0, 0, 0));
+    int x = 0;
+    for (int i = 0; i < 3; i++) {
+        SDL_Surface* s = parts[i];
+        SDL_SetSurfaceBlendMode(s, SDL_BLENDMODE_BLEND);
+        SDL_Rect dst = {x, 0, s->w, s->h};
+        SDL_BlitSurface(s, nullptr, combo, &dst);
+        x += s->w;
+        SDL_FreeSurface(s);
+    }
+
+    glGenTextures(1, &g_brand.tex);
+    glBindTexture(GL_TEXTURE_2D, g_brand.tex);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, combo->w, combo->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, combo->pixels);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    g_brand.texW = combo->w; g_brand.texH = combo->h;
+    SDL_FreeSurface(combo);
+
+    static const char* kVS =
+        "attribute vec2 aPos; attribute vec2 aUV; varying vec2 vUV;\n"
+        "uniform vec4 uRect; uniform vec2 uScreen;\n"
+        "void main() {\n"
+        "  vec2 pix = uRect.xy + aPos * uRect.zw;\n"
+        "  vec2 ndc = vec2(pix.x / uScreen.x * 2.0 - 1.0, 1.0 - pix.y / uScreen.y * 2.0);\n"
+        "  gl_Position = vec4(ndc, 0.0, 1.0); vUV = aUV;\n"
+        "}\n";
+    static const char* kFS =
+        "precision mediump float; varying vec2 vUV; uniform sampler2D uTex;\n"
+        "void main() { gl_FragColor = texture2D(uTex, vUV); }\n";
+
+    GLuint vs = compileShader(GL_VERTEX_SHADER, kVS);
+    GLuint fs = compileShader(GL_FRAGMENT_SHADER, kFS);
+    if (!vs || !fs) return;
+    g_brand.prog = glCreateProgram();
+    glAttachShader(g_brand.prog, vs);
+    glAttachShader(g_brand.prog, fs);
+    // Deliberately high, unusual attribute indices — cocos2d-x's own shaders
+    // use low indices (0-2ish) and its GL state cache assumes nothing else
+    // touches those slots. Using indices it never looks at means our draw
+    // can't desync its cache no matter what we leave enabled/disabled.
+    glBindAttribLocation(g_brand.prog, 8, "aPos");
+    glBindAttribLocation(g_brand.prog, 9, "aUV");
+    glLinkProgram(g_brand.prog);
+    GLint linked = 0;
+    glGetProgramiv(g_brand.prog, GL_LINK_STATUS, &linked);
+    glDeleteShader(vs); glDeleteShader(fs);
+    if (!linked) { compatLog("branding: shader link FAIL — overlay disabled"); return; }
+
+    g_brand.aPos    = 8;
+    g_brand.aUV     = 9;
+    g_brand.uRect   = glGetUniformLocation(g_brand.prog, "uRect");
+    g_brand.uScreen = glGetUniformLocation(g_brand.prog, "uScreen");
+    g_brand.uTex    = glGetUniformLocation(g_brand.prog, "uTex");
+
+    // Unit quad: pos(x,y) + uv(x,y) per vertex, triangle strip
+    const float verts[] = {
+        0,0, 0,0,
+        1,0, 1,0,
+        0,1, 0,1,
+        1,1, 1,1,
+    };
+    glGenBuffers(1, &g_brand.vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, g_brand.vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(verts), verts, GL_STATIC_DRAW);
+
+    g_brand.failed = false;
+    g_brand.ready  = true;
+    compatLogFmt("branding: overlay ready (%dx%d texture)", g_brand.texW, g_brand.texH);
+}
+
+// ─── Loading-screen detection by pixel fingerprint ───────────────────────────
+// splashScreenHasCompleted only tells us the ENTIRE splash+loading sequence
+// is over — it doesn't distinguish the earlier Fingersoft logo animation
+// (plain black background) from the later "HILL CLIMB RACING / LOADING..."
+// screen with the version text, so the overlay was appearing during the logo
+// too ("showed too early"). Instead, sample a few fixed screen points each
+// frame and only show the overlay when their colours match this specific
+// screen's look (estimated from a real handheld screenshot — corners of its
+// dark vignette background + the white loading bar). Coordinates are in
+// image space (0,0 = top-left); glReadPixels needs window space (0,0 =
+// bottom-left), so the Y is flipped at sample time.
+struct ProbePoint { int x, y; uint8_t r, g, b; };
+static const ProbePoint kLoadingProbes[3] = {
+    {10,   10,  14,  14,  20},   // dark vignette corner, top-left
+    {1270, 10,  14,  14,  20},   // dark vignette corner, top-right
+    {300, 512, 230, 230, 230},   // inside the white loading bar
+};
+static const int kProbeTolerance = 40;
+
+// Logs actual vs. expected once per second (not every frame) so a wrong
+// guess is cheap to recalibrate from the next compat_log.txt — this data is
+// exactly what's needed to correct kLoadingProbes without more guesswork.
+static bool isOnLoadingScreen(int frame) {
+    uint8_t px[4];
+    bool match = true;
+    char detail[256]; detail[0] = '\0';
+    for (int i = 0; i < 3; i++) {
+        const ProbePoint& p = kLoadingProbes[i];
+        glReadPixels(p.x, 720 - 1 - p.y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, px);
+        bool ok = std::abs((int)px[0] - (int)p.r) <= kProbeTolerance &&
+                  std::abs((int)px[1] - (int)p.g) <= kProbeTolerance &&
+                  std::abs((int)px[2] - (int)p.b) <= kProbeTolerance;
+        if (!ok) match = false;
+        char part[80];
+        snprintf(part, sizeof(part), " [%d]=%d,%d,%d(want %d,%d,%d)%s",
+                 i, px[0], px[1], px[2], p.r, p.g, p.b, ok ? "" : "X");
+        strncat(detail, part, sizeof(detail) - strlen(detail) - 1);
+    }
+    if (frame % 60 == 0)
+        compatLogFmt("branding: probe%s → %s", detail, match ? "MATCH" : "no match");
+    return match;
+}
+
+// Draw the overlay quad over the game's already-rendered frame. Screen-space
+// position: bottom-left, stacked just above where HCR draws its own
+// "1.67.0 (166)" version text, so both are visible without overlapping.
+// cocos2d-x keeps its OWN software cache of GL state (current program, bound
+// buffer/texture, enabled attribs...) and skips redundant driver calls when it
+// thinks nothing changed. Our first cut here changed real GL state behind
+// its back — its cache went stale, and its very next draw call fed the GPU
+// wrong attribute/program/texture state, which is exactly why the screen
+// went solid black after the overlay appeared for one frame. Fix: save every
+// piece of global GL state we touch and restore it bit-for-bit before
+// returning, so cocos2d's next draw sees an identical GL machine to the one
+// it left behind and its cache stays valid. Vertex attributes use indices 8/9
+// (cocos2d only uses low indices), so we don't even need to save/restore
+// per-attribute pointer state — just enable/disable is enough there.
+static void drawBrandOverlay() {
+    if (g_brand.failed) return;
+    if (!g_brand.ready) initBrandOverlay();
+    if (!g_brand.ready) return;
+
+    // Position estimated from a real handheld-mode screenshot: HCR draws its
+    // own "1.67.0 (166)" bottom-left, ~20px in from the left edge and ~15px
+    // up from the bottom, roughly 30px tall. We sit right next to it on the
+    // same line rather than stacking above — matches "next to the version
+    // text" from the original ask. Nudge X_GAP/Y_BOTTOM if it's off in
+    // practice; there's no way to pixel-measure this without the file itself.
+    const float SCALE      = 0.9f;
+    const float X_GAP      = 190.0f;  // estimated right edge of "1.67.0 (166)" + padding
+    const float Y_BOTTOM   = 15.0f;   // estimated bottom margin, matching the game's own
+    float w = g_brand.texW * SCALE, h = g_brand.texH * SCALE;
+    float x = X_GAP;
+    float y = 720.0f - h - Y_BOTTOM;
+
+    GLint  prevProgram = 0, prevArrayBuf = 0, prevTex = 0, prevActiveTex = 0;
+    GLint  prevBlendSrcRGB = 0, prevBlendDstRGB = 0, prevBlendSrcA = 0, prevBlendDstA = 0;
+    GLboolean prevBlend = glIsEnabled(GL_BLEND);
+    GLboolean prevDepth = glIsEnabled(GL_DEPTH_TEST);
+    GLboolean prevCull  = glIsEnabled(GL_CULL_FACE);
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prevProgram);
+    glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &prevArrayBuf);
+    glGetIntegerv(GL_ACTIVE_TEXTURE, &prevActiveTex);
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, &prevTex);
+    glGetIntegerv(GL_BLEND_SRC_RGB, &prevBlendSrcRGB);
+    glGetIntegerv(GL_BLEND_DST_RGB, &prevBlendDstRGB);
+    glGetIntegerv(GL_BLEND_SRC_ALPHA, &prevBlendSrcA);
+    glGetIntegerv(GL_BLEND_DST_ALPHA, &prevBlendDstA);
+
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glUseProgram(g_brand.prog);
+    glUniform4f(g_brand.uRect, x, y, w, h);
+    glUniform2f(g_brand.uScreen, 1280.0f, 720.0f);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, g_brand.tex);
+    glUniform1i(g_brand.uTex, 0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, g_brand.vbo);
+    glEnableVertexAttribArray(g_brand.aPos);
+    glEnableVertexAttribArray(g_brand.aUV);
+    glVertexAttribPointer(g_brand.aPos, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+    glVertexAttribPointer(g_brand.aUV,  2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glDisableVertexAttribArray(g_brand.aPos);
+    glDisableVertexAttribArray(g_brand.aUV);
+
+    // Restore everything, exactly, before handing the frame back to cocos2d.
+    glUseProgram(prevProgram);
+    glBindBuffer(GL_ARRAY_BUFFER, prevArrayBuf);
+    glActiveTexture(prevActiveTex);
+    glBindTexture(GL_TEXTURE_2D, prevTex);
+    glBlendFuncSeparate(prevBlendSrcRGB, prevBlendDstRGB, prevBlendSrcA, prevBlendDstA);
+    if (prevBlend) glEnable(GL_BLEND); else glDisable(GL_BLEND);
+    if (prevDepth) glEnable(GL_DEPTH_TEST); else glDisable(GL_DEPTH_TEST);
+    if (prevCull)  glEnable(GL_CULL_FACE);  else glDisable(GL_CULL_FACE);
+}
+} // namespace
+
 // ─── runGameOnMainThread ─────────────────────────────────────────────────────
 // Called from the MAIN thread (SDL2's EGL context is current on this thread).
 // Captures SDL2's EGL context, runs JNI_OnLoad, nativeSetPaths, nativeInit,
@@ -844,6 +1122,12 @@ void runGameOnMainThread(void* game_so_ptr,
                 }
 
                 nativeRender(env, obj);
+
+                // Android Horizon branding — only while BOTH the game hasn't
+                // signalled splash-done yet AND the frame actually looks like
+                // its "HILL CLIMB RACING / LOADING..." screen (pixel probe),
+                // so it can't show during the earlier logo-only phase.
+                if (g_splash_active && isOnLoadingScreen(frame)) drawBrandOverlay();
 
                 // Milestone captures: early splash, post-splash, in-menu
                 if (frame == 30 || frame == 300 || frame == 900)

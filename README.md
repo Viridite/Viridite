@@ -247,7 +247,7 @@ Measured numbers from hardware:
 
 - [x] NRO icon (Android Horizon themed — green planet with curved text)
 - [x] **Icon-themed UI** — animated starfield, planet-horizon scenery, borealis-style glowing focus card, HOS button glyphs from the system font
-- [x] Dynamic GitHub avatar on About screen
+- [x] GitHub avatar on About screen (bundled static image — no runtime fetch)
 - [x] About screen (press **−**)
 - [x] Reinstall button (**X** in APK list)
 - [x] Version bump system — NACP + in-app version both track the build number (`0.1.<build>`)
@@ -265,6 +265,22 @@ Measured numbers from hardware:
 ## Changelog
 
 > Most recent first.
+
+### 0.1.75 — Pixel-fingerprint overlay timing + static avatar
+
+- [x] **Branding overlay was showing during the Fingersoft logo animation, not just the loading screen** — `splashScreenHasCompleted` only fires once the *entire* splash+loading sequence ends, so it doesn't distinguish the early logo-only phase from the later "HILL CLIMB RACING / LOADING..." screen. Fixed with a pixel fingerprint: each frame, 3 fixed screen points are sampled (`glReadPixels`) and compared against colours estimated from a real handheld screenshot (dark vignette corners + the white loading bar); the overlay only draws when all 3 match. Actual vs. expected values are logged once a second so a wrong estimate is a one-log-file fix, not more guesswork.
+- [x] **About screen avatar is now static** — no more background HTTPS fetch, no cache file, no worker thread. The real GitHub avatar is bundled directly into the NRO (`romfs:/avatar.png`) and loaded once at startup.
+
+### 0.1.73 — Branding overlay black-screen fix + repositioning
+
+- [x] **Fixed the branding overlay turning the screen black** — cocos2d-x keeps its own internal cache of GL state (current shader/buffer/texture/attributes) and skips re-setting things it thinks are unchanged. Our raw GL draw call changed real state behind its back, desyncing that cache; the game's very next draw call fed the GPU stale attribute data, producing a solid black frame. Fixed by saving every piece of global GL state we touch (program, bound buffer/texture, blend func, depth/cull enables) and restoring it exactly afterward, and moving our vertex attributes to indices 8/9 that cocos2d-x never touches.
+- [x] Repositioned next to (not above) the game's own version text, matching a real handheld-mode screenshot — bolded our font to better match its weight. Position is an estimate (no way to pixel-measure a pasted screenshot without the underlying file); expect a follow-up nudge once seen live on hardware.
+
+### 0.1.71 — Android Horizon branding on the game's loading screen
+
+- [x] **Branding overlay** — while the game shows its own loading screen, Android Horizon now draws "Android Horizon v0.1.71" (white/green, matching the launcher's palette) in the bottom-left corner, right above the game's own version text. Implemented as a small standalone GLES2 textured quad composited directly into the game's rendered frame (drawn after `nativeRender()`, before the buffer swap) — not a hack of the game's own font/UI, just an independent overlay layered on top.
+- [x] The overlay hides itself automatically the moment the game calls `splashScreenHasCompleted` (a real JNI hook, not a frame-count guess), so it never appears over menus or gameplay.
+- [x] **Shop crash: real forensics captured for the first time** — `far=0xfffffffffffffff8` (address **-8**), a classic null-object/empty-container null+small-offset dereference, firing right as the game calls `trackPage(...)` (almost certainly `"Shop"`) and starts decoding shop item images. Leading theory: the shop looks up an in-app product our compat layer doesn't provide data for, and an unchecked "not found" path indexes a null/empty container. Not yet fixed — the crash site itself is deep in stripped game code we can't disassemble from here — but any future crash will now log with this same level of detail.
 
 ### 0.1.69 — Engine volume fix + crash-logger deadlock hardening
 
@@ -351,7 +367,7 @@ Measured numbers from hardware:
 - [x] **Expanded log ring buffer** (5×92 → 20×128 bytes) for richer in-memory log feed
 - [x] **All 403 JMPREL entries resolve** — hardware-confirmed; constructors are now the active frontier
 - [x] **Android Horizon icon** — green planet with "ANDROID HORIZON" curved above the horizon, space background with stars
-- [x] **About screen** (press **−**) with live GitHub avatar + project info
+- [x] **About screen** (press **−**) with GitHub avatar (bundled static image) + project info
 - [x] **Reinstall button** (**X**) — re-extracts APK without needing to delete the game folder
 
 ### [Previous builds]
@@ -381,6 +397,42 @@ Measured numbers from hardware:
 - [x] GLES 2 + GLES 3 shim table (400+ functions)
 - [x] EGL setup via switch-mesa
 - [x] SD card logging (`log.txt` + `compat_log.txt`)
+
+---
+
+## Launch Video (Draft Script — Unreleased)
+
+> This is a script for a showcase video Aaron recorded, releasing later. Kept here for reference only — **the bugs and limitations it describes are not being actioned from this script**; they're tracked (or not) through the normal [Current Blockers](#current-blockers) section based on separate hardware testing.
+
+**[Intro & The Hook]**
+
+Hi, my name's Aaron, and for the past few weeks, I've been working on a native way to play Android games directly inside of Horizon OS on the Nintendo Switch. To be clear: this isn't running through Lineage OS. This is a custom translation layer running straight through the Switch's native operating system. I mostly had AI "vibe code" this for me, but it's honestly amazing how far it's gotten. Let me show you how it works.
+
+**[The Setup & Demo]**
+
+When you first load in, you start here and drop in your APK file. The installation is super quick. A quick heads-up: I've only really tested Hill Climb Racing version 1.67. I didn't use the absolute latest version because it uses an XAPK format with multiple files, which might cause issues right now.
+
+If you try other games or versions, they might crash or just be completely broken. But for this specific version, once you get past a little bit of loading lag at the start, it boots right in and is highly playable. Oh, and it actually supports saves now, which my last build didn't!
+
+**[Current Limitations & Bugs]**
+
+Since this is the very first playable build, there is some jank. Here is what you need to know if you test it:
+
+- **Audio:** There's no sound in this capture, but the app does output audio. Fair warning: there's a bug where the engine noise is super loud and gets stuck playing. I'll fix that in a future update.
+- **Controls:** Touch controls are slightly buggy. Sometimes inputs drop, which is why you see me accidentally neck-flipping in the video while holding the buttons down.
+- **No Docked Mode:** I disabled docked mode because there's no controller support yet. Handheld touch-controls only for now, which is why the video lighting is a bit rough — you can't easily use a capture card.
+- **Performance:** Hitting the "play" button is a bit laggy since it's not optimized yet, and the frame rate drops when you use certain power-ups.
+- **Crashes:** Don't try to open the shop or use online features. Hitting the share button just gives an empty achievement, and going online might crash it.
+
+The good news? When it does crash, it just safely drops you back to the Android Horizon app. It actually handles the crashes natively, so you don't get kicked out to that scary Atmosphere error screen with all the binaries!
+
+**[Tech Specs & Outro]**
+
+For those wondering about the setup, I'm running this on a modded V1 Switch — not an OLED — using firmware version 22.1 and the latest version of Atmosphere. I'm running this through sysCFW instead of emuMMC to save SD card space, mostly because I made a silly mistake with Tinfoil a few years ago and am already banned from Nintendo servers anyway.
+
+The whole project is open-source and up on GitHub. If you know what you're doing, please send a pull request! I would love some help developing this further, adding controller support, and getting more games to run.
+
+Thanks for watching, go test it out, and have fun!
 
 ---
 

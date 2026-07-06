@@ -949,8 +949,9 @@ struct App {
                 SDL_RenderCopy(rdr, avatarTex, nullptr, &dst);
             } else {
                 drawMonogram("AndroidHorizon", avX, avY, avSz);
-                // Centred "Fetching avatar..." below the placeholder
-                static const std::string FETCH = "Fetching avatar...";
+                // Centred placeholder text below the monogram — only shown
+                // for the one frame before the bundled avatar decodes
+                static const std::string FETCH = "Loading avatar...";
                 int fw = 0, fh = 0;
                 TTF_SizeUTF8(fSm, FETCH.c_str(), &fw, &fh);
                 drawText(fSm, FETCH, C_DIM, (SW - fw) / 2, avY + avSz + 8);
