@@ -836,7 +836,8 @@ struct App {
             SDL_Event ev;
             while (SDL_PollEvent(&ev)) {
                 if (ev.type == SDL_QUIT) { done = true; }
-                if (ev.type == SDL_JOYBUTTONDOWN && ev.jbutton.button == BTN_B) { done = true; }
+                if (ev.type == SDL_JOYBUTTONDOWN &&
+                    (ev.jbutton.button == BTN_B || ev.jbutton.button == BTN_PLUS)) { done = true; }
                 if (ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_ESCAPE) { done = true; }
             }
 
@@ -902,7 +903,7 @@ struct App {
             y += 8;
             drawText(fSm, "Full log: sdmc:/AndroidHorizonNX/compat_log.txt", C_DIM, 60, y);
 
-            drawFooterBar({{BG(GLYPH_B, "B"), "Back to menu"}});
+            drawFooterBar({{BG(GLYPH_B, "B"), "Back to menu"}, {BG(GLYPH_PLUS, "+"), "Menu"}});
 
             if (!shotResult) {
                 shotResult = true;

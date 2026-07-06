@@ -6,7 +6,7 @@
 [  0s] Setting up JNI environment...
 [  0s] Loading: libapplovin-native-crash-reporter.so
 [  0s] ELF: loading sdmc:/AndroidHorizonNX/games/com.fingersoft.hillclimb/lib/libapplovin-native-crash-reporter.so
-[  0s] SplitMap: reserved code_va=0x487f41000 data_va=0x488010000 write_va=0xea9fdb000 csz=0xcf000 dsz=0xf000
+[  0s] SplitMap: reserved code_va=0x8a28da000 data_va=0x8a29a9000 write_va=0x618ff2000 csz=0xcf000 dsz=0xf000
 [  0s] ELF: stage alloc OK
 [  0s] ELF: stage zeroed
 [  0s] ELF: seg[1] vaddr=0x0 filesz=0xcbac0 memsz=0xcbac0 flags=0x5
@@ -24,18 +24,18 @@
 [  0s] JMPREL: all 403 entries processed
 [  0s] ELF: jmprel done
 [  0s] ELF: strtab/symtab copied
-[  0s] GOT[0] @va+0x77e0 = 0xbf55e45b0
-[  0s] GOT[1] @va+0x77e8 = 0xbf55e4560
-[  0s] GOT[2] @va+0x77f0 = 0x487fa24fc
-[  0s] GOT[3] @va+0x77f8 = 0xbf5ce1480
-[  0s] GOT[4] @va+0x7800 = 0xbf55e4070
-[  0s] SplitMap: code_va=0x487f41000 Rx data_va=0x488010000 Rw OK
+[  0s] GOT[0] @va+0x77e0 = 0xaeebb46d0
+[  0s] GOT[1] @va+0x77e8 = 0xaeebb4680
+[  0s] GOT[2] @va+0x77f0 = 0x8a293b4fc
+[  0s] GOT[3] @va+0x77f8 = 0xaef2b15c0
+[  0s] GOT[4] @va+0x7800 = 0xaeebb4190
+[  0s] SplitMap: code_va=0x8a28da000 Rx data_va=0x8a29a9000 Rw OK
 [  0s] ELF: JIT copy done, stage freed
-[  0s] ELF: 1 constructors deferred (arr=0x4880170f0)
-[  0s] ELF: loaded OK code_exec=0x487f41000 data_exec=0x488010000 sym_count=3631 unresolved=0
+[  0s] ELF: 1 constructors deferred (arr=0x8a29b00f0)
+[  0s] ELF: loaded OK code_exec=0x8a28da000 data_exec=0x8a29a9000 sym_count=3631 unresolved=0
 [  0s] Loading: libquack.so
 [  0s] ELF: loading sdmc:/AndroidHorizonNX/games/com.fingersoft.hillclimb/lib/libquack.so
-[  0s] SplitMap: reserved code_va=0x6b56a8000 data_va=0x6b57db000 write_va=0x1204d9000 csz=0x133000 dsz=0xc000
+[  0s] SplitMap: reserved code_va=0x640a98000 data_va=0x640bcb000 write_va=0xcc23dc000 csz=0x133000 dsz=0xc000
 [  0s] ELF: stage alloc OK
 [  0s] ELF: stage zeroed
 [  0s] ELF: seg[0] vaddr=0x0 filesz=0x132090 memsz=0x132090 flags=0x5
@@ -52,17 +52,17 @@
 [  0s] JMPREL: all 341 entries processed
 [  0s] ELF: jmprel done
 [  0s] ELF: strtab/symtab copied
-[  0s] GOT[0] @va+0xa3d0 = 0xbf55e69b0
-[  0s] GOT[1] @va+0xa3d8 = 0xbf55e40c0
-[  0s] GOT[2] @va+0xa3e0 = 0x6b57617f0
-[  0s] GOT[3] @va+0xa3e8 = 0x6b5761910
-[  0s] GOT[4] @va+0xa3f0 = 0x6b5755e84
-[  0s] SplitMap: code_va=0x6b56a8000 Rx data_va=0x6b57db000 Rw OK
+[  0s] GOT[0] @va+0xa3d0 = 0xaeebb6ad0
+[  0s] GOT[1] @va+0xa3d8 = 0xaeebb41e0
+[  0s] GOT[2] @va+0xa3e0 = 0x640b517f0
+[  0s] GOT[3] @va+0xa3e8 = 0x640b51910
+[  0s] GOT[4] @va+0xa3f0 = 0x640b45e84
+[  0s] SplitMap: code_va=0x640a98000 Rx data_va=0x640bcb000 Rw OK
 [  0s] ELF: JIT copy done, stage freed
-[  0s] ELF: loaded OK code_exec=0x6b56a8000 data_exec=0x6b57db000 sym_count=848 unresolved=0
+[  0s] ELF: loaded OK code_exec=0x640a98000 data_exec=0x640bcb000 sym_count=848 unresolved=0
 [  0s] Loading: libgame.so
 [  0s] ELF: loading sdmc:/AndroidHorizonNX/games/com.fingersoft.hillclimb/lib/libgame.so
-[  0s] SplitMap: reserved code_va=0x7de9b7000 data_va=0x7df0ff000 write_va=0x5fe1bf000 csz=0x748000 dsz=0xcf000
+[  0s] SplitMap: reserved code_va=0x9616bb000 data_va=0x961e03000 write_va=0xa4a066000 csz=0x748000 dsz=0xcf000
 [  0s] ELF: stage alloc OK
 [  0s] ELF: stage zeroed
 [  0s] ELF: seg[0] vaddr=0x0 filesz=0x746780 memsz=0x746780 flags=0x5
@@ -79,938 +79,938 @@
 [  0s] JMPREL: all 912 entries processed
 [  0s] ELF: jmprel done
 [  0s] ELF: strtab/symtab copied
-[  0s] GOT[0] @va+0x63d48 = 0x7def9617c
-[  0s] GOT[1] @va+0x63d50 = 0x7deec628c
-[  0s] GOT[2] @va+0x63d58 = 0x7deeacb0c
-[  0s] GOT[3] @va+0x63d60 = 0x7deea2348
-[  0s] GOT[4] @va+0x63d68 = 0xbf5ced760
-[  0s] SplitMap: code_va=0x7de9b7000 Rx data_va=0x7df0ff000 Rw OK
+[  0s] GOT[0] @va+0x63d48 = 0x961c9a17c
+[  0s] GOT[1] @va+0x63d50 = 0x961bca28c
+[  0s] GOT[2] @va+0x63d58 = 0x961bb0b0c
+[  0s] GOT[3] @va+0x63d60 = 0x961ba6348
+[  0s] GOT[4] @va+0x63d68 = 0xaef2bd8a0
+[  0s] SplitMap: code_va=0x9616bb000 Rx data_va=0x961e03000 Rw OK
 [  0s] ELF: JIT copy done, stage freed
-[  0s] ELF: 417 constructors deferred (arr=0x7df0ff658)
-[  0s] ELF: loaded OK code_exec=0x7de9b7000 data_exec=0x7df0ff000 sym_count=2944 unresolved=0
-[  0s] AndroidTLS: old TPIDR_EL0=0x0 — installing fake TLS @0xbf5f79750
+[  0s] ELF: 417 constructors deferred (arr=0x961e03658)
+[  0s] ELF: loaded OK code_exec=0x9616bb000 data_exec=0x961e03000 sym_count=2944 unresolved=0
+[  0s] AndroidTLS: old TPIDR_EL0=0x0 — installing fake TLS @0xaef549750
 [  0s] CTORS: starting 418 constructors — this may take 30-120s, please wait
 [  0s] ELF: libapplovin-native-crash-reporter.so: SKIP constructors (crash-reporter, not needed)
 [  0s] ELF: libgame.so: running 417 constructors
-[  0s] ELF: init_arr[0]=0x7deb1b358
-[  0s] ELF: init_arr[1]=0x7deb1b408
-[  0s] ELF: init_arr[2]=0x7deb1b4b8
-[  0s] ELF: init_arr[3]=0x7deb1b568
-[  0s] ELF: ctor[1/417] @0x7deb1b358
+[  0s] ELF: init_arr[0]=0x96181f358
+[  0s] ELF: init_arr[1]=0x96181f408
+[  0s] ELF: init_arr[2]=0x96181f4b8
+[  0s] ELF: init_arr[3]=0x96181f568
+[  0s] ELF: ctor[1/417] @0x96181f358
 [  0s] ELF: ctor[1/417] OK
-[  0s] ELF: ctor[2/417] @0x7deb1b408
+[  0s] ELF: ctor[2/417] @0x96181f408
 [  0s] ELF: ctor[2/417] OK
-[  0s] ELF: ctor[3/417] @0x7deb1b4b8
+[  0s] ELF: ctor[3/417] @0x96181f4b8
 [  0s] ELF: ctor[3/417] OK
-[  0s] ELF: ctor[4/417] @0x7deb1b568
+[  0s] ELF: ctor[4/417] @0x96181f568
 [  0s] ELF: ctor[4/417] OK
-[  0s] ELF: ctor[5/417] @0x7deb1b618
+[  0s] ELF: ctor[5/417] @0x96181f618
 [  0s] ELF: ctor[5/417] OK
-[  0s] ELF: ctor[6/417] @0x7deb1b6c8
+[  0s] ELF: ctor[6/417] @0x96181f6c8
 [  0s] ELF: ctor[6/417] OK
-[  0s] ELF: ctor[7/417] @0x7deb1b7dc
+[  0s] ELF: ctor[7/417] @0x96181f7dc
 [  0s] ELF: ctor[7/417] OK
-[  0s] ELF: ctor[8/417] @0x7deb1b88c
+[  0s] ELF: ctor[8/417] @0x96181f88c
 [  0s] ELF: ctor[8/417] OK
-[  0s] ELF: ctor[9/417] @0x7deb1b93c
+[  0s] ELF: ctor[9/417] @0x96181f93c
 [  0s] ELF: ctor[9/417] OK
-[  0s] ELF: ctor[10/417] @0x7deb1b9ec
+[  0s] ELF: ctor[10/417] @0x96181f9ec
 [  0s] ELF: ctor[10/417] OK
-[  0s] ELF: ctor[11/417] @0x7deb1ba9c
+[  0s] ELF: ctor[11/417] @0x96181fa9c
 [  0s] ELF: ctor[11/417] OK
-[  0s] ELF: ctor[12/417] @0x7deb1bb4c
+[  0s] ELF: ctor[12/417] @0x96181fb4c
 [  0s] ELF: ctor[12/417] OK
-[  0s] ELF: ctor[13/417] @0x7deb1bc8c
+[  0s] ELF: ctor[13/417] @0x96181fc8c
 [  0s] ELF: ctor[13/417] OK
-[  0s] ELF: ctor[14/417] @0x7deb1bda0
+[  0s] ELF: ctor[14/417] @0x96181fda0
 [  0s] ELF: ctor[14/417] OK
-[  0s] ELF: ctor[15/417] @0x7deb1be50
+[  0s] ELF: ctor[15/417] @0x96181fe50
 [  0s] ELF: ctor[15/417] OK
-[  0s] ELF: ctor[16/417] @0x7deb1bf00
+[  0s] ELF: ctor[16/417] @0x96181ff00
 [  0s] ELF: ctor[16/417] OK
-[  0s] ELF: ctor[17/417] @0x7deb1bfb0
+[  0s] ELF: ctor[17/417] @0x96181ffb0
 [  0s] ELF: ctor[17/417] OK
-[  0s] ELF: ctor[18/417] @0x7deb1c060
+[  0s] ELF: ctor[18/417] @0x961820060
 [  0s] ELF: ctor[18/417] OK
-[  0s] ELF: ctor[19/417] @0x7deb1c150
+[  0s] ELF: ctor[19/417] @0x961820150
 [  0s] ELF: ctor[19/417] OK
-[  0s] ELF: ctor[20/417] @0x7deb1c200
+[  0s] ELF: ctor[20/417] @0x961820200
 [  0s] ELF: ctor[20/417] OK
-[  0s] ELF: ctor[21/417] @0x7deb1c2b0
+[  0s] ELF: ctor[21/417] @0x9618202b0
 [  0s] ELF: ctor[21/417] OK
-[  0s] ELF: ctor[22/417] @0x7deb1c360
+[  0s] ELF: ctor[22/417] @0x961820360
 [  0s] ELF: ctor[22/417] OK
-[  0s] ELF: ctor[23/417] @0x7deb1c410
-[  0s] ELF: ctor[23/417] OK
-[  0s] ELF: ctor[24/417] @0x7deb1c4c0
-[  0s] ELF: ctor[24/417] OK
-[  0s] ELF: ctor[25/417] @0x7deb1c570
+[  1s] ELF: ctor[23/417] @0x961820410
+[  1s] ELF: ctor[23/417] OK
+[  1s] ELF: ctor[24/417] @0x9618204c0
+[  1s] ELF: ctor[24/417] OK
+[  1s] ELF: ctor[25/417] @0x961820570
 [  1s] ELF: ctor[25/417] OK
-[  1s] ELF: ctor[26/417] @0x7deb1c620
+[  1s] ELF: ctor[26/417] @0x961820620
 [  1s] ELF: ctor[26/417] OK
-[  1s] ELF: ctor[27/417] @0x7deb1c6d0
+[  1s] ELF: ctor[27/417] @0x9618206d0
 [  1s] ELF: ctor[27/417] OK
-[  1s] ELF: ctor[28/417] @0x7deb1c780
+[  1s] ELF: ctor[28/417] @0x961820780
 [  1s] ELF: ctor[28/417] OK
-[  1s] ELF: ctor[29/417] @0x7deb1c894
+[  1s] ELF: ctor[29/417] @0x961820894
 [  1s] ELF: ctor[29/417] OK
-[  1s] ELF: ctor[30/417] @0x7deb1c9c8
+[  1s] ELF: ctor[30/417] @0x9618209c8
 [  1s] ELF: ctor[30/417] OK
-[  1s] ELF: ctor[31/417] @0x7deb1cab8
+[  1s] ELF: ctor[31/417] @0x961820ab8
 [  1s] ELF: ctor[31/417] OK
-[  1s] ELF: ctor[32/417] @0x7deb1cb68
+[  1s] ELF: ctor[32/417] @0x961820b68
 [  1s] ELF: ctor[32/417] OK
-[  1s] ELF: ctor[33/417] @0x7deb1cc18
+[  1s] ELF: ctor[33/417] @0x961820c18
 [  1s] ELF: ctor[33/417] OK
-[  1s] ELF: ctor[34/417] @0x7deb1ccc8
+[  1s] ELF: ctor[34/417] @0x961820cc8
 [  1s] ELF: ctor[34/417] OK
-[  1s] ELF: ctor[35/417] @0x7deb1cddc
+[  1s] ELF: ctor[35/417] @0x961820ddc
 [  1s] ELF: ctor[35/417] OK
-[  1s] ELF: ctor[36/417] @0x7deb1ce8c
+[  1s] ELF: ctor[36/417] @0x961820e8c
 [  1s] ELF: ctor[36/417] OK
-[  1s] ELF: ctor[37/417] @0x7deb1cf3c
+[  1s] ELF: ctor[37/417] @0x961820f3c
 [  1s] ELF: ctor[37/417] OK
-[  1s] ELF: ctor[38/417] @0x7deb1cfec
+[  1s] ELF: ctor[38/417] @0x961820fec
 [  1s] ELF: ctor[38/417] OK
-[  1s] ELF: ctor[39/417] @0x7deb1d09c
+[  1s] ELF: ctor[39/417] @0x96182109c
 [  1s] ELF: ctor[39/417] OK
-[  1s] ELF: ctor[40/417] @0x7deb1d14c
+[  1s] ELF: ctor[40/417] @0x96182114c
 [  1s] ELF: ctor[40/417] OK
-[  1s] ELF: ctor[41/417] @0x7deb1d260
+[  1s] ELF: ctor[41/417] @0x961821260
 [  1s] ELF: ctor[41/417] OK
-[  1s] ELF: ctor[42/417] @0x7deb1d310
+[  1s] ELF: ctor[42/417] @0x961821310
 [  1s] ELF: ctor[42/417] OK
-[  1s] ELF: ctor[43/417] @0x7deb1d3c0
+[  1s] ELF: ctor[43/417] @0x9618213c0
 [  1s] ELF: ctor[43/417] OK
-[  1s] ELF: ctor[44/417] @0x7deb1d470
+[  1s] ELF: ctor[44/417] @0x961821470
 [  1s] ELF: ctor[44/417] OK
-[  1s] ELF: ctor[45/417] @0x7deb1d584
+[  1s] ELF: ctor[45/417] @0x961821584
 [  1s] ELF: ctor[45/417] OK
-[  1s] ELF: ctor[46/417] @0x7deb1d634
+[  1s] ELF: ctor[46/417] @0x961821634
 [  1s] ELF: ctor[46/417] OK
-[  1s] ELF: ctor[47/417] @0x7deb1d6e4
+[  1s] ELF: ctor[47/417] @0x9618216e4
 [  1s] ELF: ctor[47/417] OK
-[  1s] ELF: ctor[48/417] @0x7deb1d794
+[  1s] ELF: ctor[48/417] @0x961821794
 [  1s] ELF: ctor[48/417] OK
-[  1s] ELF: ctor[49/417] @0x7deb1d86c
+[  1s] ELF: ctor[49/417] @0x96182186c
 [  1s] ELF: ctor[49/417] OK
-[  1s] ELF: ctor[50/417] @0x7deb1d91c
+[  1s] ELF: ctor[50/417] @0x96182191c
 [  1s] ELF: ctor[50/417] OK
-[  1s] ELF: ctor[51/417] @0x7deb1da30
+[  1s] ELF: ctor[51/417] @0x961821a30
 [  1s] ELF: ctor[51/417] OK
-[  1s] ELF: ctor[52/417] @0x7deb1dae0
+[  1s] ELF: ctor[52/417] @0x961821ae0
 [  1s] ELF: ctor[52/417] OK
-[  1s] ELF: ctor[53/417] @0x7deb1db90
+[  1s] ELF: ctor[53/417] @0x961821b90
 [  1s] ELF: ctor[53/417] OK
-[  1s] ELF: ctor[54/417] @0x7deb1dc40
+[  1s] ELF: ctor[54/417] @0x961821c40
 [  1s] ELF: ctor[54/417] OK
-[  1s] ELF: ctor[55/417] @0x7deb1dcf0
+[  1s] ELF: ctor[55/417] @0x961821cf0
 [  1s] ELF: ctor[55/417] OK
-[  1s] ELF: ctor[56/417] @0x7deb1dda0
+[  1s] ELF: ctor[56/417] @0x961821da0
 [  1s] ELF: ctor[56/417] OK
-[  1s] ELF: ctor[57/417] @0x7deb1deb4
+[  1s] ELF: ctor[57/417] @0x961821eb4
 [  1s] ELF: ctor[57/417] OK
-[  1s] ELF: ctor[58/417] @0x7deb1df64
+[  1s] ELF: ctor[58/417] @0x961821f64
 [  1s] ELF: ctor[58/417] OK
-[  1s] ELF: ctor[59/417] @0x7deb1e014
+[  1s] ELF: ctor[59/417] @0x961822014
 [  1s] ELF: ctor[59/417] OK
-[  1s] ELF: ctor[60/417] @0x7deb1e0c4
+[  1s] ELF: ctor[60/417] @0x9618220c4
 [  1s] ELF: ctor[60/417] OK
-[  1s] ELF: ctor[61/417] @0x7deb1e174
+[  1s] ELF: ctor[61/417] @0x961822174
 [  1s] ELF: ctor[61/417] OK
-[  1s] ELF: ctor[62/417] @0x7deb1e224
+[  1s] ELF: ctor[62/417] @0x961822224
 [  1s] ELF: ctor[62/417] OK
-[  1s] ELF: ctor[63/417] @0x7deb1e338
+[  1s] ELF: ctor[63/417] @0x961822338
 [  1s] ELF: ctor[63/417] OK
-[  1s] ELF: ctor[64/417] @0x7deb1e3e8
+[  1s] ELF: ctor[64/417] @0x9618223e8
 [  1s] ELF: ctor[64/417] OK
-[  1s] ELF: ctor[65/417] @0x7deb1e4fc
+[  1s] ELF: ctor[65/417] @0x9618224fc
 [  1s] ELF: ctor[65/417] OK
-[  1s] ELF: ctor[66/417] @0x7deb1e5ac
+[  1s] ELF: ctor[66/417] @0x9618225ac
 [  1s] ELF: ctor[66/417] OK
-[  1s] ELF: ctor[67/417] @0x7deb1e620
+[  1s] ELF: ctor[67/417] @0x961822620
 [  1s] ELF: ctor[67/417] OK
-[  1s] ELF: ctor[68/417] @0x7deb1e6d0
+[  1s] ELF: ctor[68/417] @0x9618226d0
 [  1s] ELF: ctor[68/417] OK
-[  1s] ELF: ctor[69/417] @0x7deb1e780
+[  1s] ELF: ctor[69/417] @0x961822780
 [  1s] ELF: ctor[69/417] OK
-[  1s] ELF: ctor[70/417] @0x7deb1e830
+[  1s] ELF: ctor[70/417] @0x961822830
 [  1s] ELF: ctor[70/417] OK
-[  1s] ELF: ctor[71/417] @0x7deb1e8e0
+[  1s] ELF: ctor[71/417] @0x9618228e0
 [  1s] ELF: ctor[71/417] OK
-[  1s] ELF: ctor[72/417] @0x7deb1e990
+[  1s] ELF: ctor[72/417] @0x961822990
 [  1s] ELF: ctor[72/417] OK
-[  1s] ELF: ctor[73/417] @0x7deb1ea40
+[  1s] ELF: ctor[73/417] @0x961822a40
 [  1s] ELF: ctor[73/417] OK
-[  1s] ELF: ctor[74/417] @0x7deb1eaf0
+[  1s] ELF: ctor[74/417] @0x961822af0
 [  1s] ELF: ctor[74/417] OK
-[  1s] ELF: ctor[75/417] @0x7deb1eba0
+[  1s] ELF: ctor[75/417] @0x961822ba0
 [  1s] ELF: ctor[75/417] OK
-[  1s] ELF: ctor[76/417] @0x7deb1ec50
+[  1s] ELF: ctor[76/417] @0x961822c50
 [  1s] ELF: ctor[76/417] OK
-[  1s] ELF: ctor[77/417] @0x7deb1ed00
+[  1s] ELF: ctor[77/417] @0x961822d00
 [  1s] ELF: ctor[77/417] OK
-[  1s] ELF: ctor[78/417] @0x7deb1edb0
+[  1s] ELF: ctor[78/417] @0x961822db0
 [  1s] ELF: ctor[78/417] OK
-[  1s] ELF: ctor[79/417] @0x7deb1ee60
+[  1s] ELF: ctor[79/417] @0x961822e60
 [  1s] ELF: ctor[79/417] OK
-[  1s] ELF: ctor[80/417] @0x7deb1ef24
+[  1s] ELF: ctor[80/417] @0x961822f24
 [  1s] ELF: ctor[80/417] OK
-[  1s] ELF: ctor[81/417] @0x7deb1efd4
+[  1s] ELF: ctor[81/417] @0x961822fd4
 [  1s] ELF: ctor[81/417] OK
-[  1s] ELF: ctor[82/417] @0x7deb1f084
+[  1s] ELF: ctor[82/417] @0x961823084
 [  1s] ELF: ctor[82/417] OK
-[  1s] ELF: ctor[83/417] @0x7deb1f134
+[  1s] ELF: ctor[83/417] @0x961823134
 [  1s] ELF: ctor[83/417] OK
-[  1s] ELF: ctor[84/417] @0x7deb1f1e4
+[  1s] ELF: ctor[84/417] @0x9618231e4
 [  1s] ELF: ctor[84/417] OK
-[  1s] ELF: ctor[85/417] @0x7deb1f294
+[  1s] ELF: ctor[85/417] @0x961823294
 [  1s] ELF: ctor[85/417] OK
-[  1s] ELF: ctor[86/417] @0x7deb1f344
+[  1s] ELF: ctor[86/417] @0x961823344
 [  1s] ELF: ctor[86/417] OK
-[  1s] ELF: ctor[87/417] @0x7deb1f3f4
+[  1s] ELF: ctor[87/417] @0x9618233f4
 [  1s] ELF: ctor[87/417] OK
-[  1s] ELF: ctor[88/417] @0x7deb1f4a4
+[  1s] ELF: ctor[88/417] @0x9618234a4
 [  1s] ELF: ctor[88/417] OK
-[  1s] ELF: ctor[89/417] @0x7deb1f554
+[  1s] ELF: ctor[89/417] @0x961823554
 [  1s] ELF: ctor[89/417] OK
-[  1s] ELF: ctor[90/417] @0x7deb1f684
+[  1s] ELF: ctor[90/417] @0x961823684
 [  1s] ELF: ctor[90/417] OK
-[  1s] ELF: ctor[91/417] @0x7deb1f734
+[  1s] ELF: ctor[91/417] @0x961823734
 [  1s] ELF: ctor[91/417] OK
-[  1s] ELF: ctor[92/417] @0x7deb1f7e4
+[  1s] ELF: ctor[92/417] @0x9618237e4
 [  1s] ELF: ctor[92/417] OK
-[  1s] ELF: ctor[93/417] @0x7deb1f894
+[  1s] ELF: ctor[93/417] @0x961823894
 [  1s] ELF: ctor[93/417] OK
-[  1s] ELF: ctor[94/417] @0x7deb1f944
+[  1s] ELF: ctor[94/417] @0x961823944
 [  1s] ELF: ctor[94/417] OK
-[  1s] ELF: ctor[95/417] @0x7deb1f9f4
+[  1s] ELF: ctor[95/417] @0x9618239f4
 [  1s] ELF: ctor[95/417] OK
-[  1s] ELF: ctor[96/417] @0x7deb1faa4
+[  1s] ELF: ctor[96/417] @0x961823aa4
 [  1s] ELF: ctor[96/417] OK
-[  1s] ELF: ctor[97/417] @0x7deb1fb54
+[  1s] ELF: ctor[97/417] @0x961823b54
 [  1s] ELF: ctor[97/417] OK
-[  1s] ELF: ctor[98/417] @0x7deb1fc04
+[  1s] ELF: ctor[98/417] @0x961823c04
 [  1s] ELF: ctor[98/417] OK
-[  1s] ELF: ctor[99/417] @0x7deb1fcb4
+[  1s] ELF: ctor[99/417] @0x961823cb4
 [  1s] ELF: ctor[99/417] OK
-[  1s] ELF: ctor[100/417] @0x7deb1fd64
+[  1s] ELF: ctor[100/417] @0x961823d64
 [  1s] ELF: ctor[100/417] OK
-[  1s] ELF: ctor[101/417] @0x7deb1fe14
+[  1s] ELF: ctor[101/417] @0x961823e14
 [  1s] ELF: ctor[101/417] OK
-[  1s] ELF: ctor[102/417] @0x7deb1fec4
+[  1s] ELF: ctor[102/417] @0x961823ec4
 [  1s] ELF: ctor[102/417] OK
-[  1s] ELF: ctor[103/417] @0x7deb1ff74
+[  1s] ELF: ctor[103/417] @0x961823f74
 [  1s] ELF: ctor[103/417] OK
-[  1s] ELF: ctor[104/417] @0x7deb20088
+[  1s] ELF: ctor[104/417] @0x961824088
 [  1s] ELF: ctor[104/417] OK
-[  1s] ELF: ctor[105/417] @0x7deb20138
+[  1s] ELF: ctor[105/417] @0x961824138
 [  1s] ELF: ctor[105/417] OK
-[  1s] ELF: ctor[106/417] @0x7deb201e8
+[  1s] ELF: ctor[106/417] @0x9618241e8
 [  1s] ELF: ctor[106/417] OK
-[  1s] ELF: ctor[107/417] @0x7deb20298
+[  1s] ELF: ctor[107/417] @0x961824298
 [  1s] ELF: ctor[107/417] OK
-[  1s] ELF: ctor[108/417] @0x7deb20348
+[  1s] ELF: ctor[108/417] @0x961824348
 [  1s] ELF: ctor[108/417] OK
-[  1s] ELF: ctor[109/417] @0x7deb203f8
+[  1s] ELF: ctor[109/417] @0x9618243f8
 [  1s] ELF: ctor[109/417] OK
-[  1s] ELF: ctor[110/417] @0x7deb204a8
+[  1s] ELF: ctor[110/417] @0x9618244a8
 [  1s] ELF: ctor[110/417] OK
-[  1s] ELF: ctor[111/417] @0x7deb20558
+[  1s] ELF: ctor[111/417] @0x961824558
 [  1s] ELF: ctor[111/417] OK
-[  1s] ELF: ctor[112/417] @0x7deb20608
+[  1s] ELF: ctor[112/417] @0x961824608
 [  1s] ELF: ctor[112/417] OK
-[  1s] ELF: ctor[113/417] @0x7deb20740
+[  1s] ELF: ctor[113/417] @0x961824740
 [  1s] ELF: ctor[113/417] OK
-[  1s] ELF: ctor[114/417] @0x7deb207f0
+[  1s] ELF: ctor[114/417] @0x9618247f0
 [  1s] ELF: ctor[114/417] OK
-[  1s] ELF: ctor[115/417] @0x7deb208a0
+[  1s] ELF: ctor[115/417] @0x9618248a0
 [  1s] ELF: ctor[115/417] OK
-[  1s] ELF: ctor[116/417] @0x7deb20950
+[  1s] ELF: ctor[116/417] @0x961824950
 [  1s] ELF: ctor[116/417] OK
-[  1s] ELF: ctor[117/417] @0x7deb20a00
+[  1s] ELF: ctor[117/417] @0x961824a00
 [  1s] ELF: ctor[117/417] OK
-[  1s] ELF: ctor[118/417] @0x7deb20ab0
+[  1s] ELF: ctor[118/417] @0x961824ab0
 [  1s] ELF: ctor[118/417] OK
-[  1s] ELF: ctor[119/417] @0x7deb20b60
+[  1s] ELF: ctor[119/417] @0x961824b60
 [  1s] ELF: ctor[119/417] OK
-[  1s] ELF: ctor[120/417] @0x7deb20c10
+[  1s] ELF: ctor[120/417] @0x961824c10
 [  1s] ELF: ctor[120/417] OK
-[  1s] ELF: ctor[121/417] @0x7deb20cc0
+[  1s] ELF: ctor[121/417] @0x961824cc0
 [  1s] ELF: ctor[121/417] OK
-[  1s] ELF: ctor[122/417] @0x7deb20e00
+[  1s] ELF: ctor[122/417] @0x961824e00
 [  1s] ELF: ctor[122/417] OK
-[  1s] ELF: ctor[123/417] @0x7deb20eb0
+[  1s] ELF: ctor[123/417] @0x961824eb0
 [  1s] ELF: ctor[123/417] OK
-[  1s] ELF: ctor[124/417] @0x7deb20f60
+[  1s] ELF: ctor[124/417] @0x961824f60
 [  1s] ELF: ctor[124/417] OK
-[  1s] ELF: ctor[125/417] @0x7deb21010
+[  1s] ELF: ctor[125/417] @0x961825010
 [  1s] ELF: ctor[125/417] OK
-[  1s] ELF: ctor[126/417] @0x7deb210c0
+[  1s] ELF: ctor[126/417] @0x9618250c0
 [  1s] ELF: ctor[126/417] OK
-[  1s] ELF: ctor[127/417] @0x7deb21170
+[  1s] ELF: ctor[127/417] @0x961825170
 [  1s] ELF: ctor[127/417] OK
-[  1s] ELF: ctor[128/417] @0x7deb213cc
+[  1s] ELF: ctor[128/417] @0x9618253cc
 [  1s] ELF: ctor[128/417] OK
-[  1s] ELF: ctor[129/417] @0x7deb2147c
+[  1s] ELF: ctor[129/417] @0x96182547c
 [  1s] ELF: ctor[129/417] OK
-[  1s] ELF: ctor[130/417] @0x7deb2152c
+[  1s] ELF: ctor[130/417] @0x96182552c
 [  1s] ELF: ctor[130/417] OK
-[  1s] ELF: ctor[131/417] @0x7deb215dc
+[  1s] ELF: ctor[131/417] @0x9618255dc
 [  1s] ELF: ctor[131/417] OK
-[  1s] ELF: ctor[132/417] @0x7deb2168c
+[  1s] ELF: ctor[132/417] @0x96182568c
 [  1s] ELF: ctor[132/417] OK
-[  1s] ELF: ctor[133/417] @0x7deb2173c
+[  1s] ELF: ctor[133/417] @0x96182573c
 [  1s] ELF: ctor[133/417] OK
-[  1s] ELF: ctor[134/417] @0x7deb217ec
+[  1s] ELF: ctor[134/417] @0x9618257ec
 [  1s] ELF: ctor[134/417] OK
-[  1s] ELF: ctor[135/417] @0x7deb2189c
+[  1s] ELF: ctor[135/417] @0x96182589c
 [  1s] ELF: ctor[135/417] OK
-[  1s] ELF: ctor[136/417] @0x7deb2194c
-[  1s] ELF: ctor[136/417] OK
-[  1s] ELF: ctor[137/417] @0x7deb219fc
-[  1s] ELF: ctor[137/417] OK
-[  1s] ELF: ctor[138/417] @0x7deb21aac
-[  1s] ELF: ctor[138/417] OK
-[  1s] ELF: ctor[139/417] @0x7deb21b5c
+[  2s] ELF: ctor[136/417] @0x96182594c
+[  2s] ELF: ctor[136/417] OK
+[  2s] ELF: ctor[137/417] @0x9618259fc
+[  2s] ELF: ctor[137/417] OK
+[  2s] ELF: ctor[138/417] @0x961825aac
+[  2s] ELF: ctor[138/417] OK
+[  2s] ELF: ctor[139/417] @0x961825b5c
 [  2s] ELF: ctor[139/417] OK
-[  2s] ELF: ctor[140/417] @0x7deb21c0c
+[  2s] ELF: ctor[140/417] @0x961825c0c
 [  2s] ELF: ctor[140/417] OK
-[  2s] ELF: ctor[141/417] @0x7deb21d20
+[  2s] ELF: ctor[141/417] @0x961825d20
 [  2s] ELF: ctor[141/417] OK
-[  2s] ELF: ctor[142/417] @0x7deb21dd0
+[  2s] ELF: ctor[142/417] @0x961825dd0
 [  2s] ELF: ctor[142/417] OK
-[  2s] ELF: ctor[143/417] @0x7deb21e80
+[  2s] ELF: ctor[143/417] @0x961825e80
 [  2s] ELF: ctor[143/417] OK
-[  2s] ELF: ctor[144/417] @0x7deb21f30
+[  2s] ELF: ctor[144/417] @0x961825f30
 [  2s] ELF: ctor[144/417] OK
-[  2s] ELF: ctor[145/417] @0x7deb21fe0
+[  2s] ELF: ctor[145/417] @0x961825fe0
 [  2s] ELF: ctor[145/417] OK
-[  2s] ELF: ctor[146/417] @0x7deb22090
+[  2s] ELF: ctor[146/417] @0x961826090
 [  2s] ELF: ctor[146/417] OK
-[  2s] ELF: ctor[147/417] @0x7deb22140
+[  2s] ELF: ctor[147/417] @0x961826140
 [  2s] ELF: ctor[147/417] OK
-[  2s] ELF: ctor[148/417] @0x7deb22230
+[  2s] ELF: ctor[148/417] @0x961826230
 [  2s] ELF: ctor[148/417] OK
-[  2s] ELF: ctor[149/417] @0x7deb222e0
+[  2s] ELF: ctor[149/417] @0x9618262e0
 [  2s] ELF: ctor[149/417] OK
-[  2s] ELF: ctor[150/417] @0x7deb22390
+[  2s] ELF: ctor[150/417] @0x961826390
 [  2s] ELF: ctor[150/417] OK
-[  2s] ELF: ctor[151/417] @0x7deb22440
+[  2s] ELF: ctor[151/417] @0x961826440
 [  2s] ELF: ctor[151/417] OK
-[  2s] ELF: ctor[152/417] @0x7deb22554
+[  2s] ELF: ctor[152/417] @0x961826554
 [  2s] ELF: ctor[152/417] OK
-[  2s] ELF: ctor[153/417] @0x7deb22604
+[  2s] ELF: ctor[153/417] @0x961826604
 [  2s] ELF: ctor[153/417] OK
-[  2s] ELF: ctor[154/417] @0x7deb226b4
+[  2s] ELF: ctor[154/417] @0x9618266b4
 [  2s] ELF: ctor[154/417] OK
-[  2s] ELF: ctor[155/417] @0x7deb22764
+[  2s] ELF: ctor[155/417] @0x961826764
 [  2s] ELF: ctor[155/417] OK
-[  2s] ELF: ctor[156/417] @0x7deb22814
+[  2s] ELF: ctor[156/417] @0x961826814
 [  2s] ELF: ctor[156/417] OK
-[  2s] ELF: ctor[157/417] @0x7deb228c4
+[  2s] ELF: ctor[157/417] @0x9618268c4
 [  2s] ELF: ctor[157/417] OK
-[  2s] ELF: ctor[158/417] @0x7deb22974
+[  2s] ELF: ctor[158/417] @0x961826974
 [  2s] ELF: ctor[158/417] OK
-[  2s] ELF: ctor[159/417] @0x7deb22a24
+[  2s] ELF: ctor[159/417] @0x961826a24
 [  2s] ELF: ctor[159/417] OK
-[  2s] ELF: ctor[160/417] @0x7deb22ad4
+[  2s] ELF: ctor[160/417] @0x961826ad4
 [  2s] ELF: ctor[160/417] OK
-[  2s] ELF: ctor[161/417] @0x7deb22b84
+[  2s] ELF: ctor[161/417] @0x961826b84
 [  2s] ELF: ctor[161/417] OK
-[  2s] ELF: ctor[162/417] @0x7deb22c34
+[  2s] ELF: ctor[162/417] @0x961826c34
 [  2s] ELF: ctor[162/417] OK
-[  2s] ELF: ctor[163/417] @0x7deb22d0c
+[  2s] ELF: ctor[163/417] @0x961826d0c
 [  2s] ELF: ctor[163/417] OK
-[  2s] ELF: ctor[164/417] @0x7deb22dbc
+[  2s] ELF: ctor[164/417] @0x961826dbc
 [  2s] ELF: ctor[164/417] OK
-[  2s] ELF: ctor[165/417] @0x7deb22e6c
+[  2s] ELF: ctor[165/417] @0x961826e6c
 [  2s] ELF: ctor[165/417] OK
-[  2s] ELF: ctor[166/417] @0x7deb22f1c
+[  2s] ELF: ctor[166/417] @0x961826f1c
 [  2s] ELF: ctor[166/417] OK
-[  2s] ELF: ctor[167/417] @0x7deb22fcc
+[  2s] ELF: ctor[167/417] @0x961826fcc
 [  2s] ELF: ctor[167/417] OK
-[  2s] ELF: ctor[168/417] @0x7deb230a4
+[  2s] ELF: ctor[168/417] @0x9618270a4
 [  2s] ELF: ctor[168/417] OK
-[  2s] ELF: ctor[169/417] @0x7deb23154
+[  2s] ELF: ctor[169/417] @0x961827154
 [  2s] ELF: ctor[169/417] OK
-[  2s] ELF: ctor[170/417] @0x7deb23204
+[  2s] ELF: ctor[170/417] @0x961827204
 [  2s] ELF: ctor[170/417] OK
-[  2s] ELF: ctor[171/417] @0x7deb232b4
+[  2s] ELF: ctor[171/417] @0x9618272b4
 [  2s] ELF: ctor[171/417] OK
-[  2s] ELF: ctor[172/417] @0x7deb23364
+[  2s] ELF: ctor[172/417] @0x961827364
 [  2s] ELF: ctor[172/417] OK
-[  2s] ELF: ctor[173/417] @0x7deb23414
+[  2s] ELF: ctor[173/417] @0x961827414
 [  2s] ELF: ctor[173/417] OK
-[  2s] ELF: ctor[174/417] @0x7deb234c4
+[  2s] ELF: ctor[174/417] @0x9618274c4
 [  2s] ELF: ctor[174/417] OK
-[  2s] ELF: ctor[175/417] @0x7deb23574
+[  2s] ELF: ctor[175/417] @0x961827574
 [  2s] ELF: ctor[175/417] OK
-[  2s] ELF: ctor[176/417] @0x7deb23624
+[  2s] ELF: ctor[176/417] @0x961827624
 [  2s] ELF: ctor[176/417] OK
-[  2s] ELF: ctor[177/417] @0x7deb23738
+[  2s] ELF: ctor[177/417] @0x961827738
 [  2s] ELF: ctor[177/417] OK
-[  2s] ELF: ctor[178/417] @0x7deb237e8
+[  2s] ELF: ctor[178/417] @0x9618277e8
 [  2s] ELF: ctor[178/417] OK
-[  2s] ELF: ctor[179/417] @0x7deb23898
+[  2s] ELF: ctor[179/417] @0x961827898
 [  2s] ELF: ctor[179/417] OK
-[  2s] ELF: ctor[180/417] @0x7deb23948
+[  2s] ELF: ctor[180/417] @0x961827948
 [  2s] ELF: ctor[180/417] OK
-[  2s] ELF: ctor[181/417] @0x7deb239f8
+[  2s] ELF: ctor[181/417] @0x9618279f8
 [  2s] ELF: ctor[181/417] OK
-[  2s] ELF: ctor[182/417] @0x7deb23aa8
+[  2s] ELF: ctor[182/417] @0x961827aa8
 [  2s] ELF: ctor[182/417] OK
-[  2s] ELF: ctor[183/417] @0x7deb23b58
+[  2s] ELF: ctor[183/417] @0x961827b58
 [  2s] ELF: ctor[183/417] OK
-[  2s] ELF: ctor[184/417] @0x7deb23c08
+[  2s] ELF: ctor[184/417] @0x961827c08
 [  2s] ELF: ctor[184/417] OK
-[  2s] ELF: ctor[185/417] @0x7deb23cb8
+[  2s] ELF: ctor[185/417] @0x961827cb8
 [  2s] ELF: ctor[185/417] OK
-[  2s] ELF: ctor[186/417] @0x7deb23d68
+[  2s] ELF: ctor[186/417] @0x961827d68
 [  2s] ELF: ctor[186/417] OK
-[  2s] ELF: ctor[187/417] @0x7deb23e7c
+[  2s] ELF: ctor[187/417] @0x961827e7c
 [  2s] ELF: ctor[187/417] OK
-[  2s] ELF: ctor[188/417] @0x7deb23f2c
+[  2s] ELF: ctor[188/417] @0x961827f2c
 [  2s] ELF: ctor[188/417] OK
-[  2s] ELF: ctor[189/417] @0x7deb23fdc
+[  2s] ELF: ctor[189/417] @0x961827fdc
 [  2s] ELF: ctor[189/417] OK
-[  2s] ELF: ctor[190/417] @0x7deb2408c
+[  2s] ELF: ctor[190/417] @0x96182808c
 [  2s] ELF: ctor[190/417] OK
-[  2s] ELF: ctor[191/417] @0x7deb2413c
+[  2s] ELF: ctor[191/417] @0x96182813c
 [  2s] ELF: ctor[191/417] OK
-[  2s] ELF: ctor[192/417] @0x7deb241ec
+[  2s] ELF: ctor[192/417] @0x9618281ec
 [  2s] ELF: ctor[192/417] OK
-[  2s] ELF: ctor[193/417] @0x7deb24390
+[  2s] ELF: ctor[193/417] @0x961828390
 [  2s] ELF: ctor[193/417] OK
-[  2s] ELF: ctor[194/417] @0x7deb24440
+[  2s] ELF: ctor[194/417] @0x961828440
 [  2s] ELF: ctor[194/417] OK
-[  2s] ELF: ctor[195/417] @0x7deb244f0
+[  2s] ELF: ctor[195/417] @0x9618284f0
 [  2s] ELF: ctor[195/417] OK
-[  2s] ELF: ctor[196/417] @0x7deb245a0
+[  2s] ELF: ctor[196/417] @0x9618285a0
 [  2s] ELF: ctor[196/417] OK
-[  2s] ELF: ctor[197/417] @0x7deb24650
+[  2s] ELF: ctor[197/417] @0x961828650
 [  2s] ELF: ctor[197/417] OK
-[  2s] ELF: ctor[198/417] @0x7deb24700
+[  2s] ELF: ctor[198/417] @0x961828700
 [  2s] ELF: ctor[198/417] OK
-[  2s] ELF: ctor[199/417] @0x7deb247b0
+[  2s] ELF: ctor[199/417] @0x9618287b0
 [  2s] ELF: ctor[199/417] OK
-[  2s] ELF: ctor[200/417] @0x7deb248c4
+[  2s] ELF: ctor[200/417] @0x9618288c4
 [  2s] ELF: ctor[200/417] OK
-[  2s] ELF: ctor[201/417] @0x7deb24974
+[  2s] ELF: ctor[201/417] @0x961828974
 [  2s] ELF: ctor[201/417] OK
-[  2s] ELF: ctor[202/417] @0x7deb24a24
+[  2s] ELF: ctor[202/417] @0x961828a24
 [  2s] ELF: ctor[202/417] OK
-[  2s] ELF: ctor[203/417] @0x7deb24ad4
+[  2s] ELF: ctor[203/417] @0x961828ad4
 [  2s] ELF: ctor[203/417] OK
-[  2s] ELF: ctor[204/417] @0x7deb24b84
+[  2s] ELF: ctor[204/417] @0x961828b84
 [  2s] ELF: ctor[204/417] OK
-[  2s] ELF: ctor[205/417] @0x7deb24c34
+[  2s] ELF: ctor[205/417] @0x961828c34
 [  2s] ELF: ctor[205/417] OK
-[  2s] ELF: ctor[206/417] @0x7deb24d48
+[  2s] ELF: ctor[206/417] @0x961828d48
 [  2s] ELF: ctor[206/417] OK
-[  2s] ELF: ctor[207/417] @0x7deb24df8
+[  2s] ELF: ctor[207/417] @0x961828df8
 [  2s] ELF: ctor[207/417] OK
-[  2s] ELF: ctor[208/417] @0x7deb24ea8
+[  2s] ELF: ctor[208/417] @0x961828ea8
 [  2s] ELF: ctor[208/417] OK
-[  2s] ELF: ctor[209/417] @0x7deb24f58
+[  2s] ELF: ctor[209/417] @0x961828f58
 [  2s] ELF: ctor[209/417] OK
-[  2s] ELF: ctor[210/417] @0x7deb25080
+[  2s] ELF: ctor[210/417] @0x961829080
 [  2s] ELF: ctor[210/417] OK
-[  2s] ELF: ctor[211/417] @0x7deb25130
+[  2s] ELF: ctor[211/417] @0x961829130
 [  2s] ELF: ctor[211/417] OK
-[  2s] ELF: ctor[212/417] @0x7deb251e0
+[  2s] ELF: ctor[212/417] @0x9618291e0
 [  2s] ELF: ctor[212/417] OK
-[  2s] ELF: ctor[213/417] @0x7deb25290
+[  2s] ELF: ctor[213/417] @0x961829290
 [  2s] ELF: ctor[213/417] OK
-[  2s] ELF: ctor[214/417] @0x7deb25340
+[  2s] ELF: ctor[214/417] @0x961829340
 [  2s] ELF: ctor[214/417] OK
-[  2s] ELF: ctor[215/417] @0x7deb25418
+[  2s] ELF: ctor[215/417] @0x961829418
 [  2s] ELF: ctor[215/417] OK
-[  2s] ELF: ctor[216/417] @0x7deb254c8
+[  2s] ELF: ctor[216/417] @0x9618294c8
 [  2s] ELF: ctor[216/417] OK
-[  2s] ELF: ctor[217/417] @0x7deb25608
+[  2s] ELF: ctor[217/417] @0x961829608
 [  2s] ELF: ctor[217/417] OK
-[  2s] ELF: ctor[218/417] @0x7deb256b8
+[  2s] ELF: ctor[218/417] @0x9618296b8
 [  2s] ELF: ctor[218/417] OK
-[  2s] ELF: ctor[219/417] @0x7deb25768
+[  2s] ELF: ctor[219/417] @0x961829768
 [  2s] ELF: ctor[219/417] OK
-[  2s] ELF: ctor[220/417] @0x7deb25818
+[  2s] ELF: ctor[220/417] @0x961829818
 [  2s] ELF: ctor[220/417] OK
-[  2s] ELF: ctor[221/417] @0x7deb258c8
+[  2s] ELF: ctor[221/417] @0x9618298c8
 [  2s] ELF: ctor[221/417] OK
-[  2s] ELF: ctor[222/417] @0x7deb25978
+[  2s] ELF: ctor[222/417] @0x961829978
 [  2s] ELF: ctor[222/417] OK
-[  2s] ELF: ctor[223/417] @0x7deb25a28
+[  2s] ELF: ctor[223/417] @0x961829a28
 [  2s] ELF: ctor[223/417] OK
-[  2s] ELF: ctor[224/417] @0x7deb25ad8
+[  2s] ELF: ctor[224/417] @0x961829ad8
 [  2s] ELF: ctor[224/417] OK
-[  2s] ELF: ctor[225/417] @0x7deb25b88
+[  2s] ELF: ctor[225/417] @0x961829b88
 [  2s] ELF: ctor[225/417] OK
-[  2s] ELF: ctor[226/417] @0x7deb25c38
+[  2s] ELF: ctor[226/417] @0x961829c38
 [  2s] ELF: ctor[226/417] OK
-[  2s] ELF: ctor[227/417] @0x7deb25ce8
+[  2s] ELF: ctor[227/417] @0x961829ce8
 [  2s] ELF: ctor[227/417] OK
-[  2s] ELF: ctor[228/417] @0x7deb25d98
+[  2s] ELF: ctor[228/417] @0x961829d98
 [  2s] ELF: ctor[228/417] OK
-[  2s] ELF: ctor[229/417] @0x7deb25e48
+[  2s] ELF: ctor[229/417] @0x961829e48
 [  2s] ELF: ctor[229/417] OK
-[  2s] ELF: ctor[230/417] @0x7deb25ef8
+[  2s] ELF: ctor[230/417] @0x961829ef8
 [  2s] ELF: ctor[230/417] OK
-[  2s] ELF: ctor[231/417] @0x7deb25fa8
+[  2s] ELF: ctor[231/417] @0x961829fa8
 [  2s] ELF: ctor[231/417] OK
-[  2s] ELF: ctor[232/417] @0x7deb26058
+[  2s] ELF: ctor[232/417] @0x96182a058
 [  2s] ELF: ctor[232/417] OK
-[  2s] ELF: ctor[233/417] @0x7deb26108
+[  2s] ELF: ctor[233/417] @0x96182a108
 [  2s] ELF: ctor[233/417] OK
-[  2s] ELF: ctor[234/417] @0x7deb261b8
+[  2s] ELF: ctor[234/417] @0x96182a1b8
 [  2s] ELF: ctor[234/417] OK
-[  2s] ELF: ctor[235/417] @0x7deb26268
+[  2s] ELF: ctor[235/417] @0x96182a268
 [  2s] ELF: ctor[235/417] OK
-[  2s] ELF: ctor[236/417] @0x7deb26318
+[  2s] ELF: ctor[236/417] @0x96182a318
 [  2s] ELF: ctor[236/417] OK
-[  2s] ELF: ctor[237/417] @0x7deb2642c
+[  2s] ELF: ctor[237/417] @0x96182a42c
 [  2s] ELF: ctor[237/417] OK
-[  2s] ELF: ctor[238/417] @0x7deb264dc
+[  2s] ELF: ctor[238/417] @0x96182a4dc
 [  2s] ELF: ctor[238/417] OK
-[  2s] ELF: ctor[239/417] @0x7deb2658c
+[  2s] ELF: ctor[239/417] @0x96182a58c
 [  2s] ELF: ctor[239/417] OK
-[  2s] ELF: ctor[240/417] @0x7deb26664
+[  2s] ELF: ctor[240/417] @0x96182a664
 [  2s] ELF: ctor[240/417] OK
-[  2s] ELF: ctor[241/417] @0x7deb26714
+[  2s] ELF: ctor[241/417] @0x96182a714
 [  2s] ELF: ctor[241/417] OK
-[  2s] ELF: ctor[242/417] @0x7deb267c4
+[  2s] ELF: ctor[242/417] @0x96182a7c4
 [  2s] ELF: ctor[242/417] OK
-[  2s] ELF: ctor[243/417] @0x7deb26874
+[  2s] ELF: ctor[243/417] @0x96182a874
 [  2s] ELF: ctor[243/417] OK
-[  2s] ELF: ctor[244/417] @0x7deb26924
+[  2s] ELF: ctor[244/417] @0x96182a924
 [  2s] ELF: ctor[244/417] OK
-[  2s] ELF: ctor[245/417] @0x7deb269d4
+[  2s] ELF: ctor[245/417] @0x96182a9d4
 [  2s] ELF: ctor[245/417] OK
-[  2s] ELF: ctor[246/417] @0x7deb26a84
+[  2s] ELF: ctor[246/417] @0x96182aa84
 [  2s] ELF: ctor[246/417] OK
-[  2s] ELF: ctor[247/417] @0x7deb26b34
+[  2s] ELF: ctor[247/417] @0x96182ab34
 [  2s] ELF: ctor[247/417] OK
-[  2s] ELF: ctor[248/417] @0x7deb26be4
+[  2s] ELF: ctor[248/417] @0x96182abe4
 [  2s] ELF: ctor[248/417] OK
-[  2s] ELF: ctor[249/417] @0x7deb26cf8
+[  2s] ELF: ctor[249/417] @0x96182acf8
 [  2s] ELF: ctor[249/417] OK
-[  2s] ELF: ctor[250/417] @0x7deb26da8
+[  2s] ELF: ctor[250/417] @0x96182ada8
 [  2s] ELF: ctor[250/417] OK
-[  2s] ELF: ctor[251/417] @0x7deb26e58
+[  2s] ELF: ctor[251/417] @0x96182ae58
 [  2s] ELF: ctor[251/417] OK
-[  2s] ELF: ctor[252/417] @0x7deb26f08
-[  2s] ELF: ctor[252/417] OK
-[  2s] ELF: ctor[253/417] @0x7deb26fb8
-[  2s] ELF: ctor[253/417] OK
-[  2s] ELF: ctor[254/417] @0x7deb27068
-[  2s] ELF: ctor[254/417] OK
-[  2s] ELF: ctor[255/417] @0x7deb27118
-[  2s] ELF: ctor[255/417] OK
-[  2s] ELF: ctor[256/417] @0x7deb271c8
-[  2s] ELF: ctor[256/417] OK
-[  2s] ELF: ctor[257/417] @0x7deb27278
-[  2s] ELF: ctor[257/417] OK
-[  3s] ELF: ctor[258/417] @0x7deb27328
+[  2s] ELF: ctor[252/417] @0x96182af08
+[  3s] ELF: ctor[252/417] OK
+[  3s] ELF: ctor[253/417] @0x96182afb8
+[  3s] ELF: ctor[253/417] OK
+[  3s] ELF: ctor[254/417] @0x96182b068
+[  3s] ELF: ctor[254/417] OK
+[  3s] ELF: ctor[255/417] @0x96182b118
+[  3s] ELF: ctor[255/417] OK
+[  3s] ELF: ctor[256/417] @0x96182b1c8
+[  3s] ELF: ctor[256/417] OK
+[  3s] ELF: ctor[257/417] @0x96182b278
+[  3s] ELF: ctor[257/417] OK
+[  3s] ELF: ctor[258/417] @0x96182b328
 [  3s] ELF: ctor[258/417] OK
-[  3s] ELF: ctor[259/417] @0x7deb2744c
+[  3s] ELF: ctor[259/417] @0x96182b44c
 [  3s] ELF: ctor[259/417] OK
-[  3s] ELF: ctor[260/417] @0x7deb274fc
+[  3s] ELF: ctor[260/417] @0x96182b4fc
 [  3s] ELF: ctor[260/417] OK
-[  3s] ELF: ctor[261/417] @0x7deb275ac
+[  3s] ELF: ctor[261/417] @0x96182b5ac
 [  3s] ELF: ctor[261/417] OK
-[  3s] ELF: ctor[262/417] @0x7deb2765c
+[  3s] ELF: ctor[262/417] @0x96182b65c
 [  3s] ELF: ctor[262/417] OK
-[  3s] ELF: ctor[263/417] @0x7deb2770c
+[  3s] ELF: ctor[263/417] @0x96182b70c
 [  3s] ELF: ctor[263/417] OK
-[  3s] ELF: ctor[264/417] @0x7deb277bc
+[  3s] ELF: ctor[264/417] @0x96182b7bc
 [  3s] ELF: ctor[264/417] OK
-[  3s] ELF: ctor[265/417] @0x7deb2788c
+[  3s] ELF: ctor[265/417] @0x96182b88c
 [  3s] ELF: ctor[265/417] OK
-[  3s] ELF: ctor[266/417] @0x7deb2793c
+[  3s] ELF: ctor[266/417] @0x96182b93c
 [  3s] ELF: ctor[266/417] OK
-[  3s] ELF: ctor[267/417] @0x7deb279ec
+[  3s] ELF: ctor[267/417] @0x96182b9ec
 [  3s] ELF: ctor[267/417] OK
-[  3s] ELF: ctor[268/417] @0x7deb27a9c
+[  3s] ELF: ctor[268/417] @0x96182ba9c
 [  3s] ELF: ctor[268/417] OK
-[  3s] ELF: ctor[269/417] @0x7deb27b4c
+[  3s] ELF: ctor[269/417] @0x96182bb4c
 [  3s] ELF: ctor[269/417] OK
-[  3s] ELF: ctor[270/417] @0x7deb27c60
+[  3s] ELF: ctor[270/417] @0x96182bc60
 [  3s] ELF: ctor[270/417] OK
-[  3s] ELF: ctor[271/417] @0x7deb27d10
+[  3s] ELF: ctor[271/417] @0x96182bd10
 [  3s] ELF: ctor[271/417] OK
-[  3s] ELF: ctor[272/417] @0x7deb27dc0
+[  3s] ELF: ctor[272/417] @0x96182bdc0
 [  3s] ELF: ctor[272/417] OK
-[  3s] ELF: ctor[273/417] @0x7deb27e70
+[  3s] ELF: ctor[273/417] @0x96182be70
 [  3s] ELF: ctor[273/417] OK
-[  3s] ELF: ctor[274/417] @0x7deb27f20
+[  3s] ELF: ctor[274/417] @0x96182bf20
 [  3s] ELF: ctor[274/417] OK
-[  3s] ELF: ctor[275/417] @0x7deb27fd0
+[  3s] ELF: ctor[275/417] @0x96182bfd0
 [  3s] ELF: ctor[275/417] OK
-[  3s] ELF: ctor[276/417] @0x7deb28080
+[  3s] ELF: ctor[276/417] @0x96182c080
 [  3s] ELF: ctor[276/417] OK
-[  3s] ELF: ctor[277/417] @0x7deb28194
+[  3s] ELF: ctor[277/417] @0x96182c194
 [  3s] ELF: ctor[277/417] OK
-[  3s] ELF: ctor[278/417] @0x7deb28244
+[  3s] ELF: ctor[278/417] @0x96182c244
 [  3s] ELF: ctor[278/417] OK
-[  3s] ELF: ctor[279/417] @0x7deb282f4
+[  3s] ELF: ctor[279/417] @0x96182c2f4
 [  3s] ELF: ctor[279/417] OK
-[  3s] ELF: ctor[280/417] @0x7deb283a4
+[  3s] ELF: ctor[280/417] @0x96182c3a4
 [  3s] ELF: ctor[280/417] OK
-[  3s] ELF: ctor[281/417] @0x7deb28454
+[  3s] ELF: ctor[281/417] @0x96182c454
 [  3s] ELF: ctor[281/417] OK
-[  3s] ELF: ctor[282/417] @0x7deb28504
+[  3s] ELF: ctor[282/417] @0x96182c504
 [  3s] ELF: ctor[282/417] OK
-[  3s] ELF: ctor[283/417] @0x7deb285b4
+[  3s] ELF: ctor[283/417] @0x96182c5b4
 [  3s] ELF: ctor[283/417] OK
-[  3s] ELF: ctor[284/417] @0x7deb28664
+[  3s] ELF: ctor[284/417] @0x96182c664
 [  3s] ELF: ctor[284/417] OK
-[  3s] ELF: ctor[285/417] @0x7deb28714
+[  3s] ELF: ctor[285/417] @0x96182c714
 [  3s] ELF: ctor[285/417] OK
-[  3s] ELF: ctor[286/417] @0x7deb287c4
+[  3s] ELF: ctor[286/417] @0x96182c7c4
 [  3s] ELF: ctor[286/417] OK
-[  3s] ELF: ctor[287/417] @0x7deb28874
+[  3s] ELF: ctor[287/417] @0x96182c874
 [  3s] ELF: ctor[287/417] OK
-[  3s] ELF: ctor[288/417] @0x7deb28924
+[  3s] ELF: ctor[288/417] @0x96182c924
 [  3s] ELF: ctor[288/417] OK
-[  3s] ELF: ctor[289/417] @0x7deb289d4
+[  3s] ELF: ctor[289/417] @0x96182c9d4
 [  3s] ELF: ctor[289/417] OK
-[  3s] ELF: ctor[290/417] @0x7deb28a84
+[  3s] ELF: ctor[290/417] @0x96182ca84
 [  3s] ELF: ctor[290/417] OK
-[  3s] ELF: ctor[291/417] @0x7deb28b34
+[  3s] ELF: ctor[291/417] @0x96182cb34
 [  3s] ELF: ctor[291/417] OK
-[  3s] ELF: ctor[292/417] @0x7deb28be4
+[  3s] ELF: ctor[292/417] @0x96182cbe4
 [  3s] ELF: ctor[292/417] OK
-[  3s] ELF: ctor[293/417] @0x7deb28c94
+[  3s] ELF: ctor[293/417] @0x96182cc94
 [  3s] ELF: ctor[293/417] OK
-[  3s] ELF: ctor[294/417] @0x7deb28d44
+[  3s] ELF: ctor[294/417] @0x96182cd44
 [  3s] ELF: ctor[294/417] OK
-[  3s] ELF: ctor[295/417] @0x7deb28df4
+[  3s] ELF: ctor[295/417] @0x96182cdf4
 [  3s] ELF: ctor[295/417] OK
-[  3s] ELF: ctor[296/417] @0x7deb28ea4
+[  3s] ELF: ctor[296/417] @0x96182cea4
 [  3s] ELF: ctor[296/417] OK
-[  3s] ELF: ctor[297/417] @0x7deb28f54
+[  3s] ELF: ctor[297/417] @0x96182cf54
 [  3s] ELF: ctor[297/417] OK
-[  3s] ELF: ctor[298/417] @0x7deb29004
+[  3s] ELF: ctor[298/417] @0x96182d004
 [  3s] ELF: ctor[298/417] OK
-[  3s] ELF: ctor[299/417] @0x7deb290b4
+[  3s] ELF: ctor[299/417] @0x96182d0b4
 [  3s] ELF: ctor[299/417] OK
-[  3s] ELF: ctor[300/417] @0x7deb29164
+[  3s] ELF: ctor[300/417] @0x96182d164
 [  3s] ELF: ctor[300/417] OK
-[  3s] ELF: ctor[301/417] @0x7deb29214
+[  3s] ELF: ctor[301/417] @0x96182d214
 [  3s] ELF: ctor[301/417] OK
-[  3s] ELF: ctor[302/417] @0x7deb292c4
+[  3s] ELF: ctor[302/417] @0x96182d2c4
 [  3s] ELF: ctor[302/417] OK
-[  3s] ELF: ctor[303/417] @0x7deb29374
+[  3s] ELF: ctor[303/417] @0x96182d374
 [  3s] ELF: ctor[303/417] OK
-[  3s] ELF: ctor[304/417] @0x7deb29424
+[  3s] ELF: ctor[304/417] @0x96182d424
 [  3s] ELF: ctor[304/417] OK
-[  3s] ELF: ctor[305/417] @0x7deb294d4
+[  3s] ELF: ctor[305/417] @0x96182d4d4
 [  3s] ELF: ctor[305/417] OK
-[  3s] ELF: ctor[306/417] @0x7deb29584
+[  3s] ELF: ctor[306/417] @0x96182d584
 [  3s] ELF: ctor[306/417] OK
-[  3s] ELF: ctor[307/417] @0x7deb29634
+[  3s] ELF: ctor[307/417] @0x96182d634
 [  3s] ELF: ctor[307/417] OK
-[  3s] ELF: ctor[308/417] @0x7deb296e4
+[  3s] ELF: ctor[308/417] @0x96182d6e4
 [  3s] ELF: ctor[308/417] OK
-[  3s] ELF: ctor[309/417] @0x7deb29794
+[  3s] ELF: ctor[309/417] @0x96182d794
 [  3s] ELF: ctor[309/417] OK
-[  3s] ELF: ctor[310/417] @0x7deb29844
+[  3s] ELF: ctor[310/417] @0x96182d844
 [  3s] ELF: ctor[310/417] OK
-[  3s] ELF: ctor[311/417] @0x7deb298f4
+[  3s] ELF: ctor[311/417] @0x96182d8f4
 [  3s] ELF: ctor[311/417] OK
-[  3s] ELF: ctor[312/417] @0x7deb299a4
+[  3s] ELF: ctor[312/417] @0x96182d9a4
 [  3s] ELF: ctor[312/417] OK
-[  3s] ELF: ctor[313/417] @0x7deb29a54
+[  3s] ELF: ctor[313/417] @0x96182da54
 [  3s] ELF: ctor[313/417] OK
-[  3s] ELF: ctor[314/417] @0x7deb29b04
+[  3s] ELF: ctor[314/417] @0x96182db04
 [  3s] ELF: ctor[314/417] OK
-[  3s] ELF: ctor[315/417] @0x7deb29bb4
+[  3s] ELF: ctor[315/417] @0x96182dbb4
 [  3s] ELF: ctor[315/417] OK
-[  3s] ELF: ctor[316/417] @0x7deb29c64
+[  3s] ELF: ctor[316/417] @0x96182dc64
 [  3s] ELF: ctor[316/417] OK
-[  3s] ELF: ctor[317/417] @0x7deb29d30
+[  3s] ELF: ctor[317/417] @0x96182dd30
 [  3s] ELF: ctor[317/417] OK
-[  3s] ELF: ctor[318/417] @0x7deb29dfc
+[  3s] ELF: ctor[318/417] @0x96182ddfc
 [  3s] ELF: ctor[318/417] OK
-[  3s] ELF: ctor[319/417] @0x7deb29eac
+[  3s] ELF: ctor[319/417] @0x96182deac
 [  3s] ELF: ctor[319/417] OK
-[  3s] ELF: ctor[320/417] @0x7deb29f5c
+[  3s] ELF: ctor[320/417] @0x96182df5c
 [  3s] ELF: ctor[320/417] OK
-[  3s] ELF: ctor[321/417] @0x7deb2a00c
+[  3s] ELF: ctor[321/417] @0x96182e00c
 [  3s] ELF: ctor[321/417] OK
-[  3s] ELF: ctor[322/417] @0x7deb2a0bc
+[  3s] ELF: ctor[322/417] @0x96182e0bc
 [  3s] ELF: ctor[322/417] OK
-[  3s] ELF: ctor[323/417] @0x7deb2a1a0
+[  3s] ELF: ctor[323/417] @0x96182e1a0
 [  3s] ELF: ctor[323/417] OK
-[  3s] ELF: ctor[324/417] @0x7deb2a250
+[  3s] ELF: ctor[324/417] @0x96182e250
 [  3s] ELF: ctor[324/417] OK
-[  3s] ELF: ctor[325/417] @0x7deb2a300
+[  3s] ELF: ctor[325/417] @0x96182e300
 [  3s] ELF: ctor[325/417] OK
-[  3s] ELF: ctor[326/417] @0x7deb2a3b0
+[  3s] ELF: ctor[326/417] @0x96182e3b0
 [  3s] ELF: ctor[326/417] OK
-[  3s] ELF: ctor[327/417] @0x7deb2a460
+[  3s] ELF: ctor[327/417] @0x96182e460
 [  3s] ELF: ctor[327/417] OK
-[  3s] ELF: ctor[328/417] @0x7deb2a510
+[  3s] ELF: ctor[328/417] @0x96182e510
 [  3s] ELF: ctor[328/417] OK
-[  3s] ELF: ctor[329/417] @0x7deb2a5c0
+[  3s] ELF: ctor[329/417] @0x96182e5c0
 [  3s] ELF: ctor[329/417] OK
-[  3s] ELF: ctor[330/417] @0x7deb2a670
+[  3s] ELF: ctor[330/417] @0x96182e670
 [  3s] ELF: ctor[330/417] OK
-[  3s] ELF: ctor[331/417] @0x7deb2a720
+[  3s] ELF: ctor[331/417] @0x96182e720
 [  3s] ELF: ctor[331/417] OK
-[  3s] ELF: ctor[332/417] @0x7deb2a7d0
+[  3s] ELF: ctor[332/417] @0x96182e7d0
 [  3s] ELF: ctor[332/417] OK
-[  3s] ELF: ctor[333/417] @0x7deb2a880
+[  3s] ELF: ctor[333/417] @0x96182e880
 [  3s] ELF: ctor[333/417] OK
-[  3s] ELF: ctor[334/417] @0x7deb2a930
+[  3s] ELF: ctor[334/417] @0x96182e930
 [  3s] ELF: ctor[334/417] OK
-[  3s] ELF: ctor[335/417] @0x7deb2a9e0
+[  3s] ELF: ctor[335/417] @0x96182e9e0
 [  3s] ELF: ctor[335/417] OK
-[  3s] ELF: ctor[336/417] @0x7deb2aa90
+[  3s] ELF: ctor[336/417] @0x96182ea90
 [  3s] ELF: ctor[336/417] OK
-[  3s] ELF: ctor[337/417] @0x7deb2ab40
+[  3s] ELF: ctor[337/417] @0x96182eb40
 [  3s] ELF: ctor[337/417] OK
-[  3s] ELF: ctor[338/417] @0x7deb2abf0
+[  3s] ELF: ctor[338/417] @0x96182ebf0
 [  3s] ELF: ctor[338/417] OK
-[  3s] ELF: ctor[339/417] @0x7deb2aca0
+[  3s] ELF: ctor[339/417] @0x96182eca0
 [  3s] ELF: ctor[339/417] OK
-[  3s] ELF: ctor[340/417] @0x7deb2ad50
+[  3s] ELF: ctor[340/417] @0x96182ed50
 [  3s] ELF: ctor[340/417] OK
-[  3s] ELF: ctor[341/417] @0x7deb2ae00
+[  3s] ELF: ctor[341/417] @0x96182ee00
 [  3s] ELF: ctor[341/417] OK
-[  3s] ELF: ctor[342/417] @0x7deb2aeb0
+[  3s] ELF: ctor[342/417] @0x96182eeb0
 [  3s] ELF: ctor[342/417] OK
-[  3s] ELF: ctor[343/417] @0x7deb2af60
+[  3s] ELF: ctor[343/417] @0x96182ef60
 [  3s] ELF: ctor[343/417] OK
-[  3s] ELF: ctor[344/417] @0x7deb2b010
+[  3s] ELF: ctor[344/417] @0x96182f010
 [  3s] ELF: ctor[344/417] OK
-[  3s] ELF: ctor[345/417] @0x7deb2b0c0
+[  3s] ELF: ctor[345/417] @0x96182f0c0
 [  3s] ELF: ctor[345/417] OK
-[  3s] ELF: ctor[346/417] @0x7deb2b170
+[  3s] ELF: ctor[346/417] @0x96182f170
 [  3s] ELF: ctor[346/417] OK
-[  3s] ELF: ctor[347/417] @0x7deb2b220
+[  3s] ELF: ctor[347/417] @0x96182f220
 [  3s] ELF: ctor[347/417] OK
-[  3s] ELF: ctor[348/417] @0x7deb2b2d0
+[  3s] ELF: ctor[348/417] @0x96182f2d0
 [  3s] ELF: ctor[348/417] OK
-[  3s] ELF: ctor[349/417] @0x7deb2b380
+[  3s] ELF: ctor[349/417] @0x96182f380
 [  3s] ELF: ctor[349/417] OK
-[  3s] ELF: ctor[350/417] @0x7deb2b430
+[  3s] ELF: ctor[350/417] @0x96182f430
 [  3s] ELF: ctor[350/417] OK
-[  3s] ELF: ctor[351/417] @0x7deb2b4e0
+[  3s] ELF: ctor[351/417] @0x96182f4e0
 [  3s] ELF: ctor[351/417] OK
-[  3s] ELF: ctor[352/417] @0x7deb2b590
+[  3s] ELF: ctor[352/417] @0x96182f590
 [  3s] ELF: ctor[352/417] OK
-[  3s] ELF: ctor[353/417] @0x7deb2b640
+[  3s] ELF: ctor[353/417] @0x96182f640
 [  3s] ELF: ctor[353/417] OK
-[  3s] ELF: ctor[354/417] @0x7deb2b6f0
+[  3s] ELF: ctor[354/417] @0x96182f6f0
 [  3s] ELF: ctor[354/417] OK
-[  3s] ELF: ctor[355/417] @0x7deb2b7a0
+[  3s] ELF: ctor[355/417] @0x96182f7a0
 [  3s] ELF: ctor[355/417] OK
-[  3s] ELF: ctor[356/417] @0x7deb2b850
+[  3s] ELF: ctor[356/417] @0x96182f850
 [  3s] ELF: ctor[356/417] OK
-[  3s] ELF: ctor[357/417] @0x7deb2b900
+[  3s] ELF: ctor[357/417] @0x96182f900
 [  3s] ELF: ctor[357/417] OK
-[  3s] ELF: ctor[358/417] @0x7deb2b9b0
+[  3s] ELF: ctor[358/417] @0x96182f9b0
 [  3s] ELF: ctor[358/417] OK
-[  3s] ELF: ctor[359/417] @0x7deb2ba60
+[  3s] ELF: ctor[359/417] @0x96182fa60
 [  3s] ELF: ctor[359/417] OK
-[  3s] ELF: ctor[360/417] @0x7deb2bb10
+[  3s] ELF: ctor[360/417] @0x96182fb10
 [  3s] ELF: ctor[360/417] OK
-[  3s] ELF: ctor[361/417] @0x7deb2bbc0
+[  3s] ELF: ctor[361/417] @0x96182fbc0
 [  3s] ELF: ctor[361/417] OK
-[  3s] ELF: ctor[362/417] @0x7deb2bc70
+[  3s] ELF: ctor[362/417] @0x96182fc70
 [  3s] ELF: ctor[362/417] OK
-[  3s] ELF: ctor[363/417] @0x7deb2bd20
+[  3s] ELF: ctor[363/417] @0x96182fd20
 [  3s] ELF: ctor[363/417] OK
-[  3s] ELF: ctor[364/417] @0x7deb2bdd0
+[  3s] ELF: ctor[364/417] @0x96182fdd0
 [  3s] ELF: ctor[364/417] OK
-[  3s] ELF: ctor[365/417] @0x7deb2be80
-[  3s] ELF: ctor[365/417] OK
-[  3s] ELF: ctor[366/417] @0x7deb2bf30
-[  3s] ELF: ctor[366/417] OK
-[  3s] ELF: ctor[367/417] @0x7deb2c028
-[  3s] ELF: ctor[367/417] OK
-[  3s] ELF: ctor[368/417] @0x7deb2c0d8
-[  3s] ELF: ctor[368/417] OK
-[  3s] ELF: ctor[369/417] @0x7deb2c188
-[  3s] ELF: ctor[369/417] OK
-[  3s] ELF: ctor[370/417] @0x7deb2c238
-[  3s] ELF: ctor[370/417] OK
-[  4s] ELF: ctor[371/417] @0x7deb2c2e8
+[  4s] ELF: ctor[365/417] @0x96182fe80
+[  4s] ELF: ctor[365/417] OK
+[  4s] ELF: ctor[366/417] @0x96182ff30
+[  4s] ELF: ctor[366/417] OK
+[  4s] ELF: ctor[367/417] @0x961830028
+[  4s] ELF: ctor[367/417] OK
+[  4s] ELF: ctor[368/417] @0x9618300d8
+[  4s] ELF: ctor[368/417] OK
+[  4s] ELF: ctor[369/417] @0x961830188
+[  4s] ELF: ctor[369/417] OK
+[  4s] ELF: ctor[370/417] @0x961830238
+[  4s] ELF: ctor[370/417] OK
+[  4s] ELF: ctor[371/417] @0x9618302e8
 [  4s] ELF: ctor[371/417] OK
-[  4s] ELF: ctor[372/417] @0x7deb2c398
+[  4s] ELF: ctor[372/417] @0x961830398
 [  4s] ELF: ctor[372/417] OK
-[  4s] ELF: ctor[373/417] @0x7deb2c448
+[  4s] ELF: ctor[373/417] @0x961830448
 [  4s] ELF: ctor[373/417] OK
-[  4s] ELF: ctor[374/417] @0x7deb2c4f8
+[  4s] ELF: ctor[374/417] @0x9618304f8
 [  4s] ELF: ctor[374/417] OK
-[  4s] ELF: ctor[375/417] @0x7deb2c5a8
+[  4s] ELF: ctor[375/417] @0x9618305a8
 [  4s] ELF: ctor[375/417] OK
-[  4s] ELF: ctor[376/417] @0x7deb2c658
+[  4s] ELF: ctor[376/417] @0x961830658
 [  4s] ELF: ctor[376/417] OK
-[  4s] ELF: ctor[377/417] @0x7deb2c708
+[  4s] ELF: ctor[377/417] @0x961830708
 [  4s] ELF: ctor[377/417] OK
-[  4s] ELF: ctor[378/417] @0x7deb2c7dc
+[  4s] ELF: ctor[378/417] @0x9618307dc
 [  4s] ELF: ctor[378/417] OK
-[  4s] ELF: ctor[379/417] @0x7deb2c88c
+[  4s] ELF: ctor[379/417] @0x96183088c
 [  4s] ELF: ctor[379/417] OK
-[  4s] ELF: ctor[380/417] @0x7deb2c93c
+[  4s] ELF: ctor[380/417] @0x96183093c
 [  4s] ELF: ctor[380/417] OK
-[  4s] ELF: ctor[381/417] @0x7deb2ca18
+[  4s] ELF: ctor[381/417] @0x961830a18
 [  4s] ELF: ctor[381/417] OK
-[  4s] ELF: ctor[382/417] @0x7deb2cac8
+[  4s] ELF: ctor[382/417] @0x961830ac8
 [  4s] ELF: ctor[382/417] OK
-[  4s] ELF: ctor[383/417] @0x7deb2cb78
+[  4s] ELF: ctor[383/417] @0x961830b78
 [  4s] ELF: ctor[383/417] OK
-[  4s] ELF: ctor[384/417] @0x7deb2cc28
+[  4s] ELF: ctor[384/417] @0x961830c28
 [  4s] ELF: ctor[384/417] OK
-[  4s] ELF: ctor[385/417] @0x7deb2ccd8
+[  4s] ELF: ctor[385/417] @0x961830cd8
 [  4s] ELF: ctor[385/417] OK
-[  4s] ELF: ctor[386/417] @0x7deb2cd88
+[  4s] ELF: ctor[386/417] @0x961830d88
 [  4s] ELF: ctor[386/417] OK
-[  4s] ELF: ctor[387/417] @0x7deb2ce38
+[  4s] ELF: ctor[387/417] @0x961830e38
 [  4s] ELF: ctor[387/417] OK
-[  4s] ELF: ctor[388/417] @0x7deb2cee8
+[  4s] ELF: ctor[388/417] @0x961830ee8
 [  4s] ELF: ctor[388/417] OK
-[  4s] ELF: ctor[389/417] @0x7deb2cf98
+[  4s] ELF: ctor[389/417] @0x961830f98
 [  4s] ELF: ctor[389/417] OK
-[  4s] ELF: ctor[390/417] @0x7deb2d048
+[  4s] ELF: ctor[390/417] @0x961831048
 [  4s] ELF: ctor[390/417] OK
-[  4s] ELF: ctor[391/417] @0x7deb2d0f8
+[  4s] ELF: ctor[391/417] @0x9618310f8
 [  4s] ELF: ctor[391/417] OK
-[  4s] ELF: ctor[392/417] @0x7deb2d1a8
+[  4s] ELF: ctor[392/417] @0x9618311a8
 [  4s] ELF: ctor[392/417] OK
-[  4s] ELF: ctor[393/417] @0x7deb2d258
+[  4s] ELF: ctor[393/417] @0x961831258
 [  4s] ELF: ctor[393/417] OK
-[  4s] ELF: ctor[394/417] @0x7deb2d308
+[  4s] ELF: ctor[394/417] @0x961831308
 [  4s] ELF: ctor[394/417] OK
-[  4s] ELF: ctor[395/417] @0x7deb2d3b8
+[  4s] ELF: ctor[395/417] @0x9618313b8
 [  4s] ELF: ctor[395/417] OK
-[  4s] ELF: ctor[396/417] @0x7deb2d468
+[  4s] ELF: ctor[396/417] @0x961831468
 [  4s] ELF: ctor[396/417] OK
-[  4s] ELF: ctor[397/417] @0x7deb2d518
+[  4s] ELF: ctor[397/417] @0x961831518
 [  4s] ELF: ctor[397/417] OK
-[  4s] ELF: ctor[398/417] @0x7deb2d5f4
+[  4s] ELF: ctor[398/417] @0x9618315f4
 [  4s] ELF: ctor[398/417] OK
-[  4s] ELF: ctor[399/417] @0x7deb2d6a4
+[  4s] ELF: ctor[399/417] @0x9618316a4
 [  4s] ELF: ctor[399/417] OK
-[  4s] ELF: ctor[400/417] @0x7deb2d754
+[  4s] ELF: ctor[400/417] @0x961831754
 [  4s] ELF: ctor[400/417] OK
-[  4s] ELF: ctor[401/417] @0x7deb2d804
+[  4s] ELF: ctor[401/417] @0x961831804
 [  4s] ELF: ctor[401/417] OK
-[  4s] ELF: ctor[402/417] @0x7deb2d8b4
+[  4s] ELF: ctor[402/417] @0x9618318b4
 [  4s] ELF: ctor[402/417] OK
-[  4s] ELF: ctor[403/417] @0x7deb2d964
+[  4s] ELF: ctor[403/417] @0x961831964
 [  4s] ELF: ctor[403/417] OK
-[  4s] ELF: ctor[404/417] @0x7deb2da14
+[  4s] ELF: ctor[404/417] @0x961831a14
 [  4s] ELF: ctor[404/417] OK
-[  4s] ELF: ctor[405/417] @0x7deb2dac4
+[  4s] ELF: ctor[405/417] @0x961831ac4
 [  4s] ELF: ctor[405/417] OK
-[  4s] ELF: ctor[406/417] @0x7deb2db74
+[  4s] ELF: ctor[406/417] @0x961831b74
 [  4s] ELF: ctor[406/417] OK
-[  4s] ELF: ctor[407/417] @0x7deb2dc48
+[  4s] ELF: ctor[407/417] @0x961831c48
 [  4s] ELF: ctor[407/417] OK
-[  4s] ELF: ctor[408/417] @0x7deb2dcf8
+[  4s] ELF: ctor[408/417] @0x961831cf8
 [  4s] ELF: ctor[408/417] OK
-[  4s] ELF: ctor[409/417] @0x7deb2dda8
+[  4s] ELF: ctor[409/417] @0x961831da8
 [  4s] ELF: ctor[409/417] OK
-[  4s] ELF: ctor[410/417] @0x7deb2de58
+[  4s] ELF: ctor[410/417] @0x961831e58
 [  4s] ELF: ctor[410/417] OK
-[  4s] ELF: ctor[411/417] @0x7deb2df08
+[  4s] ELF: ctor[411/417] @0x961831f08
 [  4s] ELF: ctor[411/417] OK
-[  4s] ELF: ctor[412/417] @0x7deb2dfb8
+[  4s] ELF: ctor[412/417] @0x961831fb8
 [  4s] ELF: ctor[412/417] OK
-[  4s] ELF: ctor[413/417] @0x7deb2e068
+[  4s] ELF: ctor[413/417] @0x961832068
 [  4s] ELF: ctor[413/417] OK
-[  4s] ELF: ctor[414/417] @0x7deb2e118
+[  4s] ELF: ctor[414/417] @0x961832118
 [  4s] ELF: ctor[414/417] OK
-[  4s] ELF: ctor[415/417] @0x7deb2e1c8
+[  4s] ELF: ctor[415/417] @0x9618321c8
 [  4s] ELF: ctor[415/417] OK
-[  4s] ELF: ctor[416/417] @0x7deb2e224
+[  4s] ELF: ctor[416/417] @0x961832224
 [  4s] ELF: ctor[416/417] OK
-[  4s] ELF: ctor[417/417] @0x7deb2e8ec
+[  4s] ELF: ctor[417/417] @0x9618328ec
 [  4s] syscall(178) → ENOSYS  x3
 [  4s] ELF: ctor[417/417] OK
 [  4s] ELF: libgame.so: ctors done ok=417 failed=0 skipped=0
 [  4s] Scanning for Java_ native methods in main .so...
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_closeWithEulaDecline @0x7dee13214
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onPaymentWallAdsUpdated @0x7ded1d00c
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesMove @0x7dee59200
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_userHasGivenConsentForTargetedAds @0x7ded1ce94
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getPlayerInfoAdFreeStatus @0x7ded1df10
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoStartedFail @0x7ded1df6c
-[  4s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSignInCompleted @0x7deda2778
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItemEnabled @0x7ded1cd8c
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeKeyDown @0x7dee59478
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeOnResume @0x7dee58a18
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getPlayerInfoGDPRValue @0x7ded1decc
-[  4s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDataLoadedGarage @0x7deda28d8
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_passGDPRConsentValueToNativeSide @0x7ded1cec0
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_consentFormHasBeenShown @0x7ded1df54
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_updateRingerStateAndVolumeLevel @0x7dee12dd4
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setPromoClosed @0x7dee13210
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItemPrice @0x7ded1ca84
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_eulaHasBeenAccepted @0x7dee13230
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoStartedSuccess @0x7ded1df84
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_createRewardedInterstitialFrequencyCap @0x7dee131a8
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_userHasNotGivenConsentForTargetedAds @0x7ded1ceac
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_crossPromoShowing @0x7dee12dcc
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxBitmap_nativeInitBitmapDC @0x7dee58320
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit @0x7deb2efb8
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeDeleteBackward @0x7dee58908
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInsertText @0x7dee58894
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeResize @0x7deb2ef6c
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getPlayerConsentLocation @0x7ded1dff0
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_interstialClosed @0x7dee12d38
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_createInterstitialFrequencyCap @0x7dee13158
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setNativePlayerGDPRStatus @0x7ded1e450
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getContentVersionFromGlobalH @0x7deda2770
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnCountryCode @0x7ded1dff4
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoCompletedSuccess @0x7ded1dfb4
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesBegin @0x7dee59128
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnFileDownloadResult @0x7ded1ddf4
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeGetContentText @0x7dee5891c
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxActivity_nativeSetPaths @0x7dee58e48
-[  4s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDataLoaded @0x7deda27f0
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onControllerKeyEvent @0x7debca6ac
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItem @0x7ded1cbc4
-[  4s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDeviceLimitReached @0x7deda27a0
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnMissionJson @0x7ded1dc58
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_isTestingMode @0x7deda2768
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeOnPause @0x7dee589cc
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setServerTime @0x7ded1cdec
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoCompletedFail @0x7ded1df9c
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_startPopupOfferHandler @0x7ded1deb4
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_clearStoreItems @0x7ded1cf3c
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onRewardedInterstitialCompleted @0x7ded1dfcc
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesEnd @0x7dee59194
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onControllerConnectionEvent @0x7debca9ec
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesCancel @0x7dee5933c
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeRender @0x7dee589b0
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnPopupOfferJson @0x7ded1dd30
-[  4s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDataLoadedSkins @0x7deda29c0
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setCustomRewardVideoAdCompleted @0x7ded1ce80
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_crossPromoClosed @0x7dee12dd0
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_reportConsentDialogDismissed @0x7ded1df68
-[  4s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onAchievementProgressLoaded @0x7deda2aa8
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItemCurrencyCode @0x7ded1cb24
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_UpdateLevelBattles @0x7ded1ca70
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_closeWithEulaDecline @0x961b17214
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onPaymentWallAdsUpdated @0x961a2100c
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesMove @0x961b5d200
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_userHasGivenConsentForTargetedAds @0x961a20e94
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getPlayerInfoAdFreeStatus @0x961a21f10
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoStartedFail @0x961a21f6c
+[  4s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSignInCompleted @0x961aa6778
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItemEnabled @0x961a20d8c
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeKeyDown @0x961b5d478
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeOnResume @0x961b5ca18
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getPlayerInfoGDPRValue @0x961a21ecc
+[  4s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDataLoadedGarage @0x961aa68d8
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_passGDPRConsentValueToNativeSide @0x961a20ec0
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_consentFormHasBeenShown @0x961a21f54
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_updateRingerStateAndVolumeLevel @0x961b16dd4
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setPromoClosed @0x961b17210
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItemPrice @0x961a20a84
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_eulaHasBeenAccepted @0x961b17230
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoStartedSuccess @0x961a21f84
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_createRewardedInterstitialFrequencyCap @0x961b171a8
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_userHasNotGivenConsentForTargetedAds @0x961a20eac
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_crossPromoShowing @0x961b16dcc
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxBitmap_nativeInitBitmapDC @0x961b5c320
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit @0x961832fb8
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeDeleteBackward @0x961b5c908
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInsertText @0x961b5c894
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeResize @0x961832f6c
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getPlayerConsentLocation @0x961a21ff0
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_interstialClosed @0x961b16d38
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_createInterstitialFrequencyCap @0x961b17158
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setNativePlayerGDPRStatus @0x961a22450
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getContentVersionFromGlobalH @0x961aa6770
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnCountryCode @0x961a21ff4
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoCompletedSuccess @0x961a21fb4
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesBegin @0x961b5d128
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnFileDownloadResult @0x961a21df4
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeGetContentText @0x961b5c91c
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxActivity_nativeSetPaths @0x961b5ce48
+[  4s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDataLoaded @0x961aa67f0
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onControllerKeyEvent @0x9618ce6ac
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItem @0x961a20bc4
+[  4s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDeviceLimitReached @0x961aa67a0
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnMissionJson @0x961a21c58
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_isTestingMode @0x961aa6768
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeOnPause @0x961b5c9cc
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setServerTime @0x961a20dec
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoCompletedFail @0x961a21f9c
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_startPopupOfferHandler @0x961a21eb4
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_clearStoreItems @0x961a20f3c
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onRewardedInterstitialCompleted @0x961a21fcc
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesEnd @0x961b5d194
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onControllerConnectionEvent @0x9618ce9ec
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesCancel @0x961b5d33c
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeRender @0x961b5c9b0
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnPopupOfferJson @0x961a21d30
+[  4s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDataLoadedSkins @0x961aa69c0
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setCustomRewardVideoAdCompleted @0x961a20e80
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_crossPromoClosed @0x961b16dd0
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_reportConsentDialogDismissed @0x961a21f68
+[  4s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onAchievementProgressLoaded @0x961aa6aa8
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItemCurrencyCode @0x961a20b24
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_UpdateLevelBattles @0x961a20a70
 [  4s] JAVA_METHOD: 62 total Java_ symbols found
 [  4s] ELF: loading complete — game execution on main thread
-[  4s] AndroidTLS: old TPIDR_EL0=0x0 — installing fake TLS @0xbf5f79750
+[  4s] AndroidTLS: old TPIDR_EL0=0x0 — installing fake TLS @0xaef549750
 [  4s] audio: assets dir = sdmc:/AndroidHorizonNX/games/com.fingersoft.hillclimb/assets
 [  4s] audio: SDL_mixer ready (codecs=0x18)
 [  4s] UserDefaults: loaded 5302 ints, 3 floats, 49 strings
 [  4s] EGL: using SDL2 context on main thread
-[  4s] Calling JNI_OnLoad @0x7deb2ed78 ...
+[  4s] Calling JNI_OnLoad @0x961832d78 ...
 [  4s] [main] JNI_OnLoad: Init
 [  4s] JNI FindClass: org/cocos2dx/lib/Cocos2dxActivity
 [  4s] [main] JNI_OnLoad: Cached global reference for org/cocos2dx/lib/Cocos2dxActivity
 [  4s] JNI_OnLoad returned: 0x10004
 [  4s] No NativeActivity — Cocos2d-x direct Java_ path
-[  4s] Cocos2d-x: nativeSetPaths @0x7dee58e48
+[  4s] Cocos2d-x: nativeSetPaths @0x961b5ce48
 [  4s] Cocos2d-x: nativeSetPaths OK
-[  4s] Cocos2d-x: nativeInit @0x7deb2efb8 1280x720
+[  4s] Cocos2d-x: nativeInit @0x961832fb8 1280x720
 [  4s] syscall(178) → ENOSYS
 [  4s] [CCApplication_android Debug] Cocos2D-X - CCApplication::run() called
 [  4s] JNI FindClass: org/cocos2dx/lib/Cocos2dxRenderer
@@ -1023,23 +1023,23 @@
 
 [  4s] fopen FAIL:  (mode=r)
 [  4s] game stdio: I/O 
-[  4s] game stdio: error : 
-[  4s] game stdio: No such file or directory
+[  5s] game stdio: error : 
+[  5s] game stdio: No such file or directory
 
-[  4s] game stdio: I/O 
-[  4s] game stdio: warning : 
-[  4s] game stdio: failed to load external entity ""
+[  5s] game stdio: I/O 
+[  5s] game stdio: warning : 
+[  5s] game stdio: failed to load external entity ""
 
-[  4s] JNI FindClass: org/cocos2dx/lib/Cocos2dxUserDefault
-[  4s] JNI GetStaticMethodID: getIntegerForKey (Ljava/lang/String;I)I
-[  4s] JNI GetStaticMethodID: getStringForKey (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-[  4s] JNI FindClass: com/fingersoft/game/MainActivity
-[  4s] JNI GetStaticMethodID: getMarketVariation ()I
-[  4s] JNI GetStaticMethodID: isTv ()Z
-[  4s] JNI CallStaticBooleanMethodV: isTv → false
-[  4s] JNI GetStaticMethodID: hasValue (Ljava/lang/String;)Z
-[  4s] JNI CallStaticBooleanMethodV: hasValue → false
-[  4s] JNI GetStaticMethodID: getDeviceLanguage ()Ljava/lang/String;
+[  5s] JNI FindClass: org/cocos2dx/lib/Cocos2dxUserDefault
+[  5s] JNI GetStaticMethodID: getIntegerForKey (Ljava/lang/String;I)I
+[  5s] JNI GetStaticMethodID: getStringForKey (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+[  5s] JNI FindClass: com/fingersoft/game/MainActivity
+[  5s] JNI GetStaticMethodID: getMarketVariation ()I
+[  5s] JNI GetStaticMethodID: isTv ()Z
+[  5s] JNI CallStaticBooleanMethodV: isTv → false
+[  5s] JNI GetStaticMethodID: hasValue (Ljava/lang/String;)Z
+[  5s] JNI CallStaticBooleanMethodV: hasValue → false
+[  5s] JNI GetStaticMethodID: getDeviceLanguage ()Ljava/lang/String;
 [  5s] JNI CallStaticObjectMethodV: getDeviceLanguage ()Ljava/lang/String; → ""
 [  5s] JNI GetStaticMethodID: debugStringOnAndroid (Ljava/lang/String;)V
 [  5s] game debug: Day Today:6 PrevDayInMonth:6
@@ -1060,28 +1060,30 @@
 [  5s] JNI GetStaticMethodID: startAdView ()V
 [  5s] JNI CallStaticVoidMethodV: startAdView ()V
 [  5s] Cocos2d-x: nativeInit OK
-[  5s] touch: begin=0x7dee59128 end=0x7dee59194 move=0x7dee59200 keyDown=0x7dee59478
-[  5s] Cocos2d-x: nativeRender @0x7dee589b0 — game loop
+[  5s] touch: begin=0x961b5d128 end=0x961b5d194 move=0x961b5d200 keyDown=0x961b5d478
+[  5s] Cocos2d-x: nativeRender @0x961b5c9b0 — game loop
 [  6s] branding: probe [0]=0,0,0(want 14,14,20) [1]=0,0,0(want 14,14,20) [2]=0,0,0(want 230,230,230)X → no match
-[  7s] screenshot: sdmc:/AndroidHorizonNX/screenshots/game_frame30.png
-[  8s] branding: probe [0]=0,0,0(want 14,14,20) [1]=0,0,0(want 14,14,20) [2]=0,0,0(want 230,230,230)X → no match  x2
+[  6s] [libSimpleAudioEngine] Get Env
+[  6s] JNI GetStaticMethodID: getAndroidVersion ()Ljava/lang/String;
+[  6s] JNI CallStaticObjectMethodV: getAndroidVersion ()Ljava/lang/String; → ""
+[  6s] [libSimpleAudioEngine] Get Env
+[  6s] JNI GetStaticMethodID: preloadEffect (Ljava/lang/String;)V
+[  6s] [libSimpleAudioEngine] Get Env
+[  6s] JNI GetStaticMethodID: playEffect (Ljava/lang/String;ZFF)I
+[  8s] screenshot: sdmc:/AndroidHorizonNX/screenshots/game_frame30.png
 [  8s] JNI GetStaticMethodID: splashScreenHasCompleted ()V
 [  8s] JNI splashScreenHasCompleted — hiding branding overlay
-[  8s] [libSimpleAudioEngine] Get Env
-[  8s] JNI GetStaticMethodID: getAndroidVersion ()Ljava/lang/String;
-[  8s] JNI CallStaticObjectMethodV: getAndroidVersion ()Ljava/lang/String; → ""
-[  8s] [libSimpleAudioEngine] Get Env
-[  8s] JNI GetStaticMethodID: preloadEffect (Ljava/lang/String;)V
-[  8s] [libSimpleAudioEngine] Get Env
-[  8s] JNI GetStaticMethodID: stopBackgroundMusic ()V
-[  8s] [libSimpleAudioEngine] Get Env
-[  8s] JNI GetStaticMethodID: playBackgroundMusic (Ljava/lang/String;Z)V
-[  8s] audio: music sdmc:/AndroidHorizonNX/games/com.fingersoft.hillclimb/assets/audio/bgmusic00.ogg loop=1
-[  8s] [libSimpleAudioEngine] Get Env
+[  9s] [libSimpleAudioEngine] Get Env  x3
+[  9s] JNI GetStaticMethodID: stopBackgroundMusic ()V
+[  9s] [libSimpleAudioEngine] Get Env
+[  9s] JNI GetStaticMethodID: playBackgroundMusic (Ljava/lang/String;Z)V
+[  9s] audio: music sdmc:/AndroidHorizonNX/games/com.fingersoft.hillclimb/assets/audio/bgmusic00.ogg loop=1
+[  9s] [libSimpleAudioEngine] Get Env
 [  9s] JNI GetStaticMethodID: setBackgroundMusicVolume (F)V
-[ 19s] [libSimpleAudioEngine] Get Env  x15
-[ 21s] game stdio: libpng warning: iCCP: known incorrect sRGB profile
-[ 21s] game: frame 300
+[ 19s] [libSimpleAudioEngine] Get Env  x14
+[ 22s] game stdio: libpng warning: iCCP: known incorrect sRGB profile
+[ 22s] game: frame 300
+[ 23s] branding: probe [0]=48,54,66(want 14,14,20)X [1]=45,49,60(want 14,14,20) [2]=255,255,255(want 230,230,230) → no match
 [ 26s] screenshot: sdmc:/AndroidHorizonNX/screenshots/game_frame300.png
 [ 26s] syscall(178) → ENOSYS
 [ 26s] JNI GetStaticMethodID: getFilesDirectory ()Ljava/lang/String;
@@ -1095,9 +1097,9 @@
 [ 27s] JNI CallStaticVoidMethodV: sendMissionJsonRequestToUrl (Ljava/lang/String;)V
 [ 27s] [fsgame] Event start time 1783281251
 [ 27s] [fsgame] Roadtrip event start time 1783281251
-[ 27s] JNI setIntegerForKey(last_saved_timestamp, 1783297174)
+[ 27s] JNI setIntegerForKey(last_saved_timestamp, 1783298433)
 [ 27s] JNI setIntegerForKey(stage, 0)
-[ 27s] JNI setIntegerForKey(coins, 108695)
+[ 27s] JNI setIntegerForKey(coins, 6180)
 [ 27s] JNI setIntegerForKey(highscore, 0)
 [ 27s] JNI setIntegerForKey(level_engine, 1)
 [ 27s] JNI setIntegerForKey(level_suspension, 1)
@@ -1110,7 +1112,7 @@
 [ 27s] JNI setIntegerForKey(car_selection_carousel, -1)
 [ 27s] JNI setIntegerForKey(adfree, 0)
 [ 27s] JNI setIntegerForKey(adFreeIAPPurchased, 0)
-[ 27s] JNI setIntegerForKey(gems, 64)
+[ 27s] JNI setIntegerForKey(gems, 93)
 [ 27s] JNI setIntegerForKey(daily_missions_streak, 0)
 [ 27s] JNI setIntegerForKey(chestg, 0)
 [ 27s] JNI setIntegerForKey(chests, 0)
@@ -1122,7 +1124,7 @@
 [ 27s] JNI setIntegerForKey(render_dirt, 1)
 [ 27s] JNI setIntegerForKey(halloween_content, 1)
 [ 27s] JNI setIntegerForKey(music, 1)
-[ 27s] JNI setIntegerForKey(sound, 0)
+[ 27s] JNI setIntegerForKey(sound, 1)
 [ 27s] JNI setIntegerForKey(moga_pro_guide, 0)
 [ 27s] JNI setIntegerForKey(moga_pocket_guide, 0)
 [ 27s] JNI setIntegerForKey(display_mode, 0)
@@ -1132,196 +1134,196 @@
 [ 27s] JNI setStringForKey(language, "translations/english.po")
 [ 27s] JNI setIntegerForKey(daily_double_used, 0)
 [ 27s] JNI setIntegerForKey(new_day, 0)
-[ 27s] JNI setIntegerForKey(previous_day_in_month, 6)
-[ 27s] JNI setIntegerForKey(show_eula_counter, 0)
-[ 27s] JNI setIntegerForKey(eula_has_been_accepted, 1)
-[ 27s] JNI setIntegerForKey(eula_accepted_version, 1)
-[ 27s] JNI setIntegerForKey(bundlea, 12)
-[ 27s] JNI setIntegerForKey(bundlerefsh, 1783296523)
-[ 27s] JNI setIntegerForKey(chal, 0)
-[ 27s] JNI setIntegerForKey(chalc, 4)
-[ 27s] JNI setIntegerForKey(chalfa, 5)
-[ 27s] JNI setIntegerForKey(chalrc, 0)
-[ 27s] JNI setIntegerForKey(chalrew, 140)
-[ 27s] JNI setIntegerForKey(chalgoal, 5300)
-[ 27s] JNI setIntegerForKey(chalv, 1)
-[ 27s] JNI setIntegerForKey(chalprev, 186)
-[ 27s] JNI setIntegerForKey(maalitynnyrit, 305419896)
-[ 27s] JNI setIntegerForKey(mustontulluurheiluhullu, 305419889)
-[ 27s] JNI setIntegerForKey(erikoisfiat, 305419896)
-[ 27s] JNI setStringForKey(hippikaara, "1783281251")
-[ 27s] JNI setIntegerForKey(tasohoula, 305419896)
-[ 27s] JNI setIntegerForKey(sahanpuru, 305419896)
-[ 27s] JNI setIntegerForKey(is_gdpr_country, 0)
-[ 27s] JNI setIntegerForKey(CPPA_consent, 0)
-[ 27s] JNI setIntegerForKey(CCPA_EULA_updated, 0)
-[ 27s] JNI setIntegerForKey(show_GDPR_V3_dialog, 0)
-[ 27s] JNI setIntegerForKey(GDPR_consent, 1)
-[ 27s] JNI setIntegerForKey(determinedGdprLocation, 0)
-[ 27s] JNI setIntegerForKey(gdprLocation, 2)
-[ 27s] JNI setIntegerForKey(lowrider_hop, 0)
-[ 27s] JNI setIntegerForKey(lowrider_jump, 0)
-[ 27s] JNI GetStaticMethodID: setFloatForKey (Ljava/lang/String;F)V
-[ 27s] JNI setIntegerForKey(bogland_berries, 0)
-[ 27s] JNI setIntegerForKey(retro_hiscore, 0)
-[ 27s] JNI setIntegerForKey(retro_coins, 0)
-[ 27s] JNI setIntegerForKey(retro_upgrades, 8191)
-[ 27s] JNI setIntegerForKey(retro_hiscoretable_0, 4999490)
-[ 27s] JNI setIntegerForKey(retro_hiscoretable_1, 900)
-[ 27s] JNI setIntegerForKey(retro_hiscoretable_2, 2304)
-[ 27s] JNI setIntegerForKey(retro_hiscoretable_3, 0)
-[ 27s] JNI setIntegerForKey(retro_hiscoretable_4, 5719374)
-[ 27s] JNI setIntegerForKey(retro_hiscoretable_5, 700)
-[ 27s] JNI setIntegerForKey(retro_hiscoretable_6, 1792)
-[ 27s] JNI setIntegerForKey(retro_hiscoretable_7, 0)
-[ 27s] JNI setIntegerForKey(retro_hiscoretable_8, 5132116)
-[ 27s] JNI setIntegerForKey(retro_hiscoretable_9, 500)
-[ 27s] JNI setIntegerForKey(retro_hiscoretable_10, 1280)
-[ 27s] JNI setIntegerForKey(retro_hiscoretable_11, 0)
-[ 27s] JNI setIntegerForKey(retro_hiscoretable_12, 5130566)
-[ 27s] JNI setIntegerForKey(retro_hiscoretable_13, 200)
-[ 27s] JNI setIntegerForKey(retro_hiscoretable_14, 512)
-[ 27s] JNI setIntegerForKey(retro_hiscoretable_15, 0)
-[ 27s] JNI setIntegerForKey(retro_hiscoretable_16, 5391687)
-[ 27s] JNI setIntegerForKey(retro_hiscoretable_17, 100)
-[ 27s] JNI setIntegerForKey(retro_hiscoretable_18, 256)
-[ 27s] JNI setIntegerForKey(retro_hiscoretable_19, 0)
-[ 27s] JNI setIntegerForKey(retro_hiscoretable_20, 5523027)
-[ 27s] JNI setIntegerForKey(retro_hiscoretable_21, 50)
-[ 27s] JNI setIntegerForKey(retro_hiscoretable_22, 80)
-[ 27s] JNI setIntegerForKey(retro_hiscoretable_23, 0)
-[ 27s] JNI setIntegerForKey(adsWatchedToday, 0)
-[ 27s] JNI setIntegerForKey(double_money_video_watched, 0)
-[ 27s] JNI setIntegerForKey(is_double_money_active, 0)
-[ 27s] JNI setIntegerForKey(custom1_unlocked, 0)
-[ 27s] JNI setIntegerForKey(custom1_chestconsumed, 0)
-[ 27s] JNI setIntegerForKey(custom1_powerupsel, 0)
-[ 27s] JNI setStringForKey(custom1_attachments, "")
-[ 27s] JNI setIntegerForKey(jeep_engine, 3)
-[ 27s] JNI setIntegerForKey(jeep_engineH, 3)
-[ 27s] JNI setIntegerForKey(jeep_suspension, 3)
-[ 27s] JNI setIntegerForKey(jeep_suspensionH, 3)
-[ 27s] JNI setIntegerForKey(jeep_tires, 2)
-[ 27s] JNI setIntegerForKey(jeep_tiresH, 2)
-[ 27s] JNI setIntegerForKey(jeep_awd, 2)
-[ 27s] JNI setIntegerForKey(jeep_awdH, 2)
-[ 27s] JNI setIntegerForKey(jeep_unlocked, 1)
-[ 27s] JNI setIntegerForKey(jeep_chestconsumed, 1)
-[ 27s] JNI setIntegerForKey(jeep_powerupsel, 0)
-[ 27s] JNI setStringForKey(jeep_attachments, "")
-[ 27s] JNI setIntegerForKey(bike_engine, 1)
-[ 27s] JNI setIntegerForKey(bike_engineH, 1)
-[ 27s] JNI setIntegerForKey(bike_suspension, 1)
-[ 27s] JNI setIntegerForKey(bike_suspensionH, 1)
-[ 27s] JNI setIntegerForKey(bike_tires, 1)
-[ 27s] JNI setIntegerForKey(bike_tiresH, 1)
-[ 27s] JNI setIntegerForKey(bike_rotation, 1)
-[ 27s] JNI setIntegerForKey(bike_rotationH, 1)
-[ 27s] JNI setIntegerForKey(bike_unlocked, 0)
-[ 27s] JNI setIntegerForKey(bike_chestconsumed, 0)
-[ 27s] JNI setIntegerForKey(bike_powerupsel, 0)
-[ 27s] JNI setStringForKey(bike_attachments, "")
-[ 27s] JNI setIntegerForKey(monster_engine, 1)
-[ 27s] JNI setIntegerForKey(monster_engineH, 1)
-[ 27s] JNI setIntegerForKey(monster_suspension, 1)
-[ 27s] JNI setIntegerForKey(monster_suspensionH, 1)
-[ 27s] JNI setIntegerForKey(monster_tires, 1)
-[ 27s] JNI setIntegerForKey(monster_tiresH, 1)
-[ 27s] JNI setIntegerForKey(monster_awd, 1)
-[ 27s] JNI setIntegerForKey(monster_awdH, 1)
-[ 27s] JNI setIntegerForKey(monster_unlocked, 0)
-[ 27s] JNI setIntegerForKey(monster_chestconsumed, 0)
-[ 27s] JNI setIntegerForKey(monster_powerupsel, 0)
-[ 27s] JNI setStringForKey(monster_attachments, "")
-[ 27s] JNI setIntegerForKey(tractor_engine, 1)
-[ 27s] JNI setIntegerForKey(tractor_engineH, 1)
-[ 27s] JNI setIntegerForKey(tractor_tires, 1)
-[ 27s] JNI setIntegerForKey(tractor_tiresH, 1)
-[ 27s] JNI setIntegerForKey(tractor_fuel, 1)
-[ 27s] JNI setIntegerForKey(tractor_fuelH, 1)
-[ 27s] JNI setIntegerForKey(tractor_stability, 1)
-[ 27s] JNI setIntegerForKey(tractor_stabilityH, 1)
-[ 27s] JNI setIntegerForKey(tractor_unlocked, 0)
-[ 27s] JNI setIntegerForKey(tractor_chestconsumed, 0)
-[ 27s] JNI setIntegerForKey(tractor_powerupsel, 0)
-[ 27s] JNI setStringForKey(tractor_attachments, "")
-[ 27s] JNI setIntegerForKey(hippievan_engine, 1)
-[ 27s] JNI setIntegerForKey(hippievan_engineH, 1)
-[ 27s] JNI setIntegerForKey(hippievan_suspension, 1)
-[ 27s] JNI setIntegerForKey(hippievan_suspensionH, 1)
-[ 27s] JNI setIntegerForKey(hippievan_boost, 1)
-[ 27s] JNI setIntegerForKey(hippievan_boostH, 1)
-[ 27s] JNI setIntegerForKey(hippievan_fuel, 1)
-[ 27s] JNI setIntegerForKey(hippievan_fuelH, 1)
-[ 27s] JNI setIntegerForKey(hippievan_unlocked, 0)
-[ 27s] JNI setIntegerForKey(hippievan_chestconsumed, 0)
-[ 27s] JNI setIntegerForKey(hippievan_powerupsel, 0)
-[ 27s] JNI setStringForKey(hippievan_attachments, "")
-[ 27s] JNI setIntegerForKey(onewheeler_engine, 1)
-[ 27s] JNI setIntegerForKey(onewheeler_engineH, 1)
-[ 27s] JNI setIntegerForKey(onewheeler_suspension, 1)
-[ 27s] JNI setIntegerForKey(onewheeler_suspensionH, 1)
-[ 27s] JNI setIntegerForKey(onewheeler_tires, 1)
-[ 27s] JNI setIntegerForKey(onewheeler_tiresH, 1)
-[ 27s] JNI setIntegerForKey(onewheeler_battery, 1)
-[ 27s] JNI setIntegerForKey(onewheeler_batteryH, 1)
-[ 27s] JNI setIntegerForKey(onewheeler_unlocked, 0)
-[ 27s] JNI setIntegerForKey(onewheeler_chestconsumed, 0)
-[ 27s] JNI setIntegerForKey(onewheeler_powerupsel, 0)
-[ 27s] JNI setStringForKey(onewheeler_attachments, "")
-[ 27s] JNI setIntegerForKey(quadbike_engine, 1)
-[ 27s] JNI setIntegerForKey(quadbike_engineH, 1)
-[ 27s] JNI setIntegerForKey(quadbike_suspension, 1)
-[ 27s] JNI setIntegerForKey(quadbike_suspensionH, 1)
-[ 27s] JNI setIntegerForKey(quadbike_tires, 1)
-[ 27s] JNI setIntegerForKey(quadbike_tiresH, 1)
-[ 27s] JNI setIntegerForKey(quadbike_awd, 1)
-[ 27s] JNI setIntegerForKey(quadbike_awdH, 1)
-[ 27s] JNI setIntegerForKey(quadbike_unlocked, 0)
-[ 27s] JNI setIntegerForKey(quadbike_chestconsumed, 0)
-[ 27s] JNI setIntegerForKey(quadbike_powerupsel, 0)
-[ 27s] JNI setStringForKey(quadbike_attachments, "")
-[ 27s] JNI setIntegerForKey(trophytruck_engine, 1)
-[ 27s] JNI setIntegerForKey(trophytruck_engineH, 1)
-[ 27s] JNI setIntegerForKey(trophytruck_suspension, 1)
-[ 27s] JNI setIntegerForKey(trophytruck_suspensionH, 1)
-[ 27s] JNI setIntegerForKey(trophytruck_tires, 1)
-[ 27s] JNI setIntegerForKey(trophytruck_tiresH, 1)
-[ 27s] JNI setIntegerForKey(trophytruck_fuel, 1)
-[ 27s] JNI setIntegerForKey(trophytruck_fuelH, 1)
-[ 27s] JNI setIntegerForKey(trophytruck_unlocked, 0)
-[ 27s] JNI setIntegerForKey(trophytruck_chestconsumed, 0)
-[ 27s] JNI setIntegerForKey(trophytruck_powerupsel, 0)
-[ 27s] JNI setStringForKey(trophytruck_attachments, "")
-[ 27s] JNI setIntegerForKey(touristbus_engine, 1)
-[ 27s] JNI setIntegerForKey(touristbus_engineH, 1)
-[ 27s] JNI setIntegerForKey(touristbus_suspension, 1)
-[ 27s] JNI setIntegerForKey(touristbus_suspensionH, 1)
-[ 27s] JNI setIntegerForKey(touristbus_tires, 1)
-[ 27s] JNI setIntegerForKey(touristbus_tiresH, 1)
-[ 27s] JNI setIntegerForKey(touristbus_fuel, 1)
-[ 27s] JNI setIntegerForKey(touristbus_fuelH, 1)
-[ 27s] JNI setIntegerForKey(touristbus_unlocked, 0)
-[ 27s] JNI setIntegerForKey(touristbus_chestconsumed, 0)
-[ 27s] JNI setIntegerForKey(touristbus_powerupsel, 0)
-[ 27s] JNI setStringForKey(touristbus_attachments, "")
-[ 27s] JNI setIntegerForKey(racecar_engine, 1)
-[ 27s] JNI setIntegerForKey(racecar_engineH, 1)
-[ 27s] JNI setIntegerForKey(racecar_suspension, 1)
-[ 27s] JNI setIntegerForKey(racecar_suspensionH, 1)
-[ 27s] JNI setIntegerForKey(racecar_tires, 1)
-[ 27s] JNI setIntegerForKey(racecar_tiresH, 1)
-[ 27s] JNI setIntegerForKey(racecar_downforce, 1)
-[ 27s] JNI setIntegerForKey(racecar_downforceH, 1)
-[ 27s] JNI setIntegerForKey(racecar_unlocked, 0)
-[ 27s] JNI setIntegerForKey(racecar_chestconsumed, 0)
-[ 27s] JNI setIntegerForKey(racecar_powerupsel, 0)
-[ 27s] JNI setStringForKey(racecar_attachments, "")
-[ 27s] JNI setIntegerForKey(screw_finger_engine, 1)
-[ 27s] JNI setIntegerForKey(screw_finger_engineH, 1)
-[ 27s] JNI setIntegerForKey(screw_finger_stability, 1)
-[ 27s] JNI setIntegerForKey(screw_finger_stabilityH, 1)
-[ 27s] JNI setIntegerForKey(screw_finger_tires, 1)
+[ 28s] JNI setIntegerForKey(previous_day_in_month, 6)
+[ 28s] JNI setIntegerForKey(show_eula_counter, 0)
+[ 28s] JNI setIntegerForKey(eula_has_been_accepted, 1)
+[ 28s] JNI setIntegerForKey(eula_accepted_version, 1)
+[ 28s] JNI setIntegerForKey(bundlea, 12)
+[ 28s] JNI setIntegerForKey(bundlerefsh, 1783297966)
+[ 28s] JNI setIntegerForKey(chal, 0)
+[ 28s] JNI setIntegerForKey(chalc, 4)
+[ 28s] JNI setIntegerForKey(chalfa, 5)
+[ 28s] JNI setIntegerForKey(chalrc, 0)
+[ 28s] JNI setIntegerForKey(chalrew, 140)
+[ 28s] JNI setIntegerForKey(chalgoal, 5300)
+[ 28s] JNI setIntegerForKey(chalv, 1)
+[ 28s] JNI setIntegerForKey(chalprev, 186)
+[ 28s] JNI setIntegerForKey(maalitynnyrit, 305419896)
+[ 28s] JNI setIntegerForKey(mustontulluurheiluhullu, 305419889)
+[ 28s] JNI setIntegerForKey(erikoisfiat, 305419896)
+[ 28s] JNI setStringForKey(hippikaara, "1783281251")
+[ 28s] JNI setIntegerForKey(tasohoula, 305419896)
+[ 28s] JNI setIntegerForKey(sahanpuru, 305419896)
+[ 28s] JNI setIntegerForKey(is_gdpr_country, 0)
+[ 28s] JNI setIntegerForKey(CPPA_consent, 0)
+[ 28s] JNI setIntegerForKey(CCPA_EULA_updated, 0)
+[ 28s] JNI setIntegerForKey(show_GDPR_V3_dialog, 0)
+[ 28s] JNI setIntegerForKey(GDPR_consent, 1)
+[ 28s] JNI setIntegerForKey(determinedGdprLocation, 0)
+[ 28s] JNI setIntegerForKey(gdprLocation, 2)
+[ 28s] JNI setIntegerForKey(lowrider_hop, 0)
+[ 28s] JNI setIntegerForKey(lowrider_jump, 0)
+[ 28s] JNI GetStaticMethodID: setFloatForKey (Ljava/lang/String;F)V
+[ 28s] JNI setIntegerForKey(bogland_berries, 0)
+[ 28s] JNI setIntegerForKey(retro_hiscore, 0)
+[ 28s] JNI setIntegerForKey(retro_coins, 0)
+[ 28s] JNI setIntegerForKey(retro_upgrades, 8191)
+[ 28s] JNI setIntegerForKey(retro_hiscoretable_0, 4999490)
+[ 28s] JNI setIntegerForKey(retro_hiscoretable_1, 900)
+[ 28s] JNI setIntegerForKey(retro_hiscoretable_2, 2304)
+[ 28s] JNI setIntegerForKey(retro_hiscoretable_3, 0)
+[ 28s] JNI setIntegerForKey(retro_hiscoretable_4, 5719374)
+[ 28s] JNI setIntegerForKey(retro_hiscoretable_5, 700)
+[ 28s] JNI setIntegerForKey(retro_hiscoretable_6, 1792)
+[ 28s] JNI setIntegerForKey(retro_hiscoretable_7, 0)
+[ 28s] JNI setIntegerForKey(retro_hiscoretable_8, 5132116)
+[ 28s] JNI setIntegerForKey(retro_hiscoretable_9, 500)
+[ 28s] JNI setIntegerForKey(retro_hiscoretable_10, 1280)
+[ 28s] JNI setIntegerForKey(retro_hiscoretable_11, 0)
+[ 28s] JNI setIntegerForKey(retro_hiscoretable_12, 5130566)
+[ 28s] JNI setIntegerForKey(retro_hiscoretable_13, 200)
+[ 28s] JNI setIntegerForKey(retro_hiscoretable_14, 512)
+[ 28s] JNI setIntegerForKey(retro_hiscoretable_15, 0)
+[ 28s] JNI setIntegerForKey(retro_hiscoretable_16, 5391687)
+[ 28s] JNI setIntegerForKey(retro_hiscoretable_17, 100)
+[ 28s] JNI setIntegerForKey(retro_hiscoretable_18, 256)
+[ 28s] JNI setIntegerForKey(retro_hiscoretable_19, 0)
+[ 28s] JNI setIntegerForKey(retro_hiscoretable_20, 5523027)
+[ 28s] JNI setIntegerForKey(retro_hiscoretable_21, 50)
+[ 28s] JNI setIntegerForKey(retro_hiscoretable_22, 80)
+[ 28s] JNI setIntegerForKey(retro_hiscoretable_23, 0)
+[ 28s] JNI setIntegerForKey(adsWatchedToday, 0)
+[ 28s] JNI setIntegerForKey(double_money_video_watched, 0)
+[ 28s] JNI setIntegerForKey(is_double_money_active, 0)
+[ 28s] JNI setIntegerForKey(custom1_unlocked, 0)
+[ 28s] JNI setIntegerForKey(custom1_chestconsumed, 0)
+[ 28s] JNI setIntegerForKey(custom1_powerupsel, 0)
+[ 28s] JNI setStringForKey(custom1_attachments, "")
+[ 28s] JNI setIntegerForKey(jeep_engine, 3)
+[ 28s] JNI setIntegerForKey(jeep_engineH, 3)
+[ 28s] JNI setIntegerForKey(jeep_suspension, 3)
+[ 28s] JNI setIntegerForKey(jeep_suspensionH, 3)
+[ 28s] JNI setIntegerForKey(jeep_tires, 2)
+[ 28s] JNI setIntegerForKey(jeep_tiresH, 2)
+[ 28s] JNI setIntegerForKey(jeep_awd, 2)
+[ 28s] JNI setIntegerForKey(jeep_awdH, 2)
+[ 28s] JNI setIntegerForKey(jeep_unlocked, 1)
+[ 28s] JNI setIntegerForKey(jeep_chestconsumed, 1)
+[ 28s] JNI setIntegerForKey(jeep_powerupsel, 0)
+[ 28s] JNI setStringForKey(jeep_attachments, "")
+[ 28s] JNI setIntegerForKey(bike_engine, 1)
+[ 28s] JNI setIntegerForKey(bike_engineH, 1)
+[ 28s] JNI setIntegerForKey(bike_suspension, 1)
+[ 28s] JNI setIntegerForKey(bike_suspensionH, 1)
+[ 28s] JNI setIntegerForKey(bike_tires, 1)
+[ 28s] JNI setIntegerForKey(bike_tiresH, 1)
+[ 28s] JNI setIntegerForKey(bike_rotation, 1)
+[ 28s] JNI setIntegerForKey(bike_rotationH, 1)
+[ 28s] JNI setIntegerForKey(bike_unlocked, 0)
+[ 28s] JNI setIntegerForKey(bike_chestconsumed, 0)
+[ 28s] JNI setIntegerForKey(bike_powerupsel, 0)
+[ 28s] JNI setStringForKey(bike_attachments, "")
+[ 28s] JNI setIntegerForKey(monster_engine, 3)
+[ 28s] JNI setIntegerForKey(monster_engineH, 3)
+[ 28s] JNI setIntegerForKey(monster_suspension, 2)
+[ 28s] JNI setIntegerForKey(monster_suspensionH, 2)
+[ 28s] JNI setIntegerForKey(monster_tires, 4)
+[ 28s] JNI setIntegerForKey(monster_tiresH, 4)
+[ 28s] JNI setIntegerForKey(monster_awd, 1)
+[ 28s] JNI setIntegerForKey(monster_awdH, 1)
+[ 28s] JNI setIntegerForKey(monster_unlocked, 1)
+[ 28s] JNI setIntegerForKey(monster_chestconsumed, 0)
+[ 28s] JNI setIntegerForKey(monster_powerupsel, 0)
+[ 28s] JNI setStringForKey(monster_attachments, "")
+[ 28s] JNI setIntegerForKey(tractor_engine, 1)
+[ 28s] JNI setIntegerForKey(tractor_engineH, 1)
+[ 28s] JNI setIntegerForKey(tractor_tires, 1)
+[ 28s] JNI setIntegerForKey(tractor_tiresH, 1)
+[ 28s] JNI setIntegerForKey(tractor_fuel, 1)
+[ 28s] JNI setIntegerForKey(tractor_fuelH, 1)
+[ 28s] JNI setIntegerForKey(tractor_stability, 1)
+[ 28s] JNI setIntegerForKey(tractor_stabilityH, 1)
+[ 28s] JNI setIntegerForKey(tractor_unlocked, 0)
+[ 28s] JNI setIntegerForKey(tractor_chestconsumed, 0)
+[ 28s] JNI setIntegerForKey(tractor_powerupsel, 0)
+[ 28s] JNI setStringForKey(tractor_attachments, "")
+[ 28s] JNI setIntegerForKey(hippievan_engine, 1)
+[ 28s] JNI setIntegerForKey(hippievan_engineH, 1)
+[ 28s] JNI setIntegerForKey(hippievan_suspension, 1)
+[ 28s] JNI setIntegerForKey(hippievan_suspensionH, 1)
+[ 28s] JNI setIntegerForKey(hippievan_boost, 1)
+[ 28s] JNI setIntegerForKey(hippievan_boostH, 1)
+[ 28s] JNI setIntegerForKey(hippievan_fuel, 1)
+[ 28s] JNI setIntegerForKey(hippievan_fuelH, 1)
+[ 28s] JNI setIntegerForKey(hippievan_unlocked, 0)
+[ 28s] JNI setIntegerForKey(hippievan_chestconsumed, 0)
+[ 28s] JNI setIntegerForKey(hippievan_powerupsel, 0)
+[ 28s] JNI setStringForKey(hippievan_attachments, "")
+[ 28s] JNI setIntegerForKey(onewheeler_engine, 1)
+[ 28s] JNI setIntegerForKey(onewheeler_engineH, 1)
+[ 28s] JNI setIntegerForKey(onewheeler_suspension, 1)
+[ 28s] JNI setIntegerForKey(onewheeler_suspensionH, 1)
+[ 28s] JNI setIntegerForKey(onewheeler_tires, 1)
+[ 28s] JNI setIntegerForKey(onewheeler_tiresH, 1)
+[ 28s] JNI setIntegerForKey(onewheeler_battery, 1)
+[ 28s] JNI setIntegerForKey(onewheeler_batteryH, 1)
+[ 28s] JNI setIntegerForKey(onewheeler_unlocked, 0)
+[ 28s] JNI setIntegerForKey(onewheeler_chestconsumed, 0)
+[ 28s] JNI setIntegerForKey(onewheeler_powerupsel, 0)
+[ 28s] JNI setStringForKey(onewheeler_attachments, "")
+[ 28s] JNI setIntegerForKey(quadbike_engine, 1)
+[ 28s] JNI setIntegerForKey(quadbike_engineH, 1)
+[ 28s] JNI setIntegerForKey(quadbike_suspension, 1)
+[ 28s] JNI setIntegerForKey(quadbike_suspensionH, 1)
+[ 28s] JNI setIntegerForKey(quadbike_tires, 1)
+[ 28s] JNI setIntegerForKey(quadbike_tiresH, 1)
+[ 28s] JNI setIntegerForKey(quadbike_awd, 1)
+[ 28s] JNI setIntegerForKey(quadbike_awdH, 1)
+[ 28s] JNI setIntegerForKey(quadbike_unlocked, 0)
+[ 28s] JNI setIntegerForKey(quadbike_chestconsumed, 0)
+[ 28s] JNI setIntegerForKey(quadbike_powerupsel, 0)
+[ 28s] JNI setStringForKey(quadbike_attachments, "")
+[ 28s] JNI setIntegerForKey(trophytruck_engine, 1)
+[ 28s] JNI setIntegerForKey(trophytruck_engineH, 1)
+[ 28s] JNI setIntegerForKey(trophytruck_suspension, 1)
+[ 28s] JNI setIntegerForKey(trophytruck_suspensionH, 1)
+[ 28s] JNI setIntegerForKey(trophytruck_tires, 1)
+[ 28s] JNI setIntegerForKey(trophytruck_tiresH, 1)
+[ 28s] JNI setIntegerForKey(trophytruck_fuel, 1)
+[ 28s] JNI setIntegerForKey(trophytruck_fuelH, 1)
+[ 28s] JNI setIntegerForKey(trophytruck_unlocked, 0)
+[ 28s] JNI setIntegerForKey(trophytruck_chestconsumed, 0)
+[ 28s] JNI setIntegerForKey(trophytruck_powerupsel, 0)
+[ 28s] JNI setStringForKey(trophytruck_attachments, "")
+[ 28s] JNI setIntegerForKey(touristbus_engine, 1)
+[ 28s] JNI setIntegerForKey(touristbus_engineH, 1)
+[ 28s] JNI setIntegerForKey(touristbus_suspension, 1)
+[ 28s] JNI setIntegerForKey(touristbus_suspensionH, 1)
+[ 28s] JNI setIntegerForKey(touristbus_tires, 1)
+[ 28s] JNI setIntegerForKey(touristbus_tiresH, 1)
+[ 28s] JNI setIntegerForKey(touristbus_fuel, 1)
+[ 28s] JNI setIntegerForKey(touristbus_fuelH, 1)
+[ 28s] JNI setIntegerForKey(touristbus_unlocked, 0)
+[ 28s] JNI setIntegerForKey(touristbus_chestconsumed, 0)
+[ 28s] JNI setIntegerForKey(touristbus_powerupsel, 0)
+[ 28s] JNI setStringForKey(touristbus_attachments, "")
+[ 28s] JNI setIntegerForKey(racecar_engine, 1)
+[ 28s] JNI setIntegerForKey(racecar_engineH, 1)
+[ 28s] JNI setIntegerForKey(racecar_suspension, 1)
+[ 28s] JNI setIntegerForKey(racecar_suspensionH, 1)
+[ 28s] JNI setIntegerForKey(racecar_tires, 1)
+[ 28s] JNI setIntegerForKey(racecar_tiresH, 1)
+[ 28s] JNI setIntegerForKey(racecar_downforce, 1)
+[ 28s] JNI setIntegerForKey(racecar_downforceH, 1)
+[ 28s] JNI setIntegerForKey(racecar_unlocked, 0)
+[ 28s] JNI setIntegerForKey(racecar_chestconsumed, 0)
+[ 28s] JNI setIntegerForKey(racecar_powerupsel, 0)
+[ 28s] JNI setStringForKey(racecar_attachments, "")
+[ 28s] JNI setIntegerForKey(screw_finger_engine, 1)
+[ 28s] JNI setIntegerForKey(screw_finger_engineH, 1)
+[ 28s] JNI setIntegerForKey(screw_finger_stability, 1)
+[ 28s] JNI setIntegerForKey(screw_finger_stabilityH, 1)
+[ 28s] JNI setIntegerForKey(screw_finger_tires, 1)
 [ 28s] JNI setIntegerForKey(screw_finger_tiresH, 1)
 [ 28s] JNI setIntegerForKey(screw_finger_fuel, 1)
 [ 28s] JNI setIntegerForKey(screw_finger_fuelH, 1)
@@ -1414,199 +1416,199 @@
 [ 28s] JNI setIntegerForKey(firetruck_powerupsel, 0)
 [ 28s] JNI setStringForKey(firetruck_attachments, "")
 [ 28s] JNI setIntegerForKey(chopper_engine, 1)
-[ 28s] JNI setIntegerForKey(chopper_engineH, 1)
-[ 28s] JNI setIntegerForKey(chopper_suspension, 1)
-[ 28s] JNI setIntegerForKey(chopper_suspensionH, 1)
-[ 28s] JNI setIntegerForKey(bike_sissybar, 1)
-[ 28s] JNI setIntegerForKey(bike_sissybarH, 1)
-[ 28s] JNI setIntegerForKey(bike_fork, 1)
-[ 28s] JNI setIntegerForKey(bike_forkH, 1)
-[ 28s] JNI setIntegerForKey(chopperbike_unlocked, 0)
-[ 28s] JNI setIntegerForKey(chopperbike_chestconsumed, 0)
-[ 28s] JNI setIntegerForKey(chopperbike_powerupsel, 0)
-[ 28s] JNI setStringForKey(chopperbike_attachments, "")
-[ 28s] JNI setIntegerForKey(lowrider_engine, 1)
-[ 28s] JNI setIntegerForKey(lowrider_engineH, 1)
-[ 28s] JNI setIntegerForKey(lowrider_tires, 1)
-[ 28s] JNI setIntegerForKey(lowrider_tiresH, 1)
-[ 28s] JNI setIntegerForKey(lowrider_suspension_rear, 1)
-[ 28s] JNI setIntegerForKey(lowrider_suspension_rearH, 1)
-[ 28s] JNI setIntegerForKey(lowrider_suspension_front, 1)
-[ 28s] JNI setIntegerForKey(lowrider_suspension_frontH, 1)
-[ 28s] JNI setIntegerForKey(lowrider_unlocked, 0)
-[ 28s] JNI setIntegerForKey(lowrider_chestconsumed, 0)
-[ 28s] JNI setIntegerForKey(lowrider_powerupsel, 0)
-[ 28s] JNI setStringForKey(lowrider_attachments, "")
-[ 28s] JNI setIntegerForKey(tank_engine, 1)
-[ 28s] JNI setIntegerForKey(tank_engineH, 1)
-[ 28s] JNI setIntegerForKey(tank_suspension, 1)
-[ 28s] JNI setIntegerForKey(tank_suspensionH, 1)
-[ 28s] JNI setIntegerForKey(tank_tires, 1)
-[ 28s] JNI setIntegerForKey(tank_tiresH, 1)
-[ 28s] JNI setIntegerForKey(tank_fuel, 1)
-[ 28s] JNI setIntegerForKey(tank_fuelH, 1)
-[ 28s] JNI setIntegerForKey(tank_unlocked, 0)
-[ 28s] JNI setIntegerForKey(tank_chestconsumed, 0)
-[ 28s] JNI setIntegerForKey(tank_powerupsel, 0)
-[ 28s] JNI setStringForKey(tank_attachments, "")
-[ 28s] JNI setIntegerForKey(snowmobile_engine, 1)
-[ 28s] JNI setIntegerForKey(snowmobile_engineH, 1)
-[ 28s] JNI setIntegerForKey(snowmobile_suspension, 1)
-[ 28s] JNI setIntegerForKey(snowmobile_suspensionH, 1)
-[ 28s] JNI setIntegerForKey(snowmobile_tires, 1)
-[ 28s] JNI setIntegerForKey(snowmobile_tiresH, 1)
-[ 28s] JNI setIntegerForKey(snowmobile_fuel, 1)
-[ 28s] JNI setIntegerForKey(snowmobile_fuelH, 1)
-[ 28s] JNI setIntegerForKey(snowmobile_unlocked, 0)
-[ 28s] JNI setIntegerForKey(snowmobile_chestconsumed, 0)
-[ 28s] JNI setIntegerForKey(snowmobile_powerupsel, 0)
-[ 28s] JNI setStringForKey(snowmobile_attachments, "")
-[ 28s] JNI setIntegerForKey(superoffroad_engine, 1)
-[ 28s] JNI setIntegerForKey(superoffroad_engineH, 1)
-[ 28s] JNI setIntegerForKey(superoffroad_tires, 1)
-[ 28s] JNI setIntegerForKey(superoffroad_tiresH, 1)
-[ 28s] JNI setIntegerForKey(superoffroad_downforce, 1)
-[ 28s] JNI setIntegerForKey(superoffroad_downforceH, 1)
-[ 28s] JNI setIntegerForKey(superoffroad_fuel, 1)
-[ 28s] JNI setIntegerForKey(superoffroad_fuelH, 1)
-[ 28s] JNI setIntegerForKey(superoffroad_unlocked, 0)
-[ 28s] JNI setIntegerForKey(superoffroad_chestconsumed, 0)
-[ 28s] JNI setIntegerForKey(superoffroad_powerupsel, 0)
-[ 28s] JNI setStringForKey(superoffroad_attachments, "")
-[ 28s] JNI setIntegerForKey(truck_engine, 1)
-[ 28s] JNI setIntegerForKey(truck_engineH, 1)
-[ 28s] JNI setIntegerForKey(truck_suspension, 1)
-[ 28s] JNI setIntegerForKey(truck_suspensionH, 1)
-[ 28s] JNI setIntegerForKey(truck_tires, 1)
-[ 28s] JNI setIntegerForKey(truck_tiresH, 1)
-[ 28s] JNI setIntegerForKey(truck_fuel, 1)
-[ 28s] JNI setIntegerForKey(truck_fuelH, 1)
-[ 28s] JNI setIntegerForKey(truck_unlocked, 0)
-[ 28s] JNI setIntegerForKey(truck_chestconsumed, 0)
-[ 28s] JNI setIntegerForKey(truck_powerupsel, 0)
-[ 28s] JNI setStringForKey(truck_attachments, "")
-[ 28s] JNI setIntegerForKey(dunebuggy_engine, 1)
-[ 28s] JNI setIntegerForKey(dunebuggy_engineH, 1)
-[ 28s] JNI setIntegerForKey(dunebuggy_suspension, 1)
-[ 28s] JNI setIntegerForKey(dunebuggy_suspensionH, 1)
-[ 28s] JNI setIntegerForKey(dunebuggy_tires, 1)
-[ 28s] JNI setIntegerForKey(dunebuggy_tiresH, 1)
-[ 28s] JNI setIntegerForKey(dunebuggy_fuel, 1)
-[ 28s] JNI setIntegerForKey(dunebuggy_fuelH, 1)
-[ 28s] JNI setIntegerForKey(dunebuggy_unlocked, 0)
-[ 28s] JNI setIntegerForKey(dunebuggy_chestconsumed, 0)
-[ 28s] JNI setIntegerForKey(dunebuggy_powerupsel, 0)
-[ 28s] JNI setStringForKey(dunebuggy_attachments, "")
-[ 28s] JNI setIntegerForKey(hovercraft_engine, 1)
-[ 28s] JNI setIntegerForKey(hovercraft_engineH, 1)
-[ 28s] JNI setIntegerForKey(hovercraft_stability, 1)
-[ 28s] JNI setIntegerForKey(hovercraft_stabilityH, 1)
-[ 28s] JNI setIntegerForKey(hovercraft_friction, 1)
-[ 28s] JNI setIntegerForKey(hovercraft_frictionH, 1)
-[ 28s] JNI setIntegerForKey(hovercraft_aerodynamics, 1)
-[ 28s] JNI setIntegerForKey(hovercraft_aerodynamicsH, 1)
-[ 28s] JNI setIntegerForKey(hovercraft_unlocked, 0)
-[ 28s] JNI setIntegerForKey(hovercraft_chestconsumed, 0)
-[ 28s] JNI setIntegerForKey(hovercraft_powerupsel, 0)
-[ 28s] JNI setStringForKey(hovercraft_attachments, "")
-[ 28s] JNI setIntegerForKey(minibike_engine, 1)
-[ 28s] JNI setIntegerForKey(minibike_engineH, 1)
-[ 28s] JNI setIntegerForKey(minibike_suspension, 1)
-[ 28s] JNI setIntegerForKey(minibike_suspensionH, 1)
-[ 28s] JNI setIntegerForKey(minibike_tires, 1)
-[ 28s] JNI setIntegerForKey(minibike_tiresH, 1)
-[ 28s] JNI setIntegerForKey(minibike_fuel, 1)
-[ 28s] JNI setIntegerForKey(minibike_fuelH, 1)
-[ 28s] JNI setIntegerForKey(minibike_unlocked, 0)
-[ 28s] JNI setIntegerForKey(minibike_chestconsumed, 0)
-[ 28s] JNI setIntegerForKey(minibike_powerupsel, 0)
-[ 28s] JNI setStringForKey(minibike_attachments, "")
-[ 28s] JNI setIntegerForKey(bigfinger_engine, 1)
-[ 28s] JNI setIntegerForKey(bigfinger_engineH, 1)
-[ 28s] JNI setIntegerForKey(bigfinger_stability, 1)
-[ 28s] JNI setIntegerForKey(bigfinger_stabilityH, 1)
-[ 28s] JNI setIntegerForKey(bigfinger_rollcage, 1)
-[ 28s] JNI setIntegerForKey(bigfinger_rollcageH, 1)
-[ 28s] JNI setIntegerForKey(bigfinger_fuel, 1)
-[ 28s] JNI setIntegerForKey(bigfinger_fuelH, 1)
-[ 28s] JNI setIntegerForKey(bigfinger_unlocked, 0)
-[ 28s] JNI setIntegerForKey(bigfinger_chestconsumed, 0)
-[ 28s] JNI setIntegerForKey(bigfinger_powerupsel, 0)
-[ 28s] JNI setStringForKey(bigfinger_attachments, "")
-[ 28s] JNI setIntegerForKey(train_engine, 1)
-[ 28s] JNI setIntegerForKey(train_engineH, 1)
-[ 28s] JNI setIntegerForKey(train_suspension, 1)
-[ 28s] JNI setIntegerForKey(train_suspensionH, 1)
-[ 28s] JNI setIntegerForKey(train_tires, 1)
-[ 28s] JNI setIntegerForKey(train_tiresH, 1)
-[ 28s] JNI setIntegerForKey(train_fuel, 1)
-[ 28s] JNI setIntegerForKey(train_fuelH, 1)
-[ 28s] JNI setIntegerForKey(train_unlocked, 0)
-[ 28s] JNI setIntegerForKey(train_chestconsumed, 0)
-[ 28s] JNI setIntegerForKey(train_powerupsel, 0)
-[ 28s] JNI setStringForKey(train_attachments, "")
-[ 28s] JNI setIntegerForKey(moonlander_engine, 1)
-[ 28s] JNI setIntegerForKey(moonlander_engineH, 1)
-[ 28s] JNI setIntegerForKey(moonlander_suspension, 1)
-[ 28s] JNI setIntegerForKey(moonlander_suspensionH, 1)
-[ 28s] JNI setIntegerForKey(moonlander_thruster, 1)
-[ 28s] JNI setIntegerForKey(moonlander_thrusterH, 1)
-[ 28s] JNI setIntegerForKey(moonlander_fuel, 1)
-[ 28s] JNI setIntegerForKey(moonlander_fuelH, 1)
-[ 28s] JNI setIntegerForKey(moonlander_unlocked, 0)
-[ 28s] JNI setIntegerForKey(moonlander_chestconsumed, 0)
-[ 28s] JNI setIntegerForKey(moonlander_powerupsel, 0)
-[ 28s] JNI setStringForKey(moonlander_attachments, "")
-[ 28s] JNI setIntegerForKey(hotrod_rear_tire, 1)
-[ 28s] JNI setIntegerForKey(hotrod_rear_tireH, 1)
-[ 28s] JNI setIntegerForKey(hotrod_drive, 1)
-[ 28s] JNI setIntegerForKey(hotrod_driveH, 1)
-[ 28s] JNI setIntegerForKey(hotrod_engine, 1)
-[ 28s] JNI setIntegerForKey(hotrod_engineH, 1)
-[ 28s] JNI setIntegerForKey(hotrod_front_tire, 1)
-[ 28s] JNI setIntegerForKey(hotrod_front_tireH, 1)
-[ 28s] JNI setIntegerForKey(hotrod_unlocked, 0)
-[ 28s] JNI setIntegerForKey(hotrod_chestconsumed, 0)
-[ 28s] JNI setIntegerForKey(hotrod_powerupsel, 0)
-[ 28s] JNI setStringForKey(hotrod_attachments, "")
-[ 28s] JNI setIntegerForKey(bubblecar_engine, 1)
-[ 28s] JNI setIntegerForKey(bubblecar_engineH, 1)
-[ 28s] JNI setIntegerForKey(bubblecar_tires, 1)
-[ 28s] JNI setIntegerForKey(bubblecar_tiresH, 1)
-[ 28s] JNI setIntegerForKey(bubblecar_suspension, 1)
-[ 28s] JNI setIntegerForKey(bubblecar_suspensionH, 1)
-[ 28s] JNI setIntegerForKey(bubblecar_rocket, 1)
-[ 28s] JNI setIntegerForKey(bubblecar_rocketH, 1)
-[ 28s] JNI setIntegerForKey(bubblecar_unlocked, 0)
-[ 28s] JNI setIntegerForKey(bubblecar_chestconsumed, 0)
-[ 28s] JNI setIntegerForKey(bubblecar_powerupsel, 0)
-[ 28s] JNI setStringForKey(bubblecar_attachments, "")
-[ 28s] JNI setIntegerForKey(shapeshifter_engine, 1)
-[ 28s] JNI setIntegerForKey(shapeshifter_engineH, 1)
-[ 28s] JNI setIntegerForKey(shapeshifter_suspension, 1)
-[ 28s] JNI setIntegerForKey(shapeshifter_suspensionH, 1)
-[ 28s] JNI setIntegerForKey(shapeshifter_tires, 1)
-[ 28s] JNI setIntegerForKey(shapeshifter_tiresH, 1)
-[ 28s] JNI setIntegerForKey(shapeshifter_downforce, 1)
-[ 28s] JNI setIntegerForKey(shapeshifter_downforceH, 1)
-[ 28s] JNI setIntegerForKey(shapeshifter_unlocked, 0)
-[ 28s] JNI setIntegerForKey(shapeshifter_chestconsumed, 0)
-[ 28s] JNI setIntegerForKey(shapeshifter_powerupsel, 0)
-[ 28s] JNI setStringForKey(shapeshifter_attachments, "")
-[ 28s] JNI setIntegerForKey(luxury_engine, 1)
-[ 28s] JNI setIntegerForKey(luxury_engineH, 1)
-[ 28s] JNI setIntegerForKey(luxury_suspension, 1)
-[ 28s] JNI setIntegerForKey(luxury_suspensionH, 1)
-[ 28s] JNI setIntegerForKey(luxury_tires, 1)
-[ 28s] JNI setIntegerForKey(luxury_tiresH, 1)
-[ 28s] JNI setIntegerForKey(luxury_wealth, 1)
-[ 28s] JNI setIntegerForKey(luxury_wealthH, 1)
-[ 28s] JNI setIntegerForKey(luxury_unlocked, 0)
-[ 28s] JNI setIntegerForKey(luxury_chestconsumed, 0)
-[ 28s] JNI setIntegerForKey(luxury_powerupsel, 0)
-[ 28s] JNI setStringForKey(luxury_attachments, "")
-[ 28s] JNI setIntegerForKey(spider_engine, 1)
-[ 28s] JNI setIntegerForKey(spider_engineH, 1)
+[ 29s] JNI setIntegerForKey(chopper_engineH, 1)
+[ 29s] JNI setIntegerForKey(chopper_suspension, 1)
+[ 29s] JNI setIntegerForKey(chopper_suspensionH, 1)
+[ 29s] JNI setIntegerForKey(bike_sissybar, 1)
+[ 29s] JNI setIntegerForKey(bike_sissybarH, 1)
+[ 29s] JNI setIntegerForKey(bike_fork, 1)
+[ 29s] JNI setIntegerForKey(bike_forkH, 1)
+[ 29s] JNI setIntegerForKey(chopperbike_unlocked, 0)
+[ 29s] JNI setIntegerForKey(chopperbike_chestconsumed, 0)
+[ 29s] JNI setIntegerForKey(chopperbike_powerupsel, 0)
+[ 29s] JNI setStringForKey(chopperbike_attachments, "")
+[ 29s] JNI setIntegerForKey(lowrider_engine, 1)
+[ 29s] JNI setIntegerForKey(lowrider_engineH, 1)
+[ 29s] JNI setIntegerForKey(lowrider_tires, 1)
+[ 29s] JNI setIntegerForKey(lowrider_tiresH, 1)
+[ 29s] JNI setIntegerForKey(lowrider_suspension_rear, 1)
+[ 29s] JNI setIntegerForKey(lowrider_suspension_rearH, 1)
+[ 29s] JNI setIntegerForKey(lowrider_suspension_front, 1)
+[ 29s] JNI setIntegerForKey(lowrider_suspension_frontH, 1)
+[ 29s] JNI setIntegerForKey(lowrider_unlocked, 0)
+[ 29s] JNI setIntegerForKey(lowrider_chestconsumed, 0)
+[ 29s] JNI setIntegerForKey(lowrider_powerupsel, 0)
+[ 29s] JNI setStringForKey(lowrider_attachments, "")
+[ 29s] JNI setIntegerForKey(tank_engine, 1)
+[ 29s] JNI setIntegerForKey(tank_engineH, 1)
+[ 29s] JNI setIntegerForKey(tank_suspension, 1)
+[ 29s] JNI setIntegerForKey(tank_suspensionH, 1)
+[ 29s] JNI setIntegerForKey(tank_tires, 1)
+[ 29s] JNI setIntegerForKey(tank_tiresH, 1)
+[ 29s] JNI setIntegerForKey(tank_fuel, 1)
+[ 29s] JNI setIntegerForKey(tank_fuelH, 1)
+[ 29s] JNI setIntegerForKey(tank_unlocked, 0)
+[ 29s] JNI setIntegerForKey(tank_chestconsumed, 0)
+[ 29s] JNI setIntegerForKey(tank_powerupsel, 0)
+[ 29s] JNI setStringForKey(tank_attachments, "")
+[ 29s] JNI setIntegerForKey(snowmobile_engine, 1)
+[ 29s] JNI setIntegerForKey(snowmobile_engineH, 1)
+[ 29s] JNI setIntegerForKey(snowmobile_suspension, 1)
+[ 29s] JNI setIntegerForKey(snowmobile_suspensionH, 1)
+[ 29s] JNI setIntegerForKey(snowmobile_tires, 1)
+[ 29s] JNI setIntegerForKey(snowmobile_tiresH, 1)
+[ 29s] JNI setIntegerForKey(snowmobile_fuel, 1)
+[ 29s] JNI setIntegerForKey(snowmobile_fuelH, 1)
+[ 29s] JNI setIntegerForKey(snowmobile_unlocked, 0)
+[ 29s] JNI setIntegerForKey(snowmobile_chestconsumed, 0)
+[ 29s] JNI setIntegerForKey(snowmobile_powerupsel, 0)
+[ 29s] JNI setStringForKey(snowmobile_attachments, "")
+[ 29s] JNI setIntegerForKey(superoffroad_engine, 1)
+[ 29s] JNI setIntegerForKey(superoffroad_engineH, 1)
+[ 29s] JNI setIntegerForKey(superoffroad_tires, 1)
+[ 29s] JNI setIntegerForKey(superoffroad_tiresH, 1)
+[ 29s] JNI setIntegerForKey(superoffroad_downforce, 1)
+[ 29s] JNI setIntegerForKey(superoffroad_downforceH, 1)
+[ 29s] JNI setIntegerForKey(superoffroad_fuel, 1)
+[ 29s] JNI setIntegerForKey(superoffroad_fuelH, 1)
+[ 29s] JNI setIntegerForKey(superoffroad_unlocked, 0)
+[ 29s] JNI setIntegerForKey(superoffroad_chestconsumed, 0)
+[ 29s] JNI setIntegerForKey(superoffroad_powerupsel, 0)
+[ 29s] JNI setStringForKey(superoffroad_attachments, "")
+[ 29s] JNI setIntegerForKey(truck_engine, 1)
+[ 29s] JNI setIntegerForKey(truck_engineH, 1)
+[ 29s] JNI setIntegerForKey(truck_suspension, 1)
+[ 29s] JNI setIntegerForKey(truck_suspensionH, 1)
+[ 29s] JNI setIntegerForKey(truck_tires, 1)
+[ 29s] JNI setIntegerForKey(truck_tiresH, 1)
+[ 29s] JNI setIntegerForKey(truck_fuel, 1)
+[ 29s] JNI setIntegerForKey(truck_fuelH, 1)
+[ 29s] JNI setIntegerForKey(truck_unlocked, 0)
+[ 29s] JNI setIntegerForKey(truck_chestconsumed, 0)
+[ 29s] JNI setIntegerForKey(truck_powerupsel, 0)
+[ 29s] JNI setStringForKey(truck_attachments, "")
+[ 29s] JNI setIntegerForKey(dunebuggy_engine, 1)
+[ 29s] JNI setIntegerForKey(dunebuggy_engineH, 1)
+[ 29s] JNI setIntegerForKey(dunebuggy_suspension, 1)
+[ 29s] JNI setIntegerForKey(dunebuggy_suspensionH, 1)
+[ 29s] JNI setIntegerForKey(dunebuggy_tires, 1)
+[ 29s] JNI setIntegerForKey(dunebuggy_tiresH, 1)
+[ 29s] JNI setIntegerForKey(dunebuggy_fuel, 1)
+[ 29s] JNI setIntegerForKey(dunebuggy_fuelH, 1)
+[ 29s] JNI setIntegerForKey(dunebuggy_unlocked, 0)
+[ 29s] JNI setIntegerForKey(dunebuggy_chestconsumed, 0)
+[ 29s] JNI setIntegerForKey(dunebuggy_powerupsel, 0)
+[ 29s] JNI setStringForKey(dunebuggy_attachments, "")
+[ 29s] JNI setIntegerForKey(hovercraft_engine, 1)
+[ 29s] JNI setIntegerForKey(hovercraft_engineH, 1)
+[ 29s] JNI setIntegerForKey(hovercraft_stability, 1)
+[ 29s] JNI setIntegerForKey(hovercraft_stabilityH, 1)
+[ 29s] JNI setIntegerForKey(hovercraft_friction, 1)
+[ 29s] JNI setIntegerForKey(hovercraft_frictionH, 1)
+[ 29s] JNI setIntegerForKey(hovercraft_aerodynamics, 1)
+[ 29s] JNI setIntegerForKey(hovercraft_aerodynamicsH, 1)
+[ 29s] JNI setIntegerForKey(hovercraft_unlocked, 0)
+[ 29s] JNI setIntegerForKey(hovercraft_chestconsumed, 0)
+[ 29s] JNI setIntegerForKey(hovercraft_powerupsel, 0)
+[ 29s] JNI setStringForKey(hovercraft_attachments, "")
+[ 29s] JNI setIntegerForKey(minibike_engine, 1)
+[ 29s] JNI setIntegerForKey(minibike_engineH, 1)
+[ 29s] JNI setIntegerForKey(minibike_suspension, 1)
+[ 29s] JNI setIntegerForKey(minibike_suspensionH, 1)
+[ 29s] JNI setIntegerForKey(minibike_tires, 1)
+[ 29s] JNI setIntegerForKey(minibike_tiresH, 1)
+[ 29s] JNI setIntegerForKey(minibike_fuel, 1)
+[ 29s] JNI setIntegerForKey(minibike_fuelH, 1)
+[ 29s] JNI setIntegerForKey(minibike_unlocked, 0)
+[ 29s] JNI setIntegerForKey(minibike_chestconsumed, 0)
+[ 29s] JNI setIntegerForKey(minibike_powerupsel, 0)
+[ 29s] JNI setStringForKey(minibike_attachments, "")
+[ 29s] JNI setIntegerForKey(bigfinger_engine, 1)
+[ 29s] JNI setIntegerForKey(bigfinger_engineH, 1)
+[ 29s] JNI setIntegerForKey(bigfinger_stability, 1)
+[ 29s] JNI setIntegerForKey(bigfinger_stabilityH, 1)
+[ 29s] JNI setIntegerForKey(bigfinger_rollcage, 1)
+[ 29s] JNI setIntegerForKey(bigfinger_rollcageH, 1)
+[ 29s] JNI setIntegerForKey(bigfinger_fuel, 1)
+[ 29s] JNI setIntegerForKey(bigfinger_fuelH, 1)
+[ 29s] JNI setIntegerForKey(bigfinger_unlocked, 0)
+[ 29s] JNI setIntegerForKey(bigfinger_chestconsumed, 0)
+[ 29s] JNI setIntegerForKey(bigfinger_powerupsel, 0)
+[ 29s] JNI setStringForKey(bigfinger_attachments, "")
+[ 29s] JNI setIntegerForKey(train_engine, 1)
+[ 29s] JNI setIntegerForKey(train_engineH, 1)
+[ 29s] JNI setIntegerForKey(train_suspension, 1)
+[ 29s] JNI setIntegerForKey(train_suspensionH, 1)
+[ 29s] JNI setIntegerForKey(train_tires, 1)
+[ 29s] JNI setIntegerForKey(train_tiresH, 1)
+[ 29s] JNI setIntegerForKey(train_fuel, 1)
+[ 29s] JNI setIntegerForKey(train_fuelH, 1)
+[ 29s] JNI setIntegerForKey(train_unlocked, 0)
+[ 29s] JNI setIntegerForKey(train_chestconsumed, 0)
+[ 29s] JNI setIntegerForKey(train_powerupsel, 0)
+[ 29s] JNI setStringForKey(train_attachments, "")
+[ 29s] JNI setIntegerForKey(moonlander_engine, 1)
+[ 29s] JNI setIntegerForKey(moonlander_engineH, 1)
+[ 29s] JNI setIntegerForKey(moonlander_suspension, 1)
+[ 29s] JNI setIntegerForKey(moonlander_suspensionH, 1)
+[ 29s] JNI setIntegerForKey(moonlander_thruster, 1)
+[ 29s] JNI setIntegerForKey(moonlander_thrusterH, 1)
+[ 29s] JNI setIntegerForKey(moonlander_fuel, 1)
+[ 29s] JNI setIntegerForKey(moonlander_fuelH, 1)
+[ 29s] JNI setIntegerForKey(moonlander_unlocked, 0)
+[ 29s] JNI setIntegerForKey(moonlander_chestconsumed, 0)
+[ 29s] JNI setIntegerForKey(moonlander_powerupsel, 0)
+[ 29s] JNI setStringForKey(moonlander_attachments, "")
+[ 29s] JNI setIntegerForKey(hotrod_rear_tire, 1)
+[ 29s] JNI setIntegerForKey(hotrod_rear_tireH, 1)
+[ 29s] JNI setIntegerForKey(hotrod_drive, 1)
+[ 29s] JNI setIntegerForKey(hotrod_driveH, 1)
+[ 29s] JNI setIntegerForKey(hotrod_engine, 1)
+[ 29s] JNI setIntegerForKey(hotrod_engineH, 1)
+[ 29s] JNI setIntegerForKey(hotrod_front_tire, 1)
+[ 29s] JNI setIntegerForKey(hotrod_front_tireH, 1)
+[ 29s] JNI setIntegerForKey(hotrod_unlocked, 0)
+[ 29s] JNI setIntegerForKey(hotrod_chestconsumed, 0)
+[ 29s] JNI setIntegerForKey(hotrod_powerupsel, 0)
+[ 29s] JNI setStringForKey(hotrod_attachments, "")
+[ 29s] JNI setIntegerForKey(bubblecar_engine, 1)
+[ 29s] JNI setIntegerForKey(bubblecar_engineH, 1)
+[ 29s] JNI setIntegerForKey(bubblecar_tires, 1)
+[ 29s] JNI setIntegerForKey(bubblecar_tiresH, 1)
+[ 29s] JNI setIntegerForKey(bubblecar_suspension, 1)
+[ 29s] JNI setIntegerForKey(bubblecar_suspensionH, 1)
+[ 29s] JNI setIntegerForKey(bubblecar_rocket, 1)
+[ 29s] JNI setIntegerForKey(bubblecar_rocketH, 1)
+[ 29s] JNI setIntegerForKey(bubblecar_unlocked, 0)
+[ 29s] JNI setIntegerForKey(bubblecar_chestconsumed, 0)
+[ 29s] JNI setIntegerForKey(bubblecar_powerupsel, 0)
+[ 29s] JNI setStringForKey(bubblecar_attachments, "")
+[ 29s] JNI setIntegerForKey(shapeshifter_engine, 1)
+[ 29s] JNI setIntegerForKey(shapeshifter_engineH, 1)
+[ 29s] JNI setIntegerForKey(shapeshifter_suspension, 1)
+[ 29s] JNI setIntegerForKey(shapeshifter_suspensionH, 1)
+[ 29s] JNI setIntegerForKey(shapeshifter_tires, 1)
+[ 29s] JNI setIntegerForKey(shapeshifter_tiresH, 1)
+[ 29s] JNI setIntegerForKey(shapeshifter_downforce, 1)
+[ 29s] JNI setIntegerForKey(shapeshifter_downforceH, 1)
+[ 29s] JNI setIntegerForKey(shapeshifter_unlocked, 0)
+[ 29s] JNI setIntegerForKey(shapeshifter_chestconsumed, 0)
+[ 29s] JNI setIntegerForKey(shapeshifter_powerupsel, 0)
+[ 29s] JNI setStringForKey(shapeshifter_attachments, "")
+[ 29s] JNI setIntegerForKey(luxury_engine, 1)
+[ 29s] JNI setIntegerForKey(luxury_engineH, 1)
+[ 29s] JNI setIntegerForKey(luxury_suspension, 1)
+[ 29s] JNI setIntegerForKey(luxury_suspensionH, 1)
+[ 29s] JNI setIntegerForKey(luxury_tires, 1)
+[ 29s] JNI setIntegerForKey(luxury_tiresH, 1)
+[ 29s] JNI setIntegerForKey(luxury_wealth, 1)
+[ 29s] JNI setIntegerForKey(luxury_wealthH, 1)
+[ 29s] JNI setIntegerForKey(luxury_unlocked, 0)
+[ 29s] JNI setIntegerForKey(luxury_chestconsumed, 0)
+[ 29s] JNI setIntegerForKey(luxury_powerupsel, 0)
+[ 29s] JNI setStringForKey(luxury_attachments, "")
+[ 29s] JNI setIntegerForKey(spider_engine, 1)
+[ 29s] JNI setIntegerForKey(spider_engineH, 1)
 [ 29s] JNI setIntegerForKey(spider_torque, 1)
 [ 29s] JNI setIntegerForKey(spider_torqueH, 1)
 [ 29s] JNI setIntegerForKey(spider_grip, 1)
@@ -1698,199 +1700,199 @@
 [ 29s] JNI setIntegerForKey(boringcar_mileage, 1)
 [ 29s] JNI setIntegerForKey(boringcar_mileageH, 1)
 [ 29s] JNI setIntegerForKey(boringcar_unlocked, 0)
-[ 29s] JNI setIntegerForKey(boringcar_chestconsumed, 0)
-[ 29s] JNI setIntegerForKey(boringcar_powerupsel, 0)
-[ 29s] JNI setStringForKey(boringcar_attachments, "")
-[ 29s] JNI setIntegerForKey(badcar_engine, 1)
-[ 29s] JNI setIntegerForKey(badcar_engineH, 1)
-[ 29s] JNI setIntegerForKey(badcar_suspension, 1)
-[ 29s] JNI setIntegerForKey(badcar_suspensionH, 1)
-[ 29s] JNI setIntegerForKey(badcar_tires, 1)
-[ 29s] JNI setIntegerForKey(badcar_tiresH, 1)
-[ 29s] JNI setIntegerForKey(badcar_mileage, 1)
-[ 29s] JNI setIntegerForKey(badcar_mileageH, 1)
-[ 29s] JNI setIntegerForKey(badcar_unlocked, 0)
-[ 29s] JNI setIntegerForKey(badcar_chestconsumed, 0)
-[ 29s] JNI setIntegerForKey(badcar_powerupsel, 0)
-[ 29s] JNI setStringForKey(badcar_attachments, "")
-[ 29s] JNI setIntegerForKey(reindeers, 1)
-[ 29s] JNI setIntegerForKey(reindeersH, 1)
-[ 29s] JNI setIntegerForKey(sleigh_suspension, 1)
-[ 29s] JNI setIntegerForKey(sleigh_suspensionH, 1)
-[ 29s] JNI setIntegerForKey(reindeer_shoes, 1)
-[ 29s] JNI setIntegerForKey(reindeer_shoesH, 1)
-[ 29s] JNI setIntegerForKey(reindeer_food, 1)
-[ 29s] JNI setIntegerForKey(reindeer_foodH, 1)
-[ 29s] JNI setIntegerForKey(sleigh_unlocked, 0)
-[ 29s] JNI setIntegerForKey(sleigh_chestconsumed, 0)
-[ 29s] JNI setIntegerForKey(sleigh_powerupsel, 0)
-[ 29s] JNI setStringForKey(sleigh_attachments, "")
-[ 29s] JNI setIntegerForKey(TOTAL_DISTANCE_1_000_unlocked, 1)
-[ 29s] JNI setIntegerForKey(TOTAL_DISTANCE_1_000_steps, 1000)
-[ 29s] JNI setIntegerForKey(TOTAL_DISTANCE_10_000_unlocked, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_DISTANCE_10_000_steps, 4858)
-[ 29s] JNI setIntegerForKey(TOTAL_DISTANCE_100_000_unlocked, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_DISTANCE_100_000_steps, 4858)
-[ 29s] JNI setIntegerForKey(TOTAL_DISTANCE_1_000_000_unlocked, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_DISTANCE_1_000_000_steps, 4858)
-[ 29s] JNI setIntegerForKey(STAGES_UNLOCKED_2_unlocked, 1)
-[ 29s] JNI setIntegerForKey(STAGES_UNLOCKED_2_steps, 0)
-[ 29s] JNI setIntegerForKey(STAGES_UNLOCKED_5_unlocked, 1)
-[ 29s] JNI setIntegerForKey(STAGES_UNLOCKED_5_steps, 0)
-[ 29s] JNI setIntegerForKey(STAGES_UNLOCKED_10_unlocked, 0)
-[ 29s] JNI setIntegerForKey(STAGES_UNLOCKED_10_steps, 0)
-[ 29s] JNI setIntegerForKey(STAGES_UNLOCKED_ALL_unlocked, 0)
-[ 29s] JNI setIntegerForKey(STAGES_UNLOCKED_ALL_steps, 0)
-[ 29s] JNI setIntegerForKey(VEHICLES_UNLOCKED_2_unlocked, 0)
-[ 29s] JNI setIntegerForKey(VEHICLES_UNLOCKED_2_steps, 0)
-[ 29s] JNI setIntegerForKey(VEHICLES_UNLOCKED_5_unlocked, 0)
-[ 29s] JNI setIntegerForKey(VEHICLES_UNLOCKED_5_steps, 0)
-[ 29s] JNI setIntegerForKey(VEHICLES_UNLOCKED_10_unlocked, 0)
-[ 29s] JNI setIntegerForKey(VEHICLES_UNLOCKED_10_steps, 0)
-[ 29s] JNI setIntegerForKey(VEHICLES_UNLOCKED_ALL_unlocked, 0)
-[ 29s] JNI setIntegerForKey(VEHICLES_UNLOCKED_ALL_steps, 0)
-[ 29s] JNI setIntegerForKey(VEHICLES_UPGRADED_1_unlocked, 0)
-[ 29s] JNI setIntegerForKey(VEHICLES_UPGRADED_1_steps, 0)
-[ 29s] JNI setIntegerForKey(VEHICLES_UPGRADED_5_unlocked, 0)
-[ 29s] JNI setIntegerForKey(VEHICLES_UPGRADED_5_steps, 0)
-[ 29s] JNI setIntegerForKey(VEHICLES_UPGRADED_10_unlocked, 0)
-[ 29s] JNI setIntegerForKey(VEHICLES_UPGRADED_10_steps, 0)
-[ 29s] JNI setIntegerForKey(VEHICLES_UPGRADED_ALL_unlocked, 0)
-[ 29s] JNI setIntegerForKey(VEHICLES_UPGRADED_ALL_steps, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_FLIPS_10_unlocked, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_FLIPS_10_steps, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_FLIPS_100_unlocked, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_FLIPS_100_steps, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_FLIPS_1_000_unlocked, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_FLIPS_1_000_steps, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_BACKFLIPS_10_unlocked, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_BACKFLIPS_10_steps, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_BACKFLIPS_100_unlocked, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_BACKFLIPS_100_steps, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_BACKFLIPS_1_000_unlocked, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_BACKFLIPS_1_000_steps, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_NECKFLIPS_5_unlocked, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_NECKFLIPS_5_steps, 1)
-[ 29s] JNI setIntegerForKey(TOTAL_NECKFLIPS_10_unlocked, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_NECKFLIPS_10_steps, 1)
-[ 29s] JNI setIntegerForKey(TOTAL_NECKFLIPS_50_unlocked, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_NECKFLIPS_50_steps, 1)
-[ 29s] JNI setIntegerForKey(SINGLE_RUN_100_000_unlocked, 0)
-[ 29s] JNI setIntegerForKey(SINGLE_RUN_100_000_steps, 0)
-[ 29s] JNI setIntegerForKey(SINGLE_RUN_1_000_000_unlocked, 0)
-[ 29s] JNI setIntegerForKey(SINGLE_RUN_1_000_000_steps, 0)
-[ 29s] JNI setIntegerForKey(SHARE_RESULT_unlocked, 1)
-[ 29s] JNI setIntegerForKey(SHARE_RESULT_steps, 0)
-[ 29s] JNI setIntegerForKey(jeep_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(jeep_mastery_steps, 4858)
-[ 29s] JNI setIntegerForKey(bike_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(bike_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(monster_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(monster_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(tractor_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(tractor_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(hippievan_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(hippievan_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(onewheeler_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(onewheeler_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(quadbike_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(quadbike_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(touristbus_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(touristbus_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(racecar_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(racecar_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(policecar_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(policecar_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(ambulance_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(ambulance_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(dieseltruck_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(dieseltruck_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(rallycar_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(rallycar_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(dragster_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(dragster_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(firetruck_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(firetruck_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(tank_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(tank_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(snowmobile_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(snowmobile_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(superoffroad_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(superoffroad_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(truck_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(truck_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(dunebuggy_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(dunebuggy_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(hovercraft_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(hovercraft_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(minibike_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(minibike_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(bigfinger_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(bigfinger_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(train_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(train_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(moonlander_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(moonlander_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(sleigh_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(sleigh_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(hotrod_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(hotrod_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(electric_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(electric_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(PICKUP_FUEL_WITH_EMPTY_TANK_unlocked, 0)
-[ 29s] JNI setIntegerForKey(PICKUP_FUEL_WITH_EMPTY_TANK_steps, 0)
-[ 29s] JNI setIntegerForKey(NECKFLIP_WITHIN_5S_unlocked, 0)
-[ 29s] JNI setIntegerForKey(NECKFLIP_WITHIN_5S_steps, 0)
-[ 29s] JNI setIntegerForKey(FLIPS_IN_ONE_RUN_10_unlocked, 0)
-[ 29s] JNI setIntegerForKey(FLIPS_IN_ONE_RUN_10_steps, 0)
-[ 29s] JNI setIntegerForKey(BACKFLIPS_IN_ONE_RUN_10_unlocked, 0)
-[ 29s] JNI setIntegerForKey(BACKFLIPS_IN_ONE_RUN_10_steps, 0)
-[ 29s] JNI setIntegerForKey(WATCH_CREDITS_unlocked, 0)
-[ 29s] JNI setIntegerForKey(WATCH_CREDITS_steps, 0)
-[ 29s] JNI setIntegerForKey(DETACH_ALL_CARRIAGES_unlocked, 0)
-[ 29s] JNI setIntegerForKey(DETACH_ALL_CARRIAGES_steps, 0)
-[ 29s] JNI setIntegerForKey(NUCLEAR_SECRET_unlocked, 0)
-[ 29s] JNI setIntegerForKey(NUCLEAR_SECRET_steps, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_PUMPKINS_unlocked, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_PUMPKINS_steps, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_PRESENTS_unlocked, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_PRESENTS_steps, 0)
-[ 29s] JNI setIntegerForKey(TROLL_MASTER_unlocked, 0)
-[ 29s] JNI setIntegerForKey(TROLL_MASTER_steps, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_PACKAGES_unlocked, 0)
-[ 29s] JNI setIntegerForKey(TOTAL_PACKAGES_steps, 0)
-[ 29s] JNI setIntegerForKey(SEASONS_YEARS_COMPLETED_unlocked, 0)
-[ 29s] JNI setIntegerForKey(SEASONS_YEARS_COMPLETED_steps, 0)
-[ 29s] JNI setIntegerForKey(screwfinger_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(screwfinger_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(SKIJUMP_JUMPS_COMPLETED_unlocked, 0)
-[ 29s] JNI setIntegerForKey(SKIJUMP_JUMPS_COMPLETED_steps, 0)
-[ 29s] JNI setIntegerForKey(trophytruck_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(trophytruck_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(CHALLENGE_DISTANCE_COMPLETED_unlocked, 0)
-[ 29s] JNI setIntegerForKey(CHALLENGE_DISTANCE_COMPLETED_steps, 0)
-[ 29s] JNI setIntegerForKey(chopperbike_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(chopperbike_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(JUNGLE_KING_unlocked, 0)
-[ 29s] JNI setIntegerForKey(JUNGLE_KING_steps, 0)
-[ 29s] JNI setIntegerForKey(TREASURE_HUNTER_unlocked, 0)
-[ 29s] JNI setIntegerForKey(TREASURE_HUNTER_steps, 0)
-[ 29s] JNI setIntegerForKey(HIP_HOPPER_unlocked, 0)
-[ 29s] JNI setIntegerForKey(HIP_HOPPER_steps, 0)
-[ 29s] JNI setIntegerForKey(GRASSHOPPER_unlocked, 0)
-[ 29s] JNI setIntegerForKey(GRASSHOPPER_steps, 0)
-[ 29s] JNI setIntegerForKey(lowrider_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(lowrider_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(NEON_KING_unlocked, 0)
-[ 29s] JNI setIntegerForKey(NEON_KING_steps, 0)
-[ 29s] JNI setIntegerForKey(LIFTOFF_unlocked, 0)
-[ 29s] JNI setIntegerForKey(LIFTOFF_steps, 0)
-[ 29s] JNI setIntegerForKey(bubblecar_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(bubblecar_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(shapeshifter_mastery_unlocked, 0)
-[ 29s] JNI setIntegerForKey(shapeshifter_mastery_steps, 0)
-[ 29s] JNI setIntegerForKey(CHAUFFEUR_unlocked, 0)
-[ 29s] JNI setIntegerForKey(CHAUFFEUR_steps, 0)
+[ 30s] JNI setIntegerForKey(boringcar_chestconsumed, 0)
+[ 30s] JNI setIntegerForKey(boringcar_powerupsel, 0)
+[ 30s] JNI setStringForKey(boringcar_attachments, "")
+[ 30s] JNI setIntegerForKey(badcar_engine, 1)
+[ 30s] JNI setIntegerForKey(badcar_engineH, 1)
+[ 30s] JNI setIntegerForKey(badcar_suspension, 1)
+[ 30s] JNI setIntegerForKey(badcar_suspensionH, 1)
+[ 30s] JNI setIntegerForKey(badcar_tires, 1)
+[ 30s] JNI setIntegerForKey(badcar_tiresH, 1)
+[ 30s] JNI setIntegerForKey(badcar_mileage, 1)
+[ 30s] JNI setIntegerForKey(badcar_mileageH, 1)
+[ 30s] JNI setIntegerForKey(badcar_unlocked, 0)
+[ 30s] JNI setIntegerForKey(badcar_chestconsumed, 0)
+[ 30s] JNI setIntegerForKey(badcar_powerupsel, 0)
+[ 30s] JNI setStringForKey(badcar_attachments, "")
+[ 30s] JNI setIntegerForKey(reindeers, 1)
+[ 30s] JNI setIntegerForKey(reindeersH, 1)
+[ 30s] JNI setIntegerForKey(sleigh_suspension, 1)
+[ 30s] JNI setIntegerForKey(sleigh_suspensionH, 1)
+[ 30s] JNI setIntegerForKey(reindeer_shoes, 1)
+[ 30s] JNI setIntegerForKey(reindeer_shoesH, 1)
+[ 30s] JNI setIntegerForKey(reindeer_food, 1)
+[ 30s] JNI setIntegerForKey(reindeer_foodH, 1)
+[ 30s] JNI setIntegerForKey(sleigh_unlocked, 0)
+[ 30s] JNI setIntegerForKey(sleigh_chestconsumed, 0)
+[ 30s] JNI setIntegerForKey(sleigh_powerupsel, 0)
+[ 30s] JNI setStringForKey(sleigh_attachments, "")
+[ 30s] JNI setIntegerForKey(TOTAL_DISTANCE_1_000_unlocked, 1)
+[ 30s] JNI setIntegerForKey(TOTAL_DISTANCE_1_000_steps, 1000)
+[ 30s] JNI setIntegerForKey(TOTAL_DISTANCE_10_000_unlocked, 0)
+[ 30s] JNI setIntegerForKey(TOTAL_DISTANCE_10_000_steps, 6319)
+[ 30s] JNI setIntegerForKey(TOTAL_DISTANCE_100_000_unlocked, 0)
+[ 30s] JNI setIntegerForKey(TOTAL_DISTANCE_100_000_steps, 6319)
+[ 30s] JNI setIntegerForKey(TOTAL_DISTANCE_1_000_000_unlocked, 0)
+[ 30s] JNI setIntegerForKey(TOTAL_DISTANCE_1_000_000_steps, 6319)
+[ 30s] JNI setIntegerForKey(STAGES_UNLOCKED_2_unlocked, 1)
+[ 30s] JNI setIntegerForKey(STAGES_UNLOCKED_2_steps, 0)
+[ 30s] JNI setIntegerForKey(STAGES_UNLOCKED_5_unlocked, 1)
+[ 30s] JNI setIntegerForKey(STAGES_UNLOCKED_5_steps, 0)
+[ 30s] JNI setIntegerForKey(STAGES_UNLOCKED_10_unlocked, 0)
+[ 30s] JNI setIntegerForKey(STAGES_UNLOCKED_10_steps, 0)
+[ 30s] JNI setIntegerForKey(STAGES_UNLOCKED_ALL_unlocked, 0)
+[ 30s] JNI setIntegerForKey(STAGES_UNLOCKED_ALL_steps, 0)
+[ 30s] JNI setIntegerForKey(VEHICLES_UNLOCKED_2_unlocked, 1)
+[ 30s] JNI setIntegerForKey(VEHICLES_UNLOCKED_2_steps, 0)
+[ 30s] JNI setIntegerForKey(VEHICLES_UNLOCKED_5_unlocked, 0)
+[ 30s] JNI setIntegerForKey(VEHICLES_UNLOCKED_5_steps, 0)
+[ 30s] JNI setIntegerForKey(VEHICLES_UNLOCKED_10_unlocked, 0)
+[ 30s] JNI setIntegerForKey(VEHICLES_UNLOCKED_10_steps, 0)
+[ 30s] JNI setIntegerForKey(VEHICLES_UNLOCKED_ALL_unlocked, 0)
+[ 30s] JNI setIntegerForKey(VEHICLES_UNLOCKED_ALL_steps, 0)
+[ 30s] JNI setIntegerForKey(VEHICLES_UPGRADED_1_unlocked, 0)
+[ 30s] JNI setIntegerForKey(VEHICLES_UPGRADED_1_steps, 0)
+[ 30s] JNI setIntegerForKey(VEHICLES_UPGRADED_5_unlocked, 0)
+[ 30s] JNI setIntegerForKey(VEHICLES_UPGRADED_5_steps, 0)
+[ 30s] JNI setIntegerForKey(VEHICLES_UPGRADED_10_unlocked, 0)
+[ 30s] JNI setIntegerForKey(VEHICLES_UPGRADED_10_steps, 0)
+[ 30s] JNI setIntegerForKey(VEHICLES_UPGRADED_ALL_unlocked, 0)
+[ 30s] JNI setIntegerForKey(VEHICLES_UPGRADED_ALL_steps, 0)
+[ 30s] JNI setIntegerForKey(TOTAL_FLIPS_10_unlocked, 0)
+[ 30s] JNI setIntegerForKey(TOTAL_FLIPS_10_steps, 4)
+[ 30s] JNI setIntegerForKey(TOTAL_FLIPS_100_unlocked, 0)
+[ 30s] JNI setIntegerForKey(TOTAL_FLIPS_100_steps, 4)
+[ 30s] JNI setIntegerForKey(TOTAL_FLIPS_1_000_unlocked, 0)
+[ 30s] JNI setIntegerForKey(TOTAL_FLIPS_1_000_steps, 4)
+[ 30s] JNI setIntegerForKey(TOTAL_BACKFLIPS_10_unlocked, 0)
+[ 30s] JNI setIntegerForKey(TOTAL_BACKFLIPS_10_steps, 0)
+[ 30s] JNI setIntegerForKey(TOTAL_BACKFLIPS_100_unlocked, 0)
+[ 30s] JNI setIntegerForKey(TOTAL_BACKFLIPS_100_steps, 0)
+[ 30s] JNI setIntegerForKey(TOTAL_BACKFLIPS_1_000_unlocked, 0)
+[ 30s] JNI setIntegerForKey(TOTAL_BACKFLIPS_1_000_steps, 0)
+[ 30s] JNI setIntegerForKey(TOTAL_NECKFLIPS_5_unlocked, 0)
+[ 30s] JNI setIntegerForKey(TOTAL_NECKFLIPS_5_steps, 2)
+[ 30s] JNI setIntegerForKey(TOTAL_NECKFLIPS_10_unlocked, 0)
+[ 30s] JNI setIntegerForKey(TOTAL_NECKFLIPS_10_steps, 2)
+[ 30s] JNI setIntegerForKey(TOTAL_NECKFLIPS_50_unlocked, 0)
+[ 30s] JNI setIntegerForKey(TOTAL_NECKFLIPS_50_steps, 2)
+[ 30s] JNI setIntegerForKey(SINGLE_RUN_100_000_unlocked, 0)
+[ 30s] JNI setIntegerForKey(SINGLE_RUN_100_000_steps, 0)
+[ 30s] JNI setIntegerForKey(SINGLE_RUN_1_000_000_unlocked, 0)
+[ 30s] JNI setIntegerForKey(SINGLE_RUN_1_000_000_steps, 0)
+[ 30s] JNI setIntegerForKey(SHARE_RESULT_unlocked, 1)
+[ 30s] JNI setIntegerForKey(SHARE_RESULT_steps, 0)
+[ 30s] JNI setIntegerForKey(jeep_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(jeep_mastery_steps, 4858)
+[ 30s] JNI setIntegerForKey(bike_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(bike_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(monster_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(monster_mastery_steps, 1461)
+[ 30s] JNI setIntegerForKey(tractor_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(tractor_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(hippievan_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(hippievan_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(onewheeler_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(onewheeler_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(quadbike_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(quadbike_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(touristbus_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(touristbus_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(racecar_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(racecar_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(policecar_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(policecar_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(ambulance_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(ambulance_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(dieseltruck_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(dieseltruck_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(rallycar_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(rallycar_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(dragster_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(dragster_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(firetruck_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(firetruck_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(tank_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(tank_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(snowmobile_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(snowmobile_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(superoffroad_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(superoffroad_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(truck_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(truck_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(dunebuggy_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(dunebuggy_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(hovercraft_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(hovercraft_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(minibike_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(minibike_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(bigfinger_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(bigfinger_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(train_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(train_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(moonlander_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(moonlander_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(sleigh_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(sleigh_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(hotrod_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(hotrod_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(electric_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(electric_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(PICKUP_FUEL_WITH_EMPTY_TANK_unlocked, 0)
+[ 30s] JNI setIntegerForKey(PICKUP_FUEL_WITH_EMPTY_TANK_steps, 0)
+[ 30s] JNI setIntegerForKey(NECKFLIP_WITHIN_5S_unlocked, 0)
+[ 30s] JNI setIntegerForKey(NECKFLIP_WITHIN_5S_steps, 0)
+[ 30s] JNI setIntegerForKey(FLIPS_IN_ONE_RUN_10_unlocked, 0)
+[ 30s] JNI setIntegerForKey(FLIPS_IN_ONE_RUN_10_steps, 0)
+[ 30s] JNI setIntegerForKey(BACKFLIPS_IN_ONE_RUN_10_unlocked, 0)
+[ 30s] JNI setIntegerForKey(BACKFLIPS_IN_ONE_RUN_10_steps, 0)
+[ 30s] JNI setIntegerForKey(WATCH_CREDITS_unlocked, 0)
+[ 30s] JNI setIntegerForKey(WATCH_CREDITS_steps, 0)
+[ 30s] JNI setIntegerForKey(DETACH_ALL_CARRIAGES_unlocked, 0)
+[ 30s] JNI setIntegerForKey(DETACH_ALL_CARRIAGES_steps, 0)
+[ 30s] JNI setIntegerForKey(NUCLEAR_SECRET_unlocked, 0)
+[ 30s] JNI setIntegerForKey(NUCLEAR_SECRET_steps, 0)
+[ 30s] JNI setIntegerForKey(TOTAL_PUMPKINS_unlocked, 0)
+[ 30s] JNI setIntegerForKey(TOTAL_PUMPKINS_steps, 0)
+[ 30s] JNI setIntegerForKey(TOTAL_PRESENTS_unlocked, 0)
+[ 30s] JNI setIntegerForKey(TOTAL_PRESENTS_steps, 0)
+[ 30s] JNI setIntegerForKey(TROLL_MASTER_unlocked, 0)
+[ 30s] JNI setIntegerForKey(TROLL_MASTER_steps, 0)
+[ 30s] JNI setIntegerForKey(TOTAL_PACKAGES_unlocked, 0)
+[ 30s] JNI setIntegerForKey(TOTAL_PACKAGES_steps, 0)
+[ 30s] JNI setIntegerForKey(SEASONS_YEARS_COMPLETED_unlocked, 0)
+[ 30s] JNI setIntegerForKey(SEASONS_YEARS_COMPLETED_steps, 0)
+[ 30s] JNI setIntegerForKey(screwfinger_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(screwfinger_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(SKIJUMP_JUMPS_COMPLETED_unlocked, 0)
+[ 30s] JNI setIntegerForKey(SKIJUMP_JUMPS_COMPLETED_steps, 0)
+[ 30s] JNI setIntegerForKey(trophytruck_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(trophytruck_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(CHALLENGE_DISTANCE_COMPLETED_unlocked, 0)
+[ 30s] JNI setIntegerForKey(CHALLENGE_DISTANCE_COMPLETED_steps, 0)
+[ 30s] JNI setIntegerForKey(chopperbike_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(chopperbike_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(JUNGLE_KING_unlocked, 0)
+[ 30s] JNI setIntegerForKey(JUNGLE_KING_steps, 0)
+[ 30s] JNI setIntegerForKey(TREASURE_HUNTER_unlocked, 0)
+[ 30s] JNI setIntegerForKey(TREASURE_HUNTER_steps, 0)
+[ 30s] JNI setIntegerForKey(HIP_HOPPER_unlocked, 0)
+[ 30s] JNI setIntegerForKey(HIP_HOPPER_steps, 0)
+[ 30s] JNI setIntegerForKey(GRASSHOPPER_unlocked, 0)
+[ 30s] JNI setIntegerForKey(GRASSHOPPER_steps, 0)
+[ 30s] JNI setIntegerForKey(lowrider_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(lowrider_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(NEON_KING_unlocked, 0)
+[ 30s] JNI setIntegerForKey(NEON_KING_steps, 0)
+[ 30s] JNI setIntegerForKey(LIFTOFF_unlocked, 0)
+[ 30s] JNI setIntegerForKey(LIFTOFF_steps, 0)
+[ 30s] JNI setIntegerForKey(bubblecar_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(bubblecar_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(shapeshifter_mastery_unlocked, 0)
+[ 30s] JNI setIntegerForKey(shapeshifter_mastery_steps, 0)
+[ 30s] JNI setIntegerForKey(CHAUFFEUR_unlocked, 0)
+[ 30s] JNI setIntegerForKey(CHAUFFEUR_steps, 0)
 [ 30s] JNI setIntegerForKey(luxury_mastery_unlocked, 0)
 [ 30s] JNI setIntegerForKey(luxury_mastery_steps, 0)
 [ 30s] JNI setIntegerForKey(BERRY_PICKER_unlocked, 0)
@@ -1918,342 +1920,161 @@
 [ 30s] JNI setIntegerForKey(aircar_mastery_unlocked, 0)
 [ 30s] JNI setIntegerForKey(aircar_mastery_steps, 0)
 [ 30s] JNI setIntegerForKey(FUEL_SWOOPER_unlocked, 0)
-[ 30s] JNI setIntegerForKey(FUEL_SWOOPER_steps, 0)
-[ 30s] UserDefaults: saved 5302 ints, 3 floats, 49 strings
-[ 31s] [fsgame] Prize pool loaded from file
-[ 31s] UserDefaults: saved 5302 ints, 3 floats, 49 strings
-[ 31s] [fsgame] Loading (intro) event assets ...
-[ 31s] [fsgame] Load event texture asset (1:stages/super_countryside/super-countryside-day-sky.png)
-[ 31s] pthread_create: real thread fn=0x7dee6918c handle=0x1b5315880 core=1
-[ 31s] [fsgame] Load event texture asset (2:stages/super_countryside/super-countryside-day-parallax2.png)
-[ 31s] [fsgame] Load event texture asset (3:stages/super_countryside/terrain-ground.png)
-[ 31s] [fsgame] Load event texture asset (4:stages/super_countryside/terrain-surface.png)
-[ 31s] [fsgame] Load event texture asset (5:events/default/background.png)
-[ 31s] [fsgame] Load event texture asset (6:events/default/background2.png)
-[ 31s] [fsgame] Load event texture asset (7:events/default/terrain.png)
-[ 31s] [fsgame] Load event texture asset (8:events/default/terrain-surface.png)
-[ 31s] [fsgame] Load event texture asset (9:events/shop/glow.png)
-[ 31s] [fsgame] Load event texture asset (10:events/shop/item_bg.png)
-[ 31s] [fsgame] Load event texture asset (11:events/shop/item_bg_claim.png)
-[ 31s] [fsgame] Load event texture asset (12:events/shop/item_bg_focus.png)
-[ 31s] [fsgame] Load event texture asset (13:events/shop/left-arrow.png)
-[ 31s] [fsgame] Load event texture asset (14:events/shop/right-arrow.png)
-[ 31s] [fsgame] Load event texture asset (15:events/shop/left-arrow-focus.png)
-[ 31s] [fsgame] Load event texture asset (16:events/shop/shop_progressbar.png)
-[ 31s] [fsgame] Load event texture asset (17:events/shop/shop_progressbar_bg.png)
-[ 31s] [fsgame] Load event texture asset (18:events/shop/shop-button.png)
-[ 31s] [fsgame] Load event texture asset (19:events/shop/shop-button-disabled.png)
-[ 31s] [fsgame] Load event texture asset (20:events/shop/shop-button-disabled.png)
-[ 31s] [fsgame] Load event texture asset (21:events/shop/prize_bg.png)
-[ 31s] [fsgame] Load event texture asset (22:events/shared/billboard.png)
-[ 31s] [fsgame] Load event texture asset (23:events/shared/billboard_timer.png)
-[ 31s] [fsgame] Load event texture asset (24:events/shared/cartoonglow_med.png)
-[ 31s] [fsgame] Load event texture asset (25:events/shared/curtains.png)
-[ 31s] [fsgame] Load event texture asset (26:events/shared/event_progressbar.png)
-[ 31s] [fsgame] Load event texture asset (27:events/shared/event_progressbar_bg.png)
-[ 31s] [fsgame] Load event texture asset (28:events/shared/garage-building.png)
-[ 31s] [fsgame] Load event texture asset (29:events/shared/left-arrow.png)
-[ 31s] [fsgame] Load event texture asset (30:events/shared/left-arrow-focus.png)
-[ 31s] [fsgame] Load event texture asset (31:events/shared/prize-background.png)
-[ 31s] [fsgame] Load event texture asset (32:events/shared/reward_line.png)
-[ 31s] [fsgame] Load event texture asset (33:events/shared/right-arrow.png)
-[ 31s] [fsgame] Load event texture asset (34:events/shared/stage_progressbar.png)
-[ 31s] [fsgame] Load event texture asset (35:events/shared/stage_progressbar_bg.png)
-[ 31s] [fsgame] Load event texture asset (36:events/shared/token.png)
-[ 31s] [fsgame] Load event texture asset (37:events/shared/toolbox_gold.png)
-[ 31s] [fsgame] Load event texture asset (38:events/shared/toolbox_gold_open.png)
-[ 31s] [fsgame] Load event texture asset (39:events/shared/toolbox_red.png)
-[ 31s] [fsgame] Load event texture asset (40:events/shared/toolbox_red_focus.png)
-[ 31s] [fsgame] Load event texture asset (41:events/shared/toolbox_red_open.png)
-[ 31s] [fsgame] Load event texture asset (42:events/shared/trophy_bronze.png)
-[ 32s] [fsgame] Load event texture asset (43:events/shared/trophy_gold.png)
-[ 32s] [fsgame] Load event texture asset (44:events/shared/trophy_outline.png)
-[ 32s] [fsgame] Load event texture asset (45:events/shared/trophy_silver.png)
-[ 32s] [fsgame] Load event texture asset (46:events/shared/upgrade-bar.png)
-[ 32s] [fsgame] Load event texture asset (47:events/shared/upgrade-bar-bg.png)
-[ 32s] [fsgame] Load event texture asset (48:events/shared/upgrade-bar-empty.png)
-[ 32s] [fsgame] Load event texture asset (49:events/shared/upgrade-item-bg.png)
-[ 32s] [fsgame] Load event texture asset (50:events/default/haybale-square.png)
-[ 32s] [fsgame] Load event texture asset (51:events/default/haybaleround.png)
-[ 32s] [fsgame] Load event texture asset (52:events/default/scarecrow.png)
-[ 32s] [fsgame] Load event texture asset (53:stages/actionhero/action-bush.png)
-[ 32s] [fsgame] Load event texture asset (54:stages/super_countryside/super-countryside-day-parallax.png)
-[ 32s] game debug: has consent
-[ 32s] JNI GetStaticMethodID: onFinishedAssetLoader ()V
-[ 32s] JNI CallStaticVoidMethodV: onFinishedAssetLoader ()V
-[ 32s] game debug: going to init DeepLink
-[ 32s] game debug: init Stage deep link stage
-[ 32s] JNI GetStaticMethodID: getSettingString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-[ 32s] JNI CallStaticObjectMethodV: getSettingString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; → ""
-[ 32s] fopen FAIL: gcEventDetails (mode=r)
-[ 35s] game stdio: libpng warning: iCCP: known incorrect sRGB profile  x3
-[ 35s] JNI GetStaticMethodID: hasVideoCampaigns (I)I
-[ 35s] JNI getIntegerForKey: 6000 reads
-[ 38s] JNI getIntegerForKey: 8000 reads
-[ 38s] JNI GetStaticMethodID: startAdvertisements ()V
-[ 38s] JNI CallStaticVoidMethodV: startAdvertisements ()V
-[ 38s] [fsgame] Event textures asset loaded (1/1)
-[ 38s] [fsgame] Event textures asset loaded (2/2)
-[ 38s] [fsgame] Event textures asset loaded (3/3)
-[ 38s] [fsgame] Event textures asset loaded (4/4)
-[ 38s] [fsgame] Event textures asset loaded (5/5)
-[ 38s] [fsgame] Event textures asset loaded (6/6)
-[ 38s] [fsgame] Event textures asset loaded (7/7)
-[ 38s] [fsgame] Event textures asset loaded (8/8)
-[ 38s] [fsgame] Event textures asset loaded (9/9)
-[ 38s] [fsgame] Event textures asset loaded (10/10)
-[ 38s] [fsgame] Event textures asset loaded (11/11)
-[ 39s] [fsgame] Event textures asset loaded (12/12)
-[ 39s] [fsgame] Event textures asset loaded (13/13)
-[ 39s] [fsgame] Event textures asset loaded (14/14)
-[ 39s] [fsgame] Event textures asset loaded (15/15)
-[ 39s] [fsgame] Event textures asset loaded (16/16)
-[ 39s] [fsgame] Event textures asset loaded (17/17)
-[ 39s] [fsgame] Event textures asset loaded (18/18)
-[ 39s] [fsgame] Event textures asset loaded (19/19)
-[ 39s] [fsgame] Event textures asset loaded (20/20)
-[ 39s] [fsgame] Event textures asset loaded (21/21)
-[ 39s] [fsgame] Event textures asset loaded (22/22)
-[ 39s] [fsgame] Event textures asset loaded (23/23)
-[ 39s] [fsgame] Event textures asset loaded (24/24)
-[ 39s] [fsgame] Event textures asset loaded (25/25)
-[ 39s] [fsgame] Event textures asset loaded (26/26)
-[ 39s] [fsgame] Event textures asset loaded (27/27)
-[ 39s] [fsgame] Event textures asset loaded (28/28)
-[ 39s] [fsgame] Event textures asset loaded (29/29)
-[ 39s] [fsgame] Event textures asset loaded (30/30)
-[ 39s] [fsgame] Event textures asset loaded (31/31)
-[ 39s] [fsgame] Event textures asset loaded (32/32)
-[ 39s] [fsgame] Event textures asset loaded (33/33)
-[ 39s] [fsgame] Event textures asset loaded (34/34)
-[ 39s] [fsgame] Event textures asset loaded (35/35)
-[ 39s] [fsgame] Event textures asset loaded (36/36)
-[ 39s] [fsgame] Event textures asset loaded (37/37)
-[ 39s] [fsgame] Event textures asset loaded (38/38)
-[ 39s] [fsgame] Event textures asset loaded (39/39)
-[ 39s] [fsgame] Event textures asset loaded (40/40)
-[ 39s] [fsgame] Event textures asset loaded (41/41)
-[ 39s] [fsgame] Event textures asset loaded (42/42)
-[ 39s] [fsgame] Event textures asset loaded (43/43)
-[ 39s] [fsgame] Event textures asset loaded (44/44)
-[ 39s] [fsgame] Event textures asset loaded (45/45)
-[ 39s] [fsgame] Event textures asset loaded (46/46)
-[ 39s] [fsgame] Event textures asset loaded (47/47)
-[ 39s] [fsgame] Event textures asset loaded (48/48)
-[ 39s] [fsgame] Event textures asset loaded (49/49)
-[ 39s] [fsgame] Event textures asset loaded (50/50)
-[ 39s] [fsgame] Event textures asset loaded (51/51)
-[ 39s] [fsgame] Event textures asset loaded (52/52)
-[ 39s] [fsgame] Event textures asset loaded (53/53)
-[ 39s] [fsgame] Event textures asset loaded (54/54)
-[ 39s] JNI GetStaticMethodID: getIAPCoins ()I
-[ 39s] JNI GetStaticMethodID: getIAPGems ()I
-[ 39s] JNI GetStaticMethodID: getIAPPaints ()I
-[ 39s] JNI GetStaticMethodID: getIAPAdFree ()I
-[ 39s] JNI GetStaticMethodID: getIAPBundle ()I
-[ 39s] JNI GetStaticMethodID: getIAPError ()I
-[ 39s] JNI GetStaticMethodID: hasInstallReward ()Z
-[ 43s] JNI CallStaticBooleanMethodV: hasInstallReward → false
-[ 43s] game: frame 600
-[ 48s] game: frame 900
-[ 53s] screenshot: sdmc:/AndroidHorizonNX/screenshots/game_frame900.png
-[ 53s] UserDefaults: saved 5302 ints, 3 floats, 49 strings
-[ 53s] game stdio: libpng warning: iCCP: known incorrect sRGB profile
-[ 53s] game stdio: libpng warning: Interlace handling should be turned on when using png_read_image
-[ 53s] JNI GetStaticMethodID: unlockAchievement (Ljava/lang/String;)V
-[ 53s] JNI CallStaticVoidMethodV: unlockAchievement (Ljava/lang/String;)V
-[ 53s] JNI GetStaticMethodID: isGoogleSignedIn ()Z
-[ 53s] JNI CallStaticBooleanMethodV: isGoogleSignedIn → false
-[ 53s] game debug: no active popup offers!
-[ 53s] JNI GetStaticMethodID: trackEvent (Ljava/lang/String;Ljava/util/HashMap;)V
-[ 53s] JNI FindClass: java/util/HashMap
-[ 53s] JNI GetMethodID: <init> ()V
-[ 53s] JNI GetMethodID: put (Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-[ 53s] JNI CallObjectMethodV  x2
-[ 54s] JNI CallStaticVoidMethodV: trackEvent (Ljava/lang/String;Ljava/util/HashMap;)V
-[ 56s] UserDefaults: saved 5302 ints, 3 floats, 49 strings
+[ 32s] JNI setIntegerForKey(FUEL_SWOOPER_steps, 0)
+[ 32s] UserDefaults: saved 5302 ints, 3 floats, 49 strings
+[ 33s] [fsgame] Prize pool loaded from file
+[ 33s] UserDefaults: saved 5302 ints, 3 floats, 49 strings
+[ 33s] [fsgame] Loading (intro) event assets ...
+[ 33s] [fsgame] Load event texture asset (1:stages/super_countryside/super-countryside-day-sky.png)
+[ 33s] pthread_create: real thread fn=0x961b6d18c handle=0xd63ab3b20 core=1
+[ 33s] [fsgame] Load event texture asset (2:stages/super_countryside/super-countryside-day-parallax2.png)
+[ 33s] [fsgame] Load event texture asset (3:stages/super_countryside/terrain-ground.png)
+[ 33s] [fsgame] Load event texture asset (4:stages/super_countryside/terrain-surface.png)
+[ 33s] [fsgame] Load event texture asset (5:events/default/background.png)
+[ 33s] [fsgame] Load event texture asset (6:events/default/background2.png)
+[ 33s] [fsgame] Load event texture asset (7:events/default/terrain.png)
+[ 33s] [fsgame] Load event texture asset (8:events/default/terrain-surface.png)
+[ 33s] [fsgame] Load event texture asset (9:events/shop/glow.png)
+[ 33s] [fsgame] Load event texture asset (10:events/shop/item_bg.png)
+[ 33s] [fsgame] Load event texture asset (11:events/shop/item_bg_claim.png)
+[ 33s] [fsgame] Load event texture asset (12:events/shop/item_bg_focus.png)
+[ 33s] [fsgame] Load event texture asset (13:events/shop/left-arrow.png)
+[ 33s] [fsgame] Load event texture asset (14:events/shop/right-arrow.png)
+[ 33s] [fsgame] Load event texture asset (15:events/shop/left-arrow-focus.png)
+[ 33s] [fsgame] Load event texture asset (16:events/shop/shop_progressbar.png)
+[ 33s] [fsgame] Load event texture asset (17:events/shop/shop_progressbar_bg.png)
+[ 33s] [fsgame] Load event texture asset (18:events/shop/shop-button.png)
+[ 33s] [fsgame] Load event texture asset (19:events/shop/shop-button-disabled.png)
+[ 33s] [fsgame] Load event texture asset (20:events/shop/shop-button-disabled.png)
+[ 33s] [fsgame] Load event texture asset (21:events/shop/prize_bg.png)
+[ 33s] [fsgame] Load event texture asset (22:events/shared/billboard.png)
+[ 33s] [fsgame] Load event texture asset (23:events/shared/billboard_timer.png)
+[ 33s] [fsgame] Load event texture asset (24:events/shared/cartoonglow_med.png)
+[ 33s] [fsgame] Load event texture asset (25:events/shared/curtains.png)
+[ 33s] [fsgame] Load event texture asset (26:events/shared/event_progressbar.png)
+[ 33s] [fsgame] Load event texture asset (27:events/shared/event_progressbar_bg.png)
+[ 33s] [fsgame] Load event texture asset (28:events/shared/garage-building.png)
+[ 33s] [fsgame] Load event texture asset (29:events/shared/left-arrow.png)
+[ 33s] [fsgame] Load event texture asset (30:events/shared/left-arrow-focus.png)
+[ 33s] [fsgame] Load event texture asset (31:events/shared/prize-background.png)
+[ 33s] [fsgame] Load event texture asset (32:events/shared/reward_line.png)
+[ 33s] [fsgame] Load event texture asset (33:events/shared/right-arrow.png)
+[ 33s] [fsgame] Load event texture asset (34:events/shared/stage_progressbar.png)
+[ 33s] [fsgame] Load event texture asset (35:events/shared/stage_progressbar_bg.png)
+[ 33s] [fsgame] Load event texture asset (36:events/shared/token.png)
+[ 33s] [fsgame] Load event texture asset (37:events/shared/toolbox_gold.png)
+[ 33s] [fsgame] Load event texture asset (38:events/shared/toolbox_gold_open.png)
+[ 33s] [fsgame] Load event texture asset (39:events/shared/toolbox_red.png)
+[ 33s] [fsgame] Load event texture asset (40:events/shared/toolbox_red_focus.png)
+[ 33s] [fsgame] Load event texture asset (41:events/shared/toolbox_red_open.png)
+[ 33s] [fsgame] Load event texture asset (42:events/shared/trophy_bronze.png)
+[ 33s] [fsgame] Load event texture asset (43:events/shared/trophy_gold.png)
+[ 33s] [fsgame] Load event texture asset (44:events/shared/trophy_outline.png)
+[ 33s] [fsgame] Load event texture asset (45:events/shared/trophy_silver.png)
+[ 33s] [fsgame] Load event texture asset (46:events/shared/upgrade-bar.png)
+[ 33s] [fsgame] Load event texture asset (47:events/shared/upgrade-bar-bg.png)
+[ 33s] [fsgame] Load event texture asset (48:events/shared/upgrade-bar-empty.png)
+[ 33s] [fsgame] Load event texture asset (49:events/shared/upgrade-item-bg.png)
+[ 33s] [fsgame] Load event texture asset (50:events/default/haybale-square.png)
+[ 33s] [fsgame] Load event texture asset (51:events/default/haybaleround.png)
+[ 33s] [fsgame] Load event texture asset (52:events/default/scarecrow.png)
+[ 33s] [fsgame] Load event texture asset (53:stages/actionhero/action-bush.png)
+[ 33s] [fsgame] Load event texture asset (54:stages/super_countryside/super-countryside-day-parallax.png)
+[ 33s] game debug: has consent
+[ 33s] JNI GetStaticMethodID: onFinishedAssetLoader ()V
+[ 33s] JNI CallStaticVoidMethodV: onFinishedAssetLoader ()V
+[ 33s] game debug: going to init DeepLink
+[ 33s] game debug: init Stage deep link stage
+[ 33s] JNI GetStaticMethodID: getSettingString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+[ 33s] JNI CallStaticObjectMethodV: getSettingString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; → ""
+[ 34s] fopen FAIL: gcEventDetails (mode=r)
+[ 37s] game stdio: libpng warning: iCCP: known incorrect sRGB profile  x3
+[ 37s] JNI GetStaticMethodID: hasVideoCampaigns (I)I
+[ 37s] JNI getIntegerForKey: 6000 reads
+[ 40s] JNI getIntegerForKey: 8000 reads
+[ 40s] JNI GetStaticMethodID: startAdvertisements ()V
+[ 40s] JNI CallStaticVoidMethodV: startAdvertisements ()V
+[ 40s] [fsgame] Event textures asset loaded (1/1)
+[ 40s] [fsgame] Event textures asset loaded (2/2)
+[ 40s] [fsgame] Event textures asset loaded (3/3)
+[ 40s] branding: overlay ready (570x31 texture)
+[ 40s] [fsgame] Event textures asset loaded (4/4)
+[ 40s] [fsgame] Event textures asset loaded (5/5)
+[ 40s] [fsgame] Event textures asset loaded (6/6)
+[ 40s] [fsgame] Event textures asset loaded (7/7)
+[ 40s] [fsgame] Event textures asset loaded (8/8)
+[ 40s] [fsgame] Event textures asset loaded (9/9)
+[ 40s] [fsgame] Event textures asset loaded (10/10)
+[ 40s] [fsgame] Event textures asset loaded (11/11)
+[ 40s] [fsgame] Event textures asset loaded (12/12)
+[ 40s] [fsgame] Event textures asset loaded (13/13)
+[ 40s] [fsgame] Event textures asset loaded (14/14)
+[ 40s] [fsgame] Event textures asset loaded (15/15)
+[ 40s] [fsgame] Event textures asset loaded (16/16)
+[ 40s] [fsgame] Event textures asset loaded (17/17)
+[ 40s] [fsgame] Event textures asset loaded (18/18)
+[ 40s] [fsgame] Event textures asset loaded (19/19)
+[ 40s] [fsgame] Event textures asset loaded (20/20)
+[ 40s] [fsgame] Event textures asset loaded (21/21)
+[ 40s] [fsgame] Event textures asset loaded (22/22)
+[ 40s] [fsgame] Event textures asset loaded (23/23)
+[ 41s] [fsgame] Event textures asset loaded (24/24)
+[ 41s] [fsgame] Event textures asset loaded (25/25)
+[ 41s] [fsgame] Event textures asset loaded (26/26)
+[ 41s] [fsgame] Event textures asset loaded (27/27)
+[ 41s] [fsgame] Event textures asset loaded (28/28)
+[ 41s] [fsgame] Event textures asset loaded (29/29)
+[ 41s] [fsgame] Event textures asset loaded (30/30)
+[ 41s] [fsgame] Event textures asset loaded (31/31)
+[ 41s] [fsgame] Event textures asset loaded (32/32)
+[ 41s] [fsgame] Event textures asset loaded (33/33)
+[ 41s] [fsgame] Event textures asset loaded (34/34)
+[ 41s] [fsgame] Event textures asset loaded (35/35)
+[ 41s] [fsgame] Event textures asset loaded (36/36)
+[ 41s] [fsgame] Event textures asset loaded (37/37)
+[ 41s] [fsgame] Event textures asset loaded (38/38)
+[ 41s] [fsgame] Event textures asset loaded (39/39)
+[ 41s] [fsgame] Event textures asset loaded (40/40)
+[ 41s] [fsgame] Event textures asset loaded (41/41)
+[ 41s] [fsgame] Event textures asset loaded (42/42)
+[ 41s] [fsgame] Event textures asset loaded (43/43)
+[ 41s] [fsgame] Event textures asset loaded (44/44)
+[ 41s] [fsgame] Event textures asset loaded (45/45)
+[ 41s] [fsgame] Event textures asset loaded (46/46)
+[ 41s] [fsgame] Event textures asset loaded (47/47)
+[ 41s] [fsgame] Event textures asset loaded (48/48)
+[ 41s] [fsgame] Event textures asset loaded (49/49)
+[ 41s] [fsgame] Event textures asset loaded (50/50)
+[ 41s] [fsgame] Event textures asset loaded (51/51)
+[ 41s] [fsgame] Event textures asset loaded (52/52)
+[ 41s] [fsgame] Event textures asset loaded (53/53)
+[ 41s] [fsgame] Event textures asset loaded (54/54)
+[ 41s] JNI GetStaticMethodID: getIAPCoins ()I
+[ 41s] JNI GetStaticMethodID: getIAPGems ()I
+[ 41s] JNI GetStaticMethodID: getIAPPaints ()I
+[ 41s] JNI GetStaticMethodID: getIAPAdFree ()I
+[ 41s] JNI GetStaticMethodID: getIAPBundle ()I
+[ 41s] JNI GetStaticMethodID: getIAPError ()I
+[ 41s] JNI GetStaticMethodID: hasInstallReward ()Z
+[ 44s] JNI CallStaticBooleanMethodV: hasInstallReward → false
+[ 44s] game: frame 600
+[ 49s] branding: probe [0]=48,54,66(want 14,14,20)X [1]=45,49,60(want 14,14,20) [2]=67,73,76(want 230,230,230)X → no match
+[ 49s] game: frame 900
+[ 51s] branding: probe [0]=48,54,66(want 14,14,20)X [1]=45,49,60(want 14,14,20) [2]=67,73,76(want 230,230,230)X → no match
+[ 56s] screenshot: sdmc:/AndroidHorizonNX/screenshots/game_frame900.png
 [ 56s] game: frame 1200
-[ 56s] game debug: Android: RingerMode
-[ 56s] game debug: 0
-[ 56s] game debug: Android: Media Volume
-[ 56s] game debug: Android: Ringer Volume
-[ 57s] JNI CallObjectMethodV  x13
-[ 57s] UserDefaults: saved 5302 ints, 3 floats, 49 strings
-[ 57s] JNI GetStaticMethodID: disableAdManagerPopupDialogs ()V
-[ 58s] JNI CallStaticVoidMethodV: disableAdManagerPopupDialogs ()V
-[ 59s] game stdio: libpng warning: iCCP: known incorrect sRGB profile  x4
-[ 59s] JNI GetStaticMethodID: trackPage (Ljava/lang/String;)V
-[ 60s] JNI CallStaticVoidMethodV: trackPage (Ljava/lang/String;)V
-[ 60s] JNI GetStaticMethodID: stopAdView ()V
-[ 60s] JNI CallStaticVoidMethodV: stopAdView ()V
-[ 60s] JNI GetStaticMethodID: enterInGame ()V
-[ 60s] JNI CallStaticVoidMethodV: enterInGame ()V
-[ 60s] [libSimpleAudioEngine] Get Env  x2
-[ 60s] audio: music sdmc:/AndroidHorizonNX/games/com.fingersoft.hillclimb/assets/audio/bgmusic01.ogg loop=1
-[ 62s] [libSimpleAudioEngine] Get Env
-[ 62s] [fsgame] Pedals down = 0.016667
-[ 62s] [fsgame] Pedals down = 0.033333
-[ 62s] [fsgame] Pedals down = 0.050000
-[ 62s] [fsgame] Pedals down = 0.066667
-[ 62s] [fsgame] Pedals down = 0.083333
-[ 62s] [fsgame] touchid = 0
-[ 62s] [fsgame] touchid = 1
-[ 64s] [fsgame] touchid = 0
-[ 64s] game: frame 1500
-[ 66s] [fsgame] touchid = 0
-[ 67s] JNI setIntegerForKey(hcr1-nitro, 4)
-[ 70s] UserDefaults: saved 5302 ints, 3 floats, 49 strings
-[ 70s] game: frame 1800
-[ 72s] game stdio: libpng warning: iCCP: known incorrect sRGB profile  x2
-[ 72s] JNI setIntegerForKey(seasons_highscore, 552)
-[ 72s] JNI setIntegerForKey(seasons_unlocked, 1)
-[ 72s] JNI setIntegerForKey(seasons_level, 2)
-[ 72s] JNI setIntegerForKey(seasons_custom1_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_jeep_highscore, 552)
-[ 72s] JNI setIntegerForKey(seasons_bike_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_monster_highscore, 82)
-[ 72s] JNI setIntegerForKey(seasons_tractor_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_hippievan_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_onewheeler_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_quadbike_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_trophytruck_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_touristbus_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_racecar_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_screwfinger_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_policecar_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_ambulance_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_electric_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_dieseltruck_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_rallycar_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_dragster_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_firetruck_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_chopperbike_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_lowrider_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_tank_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_snowmobile_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_superoffroad_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_truck_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_dunebuggy_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_hovercraft_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_minibike_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_bigfinger_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_train_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_moonlander_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_hotrod_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_bubblecar_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_shapeshifter_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_luxury_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_spider_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_hachiroku_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_superhillclimber_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_carcar_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_aircar_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_fastbike_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_ufo_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_boringcar_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_badcar_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_sleigh_highscore, 0)
-[ 72s] JNI setIntegerForKey(seasons_chestconsumed, 0)
-[ 72s] JNI setIntegerForKey(seasons_custom1_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_jeep_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_bike_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_monster_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_tractor_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_hippievan_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_onewheeler_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_quadbike_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_trophytruck_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_touristbus_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_racecar_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_screwfinger_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_policecar_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_ambulance_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_electric_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_dieseltruck_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_rallycar_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_dragster_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_firetruck_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_chopperbike_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_lowrider_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_tank_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_snowmobile_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_superoffroad_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_truck_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_dunebuggy_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_hovercraft_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_minibike_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_bigfinger_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_train_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_moonlander_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_hotrod_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_bubblecar_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_shapeshifter_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_luxury_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_spider_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_hachiroku_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_superhillclimber_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_carcar_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_aircar_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_fastbike_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_ufo_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_boringcar_jumprec, 0)
-[ 72s] JNI setIntegerForKey(seasons_badcar_jumprec, 0)
-[ 73s] JNI setIntegerForKey(seasons_sleigh_jumprec, 0)
-[ 73s] UserDefaults: saved 5302 ints, 3 floats, 49 strings
-[ 73s] JNI GetStaticMethodID: leaveInGame ()V
-[ 74s] JNI CallStaticVoidMethodV: leaveInGame ()V
-[ 76s] JNI CallObjectMethodV  x24
-[ 76s] UserDefaults: saved 5302 ints, 3 floats, 49 strings
-[ 76s] JNI GetStaticMethodID: shareImage (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
-[ 76s] JNI CallStaticVoidMethodV: shareImage (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
-[ 77s] JNI CallObjectMethodV  x3
-[ 77s] game: frame 2100
-[ 78s] [fsgame] touchid = 0
-[ 78s] JNI GetStaticMethodID: setAchievementSteps (Ljava/lang/String;I)V
-[ 78s] JNI CallStaticVoidMethodV: setAchievementSteps (Ljava/lang/String;I)V
-[ 78s] JNI setIntegerForKey(numberOfMissionsSkipped, 0)
-[ 79s] UserDefaults: saved 5302 ints, 3 floats, 49 strings  x2
-[ 79s] JNI GetStaticMethodID: isRewardedInterstitialLoaded ()Z
-[ 79s] JNI CallStaticBooleanMethodV: isRewardedInterstitialLoaded → false
-[ 79s] JNI GetStaticMethodID: isInterstitialLoadedGroup (I)Z
-[ 79s] JNI CallStaticBooleanMethodV: isInterstitialLoadedGroup → false
-[ 79s] JNI GetStaticMethodID: isPurchaseStillGoingOn ()Z
-[ 80s] JNI CallStaticBooleanMethodV: isPurchaseStillGoingOn → false
-[ 80s] [libSimpleAudioEngine] Get Env
-[ 80s] JNI GetStaticMethodID: stopAllEffects ()V
-[ 80s] [libSimpleAudioEngine] Get Env  x2
-[ 80s] audio: music sdmc:/AndroidHorizonNX/games/com.fingersoft.hillclimb/assets/audio/bgmusic00.ogg loop=1
-[ 80s] [libSimpleAudioEngine] Get Env
-[ 80s] JNI GetStaticMethodID: loadInterstitialFromGame (I)V
-[ 80s] JNI CallStaticVoidMethodV: loadInterstitialFromGame (I)V
-[ 80s] JNI GetStaticMethodID: loadRewardedVideoFromGame ()V
-[ 83s] JNI CallStaticVoidMethodV: loadRewardedVideoFromGame ()V
-[ 83s] [fsgame] ButtonsPressed: 1, Button just pressed 2
-[ 83s] [fsgame] Button 2
-[ 83s] [fsgame] ButtonsPressed: 0
-[ 83s] [fsgame] ButtonsPressed: -1
-[ 84s] game debug: HandleClaim pressed...
-[ 84s] [fsgame] Giving Daily Mission Prizes:
-[ 84s] [fsgame] Garage Cards: 0
-[ 84s] [fsgame] Garage Cards Collected: 0
-[ 84s] [fsgame] Garage Rare Cards: 0
-[ 84s] [fsgame] Garage Rare Cards Collected: 0
-[ 84s] [fsgame] Garage Epic Cards: 0
-[ 84s] [fsgame] Garage Epic Cards Collected: 0
-[ 84s] [fsgame] Garage Legendary Cards: 0
-[ 84s] [fsgame] Garage Legendary Cards Collected: 0
-[ 84s] [fsgame] Coins: 100000
-[ 84s] [fsgame] Coins Collected: 1
-[ 84s] [fsgame] Gems: 100
-[ 84s] [fsgame] Gems Collected: 0
-[ 84s] [fsgame] Nitros: 0
-[ 84s] [fsgame] Nitros Collected: 1
-[ 84s] [fsgame] Paint Buckets: 1
-[ 85s] [fsgame] Paint Buckets Collected: 0
-[ 85s] UserDefaults: saved 5302 ints, 3 floats, 49 strings
-[ 85s] Cocos2d-x: game loop FAULT sig=257 esr=0x92000004 pc=0x7ded465c8 far=0xff1d0c11ff1d0c11 sym=Java_com_fingersoft_game_MainActivity_setNativePlayerGDPRStatus+0x28178 frame=2317 — stop
-[ 85s] FAULT pc 0x7ded465c8: region=0x7de9b7000 size=0x748000 type=0x14 perm=r-x
-[ 85s] FAULT far 0xff1d0c11ff1d0c11: region=0x1000000000 size=0xfffffff000000000 type=0x10 perm=---
-[ 85s] FAULT pc: sdmc:/AndroidHorizonNX/games/com.fingersoft.hillclimb/lib/libgame.so +0x38f5c8 sym=Java_com_fingersoft_game_MainActivity_setNativePlayerGDPRStatus+0x28178
-[ 85s] INSN: [pc-12]=f9403908 [pc-8]=d63f0100 [pc-4]=aa0003e1 [pc]=f9400288 [pc+4]=f9403d08
-[ 85s] Cocos2d-x: loop done frames=2317
+[ 57s] branding: probe [0]=48,54,66(want 14,14,20)X [1]=45,49,60(want 14,14,20) [2]=67,73,76(want 230,230,230)X → no match
+[ 57s] [libSimpleAudioEngine] Get Env
+[ 58s] UserDefaults: saved 5302 ints, 3 floats, 49 strings
+[ 58s] JNI GetStaticMethodID: isFacebookLikeIAPPerformed ()I
+[ 58s] JNI GetStaticMethodID: stopAdView ()V
+[ 58s] JNI CallStaticVoidMethodV: stopAdView ()V
+[ 58s] JNI GetStaticMethodID: trackPage (Ljava/lang/String;)V
+[ 58s] JNI CallStaticVoidMethodV: trackPage (Ljava/lang/String;)V
+[ 58s] game stdio: libpng warning: iCCP: known incorrect sRGB profile
+[ 58s] Cocos2d-x: game loop FAULT sig=257 esr=0x92000004 pc=0x9618f0bb8 far=0xfffffffffffffff8 sym=Java_com_fingersoft_game_MainActivity_onControllerConnectionEvent+0x221cc frame=1253 — stop
+[ 58s] FAULT pc 0x9618f0bb8: region=0x9616bb000 size=0x748000 type=0x14 perm=r-x
+[ 58s] FAULT far 0xfffffffffffffff8: region=0x1000000000 size=0xfffffff000000000 type=0x10 perm=---
+[ 58s] FAULT pc: sdmc:/AndroidHorizonNX/games/com.fingersoft.hillclimb/lib/libgame.so +0x235bb8 sym=Java_com_fingersoft_game_MainActivity_onControllerConnectionEvent+0x221cc
+[ 58s] INSN: [pc-12]=8b170c09 [pc-8]=f9000fe9 [pc-4]=a90023e0 [pc]=f9400289 [pc+4]=f8008509
+[ 58s] Cocos2d-x: loop done frames=1253

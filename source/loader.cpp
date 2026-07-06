@@ -767,14 +767,20 @@ static void initBrandOverlay() {
 // image space (0,0 = top-left); glReadPixels needs window space (0,0 =
 // bottom-left), so the Y is flipped at sample time.
 struct ProbePoint { int x, y; uint8_t r, g, b; };
+// Recalibrated from a REAL captured log (build 77 test): the two top corners
+// read (48,54,66) and (45,49,60) — a blue-gray, not the near-black originally
+// guessed. The loading bar point turned out unstable (255,255,255 early,
+// dropping to 67,73,76 once the fill animation passes it), so it's dropped
+// in favour of a third corner — same static vignette tone, always stable.
 static const ProbePoint kLoadingProbes[3] = {
-    {10,   10,  14,  14,  20},   // dark vignette corner, top-left
-    {1270, 10,  14,  14,  20},   // dark vignette corner, top-right
-    {300, 512, 230, 230, 230},   // inside the white loading bar
+    {10,   10,  46, 51, 63},   // dark vignette corner, top-left
+    {1270, 10,  46, 51, 63},   // dark vignette corner, top-right
+    {10,  710,  46, 51, 63},   // dark vignette corner, bottom-left
 };
-static const int kProbeTolerance = 40;
+static const int kProbeTolerance = 25;
 
-// Logs actual vs. expected once per second (not every frame) so a wrong
+// Logs actual vs. expected every 300 frames (~5s at 60fps, not every frame —
+// this now runs for the whole session, not just briefly during loading) so a wrong
 // guess is cheap to recalibrate from the next compat_log.txt — this data is
 // exactly what's needed to correct kLoadingProbes without more guesswork.
 static bool isOnLoadingScreen(int frame) {
@@ -793,7 +799,7 @@ static bool isOnLoadingScreen(int frame) {
                  i, px[0], px[1], px[2], p.r, p.g, p.b, ok ? "" : "X");
         strncat(detail, part, sizeof(detail) - strlen(detail) - 1);
     }
-    if (frame % 60 == 0)
+    if (frame % 300 == 0)
         compatLogFmt("branding: probe%s → %s", detail, match ? "MATCH" : "no match");
     return match;
 }
@@ -874,6 +880,41 @@ static void drawBrandOverlay() {
     if (prevBlend) glEnable(GL_BLEND); else glDisable(GL_BLEND);
     if (prevDepth) glEnable(GL_DEPTH_TEST); else glDisable(GL_DEPTH_TEST);
     if (prevCull)  glEnable(GL_CULL_FACE);  else glDisable(GL_CULL_FACE);
+}
+
+// The game draws directly via raw EGL/GLES2 on the same window/context the
+// launcher's SDL_Renderer uses. When the game loop ends — whether by a clean
+// quit or (more importantly) a caught mid-frame crash — it can leave GL in an
+// arbitrary state: a bound shader/texture/buffer, or scissor/stencil test
+// left enabled from whatever draw call was interrupted. SDL's renderer
+// doesn't necessarily reset every one of these before its own draws, so a
+// crash could leave the launcher showing a corrupted frame (a stray white
+// quad, a clipped scissor rect, etc.) — visually "a white box then nothing,
+// have to close with Home" — even though our side of the game loop exited
+// and logged cleanly. Reset everything to sane defaults before handing the
+// window back to the launcher.
+static void resetGLStateForLauncher(int screenW, int screenH) {
+    glUseProgram(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    for (int i = 0; i < 16; i++) glDisableVertexAttribArray((GLuint)i);
+    for (int unit = 0; unit < 4; unit++) {
+        glActiveTexture(GL_TEXTURE0 + unit);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+    glActiveTexture(GL_TEXTURE0);
+    glDisable(GL_SCISSOR_TEST);
+    glDisable(GL_STENCIL_TEST);
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    glDepthMask(GL_TRUE);
+    glViewport(0, 0, screenW, screenH);
+    glClearColor(0, 0, 0, 1);
+    glClear(GL_COLOR_BUFFER_BIT);
 }
 } // namespace
 
@@ -1123,11 +1164,17 @@ void runGameOnMainThread(void* game_so_ptr,
 
                 nativeRender(env, obj);
 
-                // Android Horizon branding — only while BOTH the game hasn't
-                // signalled splash-done yet AND the frame actually looks like
-                // its "HILL CLIMB RACING / LOADING..." screen (pixel probe),
-                // so it can't show during the earlier logo-only phase.
-                if (g_splash_active && isOnLoadingScreen(frame)) drawBrandOverlay();
+                // Android Horizon branding — gated purely on the pixel
+                // fingerprint now. splashScreenHasCompleted turned out to
+                // fire at ~8s, long before the actual "HILL CLIMB RACING /
+                // LOADING..." screen with the version text ever appears —
+                // gating on it (g_splash_active) meant the probe check got
+                // permanently disabled before the target screen was ever
+                // reached, so the overlay could never show. The 3-point
+                // fingerprint alone is specific enough to gate this safely
+                // for the whole session (real gameplay HUD looks nothing
+                // like a dark vignette + white bar at these exact points).
+                if (isOnLoadingScreen(frame)) drawBrandOverlay();
 
                 // Milestone captures: early splash, post-splash, in-menu
                 if (frame == 30 || frame == 300 || frame == 900)
@@ -1176,6 +1223,16 @@ void runGameOnMainThread(void* game_so_ptr,
         compatAudioStopAllEffects();
         jniUserDefaultsSave();
         g_game_so = nullptr;
+        // Reset GL to sane defaults before the launcher's SDL_Renderer draws
+        // again on this same context — see resetGLStateForLauncher's comment.
+        // Deliberately NOT calling eglSwapBuffers/SDL_GL_SwapWindow here: an
+        // extra swap outside of SDL_Renderer's own SDL_RenderPresent calls
+        // desyncs its internal front/back-buffer bookkeeping (SDL2's GLES2
+        // renderer backend assumes it's the only thing swapping this
+        // surface) — that's almost certainly last build's freeze → fade →
+        // rapid black/frozen-frame flicker. The very next SDL_RenderPresent
+        // in the launcher's own screens presents cleanly on its own.
+        resetGLStateForLauncher(1280, 720);
     } else {
         compatLog("Cocos2d-x: nativeRender not found");
     }
