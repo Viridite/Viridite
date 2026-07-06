@@ -276,6 +276,13 @@ If this approach proves out across many games (not just Hill Climb Racing), the 
 
 > Most recent first.
 
+### 0.1.91 — Found the real stutter source, overlay tuning, closer font match
+
+- [x] **Found the actual dominant cause of frame stutters during real gameplay** — not overlay rendering, but `__android_log_print`/`__android_log_write`/`__android_log_vprint` (liblog). The game calls these constantly (pedal state, touch IDs, per-frame telemetry), and since each message embeds a continuously-changing value, our log's exact-match dedup never collapsed them — every single call was "new" and triggered a real SD-card `fflush()`. That's a steady stream of disk writes throughout actual driving, not just loading. Now time-throttled to at most twice a second regardless of call volume, same as the fix already applied to `debugStringOnAndroid` earlier.
+- [x] Reduced other real overhead: the pixel-fingerprint probe (`glReadPixels` is a genuine GPU pipeline stall) now samples every 4th frame instead of every frame while the overlay's active; the periodic "still alive" log heartbeat now flushes every 15s instead of every 5s.
+- [x] **Overlay was lingering too long after the loading screen** (build 89's 8-samples-to-latch was too generous once the fuel-select screen came into view) — shortened the exit-confirm window so it disappears promptly.
+- [x] **Closer font match, without touching the binary** — found the real font via the bundled `gamefont.fnt` descriptor: **Agency FB**, bold, with a baked-in outline. It's a commercial Windows font we can't bundle on Switch, but the outline effect is straightforward to fake (render the text in black at several small offsets, then the real colour on top) and makes a bigger visual difference than the font family alone.
+
 ### 0.1.89 — Overlay latch debounce fixed properly + version-string patch assessed and declined
 
 - [x] **0.1.88's latch fix was too aggressive** — a fresh hardware log showed it disappearing after only ~2.7 seconds, latched off for good by a single noisy frame while still genuinely on the loading screen. Replaced with a proper two-sided debounce: a few consecutive matching frames confirm we're really on the loading screen (filters a stray false match), and a short — not instant, not 90-frame-long — sustained mismatch confirms we've really left (filters a stray false negative without being slow enough for the multi-stage transition to fool it again).
