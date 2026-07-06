@@ -14,7 +14,7 @@
 
 *Made by [aaronworld.uk](https://aaronworld.uk) · [Give it a star ⭐](https://github.com/Aaronateataco/AndroidHorizonNX/stargazers) if you find it interesting!*
 
-**[Website](https://androidhorizon.github.io/website/) · [Compatibility list](https://androidhorizon.github.io/website/compatibility.html) · [Docs](https://androidhorizon.github.io/website/docs/index.html) · [Releases](https://github.com/AndroidHorizon/AndroidHorizonNX/releases)**
+**[Website](https://androidhorizon.aaronworld.uk/) · [Compatibility list](https://androidhorizon.aaronworld.uk/compatibility.html) · [Docs](https://androidhorizon.aaronworld.uk/docs/index.html) · [Releases](https://github.com/AndroidHorizon/AndroidHorizonNX/releases)**
 
 </div>
 
@@ -254,7 +254,7 @@ The launcher now tags each scanned APK by architecture automatically and blocks 
 
 ### Submitting your own test results
 
-Use the [submission form](https://androidhorizon.github.io/website/submit.html) on the website — no GitHub account needed. Give it a direct `.apk` link, where you got it from, and your three log files (`launcher_log.txt`, `compat_log.txt`, `log.txt`); the log fields have no length limit since it's a plain web form, not a GitHub issue.
+Use the [submission form](https://androidhorizon.aaronworld.uk/submit.html) on the website — no GitHub account needed. Give it a direct `.apk` link, where you got it from, and your three log files (`launcher_log.txt`, `compat_log.txt`, `log.txt`); the log fields have no length limit since it's a plain web form, not a GitHub issue.
 
 The pipeline (website form → Cloudflare Worker → `repository_dispatch` → `.github/workflows/compat-submission.yml` + `.github/scripts/process_compat_submission.py`):
 
@@ -263,8 +263,8 @@ The pipeline (website form → Cloudflare Worker → `repository_dispatch` → `
 3. Package name, version, display name, and icon are read straight out of the manifest/resources via androguard — not typed in anywhere, so they can't drift from what was actually tested.
 4. Checks the Play Store listing for the package name and rejects it if Play Store categorizes it as a non-game app.
 5. Runs the three logs through the same kind of analysis used to chase the frame-stall work above — counts stalls/severe stalls, scans for known crash/error signatures, and checks whether the game ever actually rendered a frame — to produce a verdict (Playable / Runs with issues / Fails to launch / Inconclusive).
-6. Commits the logs + a generated report (including the APK's SHA-256) to [compat-reports](https://github.com/AndroidHorizon/compat-reports) and updates the data the [compatibility page](https://androidhorizon.github.io/website/compatibility.html) renders. A repeat submission for the same package+version **overwrites** the previous one — only the latest result per version is kept. The `pending/` entry is deleted once processed.
-7. If you gave a GitHub username (optional, unverified — just for display), it's credited on the [Credits page](https://androidhorizon.github.io/website/credits.html) and the launcher's own About screen, under Testers.
+6. Commits the logs + a generated report (including the APK's SHA-256) to [compat-reports](https://github.com/AndroidHorizon/compat-reports) and updates the data the [compatibility page](https://androidhorizon.aaronworld.uk/compatibility.html) renders. A repeat submission for the same package+version **overwrites** the previous one — only the latest result per version is kept. The `pending/` entry is deleted once processed.
+7. If you gave a GitHub username (optional, unverified — just for display), it's credited on the [Credits page](https://androidhorizon.aaronworld.uk/credits.html) and the launcher's own About screen, under Testers.
 
 This needs an `ORG_PAT` repo secret (a classic PAT with `repo` scope across the org) configured on this repo — the Action reads and writes `compat-reports` directly, so unlike the old issue-based flow there's no degraded fallback mode; without it, the run just fails visibly in the Actions tab, with an `error.txt` left next to the pending submission in `compat-reports`.
 
@@ -366,7 +366,7 @@ If this approach proves out across many games (not just Hill Climb Racing), the 
 
 ### 0.1.125 — Real large-file APK uploads (R2 direct upload, bypassing two separate platform limits)
 
-- [x] The three log fields on the [submission form](https://androidhorizon.github.io/website/submit.html) now have an actual file picker (reads the `.txt` client-side and fills the box), not just a paste box — first version only had the latter despite implying "attach."
+- [x] The three log fields on the [submission form](https://androidhorizon.aaronworld.uk/submit.html) now have an actual file picker (reads the `.txt` client-side and fills the box), not just a paste box — first version only had the latter despite implying "attach."
 - [x] **The APK itself can now be attached directly, at real-world sizes** (~100-150MB, not a token amount). First attempt routed the upload through the Worker as base64 JSON into GitHub's Contents API — capped at ~20-30MB, nowhere near enough (real APKs run ~120MB). The fix: the browser asks the Worker for a short-lived presigned R2 URL (hand-rolled AWS SigV4 signing over Web Crypto, no SDK) and uploads the file **directly to Cloudflare R2**, never through the Worker at all — sidestepping both GitHub's Contents API ceiling and Cloudflare Workers' own ~100MB request-body limit (confirmed empirically: 99MB request body got through to the Worker, 100MB got a hard edge-level 503). At submission time the Worker resolves the upload into a presigned GET URL and passes it through as an ordinary `apk_url`, so the Action's download step needed zero changes for this.
 - [x] Verified live end-to-end at real scale: a genuine 110MB file uploaded directly to R2 and was subsequently downloaded and fully read by the Action (confirmed via its own error output correctly parsing all 110MB before rejecting the synthetic test content).
 - [x] R2 bucket has a 2-day object-lifecycle expiry rule as a cleanup safety net, independent of whether a submission ever finishes processing.
@@ -393,7 +393,7 @@ If this approach proves out across many games (not just Hill Climb Racing), the 
 - [x] **Scrollable, categorized contributor credits** in the About screen, sourced from a plain-text `romfs:/contributors.txt` that the release workflow regenerates from the live GitHub org (grouped per-repo) on every build — D-pad/stick/touch-drag all scroll it.
 - [x] **Release workflow now publishes only the bundled SD-card zip** — the individual launcher/Core-x64/Core-x32 NROs are build intermediates, not something to grab individually and drop in the wrong place.
 - [x] Confirmed all three org repos (`AndroidHorizonNX`, `AHNX-Translation-Core`, `website`) carry byte-identical `LICENSE` files.
-- [x] **Built the project website** — a static site (landing page, an honest [compatibility list](https://androidhorizon.github.io/website/compatibility.html) mirroring the one below, and [docs](https://androidhorizon.github.io/website/docs/index.html) covering setup/controls/architecture/building) — live at [androidhorizon.github.io/website](https://androidhorizon.github.io/website/), deployed via GitHub Pages from the `website` repo's `main` branch.
+- [x] **Built the project website** — a static site (landing page, an honest [compatibility list](https://androidhorizon.aaronworld.uk/compatibility.html) mirroring the one below, and [docs](https://androidhorizon.aaronworld.uk/docs/index.html) covering setup/controls/architecture/building) — live at [androidhorizon.github.io/website](https://androidhorizon.aaronworld.uk/), deployed via GitHub Pages from the `website` repo's `main` branch.
 
 ### 0.1.118 — First real stall data, and a self-inflicted stutter found immediately
 
