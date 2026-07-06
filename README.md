@@ -205,6 +205,28 @@ Measured numbers from hardware:
 
 ---
 
+## Game Compatibility List
+
+**Honest status check first:** only one game has ever actually been run against this project — **Hill Climb Racing 1.67.0**. There isn't a roster of other "integrated" games yet. Everything below is what the compat layer's actual API surface supports or is missing, so it's clear what a new game would need before it could be tried — not a list of titles confirmed to work.
+
+| Game | Status | Notes |
+|---|---|---|
+| **Hill Climb Racing** 1.67.0 (Fingersoft) | ✅ Playable | The only game tested. Fully playable — touch controls, real audio, real threads, persistent saves, ~locked 60fps. One known deterministic crash on the Shop/IAP screen (root-caused, not yet patched — see Changelog). |
+
+**What a game needs, to have a real chance:**
+- `arm64-v8a` native libraries in the APK (`lib/arm64-v8a/*.so`) — this project only loads AArch64 ELF binaries. ARM32-only (`armeabi-v7a`) APKs won't load at all.
+- A plain `.apk` — the extractor doesn't understand split/`.xapk` packages yet (see Performance Expectations above).
+- An engine that talks to "Android" through native JNI callbacks to a handful of Java-side helper classes (the cocos2d-x `SimpleAudioEngine`/`UserDefault`/activity-callback pattern HCR uses) — that's the actual, tested API surface this project emulates. A game built this way has a real chance even if it's never been tried.
+
+**What almost certainly won't work without a lot more work:**
+- **Unity games** (`libunity.so`/IL2CPP) — a completely different native runtime and JNI surface than what's implemented; nothing here targets it.
+- **Games leaning on Google Play Services** (Play Games sign-in, real ads, real IAP, Firebase, etc.) — those are stubbed out/no-op'd, not implemented (see "Not Planned" in the Roadmap below). A game that *requires* one of these to function past a login/paywall screen won't get past it.
+- **Anything needing real network multiplayer.**
+
+**If you want another game supported:** the process that got Hill Climb Racing working was: provide the `.apk` (and any `.obb`/expansion file), then real hardware iteration — extract it, see what JNI calls and native symbols it actually makes, implement/stub what's missing, rebuild, test on your Switch, repeat. That loop needs a real APK to extract and real hardware to test against; it's not something to fake from documentation alone. Send over an APK for whichever game you have in mind and that process can start for real.
+
+---
+
 ## TODO / Roadmap
 
 > Items are roughly ordered by priority. "Phase 0" is the current work.
@@ -298,6 +320,14 @@ If this approach proves out across many games (not just Hill Climb Racing), the 
 ## Changelog
 
 > Most recent first.
+
+### 0.1.108 — Deeper prior-art review: mostly validation, one robustness addition
+
+Went back through the credited projects more thoroughly per Aaron's request to "completely check all of these" — cloned and read `ffd_nx` (Final Fantasy Dimensions' Switch port)'s actual source directly, including its fake-JNI layer, not just a summary.
+
+- [x] **Validated our JNI dispatch approach.** ffd_nx's own fake-JNI layer (a real, shipped, cocos2d-x-adjacent Switch Android port) uses the exact same "chain of string comparisons" dispatch style we do — good independent confirmation that this is normal, accepted practice in this niche, not something that needs restructuring for performance (matches the conclusion reached a couple of rounds ago).
+- [x] **Found a real, if narrow, robustness gap and hardened it defensively.** Our ELF loader's memory-mapping assumes a game's `.so` has exactly one contiguous executable region followed by one contiguous writable region — true for every binary this project has loaded so far, but not something the ELF format actually guarantees. A more general version of this same mapping technique (handling arbitrary segment layouts) exists in this ecosystem. Rather than rewrite our own working, hard-to-test memory-mapping code speculatively, added a validation check that logs a clear warning if a future game's `.so` ever has more than one executable or writable segment — so a weird crash on a *new* game points straight at this assumption instead of being a fresh mystery.
+- Honest framing: most of this deeper pass came back as confirmation that the existing design is sound, not a pile of new bugs — which is itself a useful, if less dramatic, result.
 
 ### 0.1.107 — Two safety practices adopted from prior art, plus the shop-crash finally fully explained
 

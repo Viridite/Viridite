@@ -517,8 +517,12 @@ LoadedSo* elfLoad(const char* path, ProgressCb cb) {
     const Elf64_Phdr* phdrs = (const Elf64_Phdr*)(file_data + ehdr->e_phoff);
     uint64_t min_vaddr      = UINT64_MAX, max_vaddr = 0;
     uint64_t data_seg_vaddr = UINT64_MAX;  // vaddr of first writable (PF_W) segment
+    int      load_count = 0, exec_seg_count = 0, writable_seg_count = 0;
     for (int i = 0; i < ehdr->e_phnum; i++) {
         if (phdrs[i].p_type != PT_LOAD) continue;
+        load_count++;
+        if (phdrs[i].p_flags & PF_X) exec_seg_count++;
+        if (phdrs[i].p_flags & PF_W) writable_seg_count++;
         if (phdrs[i].p_vaddr < min_vaddr) min_vaddr = phdrs[i].p_vaddr;
         uint64_t end = phdrs[i].p_vaddr + phdrs[i].p_memsz;
         if (end > max_vaddr) max_vaddr = end;
@@ -529,6 +533,18 @@ LoadedSo* elfLoad(const char* path, ProgressCb cb) {
         free(file_data);
         compatLog("ELF: no PT_LOAD segments");
         return nullptr;
+    }
+    // The SplitMap step below assumes exactly one contiguous executable region
+    // followed by exactly one contiguous writable region (a single split point
+    // at the first PF_W segment) — true for every .so this project has loaded
+    // so far, but not guaranteed by the ELF spec in general. Warn rather than
+    // silently mis-map permissions if a future game's linker output ever has
+    // more than one segment of either kind, so a weird crash on a new game
+    // points straight here instead of being a mystery.
+    if (exec_seg_count > 1 || writable_seg_count > 1) {
+        compatLogFmt("ELF: WARN %d PT_LOAD segments (%d exec, %d writable) — "
+                     "single-split-point assumption may mis-map permissions",
+                     load_count, exec_seg_count, writable_seg_count);
     }
 
     size_t alloc_size = (size_t)ALIGN_UP(max_vaddr - min_vaddr, 0x1000);
