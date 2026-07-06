@@ -1161,6 +1161,7 @@ void runGameOnMainThread(void* game_so_ptr,
         compatLogFmt("Cocos2d-x: nativeRender @%p — game loop", (void*)nativeRender);
         compatLogFlush();
         volatile int frame = 0;
+        bool crashed = false;
         while (appletMainLoop()) {
             // Recovery window covers the whole iteration (event poll, render,
             // swap) — a fault inside eglSwapBuffers/SDL used to rethrow to the
@@ -1236,6 +1237,7 @@ void runGameOnMainThread(void* game_so_ptr,
                 { const uint32_t* insn = (const uint32_t*)(uintptr_t)g_recover_pc;
                   compatLogFmt("INSN: [pc-12]=%08x [pc-8]=%08x [pc-4]=%08x [pc]=%08x [pc+4]=%08x",
                                insn[-3], insn[-2], insn[-1], insn[0], insn[1]); }
+                crashed = true;
                 goto game_loop_done;
             }
 
@@ -1272,6 +1274,34 @@ void runGameOnMainThread(void* game_so_ptr,
         // which reads exactly like the persistent flicker reported after a
         // crash. Force vsync back on before the launcher renders again.
         if (g_egl_display != EGL_NO_DISPLAY) eglSwapInterval(g_egl_display, 1);
+
+        // Games spawn real background libnx threads now (pt_create — e.g.
+        // HCR's own asset loader, seen starting mid-session in the log).
+        // We have no registry of them and no safe way to force-stop
+        // arbitrary running native code, so after a CRASH we can't
+        // guarantee none of them are still executing — still touching
+        // JNI/audio/heap state that the launcher's menu code would then
+        // race against. Two different GL/EGL state fixes (swap-desync,
+        // then vsync) were tried across builds 78-79 and neither changed
+        // the reported freeze→fade→rapid-flicker symptom, which fits an
+        // ACTIVE ongoing conflict far better than a one-time leftover
+        // state issue. Rather than keep guessing at symptoms, remove the
+        // shared risk entirely: on a caught crash, don't attempt to
+        // return to the launcher's menu in this same (possibly still
+        // multi-threaded, possibly heap-corrupted) process at all — just
+        // exit cleanly. Horizon OS tears down every thread in the process
+        // together, which a same-process "return to menu" fundamentally
+        // cannot guarantee. The launcher UI already forced a full app
+        // restart before allowing a second game session (see gameRanOnce
+        // in main.cpp), so a crash landing you at the same place is a
+        // smaller UX regression than an unrecoverable flicker.
+        if (crashed) {
+            compatLog("Cocos2d-x: crash recovery — exiting app cleanly rather than "
+                      "risking a still-running game thread racing the launcher");
+            compatLogFlush();
+            if (g_compat_log) { logFlushDedup(); fclose(g_compat_log); g_compat_log = nullptr; }
+            exit(0);
+        }
     } else {
         compatLog("Cocos2d-x: nativeRender not found");
     }

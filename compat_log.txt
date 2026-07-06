@@ -6,7 +6,7 @@
 [  0s] Setting up JNI environment...
 [  0s] Loading: libapplovin-native-crash-reporter.so
 [  0s] ELF: loading sdmc:/AndroidHorizonNX/games/com.fingersoft.hillclimb/lib/libapplovin-native-crash-reporter.so
-[  0s] SplitMap: reserved code_va=0x7e4bc3000 data_va=0x7e4c92000 write_va=0xef1595000 csz=0xcf000 dsz=0xf000
+[  0s] SplitMap: reserved code_va=0xf85e5a000 data_va=0xf85f29000 write_va=0x2fbe25000 csz=0xcf000 dsz=0xf000
 [  0s] ELF: stage alloc OK
 [  0s] ELF: stage zeroed
 [  0s] ELF: seg[1] vaddr=0x0 filesz=0xcbac0 memsz=0xcbac0 flags=0x5
@@ -24,18 +24,18 @@
 [  0s] JMPREL: all 403 entries processed
 [  0s] ELF: jmprel done
 [  0s] ELF: strtab/symtab copied
-[  0s] GOT[0] @va+0x77e0 = 0xc829dd7e0
-[  0s] GOT[1] @va+0x77e8 = 0xc829dd790
-[  0s] GOT[2] @va+0x77f0 = 0x7e4c244fc
-[  0s] GOT[3] @va+0x77f8 = 0xc830da6c0
-[  0s] GOT[4] @va+0x7800 = 0xc829dd2a0
-[  0s] SplitMap: code_va=0x7e4bc3000 Rx data_va=0x7e4c92000 Rw OK
+[  0s] GOT[0] @va+0x77e0 = 0x9d584a850
+[  0s] GOT[1] @va+0x77e8 = 0x9d584a800
+[  0s] GOT[2] @va+0x77f0 = 0xf85ebb4fc
+[  0s] GOT[3] @va+0x77f8 = 0x9d5f47740
+[  0s] GOT[4] @va+0x7800 = 0x9d584a310
+[  0s] SplitMap: code_va=0xf85e5a000 Rx data_va=0xf85f29000 Rw OK
 [  0s] ELF: JIT copy done, stage freed
-[  0s] ELF: 1 constructors deferred (arr=0x7e4c990f0)
-[  0s] ELF: loaded OK code_exec=0x7e4bc3000 data_exec=0x7e4c92000 sym_count=3631 unresolved=0
+[  0s] ELF: 1 constructors deferred (arr=0xf85f300f0)
+[  0s] ELF: loaded OK code_exec=0xf85e5a000 data_exec=0xf85f29000 sym_count=3631 unresolved=0
 [  0s] Loading: libquack.so
 [  0s] ELF: loading sdmc:/AndroidHorizonNX/games/com.fingersoft.hillclimb/lib/libquack.so
-[  0s] SplitMap: reserved code_va=0xa4116b000 data_va=0xa4129e000 write_va=0x7ebbca000 csz=0x133000 dsz=0xc000
+[  0s] SplitMap: reserved code_va=0x5f98e6000 data_va=0x5f9a19000 write_va=0x680ee9000 csz=0x133000 dsz=0xc000
 [  0s] ELF: stage alloc OK
 [  0s] ELF: stage zeroed
 [  0s] ELF: seg[0] vaddr=0x0 filesz=0x132090 memsz=0x132090 flags=0x5
@@ -52,17 +52,17 @@
 [  0s] JMPREL: all 341 entries processed
 [  0s] ELF: jmprel done
 [  0s] ELF: strtab/symtab copied
-[  0s] GOT[0] @va+0xa3d0 = 0xc829dfbe0
-[  0s] GOT[1] @va+0xa3d8 = 0xc829dd2f0
-[  0s] GOT[2] @va+0xa3e0 = 0xa412247f0
-[  0s] GOT[3] @va+0xa3e8 = 0xa41224910
-[  0s] GOT[4] @va+0xa3f0 = 0xa41218e84
-[  0s] SplitMap: code_va=0xa4116b000 Rx data_va=0xa4129e000 Rw OK
+[  0s] GOT[0] @va+0xa3d0 = 0x9d584cc50
+[  0s] GOT[1] @va+0xa3d8 = 0x9d584a360
+[  0s] GOT[2] @va+0xa3e0 = 0x5f999f7f0
+[  0s] GOT[3] @va+0xa3e8 = 0x5f999f910
+[  0s] GOT[4] @va+0xa3f0 = 0x5f9993e84
+[  0s] SplitMap: code_va=0x5f98e6000 Rx data_va=0x5f9a19000 Rw OK
 [  0s] ELF: JIT copy done, stage freed
-[  0s] ELF: loaded OK code_exec=0xa4116b000 data_exec=0xa4129e000 sym_count=848 unresolved=0
+[  0s] ELF: loaded OK code_exec=0x5f98e6000 data_exec=0x5f9a19000 sym_count=848 unresolved=0
 [  0s] Loading: libgame.so
 [  0s] ELF: loading sdmc:/AndroidHorizonNX/games/com.fingersoft.hillclimb/lib/libgame.so
-[  0s] SplitMap: reserved code_va=0x8b4d62000 data_va=0x8b54aa000 write_va=0x9f2c38000 csz=0x748000 dsz=0xcf000
+[  0s] SplitMap: reserved code_va=0xf3da89000 data_va=0xf3e1d1000 write_va=0x3c1ef4000 csz=0x748000 dsz=0xcf000
 [  0s] ELF: stage alloc OK
 [  0s] ELF: stage zeroed
 [  0s] ELF: seg[0] vaddr=0x0 filesz=0x746780 memsz=0x746780 flags=0x5
@@ -79,938 +79,938 @@
 [  0s] JMPREL: all 912 entries processed
 [  0s] ELF: jmprel done
 [  0s] ELF: strtab/symtab copied
-[  0s] GOT[0] @va+0x63d48 = 0x8b534117c
-[  0s] GOT[1] @va+0x63d50 = 0x8b527128c
-[  0s] GOT[2] @va+0x63d58 = 0x8b5257b0c
-[  0s] GOT[3] @va+0x63d60 = 0x8b524d348
-[  0s] GOT[4] @va+0x63d68 = 0xc830e69a0
-[  0s] SplitMap: code_va=0x8b4d62000 Rx data_va=0x8b54aa000 Rw OK
+[  0s] GOT[0] @va+0x63d48 = 0xf3e06817c
+[  0s] GOT[1] @va+0x63d50 = 0xf3df9828c
+[  0s] GOT[2] @va+0x63d58 = 0xf3df7eb0c
+[  0s] GOT[3] @va+0x63d60 = 0xf3df74348
+[  0s] GOT[4] @va+0x63d68 = 0x9d5f53a20
+[  0s] SplitMap: code_va=0xf3da89000 Rx data_va=0xf3e1d1000 Rw OK
 [  0s] ELF: JIT copy done, stage freed
-[  0s] ELF: 417 constructors deferred (arr=0x8b54aa658)
-[  0s] ELF: loaded OK code_exec=0x8b4d62000 data_exec=0x8b54aa000 sym_count=2944 unresolved=0
-[  0s] AndroidTLS: old TPIDR_EL0=0x0 — installing fake TLS @0xc83373750
+[  0s] ELF: 417 constructors deferred (arr=0xf3e1d1658)
+[  0s] ELF: loaded OK code_exec=0xf3da89000 data_exec=0xf3e1d1000 sym_count=2944 unresolved=0
+[  0s] AndroidTLS: old TPIDR_EL0=0x0 — installing fake TLS @0x9d61e0750
 [  0s] CTORS: starting 418 constructors — this may take 30-120s, please wait
 [  0s] ELF: libapplovin-native-crash-reporter.so: SKIP constructors (crash-reporter, not needed)
 [  0s] ELF: libgame.so: running 417 constructors
-[  0s] ELF: init_arr[0]=0x8b4ec6358
-[  0s] ELF: init_arr[1]=0x8b4ec6408
-[  0s] ELF: init_arr[2]=0x8b4ec64b8
-[  0s] ELF: init_arr[3]=0x8b4ec6568
-[  0s] ELF: ctor[1/417] @0x8b4ec6358
+[  0s] ELF: init_arr[0]=0xf3dbed358
+[  0s] ELF: init_arr[1]=0xf3dbed408
+[  0s] ELF: init_arr[2]=0xf3dbed4b8
+[  0s] ELF: init_arr[3]=0xf3dbed568
+[  0s] ELF: ctor[1/417] @0xf3dbed358
 [  0s] ELF: ctor[1/417] OK
-[  0s] ELF: ctor[2/417] @0x8b4ec6408
+[  0s] ELF: ctor[2/417] @0xf3dbed408
 [  0s] ELF: ctor[2/417] OK
-[  0s] ELF: ctor[3/417] @0x8b4ec64b8
+[  0s] ELF: ctor[3/417] @0xf3dbed4b8
 [  0s] ELF: ctor[3/417] OK
-[  0s] ELF: ctor[4/417] @0x8b4ec6568
+[  0s] ELF: ctor[4/417] @0xf3dbed568
 [  0s] ELF: ctor[4/417] OK
-[  0s] ELF: ctor[5/417] @0x8b4ec6618
+[  0s] ELF: ctor[5/417] @0xf3dbed618
 [  0s] ELF: ctor[5/417] OK
-[  0s] ELF: ctor[6/417] @0x8b4ec66c8
+[  0s] ELF: ctor[6/417] @0xf3dbed6c8
 [  0s] ELF: ctor[6/417] OK
-[  0s] ELF: ctor[7/417] @0x8b4ec67dc
+[  0s] ELF: ctor[7/417] @0xf3dbed7dc
 [  0s] ELF: ctor[7/417] OK
-[  0s] ELF: ctor[8/417] @0x8b4ec688c
+[  0s] ELF: ctor[8/417] @0xf3dbed88c
 [  0s] ELF: ctor[8/417] OK
-[  0s] ELF: ctor[9/417] @0x8b4ec693c
+[  0s] ELF: ctor[9/417] @0xf3dbed93c
 [  0s] ELF: ctor[9/417] OK
-[  0s] ELF: ctor[10/417] @0x8b4ec69ec
+[  0s] ELF: ctor[10/417] @0xf3dbed9ec
 [  0s] ELF: ctor[10/417] OK
-[  0s] ELF: ctor[11/417] @0x8b4ec6a9c
+[  0s] ELF: ctor[11/417] @0xf3dbeda9c
 [  0s] ELF: ctor[11/417] OK
-[  0s] ELF: ctor[12/417] @0x8b4ec6b4c
+[  0s] ELF: ctor[12/417] @0xf3dbedb4c
 [  0s] ELF: ctor[12/417] OK
-[  0s] ELF: ctor[13/417] @0x8b4ec6c8c
+[  0s] ELF: ctor[13/417] @0xf3dbedc8c
 [  0s] ELF: ctor[13/417] OK
-[  0s] ELF: ctor[14/417] @0x8b4ec6da0
+[  0s] ELF: ctor[14/417] @0xf3dbedda0
 [  0s] ELF: ctor[14/417] OK
-[  0s] ELF: ctor[15/417] @0x8b4ec6e50
+[  0s] ELF: ctor[15/417] @0xf3dbede50
 [  0s] ELF: ctor[15/417] OK
-[  0s] ELF: ctor[16/417] @0x8b4ec6f00
+[  0s] ELF: ctor[16/417] @0xf3dbedf00
 [  0s] ELF: ctor[16/417] OK
-[  0s] ELF: ctor[17/417] @0x8b4ec6fb0
+[  0s] ELF: ctor[17/417] @0xf3dbedfb0
 [  0s] ELF: ctor[17/417] OK
-[  0s] ELF: ctor[18/417] @0x8b4ec7060
+[  0s] ELF: ctor[18/417] @0xf3dbee060
 [  0s] ELF: ctor[18/417] OK
-[  0s] ELF: ctor[19/417] @0x8b4ec7150
+[  0s] ELF: ctor[19/417] @0xf3dbee150
 [  0s] ELF: ctor[19/417] OK
-[  0s] ELF: ctor[20/417] @0x8b4ec7200
+[  0s] ELF: ctor[20/417] @0xf3dbee200
 [  0s] ELF: ctor[20/417] OK
-[  0s] ELF: ctor[21/417] @0x8b4ec72b0
+[  0s] ELF: ctor[21/417] @0xf3dbee2b0
 [  0s] ELF: ctor[21/417] OK
-[  0s] ELF: ctor[22/417] @0x8b4ec7360
+[  0s] ELF: ctor[22/417] @0xf3dbee360
 [  0s] ELF: ctor[22/417] OK
-[  0s] ELF: ctor[23/417] @0x8b4ec7410
-[  0s] ELF: ctor[23/417] OK
-[  1s] ELF: ctor[24/417] @0x8b4ec74c0
+[  1s] ELF: ctor[23/417] @0xf3dbee410
+[  1s] ELF: ctor[23/417] OK
+[  1s] ELF: ctor[24/417] @0xf3dbee4c0
 [  1s] ELF: ctor[24/417] OK
-[  1s] ELF: ctor[25/417] @0x8b4ec7570
+[  1s] ELF: ctor[25/417] @0xf3dbee570
 [  1s] ELF: ctor[25/417] OK
-[  1s] ELF: ctor[26/417] @0x8b4ec7620
+[  1s] ELF: ctor[26/417] @0xf3dbee620
 [  1s] ELF: ctor[26/417] OK
-[  1s] ELF: ctor[27/417] @0x8b4ec76d0
+[  1s] ELF: ctor[27/417] @0xf3dbee6d0
 [  1s] ELF: ctor[27/417] OK
-[  1s] ELF: ctor[28/417] @0x8b4ec7780
+[  1s] ELF: ctor[28/417] @0xf3dbee780
 [  1s] ELF: ctor[28/417] OK
-[  1s] ELF: ctor[29/417] @0x8b4ec7894
+[  1s] ELF: ctor[29/417] @0xf3dbee894
 [  1s] ELF: ctor[29/417] OK
-[  1s] ELF: ctor[30/417] @0x8b4ec79c8
+[  1s] ELF: ctor[30/417] @0xf3dbee9c8
 [  1s] ELF: ctor[30/417] OK
-[  1s] ELF: ctor[31/417] @0x8b4ec7ab8
+[  1s] ELF: ctor[31/417] @0xf3dbeeab8
 [  1s] ELF: ctor[31/417] OK
-[  1s] ELF: ctor[32/417] @0x8b4ec7b68
+[  1s] ELF: ctor[32/417] @0xf3dbeeb68
 [  1s] ELF: ctor[32/417] OK
-[  1s] ELF: ctor[33/417] @0x8b4ec7c18
+[  1s] ELF: ctor[33/417] @0xf3dbeec18
 [  1s] ELF: ctor[33/417] OK
-[  1s] ELF: ctor[34/417] @0x8b4ec7cc8
+[  1s] ELF: ctor[34/417] @0xf3dbeecc8
 [  1s] ELF: ctor[34/417] OK
-[  1s] ELF: ctor[35/417] @0x8b4ec7ddc
+[  1s] ELF: ctor[35/417] @0xf3dbeeddc
 [  1s] ELF: ctor[35/417] OK
-[  1s] ELF: ctor[36/417] @0x8b4ec7e8c
+[  1s] ELF: ctor[36/417] @0xf3dbeee8c
 [  1s] ELF: ctor[36/417] OK
-[  1s] ELF: ctor[37/417] @0x8b4ec7f3c
+[  1s] ELF: ctor[37/417] @0xf3dbeef3c
 [  1s] ELF: ctor[37/417] OK
-[  1s] ELF: ctor[38/417] @0x8b4ec7fec
+[  1s] ELF: ctor[38/417] @0xf3dbeefec
 [  1s] ELF: ctor[38/417] OK
-[  1s] ELF: ctor[39/417] @0x8b4ec809c
+[  1s] ELF: ctor[39/417] @0xf3dbef09c
 [  1s] ELF: ctor[39/417] OK
-[  1s] ELF: ctor[40/417] @0x8b4ec814c
+[  1s] ELF: ctor[40/417] @0xf3dbef14c
 [  1s] ELF: ctor[40/417] OK
-[  1s] ELF: ctor[41/417] @0x8b4ec8260
+[  1s] ELF: ctor[41/417] @0xf3dbef260
 [  1s] ELF: ctor[41/417] OK
-[  1s] ELF: ctor[42/417] @0x8b4ec8310
+[  1s] ELF: ctor[42/417] @0xf3dbef310
 [  1s] ELF: ctor[42/417] OK
-[  1s] ELF: ctor[43/417] @0x8b4ec83c0
+[  1s] ELF: ctor[43/417] @0xf3dbef3c0
 [  1s] ELF: ctor[43/417] OK
-[  1s] ELF: ctor[44/417] @0x8b4ec8470
+[  1s] ELF: ctor[44/417] @0xf3dbef470
 [  1s] ELF: ctor[44/417] OK
-[  1s] ELF: ctor[45/417] @0x8b4ec8584
+[  1s] ELF: ctor[45/417] @0xf3dbef584
 [  1s] ELF: ctor[45/417] OK
-[  1s] ELF: ctor[46/417] @0x8b4ec8634
+[  1s] ELF: ctor[46/417] @0xf3dbef634
 [  1s] ELF: ctor[46/417] OK
-[  1s] ELF: ctor[47/417] @0x8b4ec86e4
+[  1s] ELF: ctor[47/417] @0xf3dbef6e4
 [  1s] ELF: ctor[47/417] OK
-[  1s] ELF: ctor[48/417] @0x8b4ec8794
+[  1s] ELF: ctor[48/417] @0xf3dbef794
 [  1s] ELF: ctor[48/417] OK
-[  1s] ELF: ctor[49/417] @0x8b4ec886c
+[  1s] ELF: ctor[49/417] @0xf3dbef86c
 [  1s] ELF: ctor[49/417] OK
-[  1s] ELF: ctor[50/417] @0x8b4ec891c
+[  1s] ELF: ctor[50/417] @0xf3dbef91c
 [  1s] ELF: ctor[50/417] OK
-[  1s] ELF: ctor[51/417] @0x8b4ec8a30
+[  1s] ELF: ctor[51/417] @0xf3dbefa30
 [  1s] ELF: ctor[51/417] OK
-[  1s] ELF: ctor[52/417] @0x8b4ec8ae0
+[  1s] ELF: ctor[52/417] @0xf3dbefae0
 [  1s] ELF: ctor[52/417] OK
-[  1s] ELF: ctor[53/417] @0x8b4ec8b90
+[  1s] ELF: ctor[53/417] @0xf3dbefb90
 [  1s] ELF: ctor[53/417] OK
-[  1s] ELF: ctor[54/417] @0x8b4ec8c40
+[  1s] ELF: ctor[54/417] @0xf3dbefc40
 [  1s] ELF: ctor[54/417] OK
-[  1s] ELF: ctor[55/417] @0x8b4ec8cf0
+[  1s] ELF: ctor[55/417] @0xf3dbefcf0
 [  1s] ELF: ctor[55/417] OK
-[  1s] ELF: ctor[56/417] @0x8b4ec8da0
+[  1s] ELF: ctor[56/417] @0xf3dbefda0
 [  1s] ELF: ctor[56/417] OK
-[  1s] ELF: ctor[57/417] @0x8b4ec8eb4
+[  1s] ELF: ctor[57/417] @0xf3dbefeb4
 [  1s] ELF: ctor[57/417] OK
-[  1s] ELF: ctor[58/417] @0x8b4ec8f64
+[  1s] ELF: ctor[58/417] @0xf3dbeff64
 [  1s] ELF: ctor[58/417] OK
-[  1s] ELF: ctor[59/417] @0x8b4ec9014
+[  1s] ELF: ctor[59/417] @0xf3dbf0014
 [  1s] ELF: ctor[59/417] OK
-[  1s] ELF: ctor[60/417] @0x8b4ec90c4
+[  1s] ELF: ctor[60/417] @0xf3dbf00c4
 [  1s] ELF: ctor[60/417] OK
-[  1s] ELF: ctor[61/417] @0x8b4ec9174
+[  1s] ELF: ctor[61/417] @0xf3dbf0174
 [  1s] ELF: ctor[61/417] OK
-[  1s] ELF: ctor[62/417] @0x8b4ec9224
+[  1s] ELF: ctor[62/417] @0xf3dbf0224
 [  1s] ELF: ctor[62/417] OK
-[  1s] ELF: ctor[63/417] @0x8b4ec9338
+[  1s] ELF: ctor[63/417] @0xf3dbf0338
 [  1s] ELF: ctor[63/417] OK
-[  1s] ELF: ctor[64/417] @0x8b4ec93e8
+[  1s] ELF: ctor[64/417] @0xf3dbf03e8
 [  1s] ELF: ctor[64/417] OK
-[  1s] ELF: ctor[65/417] @0x8b4ec94fc
+[  1s] ELF: ctor[65/417] @0xf3dbf04fc
 [  1s] ELF: ctor[65/417] OK
-[  1s] ELF: ctor[66/417] @0x8b4ec95ac
+[  1s] ELF: ctor[66/417] @0xf3dbf05ac
 [  1s] ELF: ctor[66/417] OK
-[  1s] ELF: ctor[67/417] @0x8b4ec9620
+[  1s] ELF: ctor[67/417] @0xf3dbf0620
 [  1s] ELF: ctor[67/417] OK
-[  1s] ELF: ctor[68/417] @0x8b4ec96d0
+[  1s] ELF: ctor[68/417] @0xf3dbf06d0
 [  1s] ELF: ctor[68/417] OK
-[  1s] ELF: ctor[69/417] @0x8b4ec9780
+[  1s] ELF: ctor[69/417] @0xf3dbf0780
 [  1s] ELF: ctor[69/417] OK
-[  1s] ELF: ctor[70/417] @0x8b4ec9830
+[  1s] ELF: ctor[70/417] @0xf3dbf0830
 [  1s] ELF: ctor[70/417] OK
-[  1s] ELF: ctor[71/417] @0x8b4ec98e0
+[  1s] ELF: ctor[71/417] @0xf3dbf08e0
 [  1s] ELF: ctor[71/417] OK
-[  1s] ELF: ctor[72/417] @0x8b4ec9990
+[  1s] ELF: ctor[72/417] @0xf3dbf0990
 [  1s] ELF: ctor[72/417] OK
-[  1s] ELF: ctor[73/417] @0x8b4ec9a40
+[  1s] ELF: ctor[73/417] @0xf3dbf0a40
 [  1s] ELF: ctor[73/417] OK
-[  1s] ELF: ctor[74/417] @0x8b4ec9af0
+[  1s] ELF: ctor[74/417] @0xf3dbf0af0
 [  1s] ELF: ctor[74/417] OK
-[  1s] ELF: ctor[75/417] @0x8b4ec9ba0
+[  1s] ELF: ctor[75/417] @0xf3dbf0ba0
 [  1s] ELF: ctor[75/417] OK
-[  1s] ELF: ctor[76/417] @0x8b4ec9c50
+[  1s] ELF: ctor[76/417] @0xf3dbf0c50
 [  1s] ELF: ctor[76/417] OK
-[  1s] ELF: ctor[77/417] @0x8b4ec9d00
+[  1s] ELF: ctor[77/417] @0xf3dbf0d00
 [  1s] ELF: ctor[77/417] OK
-[  1s] ELF: ctor[78/417] @0x8b4ec9db0
+[  1s] ELF: ctor[78/417] @0xf3dbf0db0
 [  1s] ELF: ctor[78/417] OK
-[  1s] ELF: ctor[79/417] @0x8b4ec9e60
+[  1s] ELF: ctor[79/417] @0xf3dbf0e60
 [  1s] ELF: ctor[79/417] OK
-[  1s] ELF: ctor[80/417] @0x8b4ec9f24
+[  1s] ELF: ctor[80/417] @0xf3dbf0f24
 [  1s] ELF: ctor[80/417] OK
-[  1s] ELF: ctor[81/417] @0x8b4ec9fd4
+[  1s] ELF: ctor[81/417] @0xf3dbf0fd4
 [  1s] ELF: ctor[81/417] OK
-[  1s] ELF: ctor[82/417] @0x8b4eca084
+[  1s] ELF: ctor[82/417] @0xf3dbf1084
 [  1s] ELF: ctor[82/417] OK
-[  1s] ELF: ctor[83/417] @0x8b4eca134
+[  1s] ELF: ctor[83/417] @0xf3dbf1134
 [  1s] ELF: ctor[83/417] OK
-[  1s] ELF: ctor[84/417] @0x8b4eca1e4
+[  1s] ELF: ctor[84/417] @0xf3dbf11e4
 [  1s] ELF: ctor[84/417] OK
-[  1s] ELF: ctor[85/417] @0x8b4eca294
+[  1s] ELF: ctor[85/417] @0xf3dbf1294
 [  1s] ELF: ctor[85/417] OK
-[  1s] ELF: ctor[86/417] @0x8b4eca344
+[  1s] ELF: ctor[86/417] @0xf3dbf1344
 [  1s] ELF: ctor[86/417] OK
-[  1s] ELF: ctor[87/417] @0x8b4eca3f4
+[  1s] ELF: ctor[87/417] @0xf3dbf13f4
 [  1s] ELF: ctor[87/417] OK
-[  1s] ELF: ctor[88/417] @0x8b4eca4a4
+[  1s] ELF: ctor[88/417] @0xf3dbf14a4
 [  1s] ELF: ctor[88/417] OK
-[  1s] ELF: ctor[89/417] @0x8b4eca554
+[  1s] ELF: ctor[89/417] @0xf3dbf1554
 [  1s] ELF: ctor[89/417] OK
-[  1s] ELF: ctor[90/417] @0x8b4eca684
+[  1s] ELF: ctor[90/417] @0xf3dbf1684
 [  1s] ELF: ctor[90/417] OK
-[  1s] ELF: ctor[91/417] @0x8b4eca734
+[  1s] ELF: ctor[91/417] @0xf3dbf1734
 [  1s] ELF: ctor[91/417] OK
-[  1s] ELF: ctor[92/417] @0x8b4eca7e4
+[  1s] ELF: ctor[92/417] @0xf3dbf17e4
 [  1s] ELF: ctor[92/417] OK
-[  1s] ELF: ctor[93/417] @0x8b4eca894
+[  1s] ELF: ctor[93/417] @0xf3dbf1894
 [  1s] ELF: ctor[93/417] OK
-[  1s] ELF: ctor[94/417] @0x8b4eca944
+[  1s] ELF: ctor[94/417] @0xf3dbf1944
 [  1s] ELF: ctor[94/417] OK
-[  1s] ELF: ctor[95/417] @0x8b4eca9f4
+[  1s] ELF: ctor[95/417] @0xf3dbf19f4
 [  1s] ELF: ctor[95/417] OK
-[  1s] ELF: ctor[96/417] @0x8b4ecaaa4
+[  1s] ELF: ctor[96/417] @0xf3dbf1aa4
 [  1s] ELF: ctor[96/417] OK
-[  1s] ELF: ctor[97/417] @0x8b4ecab54
+[  1s] ELF: ctor[97/417] @0xf3dbf1b54
 [  1s] ELF: ctor[97/417] OK
-[  1s] ELF: ctor[98/417] @0x8b4ecac04
+[  1s] ELF: ctor[98/417] @0xf3dbf1c04
 [  1s] ELF: ctor[98/417] OK
-[  1s] ELF: ctor[99/417] @0x8b4ecacb4
+[  1s] ELF: ctor[99/417] @0xf3dbf1cb4
 [  1s] ELF: ctor[99/417] OK
-[  1s] ELF: ctor[100/417] @0x8b4ecad64
+[  1s] ELF: ctor[100/417] @0xf3dbf1d64
 [  1s] ELF: ctor[100/417] OK
-[  1s] ELF: ctor[101/417] @0x8b4ecae14
+[  1s] ELF: ctor[101/417] @0xf3dbf1e14
 [  1s] ELF: ctor[101/417] OK
-[  1s] ELF: ctor[102/417] @0x8b4ecaec4
+[  1s] ELF: ctor[102/417] @0xf3dbf1ec4
 [  1s] ELF: ctor[102/417] OK
-[  1s] ELF: ctor[103/417] @0x8b4ecaf74
+[  1s] ELF: ctor[103/417] @0xf3dbf1f74
 [  1s] ELF: ctor[103/417] OK
-[  1s] ELF: ctor[104/417] @0x8b4ecb088
+[  1s] ELF: ctor[104/417] @0xf3dbf2088
 [  1s] ELF: ctor[104/417] OK
-[  1s] ELF: ctor[105/417] @0x8b4ecb138
+[  1s] ELF: ctor[105/417] @0xf3dbf2138
 [  1s] ELF: ctor[105/417] OK
-[  1s] ELF: ctor[106/417] @0x8b4ecb1e8
+[  1s] ELF: ctor[106/417] @0xf3dbf21e8
 [  1s] ELF: ctor[106/417] OK
-[  1s] ELF: ctor[107/417] @0x8b4ecb298
+[  1s] ELF: ctor[107/417] @0xf3dbf2298
 [  1s] ELF: ctor[107/417] OK
-[  1s] ELF: ctor[108/417] @0x8b4ecb348
+[  1s] ELF: ctor[108/417] @0xf3dbf2348
 [  1s] ELF: ctor[108/417] OK
-[  1s] ELF: ctor[109/417] @0x8b4ecb3f8
+[  1s] ELF: ctor[109/417] @0xf3dbf23f8
 [  1s] ELF: ctor[109/417] OK
-[  1s] ELF: ctor[110/417] @0x8b4ecb4a8
+[  1s] ELF: ctor[110/417] @0xf3dbf24a8
 [  1s] ELF: ctor[110/417] OK
-[  1s] ELF: ctor[111/417] @0x8b4ecb558
+[  1s] ELF: ctor[111/417] @0xf3dbf2558
 [  1s] ELF: ctor[111/417] OK
-[  1s] ELF: ctor[112/417] @0x8b4ecb608
+[  1s] ELF: ctor[112/417] @0xf3dbf2608
 [  1s] ELF: ctor[112/417] OK
-[  1s] ELF: ctor[113/417] @0x8b4ecb740
+[  1s] ELF: ctor[113/417] @0xf3dbf2740
 [  1s] ELF: ctor[113/417] OK
-[  1s] ELF: ctor[114/417] @0x8b4ecb7f0
+[  1s] ELF: ctor[114/417] @0xf3dbf27f0
 [  1s] ELF: ctor[114/417] OK
-[  1s] ELF: ctor[115/417] @0x8b4ecb8a0
+[  1s] ELF: ctor[115/417] @0xf3dbf28a0
 [  1s] ELF: ctor[115/417] OK
-[  1s] ELF: ctor[116/417] @0x8b4ecb950
+[  1s] ELF: ctor[116/417] @0xf3dbf2950
 [  1s] ELF: ctor[116/417] OK
-[  1s] ELF: ctor[117/417] @0x8b4ecba00
+[  1s] ELF: ctor[117/417] @0xf3dbf2a00
 [  1s] ELF: ctor[117/417] OK
-[  1s] ELF: ctor[118/417] @0x8b4ecbab0
+[  1s] ELF: ctor[118/417] @0xf3dbf2ab0
 [  1s] ELF: ctor[118/417] OK
-[  1s] ELF: ctor[119/417] @0x8b4ecbb60
+[  1s] ELF: ctor[119/417] @0xf3dbf2b60
 [  1s] ELF: ctor[119/417] OK
-[  1s] ELF: ctor[120/417] @0x8b4ecbc10
+[  1s] ELF: ctor[120/417] @0xf3dbf2c10
 [  1s] ELF: ctor[120/417] OK
-[  1s] ELF: ctor[121/417] @0x8b4ecbcc0
+[  1s] ELF: ctor[121/417] @0xf3dbf2cc0
 [  1s] ELF: ctor[121/417] OK
-[  1s] ELF: ctor[122/417] @0x8b4ecbe00
+[  1s] ELF: ctor[122/417] @0xf3dbf2e00
 [  1s] ELF: ctor[122/417] OK
-[  1s] ELF: ctor[123/417] @0x8b4ecbeb0
+[  1s] ELF: ctor[123/417] @0xf3dbf2eb0
 [  1s] ELF: ctor[123/417] OK
-[  1s] ELF: ctor[124/417] @0x8b4ecbf60
+[  1s] ELF: ctor[124/417] @0xf3dbf2f60
 [  1s] ELF: ctor[124/417] OK
-[  1s] ELF: ctor[125/417] @0x8b4ecc010
+[  1s] ELF: ctor[125/417] @0xf3dbf3010
 [  1s] ELF: ctor[125/417] OK
-[  1s] ELF: ctor[126/417] @0x8b4ecc0c0
+[  1s] ELF: ctor[126/417] @0xf3dbf30c0
 [  1s] ELF: ctor[126/417] OK
-[  1s] ELF: ctor[127/417] @0x8b4ecc170
+[  1s] ELF: ctor[127/417] @0xf3dbf3170
 [  1s] ELF: ctor[127/417] OK
-[  1s] ELF: ctor[128/417] @0x8b4ecc3cc
+[  1s] ELF: ctor[128/417] @0xf3dbf33cc
 [  1s] ELF: ctor[128/417] OK
-[  1s] ELF: ctor[129/417] @0x8b4ecc47c
+[  1s] ELF: ctor[129/417] @0xf3dbf347c
 [  1s] ELF: ctor[129/417] OK
-[  1s] ELF: ctor[130/417] @0x8b4ecc52c
+[  1s] ELF: ctor[130/417] @0xf3dbf352c
 [  1s] ELF: ctor[130/417] OK
-[  1s] ELF: ctor[131/417] @0x8b4ecc5dc
+[  1s] ELF: ctor[131/417] @0xf3dbf35dc
 [  1s] ELF: ctor[131/417] OK
-[  1s] ELF: ctor[132/417] @0x8b4ecc68c
+[  1s] ELF: ctor[132/417] @0xf3dbf368c
 [  1s] ELF: ctor[132/417] OK
-[  1s] ELF: ctor[133/417] @0x8b4ecc73c
+[  1s] ELF: ctor[133/417] @0xf3dbf373c
 [  1s] ELF: ctor[133/417] OK
-[  1s] ELF: ctor[134/417] @0x8b4ecc7ec
+[  1s] ELF: ctor[134/417] @0xf3dbf37ec
 [  1s] ELF: ctor[134/417] OK
-[  1s] ELF: ctor[135/417] @0x8b4ecc89c
+[  1s] ELF: ctor[135/417] @0xf3dbf389c
 [  1s] ELF: ctor[135/417] OK
-[  1s] ELF: ctor[136/417] @0x8b4ecc94c
-[  2s] ELF: ctor[136/417] OK
-[  2s] ELF: ctor[137/417] @0x8b4ecc9fc
+[  1s] ELF: ctor[136/417] @0xf3dbf394c
+[  1s] ELF: ctor[136/417] OK
+[  1s] ELF: ctor[137/417] @0xf3dbf39fc
 [  2s] ELF: ctor[137/417] OK
-[  2s] ELF: ctor[138/417] @0x8b4eccaac
+[  2s] ELF: ctor[138/417] @0xf3dbf3aac
 [  2s] ELF: ctor[138/417] OK
-[  2s] ELF: ctor[139/417] @0x8b4eccb5c
+[  2s] ELF: ctor[139/417] @0xf3dbf3b5c
 [  2s] ELF: ctor[139/417] OK
-[  2s] ELF: ctor[140/417] @0x8b4eccc0c
+[  2s] ELF: ctor[140/417] @0xf3dbf3c0c
 [  2s] ELF: ctor[140/417] OK
-[  2s] ELF: ctor[141/417] @0x8b4eccd20
+[  2s] ELF: ctor[141/417] @0xf3dbf3d20
 [  2s] ELF: ctor[141/417] OK
-[  2s] ELF: ctor[142/417] @0x8b4eccdd0
+[  2s] ELF: ctor[142/417] @0xf3dbf3dd0
 [  2s] ELF: ctor[142/417] OK
-[  2s] ELF: ctor[143/417] @0x8b4ecce80
+[  2s] ELF: ctor[143/417] @0xf3dbf3e80
 [  2s] ELF: ctor[143/417] OK
-[  2s] ELF: ctor[144/417] @0x8b4eccf30
+[  2s] ELF: ctor[144/417] @0xf3dbf3f30
 [  2s] ELF: ctor[144/417] OK
-[  2s] ELF: ctor[145/417] @0x8b4eccfe0
+[  2s] ELF: ctor[145/417] @0xf3dbf3fe0
 [  2s] ELF: ctor[145/417] OK
-[  2s] ELF: ctor[146/417] @0x8b4ecd090
+[  2s] ELF: ctor[146/417] @0xf3dbf4090
 [  2s] ELF: ctor[146/417] OK
-[  2s] ELF: ctor[147/417] @0x8b4ecd140
+[  2s] ELF: ctor[147/417] @0xf3dbf4140
 [  2s] ELF: ctor[147/417] OK
-[  2s] ELF: ctor[148/417] @0x8b4ecd230
+[  2s] ELF: ctor[148/417] @0xf3dbf4230
 [  2s] ELF: ctor[148/417] OK
-[  2s] ELF: ctor[149/417] @0x8b4ecd2e0
+[  2s] ELF: ctor[149/417] @0xf3dbf42e0
 [  2s] ELF: ctor[149/417] OK
-[  2s] ELF: ctor[150/417] @0x8b4ecd390
+[  2s] ELF: ctor[150/417] @0xf3dbf4390
 [  2s] ELF: ctor[150/417] OK
-[  2s] ELF: ctor[151/417] @0x8b4ecd440
+[  2s] ELF: ctor[151/417] @0xf3dbf4440
 [  2s] ELF: ctor[151/417] OK
-[  2s] ELF: ctor[152/417] @0x8b4ecd554
+[  2s] ELF: ctor[152/417] @0xf3dbf4554
 [  2s] ELF: ctor[152/417] OK
-[  2s] ELF: ctor[153/417] @0x8b4ecd604
+[  2s] ELF: ctor[153/417] @0xf3dbf4604
 [  2s] ELF: ctor[153/417] OK
-[  2s] ELF: ctor[154/417] @0x8b4ecd6b4
+[  2s] ELF: ctor[154/417] @0xf3dbf46b4
 [  2s] ELF: ctor[154/417] OK
-[  2s] ELF: ctor[155/417] @0x8b4ecd764
+[  2s] ELF: ctor[155/417] @0xf3dbf4764
 [  2s] ELF: ctor[155/417] OK
-[  2s] ELF: ctor[156/417] @0x8b4ecd814
+[  2s] ELF: ctor[156/417] @0xf3dbf4814
 [  2s] ELF: ctor[156/417] OK
-[  2s] ELF: ctor[157/417] @0x8b4ecd8c4
+[  2s] ELF: ctor[157/417] @0xf3dbf48c4
 [  2s] ELF: ctor[157/417] OK
-[  2s] ELF: ctor[158/417] @0x8b4ecd974
+[  2s] ELF: ctor[158/417] @0xf3dbf4974
 [  2s] ELF: ctor[158/417] OK
-[  2s] ELF: ctor[159/417] @0x8b4ecda24
+[  2s] ELF: ctor[159/417] @0xf3dbf4a24
 [  2s] ELF: ctor[159/417] OK
-[  2s] ELF: ctor[160/417] @0x8b4ecdad4
+[  2s] ELF: ctor[160/417] @0xf3dbf4ad4
 [  2s] ELF: ctor[160/417] OK
-[  2s] ELF: ctor[161/417] @0x8b4ecdb84
+[  2s] ELF: ctor[161/417] @0xf3dbf4b84
 [  2s] ELF: ctor[161/417] OK
-[  2s] ELF: ctor[162/417] @0x8b4ecdc34
+[  2s] ELF: ctor[162/417] @0xf3dbf4c34
 [  2s] ELF: ctor[162/417] OK
-[  2s] ELF: ctor[163/417] @0x8b4ecdd0c
+[  2s] ELF: ctor[163/417] @0xf3dbf4d0c
 [  2s] ELF: ctor[163/417] OK
-[  2s] ELF: ctor[164/417] @0x8b4ecddbc
+[  2s] ELF: ctor[164/417] @0xf3dbf4dbc
 [  2s] ELF: ctor[164/417] OK
-[  2s] ELF: ctor[165/417] @0x8b4ecde6c
+[  2s] ELF: ctor[165/417] @0xf3dbf4e6c
 [  2s] ELF: ctor[165/417] OK
-[  2s] ELF: ctor[166/417] @0x8b4ecdf1c
+[  2s] ELF: ctor[166/417] @0xf3dbf4f1c
 [  2s] ELF: ctor[166/417] OK
-[  2s] ELF: ctor[167/417] @0x8b4ecdfcc
+[  2s] ELF: ctor[167/417] @0xf3dbf4fcc
 [  2s] ELF: ctor[167/417] OK
-[  2s] ELF: ctor[168/417] @0x8b4ece0a4
+[  2s] ELF: ctor[168/417] @0xf3dbf50a4
 [  2s] ELF: ctor[168/417] OK
-[  2s] ELF: ctor[169/417] @0x8b4ece154
+[  2s] ELF: ctor[169/417] @0xf3dbf5154
 [  2s] ELF: ctor[169/417] OK
-[  2s] ELF: ctor[170/417] @0x8b4ece204
+[  2s] ELF: ctor[170/417] @0xf3dbf5204
 [  2s] ELF: ctor[170/417] OK
-[  2s] ELF: ctor[171/417] @0x8b4ece2b4
+[  2s] ELF: ctor[171/417] @0xf3dbf52b4
 [  2s] ELF: ctor[171/417] OK
-[  2s] ELF: ctor[172/417] @0x8b4ece364
+[  2s] ELF: ctor[172/417] @0xf3dbf5364
 [  2s] ELF: ctor[172/417] OK
-[  2s] ELF: ctor[173/417] @0x8b4ece414
+[  2s] ELF: ctor[173/417] @0xf3dbf5414
 [  2s] ELF: ctor[173/417] OK
-[  2s] ELF: ctor[174/417] @0x8b4ece4c4
+[  2s] ELF: ctor[174/417] @0xf3dbf54c4
 [  2s] ELF: ctor[174/417] OK
-[  2s] ELF: ctor[175/417] @0x8b4ece574
+[  2s] ELF: ctor[175/417] @0xf3dbf5574
 [  2s] ELF: ctor[175/417] OK
-[  2s] ELF: ctor[176/417] @0x8b4ece624
+[  2s] ELF: ctor[176/417] @0xf3dbf5624
 [  2s] ELF: ctor[176/417] OK
-[  2s] ELF: ctor[177/417] @0x8b4ece738
+[  2s] ELF: ctor[177/417] @0xf3dbf5738
 [  2s] ELF: ctor[177/417] OK
-[  2s] ELF: ctor[178/417] @0x8b4ece7e8
+[  2s] ELF: ctor[178/417] @0xf3dbf57e8
 [  2s] ELF: ctor[178/417] OK
-[  2s] ELF: ctor[179/417] @0x8b4ece898
+[  2s] ELF: ctor[179/417] @0xf3dbf5898
 [  2s] ELF: ctor[179/417] OK
-[  2s] ELF: ctor[180/417] @0x8b4ece948
+[  2s] ELF: ctor[180/417] @0xf3dbf5948
 [  2s] ELF: ctor[180/417] OK
-[  2s] ELF: ctor[181/417] @0x8b4ece9f8
+[  2s] ELF: ctor[181/417] @0xf3dbf59f8
 [  2s] ELF: ctor[181/417] OK
-[  2s] ELF: ctor[182/417] @0x8b4eceaa8
+[  2s] ELF: ctor[182/417] @0xf3dbf5aa8
 [  2s] ELF: ctor[182/417] OK
-[  2s] ELF: ctor[183/417] @0x8b4eceb58
+[  2s] ELF: ctor[183/417] @0xf3dbf5b58
 [  2s] ELF: ctor[183/417] OK
-[  2s] ELF: ctor[184/417] @0x8b4ecec08
+[  2s] ELF: ctor[184/417] @0xf3dbf5c08
 [  2s] ELF: ctor[184/417] OK
-[  2s] ELF: ctor[185/417] @0x8b4ececb8
+[  2s] ELF: ctor[185/417] @0xf3dbf5cb8
 [  2s] ELF: ctor[185/417] OK
-[  2s] ELF: ctor[186/417] @0x8b4eced68
+[  2s] ELF: ctor[186/417] @0xf3dbf5d68
 [  2s] ELF: ctor[186/417] OK
-[  2s] ELF: ctor[187/417] @0x8b4ecee7c
+[  2s] ELF: ctor[187/417] @0xf3dbf5e7c
 [  2s] ELF: ctor[187/417] OK
-[  2s] ELF: ctor[188/417] @0x8b4ecef2c
+[  2s] ELF: ctor[188/417] @0xf3dbf5f2c
 [  2s] ELF: ctor[188/417] OK
-[  2s] ELF: ctor[189/417] @0x8b4ecefdc
+[  2s] ELF: ctor[189/417] @0xf3dbf5fdc
 [  2s] ELF: ctor[189/417] OK
-[  2s] ELF: ctor[190/417] @0x8b4ecf08c
+[  2s] ELF: ctor[190/417] @0xf3dbf608c
 [  2s] ELF: ctor[190/417] OK
-[  2s] ELF: ctor[191/417] @0x8b4ecf13c
+[  2s] ELF: ctor[191/417] @0xf3dbf613c
 [  2s] ELF: ctor[191/417] OK
-[  2s] ELF: ctor[192/417] @0x8b4ecf1ec
+[  2s] ELF: ctor[192/417] @0xf3dbf61ec
 [  2s] ELF: ctor[192/417] OK
-[  2s] ELF: ctor[193/417] @0x8b4ecf390
+[  2s] ELF: ctor[193/417] @0xf3dbf6390
 [  2s] ELF: ctor[193/417] OK
-[  2s] ELF: ctor[194/417] @0x8b4ecf440
+[  2s] ELF: ctor[194/417] @0xf3dbf6440
 [  2s] ELF: ctor[194/417] OK
-[  2s] ELF: ctor[195/417] @0x8b4ecf4f0
+[  2s] ELF: ctor[195/417] @0xf3dbf64f0
 [  2s] ELF: ctor[195/417] OK
-[  2s] ELF: ctor[196/417] @0x8b4ecf5a0
+[  2s] ELF: ctor[196/417] @0xf3dbf65a0
 [  2s] ELF: ctor[196/417] OK
-[  2s] ELF: ctor[197/417] @0x8b4ecf650
+[  2s] ELF: ctor[197/417] @0xf3dbf6650
 [  2s] ELF: ctor[197/417] OK
-[  2s] ELF: ctor[198/417] @0x8b4ecf700
+[  2s] ELF: ctor[198/417] @0xf3dbf6700
 [  2s] ELF: ctor[198/417] OK
-[  2s] ELF: ctor[199/417] @0x8b4ecf7b0
+[  2s] ELF: ctor[199/417] @0xf3dbf67b0
 [  2s] ELF: ctor[199/417] OK
-[  2s] ELF: ctor[200/417] @0x8b4ecf8c4
+[  2s] ELF: ctor[200/417] @0xf3dbf68c4
 [  2s] ELF: ctor[200/417] OK
-[  2s] ELF: ctor[201/417] @0x8b4ecf974
+[  2s] ELF: ctor[201/417] @0xf3dbf6974
 [  2s] ELF: ctor[201/417] OK
-[  2s] ELF: ctor[202/417] @0x8b4ecfa24
+[  2s] ELF: ctor[202/417] @0xf3dbf6a24
 [  2s] ELF: ctor[202/417] OK
-[  2s] ELF: ctor[203/417] @0x8b4ecfad4
+[  2s] ELF: ctor[203/417] @0xf3dbf6ad4
 [  2s] ELF: ctor[203/417] OK
-[  2s] ELF: ctor[204/417] @0x8b4ecfb84
+[  2s] ELF: ctor[204/417] @0xf3dbf6b84
 [  2s] ELF: ctor[204/417] OK
-[  2s] ELF: ctor[205/417] @0x8b4ecfc34
+[  2s] ELF: ctor[205/417] @0xf3dbf6c34
 [  2s] ELF: ctor[205/417] OK
-[  2s] ELF: ctor[206/417] @0x8b4ecfd48
+[  2s] ELF: ctor[206/417] @0xf3dbf6d48
 [  2s] ELF: ctor[206/417] OK
-[  2s] ELF: ctor[207/417] @0x8b4ecfdf8
+[  2s] ELF: ctor[207/417] @0xf3dbf6df8
 [  2s] ELF: ctor[207/417] OK
-[  2s] ELF: ctor[208/417] @0x8b4ecfea8
+[  2s] ELF: ctor[208/417] @0xf3dbf6ea8
 [  2s] ELF: ctor[208/417] OK
-[  2s] ELF: ctor[209/417] @0x8b4ecff58
+[  2s] ELF: ctor[209/417] @0xf3dbf6f58
 [  2s] ELF: ctor[209/417] OK
-[  2s] ELF: ctor[210/417] @0x8b4ed0080
+[  2s] ELF: ctor[210/417] @0xf3dbf7080
 [  2s] ELF: ctor[210/417] OK
-[  2s] ELF: ctor[211/417] @0x8b4ed0130
+[  2s] ELF: ctor[211/417] @0xf3dbf7130
 [  2s] ELF: ctor[211/417] OK
-[  2s] ELF: ctor[212/417] @0x8b4ed01e0
+[  2s] ELF: ctor[212/417] @0xf3dbf71e0
 [  2s] ELF: ctor[212/417] OK
-[  2s] ELF: ctor[213/417] @0x8b4ed0290
+[  2s] ELF: ctor[213/417] @0xf3dbf7290
 [  2s] ELF: ctor[213/417] OK
-[  2s] ELF: ctor[214/417] @0x8b4ed0340
+[  2s] ELF: ctor[214/417] @0xf3dbf7340
 [  2s] ELF: ctor[214/417] OK
-[  2s] ELF: ctor[215/417] @0x8b4ed0418
+[  2s] ELF: ctor[215/417] @0xf3dbf7418
 [  2s] ELF: ctor[215/417] OK
-[  2s] ELF: ctor[216/417] @0x8b4ed04c8
+[  2s] ELF: ctor[216/417] @0xf3dbf74c8
 [  2s] ELF: ctor[216/417] OK
-[  2s] ELF: ctor[217/417] @0x8b4ed0608
+[  2s] ELF: ctor[217/417] @0xf3dbf7608
 [  2s] ELF: ctor[217/417] OK
-[  2s] ELF: ctor[218/417] @0x8b4ed06b8
+[  2s] ELF: ctor[218/417] @0xf3dbf76b8
 [  2s] ELF: ctor[218/417] OK
-[  2s] ELF: ctor[219/417] @0x8b4ed0768
+[  2s] ELF: ctor[219/417] @0xf3dbf7768
 [  2s] ELF: ctor[219/417] OK
-[  2s] ELF: ctor[220/417] @0x8b4ed0818
+[  2s] ELF: ctor[220/417] @0xf3dbf7818
 [  2s] ELF: ctor[220/417] OK
-[  2s] ELF: ctor[221/417] @0x8b4ed08c8
+[  2s] ELF: ctor[221/417] @0xf3dbf78c8
 [  2s] ELF: ctor[221/417] OK
-[  2s] ELF: ctor[222/417] @0x8b4ed0978
+[  2s] ELF: ctor[222/417] @0xf3dbf7978
 [  2s] ELF: ctor[222/417] OK
-[  2s] ELF: ctor[223/417] @0x8b4ed0a28
+[  2s] ELF: ctor[223/417] @0xf3dbf7a28
 [  2s] ELF: ctor[223/417] OK
-[  2s] ELF: ctor[224/417] @0x8b4ed0ad8
+[  2s] ELF: ctor[224/417] @0xf3dbf7ad8
 [  2s] ELF: ctor[224/417] OK
-[  2s] ELF: ctor[225/417] @0x8b4ed0b88
+[  2s] ELF: ctor[225/417] @0xf3dbf7b88
 [  2s] ELF: ctor[225/417] OK
-[  2s] ELF: ctor[226/417] @0x8b4ed0c38
+[  2s] ELF: ctor[226/417] @0xf3dbf7c38
 [  2s] ELF: ctor[226/417] OK
-[  2s] ELF: ctor[227/417] @0x8b4ed0ce8
+[  2s] ELF: ctor[227/417] @0xf3dbf7ce8
 [  2s] ELF: ctor[227/417] OK
-[  2s] ELF: ctor[228/417] @0x8b4ed0d98
+[  2s] ELF: ctor[228/417] @0xf3dbf7d98
 [  2s] ELF: ctor[228/417] OK
-[  2s] ELF: ctor[229/417] @0x8b4ed0e48
+[  2s] ELF: ctor[229/417] @0xf3dbf7e48
 [  2s] ELF: ctor[229/417] OK
-[  2s] ELF: ctor[230/417] @0x8b4ed0ef8
+[  2s] ELF: ctor[230/417] @0xf3dbf7ef8
 [  2s] ELF: ctor[230/417] OK
-[  2s] ELF: ctor[231/417] @0x8b4ed0fa8
+[  2s] ELF: ctor[231/417] @0xf3dbf7fa8
 [  2s] ELF: ctor[231/417] OK
-[  2s] ELF: ctor[232/417] @0x8b4ed1058
+[  2s] ELF: ctor[232/417] @0xf3dbf8058
 [  2s] ELF: ctor[232/417] OK
-[  2s] ELF: ctor[233/417] @0x8b4ed1108
+[  2s] ELF: ctor[233/417] @0xf3dbf8108
 [  2s] ELF: ctor[233/417] OK
-[  2s] ELF: ctor[234/417] @0x8b4ed11b8
+[  2s] ELF: ctor[234/417] @0xf3dbf81b8
 [  2s] ELF: ctor[234/417] OK
-[  2s] ELF: ctor[235/417] @0x8b4ed1268
+[  2s] ELF: ctor[235/417] @0xf3dbf8268
 [  2s] ELF: ctor[235/417] OK
-[  2s] ELF: ctor[236/417] @0x8b4ed1318
+[  2s] ELF: ctor[236/417] @0xf3dbf8318
 [  2s] ELF: ctor[236/417] OK
-[  2s] ELF: ctor[237/417] @0x8b4ed142c
+[  2s] ELF: ctor[237/417] @0xf3dbf842c
 [  2s] ELF: ctor[237/417] OK
-[  2s] ELF: ctor[238/417] @0x8b4ed14dc
+[  2s] ELF: ctor[238/417] @0xf3dbf84dc
 [  2s] ELF: ctor[238/417] OK
-[  2s] ELF: ctor[239/417] @0x8b4ed158c
+[  2s] ELF: ctor[239/417] @0xf3dbf858c
 [  2s] ELF: ctor[239/417] OK
-[  2s] ELF: ctor[240/417] @0x8b4ed1664
+[  2s] ELF: ctor[240/417] @0xf3dbf8664
 [  2s] ELF: ctor[240/417] OK
-[  2s] ELF: ctor[241/417] @0x8b4ed1714
+[  2s] ELF: ctor[241/417] @0xf3dbf8714
 [  2s] ELF: ctor[241/417] OK
-[  2s] ELF: ctor[242/417] @0x8b4ed17c4
+[  2s] ELF: ctor[242/417] @0xf3dbf87c4
 [  2s] ELF: ctor[242/417] OK
-[  2s] ELF: ctor[243/417] @0x8b4ed1874
+[  2s] ELF: ctor[243/417] @0xf3dbf8874
 [  2s] ELF: ctor[243/417] OK
-[  2s] ELF: ctor[244/417] @0x8b4ed1924
+[  2s] ELF: ctor[244/417] @0xf3dbf8924
 [  2s] ELF: ctor[244/417] OK
-[  2s] ELF: ctor[245/417] @0x8b4ed19d4
+[  2s] ELF: ctor[245/417] @0xf3dbf89d4
 [  2s] ELF: ctor[245/417] OK
-[  2s] ELF: ctor[246/417] @0x8b4ed1a84
+[  2s] ELF: ctor[246/417] @0xf3dbf8a84
 [  2s] ELF: ctor[246/417] OK
-[  2s] ELF: ctor[247/417] @0x8b4ed1b34
+[  2s] ELF: ctor[247/417] @0xf3dbf8b34
 [  2s] ELF: ctor[247/417] OK
-[  2s] ELF: ctor[248/417] @0x8b4ed1be4
+[  2s] ELF: ctor[248/417] @0xf3dbf8be4
 [  2s] ELF: ctor[248/417] OK
-[  2s] ELF: ctor[249/417] @0x8b4ed1cf8
+[  2s] ELF: ctor[249/417] @0xf3dbf8cf8
 [  2s] ELF: ctor[249/417] OK
-[  2s] ELF: ctor[250/417] @0x8b4ed1da8
+[  2s] ELF: ctor[250/417] @0xf3dbf8da8
 [  2s] ELF: ctor[250/417] OK
-[  2s] ELF: ctor[251/417] @0x8b4ed1e58
+[  2s] ELF: ctor[251/417] @0xf3dbf8e58
 [  2s] ELF: ctor[251/417] OK
-[  2s] ELF: ctor[252/417] @0x8b4ed1f08
-[  3s] ELF: ctor[252/417] OK
-[  3s] ELF: ctor[253/417] @0x8b4ed1fb8
-[  3s] ELF: ctor[253/417] OK
-[  3s] ELF: ctor[254/417] @0x8b4ed2068
+[  2s] ELF: ctor[252/417] @0xf3dbf8f08
+[  2s] ELF: ctor[252/417] OK
+[  2s] ELF: ctor[253/417] @0xf3dbf8fb8
+[  2s] ELF: ctor[253/417] OK
+[  3s] ELF: ctor[254/417] @0xf3dbf9068
 [  3s] ELF: ctor[254/417] OK
-[  3s] ELF: ctor[255/417] @0x8b4ed2118
+[  3s] ELF: ctor[255/417] @0xf3dbf9118
 [  3s] ELF: ctor[255/417] OK
-[  3s] ELF: ctor[256/417] @0x8b4ed21c8
+[  3s] ELF: ctor[256/417] @0xf3dbf91c8
 [  3s] ELF: ctor[256/417] OK
-[  3s] ELF: ctor[257/417] @0x8b4ed2278
+[  3s] ELF: ctor[257/417] @0xf3dbf9278
 [  3s] ELF: ctor[257/417] OK
-[  3s] ELF: ctor[258/417] @0x8b4ed2328
+[  3s] ELF: ctor[258/417] @0xf3dbf9328
 [  3s] ELF: ctor[258/417] OK
-[  3s] ELF: ctor[259/417] @0x8b4ed244c
+[  3s] ELF: ctor[259/417] @0xf3dbf944c
 [  3s] ELF: ctor[259/417] OK
-[  3s] ELF: ctor[260/417] @0x8b4ed24fc
+[  3s] ELF: ctor[260/417] @0xf3dbf94fc
 [  3s] ELF: ctor[260/417] OK
-[  3s] ELF: ctor[261/417] @0x8b4ed25ac
+[  3s] ELF: ctor[261/417] @0xf3dbf95ac
 [  3s] ELF: ctor[261/417] OK
-[  3s] ELF: ctor[262/417] @0x8b4ed265c
+[  3s] ELF: ctor[262/417] @0xf3dbf965c
 [  3s] ELF: ctor[262/417] OK
-[  3s] ELF: ctor[263/417] @0x8b4ed270c
+[  3s] ELF: ctor[263/417] @0xf3dbf970c
 [  3s] ELF: ctor[263/417] OK
-[  3s] ELF: ctor[264/417] @0x8b4ed27bc
+[  3s] ELF: ctor[264/417] @0xf3dbf97bc
 [  3s] ELF: ctor[264/417] OK
-[  3s] ELF: ctor[265/417] @0x8b4ed288c
+[  3s] ELF: ctor[265/417] @0xf3dbf988c
 [  3s] ELF: ctor[265/417] OK
-[  3s] ELF: ctor[266/417] @0x8b4ed293c
+[  3s] ELF: ctor[266/417] @0xf3dbf993c
 [  3s] ELF: ctor[266/417] OK
-[  3s] ELF: ctor[267/417] @0x8b4ed29ec
+[  3s] ELF: ctor[267/417] @0xf3dbf99ec
 [  3s] ELF: ctor[267/417] OK
-[  3s] ELF: ctor[268/417] @0x8b4ed2a9c
+[  3s] ELF: ctor[268/417] @0xf3dbf9a9c
 [  3s] ELF: ctor[268/417] OK
-[  3s] ELF: ctor[269/417] @0x8b4ed2b4c
+[  3s] ELF: ctor[269/417] @0xf3dbf9b4c
 [  3s] ELF: ctor[269/417] OK
-[  3s] ELF: ctor[270/417] @0x8b4ed2c60
+[  3s] ELF: ctor[270/417] @0xf3dbf9c60
 [  3s] ELF: ctor[270/417] OK
-[  3s] ELF: ctor[271/417] @0x8b4ed2d10
+[  3s] ELF: ctor[271/417] @0xf3dbf9d10
 [  3s] ELF: ctor[271/417] OK
-[  3s] ELF: ctor[272/417] @0x8b4ed2dc0
+[  3s] ELF: ctor[272/417] @0xf3dbf9dc0
 [  3s] ELF: ctor[272/417] OK
-[  3s] ELF: ctor[273/417] @0x8b4ed2e70
+[  3s] ELF: ctor[273/417] @0xf3dbf9e70
 [  3s] ELF: ctor[273/417] OK
-[  3s] ELF: ctor[274/417] @0x8b4ed2f20
+[  3s] ELF: ctor[274/417] @0xf3dbf9f20
 [  3s] ELF: ctor[274/417] OK
-[  3s] ELF: ctor[275/417] @0x8b4ed2fd0
+[  3s] ELF: ctor[275/417] @0xf3dbf9fd0
 [  3s] ELF: ctor[275/417] OK
-[  3s] ELF: ctor[276/417] @0x8b4ed3080
+[  3s] ELF: ctor[276/417] @0xf3dbfa080
 [  3s] ELF: ctor[276/417] OK
-[  3s] ELF: ctor[277/417] @0x8b4ed3194
+[  3s] ELF: ctor[277/417] @0xf3dbfa194
 [  3s] ELF: ctor[277/417] OK
-[  3s] ELF: ctor[278/417] @0x8b4ed3244
+[  3s] ELF: ctor[278/417] @0xf3dbfa244
 [  3s] ELF: ctor[278/417] OK
-[  3s] ELF: ctor[279/417] @0x8b4ed32f4
+[  3s] ELF: ctor[279/417] @0xf3dbfa2f4
 [  3s] ELF: ctor[279/417] OK
-[  3s] ELF: ctor[280/417] @0x8b4ed33a4
+[  3s] ELF: ctor[280/417] @0xf3dbfa3a4
 [  3s] ELF: ctor[280/417] OK
-[  3s] ELF: ctor[281/417] @0x8b4ed3454
+[  3s] ELF: ctor[281/417] @0xf3dbfa454
 [  3s] ELF: ctor[281/417] OK
-[  3s] ELF: ctor[282/417] @0x8b4ed3504
+[  3s] ELF: ctor[282/417] @0xf3dbfa504
 [  3s] ELF: ctor[282/417] OK
-[  3s] ELF: ctor[283/417] @0x8b4ed35b4
+[  3s] ELF: ctor[283/417] @0xf3dbfa5b4
 [  3s] ELF: ctor[283/417] OK
-[  3s] ELF: ctor[284/417] @0x8b4ed3664
+[  3s] ELF: ctor[284/417] @0xf3dbfa664
 [  3s] ELF: ctor[284/417] OK
-[  3s] ELF: ctor[285/417] @0x8b4ed3714
+[  3s] ELF: ctor[285/417] @0xf3dbfa714
 [  3s] ELF: ctor[285/417] OK
-[  3s] ELF: ctor[286/417] @0x8b4ed37c4
+[  3s] ELF: ctor[286/417] @0xf3dbfa7c4
 [  3s] ELF: ctor[286/417] OK
-[  3s] ELF: ctor[287/417] @0x8b4ed3874
+[  3s] ELF: ctor[287/417] @0xf3dbfa874
 [  3s] ELF: ctor[287/417] OK
-[  3s] ELF: ctor[288/417] @0x8b4ed3924
+[  3s] ELF: ctor[288/417] @0xf3dbfa924
 [  3s] ELF: ctor[288/417] OK
-[  3s] ELF: ctor[289/417] @0x8b4ed39d4
+[  3s] ELF: ctor[289/417] @0xf3dbfa9d4
 [  3s] ELF: ctor[289/417] OK
-[  3s] ELF: ctor[290/417] @0x8b4ed3a84
+[  3s] ELF: ctor[290/417] @0xf3dbfaa84
 [  3s] ELF: ctor[290/417] OK
-[  3s] ELF: ctor[291/417] @0x8b4ed3b34
+[  3s] ELF: ctor[291/417] @0xf3dbfab34
 [  3s] ELF: ctor[291/417] OK
-[  3s] ELF: ctor[292/417] @0x8b4ed3be4
+[  3s] ELF: ctor[292/417] @0xf3dbfabe4
 [  3s] ELF: ctor[292/417] OK
-[  3s] ELF: ctor[293/417] @0x8b4ed3c94
+[  3s] ELF: ctor[293/417] @0xf3dbfac94
 [  3s] ELF: ctor[293/417] OK
-[  3s] ELF: ctor[294/417] @0x8b4ed3d44
+[  3s] ELF: ctor[294/417] @0xf3dbfad44
 [  3s] ELF: ctor[294/417] OK
-[  3s] ELF: ctor[295/417] @0x8b4ed3df4
+[  3s] ELF: ctor[295/417] @0xf3dbfadf4
 [  3s] ELF: ctor[295/417] OK
-[  3s] ELF: ctor[296/417] @0x8b4ed3ea4
+[  3s] ELF: ctor[296/417] @0xf3dbfaea4
 [  3s] ELF: ctor[296/417] OK
-[  3s] ELF: ctor[297/417] @0x8b4ed3f54
+[  3s] ELF: ctor[297/417] @0xf3dbfaf54
 [  3s] ELF: ctor[297/417] OK
-[  3s] ELF: ctor[298/417] @0x8b4ed4004
+[  3s] ELF: ctor[298/417] @0xf3dbfb004
 [  3s] ELF: ctor[298/417] OK
-[  3s] ELF: ctor[299/417] @0x8b4ed40b4
+[  3s] ELF: ctor[299/417] @0xf3dbfb0b4
 [  3s] ELF: ctor[299/417] OK
-[  3s] ELF: ctor[300/417] @0x8b4ed4164
+[  3s] ELF: ctor[300/417] @0xf3dbfb164
 [  3s] ELF: ctor[300/417] OK
-[  3s] ELF: ctor[301/417] @0x8b4ed4214
+[  3s] ELF: ctor[301/417] @0xf3dbfb214
 [  3s] ELF: ctor[301/417] OK
-[  3s] ELF: ctor[302/417] @0x8b4ed42c4
+[  3s] ELF: ctor[302/417] @0xf3dbfb2c4
 [  3s] ELF: ctor[302/417] OK
-[  3s] ELF: ctor[303/417] @0x8b4ed4374
+[  3s] ELF: ctor[303/417] @0xf3dbfb374
 [  3s] ELF: ctor[303/417] OK
-[  3s] ELF: ctor[304/417] @0x8b4ed4424
+[  3s] ELF: ctor[304/417] @0xf3dbfb424
 [  3s] ELF: ctor[304/417] OK
-[  3s] ELF: ctor[305/417] @0x8b4ed44d4
+[  3s] ELF: ctor[305/417] @0xf3dbfb4d4
 [  3s] ELF: ctor[305/417] OK
-[  3s] ELF: ctor[306/417] @0x8b4ed4584
+[  3s] ELF: ctor[306/417] @0xf3dbfb584
 [  3s] ELF: ctor[306/417] OK
-[  3s] ELF: ctor[307/417] @0x8b4ed4634
+[  3s] ELF: ctor[307/417] @0xf3dbfb634
 [  3s] ELF: ctor[307/417] OK
-[  3s] ELF: ctor[308/417] @0x8b4ed46e4
+[  3s] ELF: ctor[308/417] @0xf3dbfb6e4
 [  3s] ELF: ctor[308/417] OK
-[  3s] ELF: ctor[309/417] @0x8b4ed4794
+[  3s] ELF: ctor[309/417] @0xf3dbfb794
 [  3s] ELF: ctor[309/417] OK
-[  3s] ELF: ctor[310/417] @0x8b4ed4844
+[  3s] ELF: ctor[310/417] @0xf3dbfb844
 [  3s] ELF: ctor[310/417] OK
-[  3s] ELF: ctor[311/417] @0x8b4ed48f4
+[  3s] ELF: ctor[311/417] @0xf3dbfb8f4
 [  3s] ELF: ctor[311/417] OK
-[  3s] ELF: ctor[312/417] @0x8b4ed49a4
+[  3s] ELF: ctor[312/417] @0xf3dbfb9a4
 [  3s] ELF: ctor[312/417] OK
-[  3s] ELF: ctor[313/417] @0x8b4ed4a54
+[  3s] ELF: ctor[313/417] @0xf3dbfba54
 [  3s] ELF: ctor[313/417] OK
-[  3s] ELF: ctor[314/417] @0x8b4ed4b04
+[  3s] ELF: ctor[314/417] @0xf3dbfbb04
 [  3s] ELF: ctor[314/417] OK
-[  3s] ELF: ctor[315/417] @0x8b4ed4bb4
+[  3s] ELF: ctor[315/417] @0xf3dbfbbb4
 [  3s] ELF: ctor[315/417] OK
-[  3s] ELF: ctor[316/417] @0x8b4ed4c64
+[  3s] ELF: ctor[316/417] @0xf3dbfbc64
 [  3s] ELF: ctor[316/417] OK
-[  3s] ELF: ctor[317/417] @0x8b4ed4d30
+[  3s] ELF: ctor[317/417] @0xf3dbfbd30
 [  3s] ELF: ctor[317/417] OK
-[  3s] ELF: ctor[318/417] @0x8b4ed4dfc
+[  3s] ELF: ctor[318/417] @0xf3dbfbdfc
 [  3s] ELF: ctor[318/417] OK
-[  3s] ELF: ctor[319/417] @0x8b4ed4eac
+[  3s] ELF: ctor[319/417] @0xf3dbfbeac
 [  3s] ELF: ctor[319/417] OK
-[  3s] ELF: ctor[320/417] @0x8b4ed4f5c
+[  3s] ELF: ctor[320/417] @0xf3dbfbf5c
 [  3s] ELF: ctor[320/417] OK
-[  3s] ELF: ctor[321/417] @0x8b4ed500c
+[  3s] ELF: ctor[321/417] @0xf3dbfc00c
 [  3s] ELF: ctor[321/417] OK
-[  3s] ELF: ctor[322/417] @0x8b4ed50bc
+[  3s] ELF: ctor[322/417] @0xf3dbfc0bc
 [  3s] ELF: ctor[322/417] OK
-[  3s] ELF: ctor[323/417] @0x8b4ed51a0
+[  3s] ELF: ctor[323/417] @0xf3dbfc1a0
 [  3s] ELF: ctor[323/417] OK
-[  3s] ELF: ctor[324/417] @0x8b4ed5250
+[  3s] ELF: ctor[324/417] @0xf3dbfc250
 [  3s] ELF: ctor[324/417] OK
-[  3s] ELF: ctor[325/417] @0x8b4ed5300
+[  3s] ELF: ctor[325/417] @0xf3dbfc300
 [  3s] ELF: ctor[325/417] OK
-[  3s] ELF: ctor[326/417] @0x8b4ed53b0
+[  3s] ELF: ctor[326/417] @0xf3dbfc3b0
 [  3s] ELF: ctor[326/417] OK
-[  3s] ELF: ctor[327/417] @0x8b4ed5460
+[  3s] ELF: ctor[327/417] @0xf3dbfc460
 [  3s] ELF: ctor[327/417] OK
-[  3s] ELF: ctor[328/417] @0x8b4ed5510
+[  3s] ELF: ctor[328/417] @0xf3dbfc510
 [  3s] ELF: ctor[328/417] OK
-[  3s] ELF: ctor[329/417] @0x8b4ed55c0
+[  3s] ELF: ctor[329/417] @0xf3dbfc5c0
 [  3s] ELF: ctor[329/417] OK
-[  3s] ELF: ctor[330/417] @0x8b4ed5670
+[  3s] ELF: ctor[330/417] @0xf3dbfc670
 [  3s] ELF: ctor[330/417] OK
-[  3s] ELF: ctor[331/417] @0x8b4ed5720
+[  3s] ELF: ctor[331/417] @0xf3dbfc720
 [  3s] ELF: ctor[331/417] OK
-[  3s] ELF: ctor[332/417] @0x8b4ed57d0
+[  3s] ELF: ctor[332/417] @0xf3dbfc7d0
 [  3s] ELF: ctor[332/417] OK
-[  3s] ELF: ctor[333/417] @0x8b4ed5880
+[  3s] ELF: ctor[333/417] @0xf3dbfc880
 [  3s] ELF: ctor[333/417] OK
-[  3s] ELF: ctor[334/417] @0x8b4ed5930
+[  3s] ELF: ctor[334/417] @0xf3dbfc930
 [  3s] ELF: ctor[334/417] OK
-[  3s] ELF: ctor[335/417] @0x8b4ed59e0
+[  3s] ELF: ctor[335/417] @0xf3dbfc9e0
 [  3s] ELF: ctor[335/417] OK
-[  3s] ELF: ctor[336/417] @0x8b4ed5a90
+[  3s] ELF: ctor[336/417] @0xf3dbfca90
 [  3s] ELF: ctor[336/417] OK
-[  3s] ELF: ctor[337/417] @0x8b4ed5b40
+[  3s] ELF: ctor[337/417] @0xf3dbfcb40
 [  3s] ELF: ctor[337/417] OK
-[  3s] ELF: ctor[338/417] @0x8b4ed5bf0
+[  3s] ELF: ctor[338/417] @0xf3dbfcbf0
 [  3s] ELF: ctor[338/417] OK
-[  3s] ELF: ctor[339/417] @0x8b4ed5ca0
+[  3s] ELF: ctor[339/417] @0xf3dbfcca0
 [  3s] ELF: ctor[339/417] OK
-[  3s] ELF: ctor[340/417] @0x8b4ed5d50
+[  3s] ELF: ctor[340/417] @0xf3dbfcd50
 [  3s] ELF: ctor[340/417] OK
-[  3s] ELF: ctor[341/417] @0x8b4ed5e00
+[  3s] ELF: ctor[341/417] @0xf3dbfce00
 [  3s] ELF: ctor[341/417] OK
-[  3s] ELF: ctor[342/417] @0x8b4ed5eb0
+[  3s] ELF: ctor[342/417] @0xf3dbfceb0
 [  3s] ELF: ctor[342/417] OK
-[  3s] ELF: ctor[343/417] @0x8b4ed5f60
+[  3s] ELF: ctor[343/417] @0xf3dbfcf60
 [  3s] ELF: ctor[343/417] OK
-[  3s] ELF: ctor[344/417] @0x8b4ed6010
+[  3s] ELF: ctor[344/417] @0xf3dbfd010
 [  3s] ELF: ctor[344/417] OK
-[  3s] ELF: ctor[345/417] @0x8b4ed60c0
+[  3s] ELF: ctor[345/417] @0xf3dbfd0c0
 [  3s] ELF: ctor[345/417] OK
-[  3s] ELF: ctor[346/417] @0x8b4ed6170
+[  3s] ELF: ctor[346/417] @0xf3dbfd170
 [  3s] ELF: ctor[346/417] OK
-[  3s] ELF: ctor[347/417] @0x8b4ed6220
+[  3s] ELF: ctor[347/417] @0xf3dbfd220
 [  3s] ELF: ctor[347/417] OK
-[  3s] ELF: ctor[348/417] @0x8b4ed62d0
+[  3s] ELF: ctor[348/417] @0xf3dbfd2d0
 [  3s] ELF: ctor[348/417] OK
-[  3s] ELF: ctor[349/417] @0x8b4ed6380
+[  3s] ELF: ctor[349/417] @0xf3dbfd380
 [  3s] ELF: ctor[349/417] OK
-[  3s] ELF: ctor[350/417] @0x8b4ed6430
+[  3s] ELF: ctor[350/417] @0xf3dbfd430
 [  3s] ELF: ctor[350/417] OK
-[  3s] ELF: ctor[351/417] @0x8b4ed64e0
+[  3s] ELF: ctor[351/417] @0xf3dbfd4e0
 [  3s] ELF: ctor[351/417] OK
-[  3s] ELF: ctor[352/417] @0x8b4ed6590
+[  3s] ELF: ctor[352/417] @0xf3dbfd590
 [  3s] ELF: ctor[352/417] OK
-[  3s] ELF: ctor[353/417] @0x8b4ed6640
+[  3s] ELF: ctor[353/417] @0xf3dbfd640
 [  3s] ELF: ctor[353/417] OK
-[  3s] ELF: ctor[354/417] @0x8b4ed66f0
+[  3s] ELF: ctor[354/417] @0xf3dbfd6f0
 [  3s] ELF: ctor[354/417] OK
-[  3s] ELF: ctor[355/417] @0x8b4ed67a0
+[  3s] ELF: ctor[355/417] @0xf3dbfd7a0
 [  3s] ELF: ctor[355/417] OK
-[  3s] ELF: ctor[356/417] @0x8b4ed6850
+[  3s] ELF: ctor[356/417] @0xf3dbfd850
 [  3s] ELF: ctor[356/417] OK
-[  3s] ELF: ctor[357/417] @0x8b4ed6900
+[  3s] ELF: ctor[357/417] @0xf3dbfd900
 [  3s] ELF: ctor[357/417] OK
-[  3s] ELF: ctor[358/417] @0x8b4ed69b0
+[  3s] ELF: ctor[358/417] @0xf3dbfd9b0
 [  3s] ELF: ctor[358/417] OK
-[  3s] ELF: ctor[359/417] @0x8b4ed6a60
+[  3s] ELF: ctor[359/417] @0xf3dbfda60
 [  3s] ELF: ctor[359/417] OK
-[  3s] ELF: ctor[360/417] @0x8b4ed6b10
+[  3s] ELF: ctor[360/417] @0xf3dbfdb10
 [  3s] ELF: ctor[360/417] OK
-[  3s] ELF: ctor[361/417] @0x8b4ed6bc0
+[  3s] ELF: ctor[361/417] @0xf3dbfdbc0
 [  3s] ELF: ctor[361/417] OK
-[  3s] ELF: ctor[362/417] @0x8b4ed6c70
+[  3s] ELF: ctor[362/417] @0xf3dbfdc70
 [  3s] ELF: ctor[362/417] OK
-[  3s] ELF: ctor[363/417] @0x8b4ed6d20
+[  3s] ELF: ctor[363/417] @0xf3dbfdd20
 [  3s] ELF: ctor[363/417] OK
-[  3s] ELF: ctor[364/417] @0x8b4ed6dd0
+[  3s] ELF: ctor[364/417] @0xf3dbfddd0
 [  3s] ELF: ctor[364/417] OK
-[  3s] ELF: ctor[365/417] @0x8b4ed6e80
+[  3s] ELF: ctor[365/417] @0xf3dbfde80
 [  3s] ELF: ctor[365/417] OK
-[  3s] ELF: ctor[366/417] @0x8b4ed6f30
+[  3s] ELF: ctor[366/417] @0xf3dbfdf30
 [  3s] ELF: ctor[366/417] OK
-[  3s] ELF: ctor[367/417] @0x8b4ed7028
+[  3s] ELF: ctor[367/417] @0xf3dbfe028
 [  3s] ELF: ctor[367/417] OK
-[  4s] ELF: ctor[368/417] @0x8b4ed70d8
+[  3s] ELF: ctor[368/417] @0xf3dbfe0d8
 [  4s] ELF: ctor[368/417] OK
-[  4s] ELF: ctor[369/417] @0x8b4ed7188
+[  4s] ELF: ctor[369/417] @0xf3dbfe188
 [  4s] ELF: ctor[369/417] OK
-[  4s] ELF: ctor[370/417] @0x8b4ed7238
+[  4s] ELF: ctor[370/417] @0xf3dbfe238
 [  4s] ELF: ctor[370/417] OK
-[  4s] ELF: ctor[371/417] @0x8b4ed72e8
+[  4s] ELF: ctor[371/417] @0xf3dbfe2e8
 [  4s] ELF: ctor[371/417] OK
-[  4s] ELF: ctor[372/417] @0x8b4ed7398
+[  4s] ELF: ctor[372/417] @0xf3dbfe398
 [  4s] ELF: ctor[372/417] OK
-[  4s] ELF: ctor[373/417] @0x8b4ed7448
+[  4s] ELF: ctor[373/417] @0xf3dbfe448
 [  4s] ELF: ctor[373/417] OK
-[  4s] ELF: ctor[374/417] @0x8b4ed74f8
+[  4s] ELF: ctor[374/417] @0xf3dbfe4f8
 [  4s] ELF: ctor[374/417] OK
-[  4s] ELF: ctor[375/417] @0x8b4ed75a8
+[  4s] ELF: ctor[375/417] @0xf3dbfe5a8
 [  4s] ELF: ctor[375/417] OK
-[  4s] ELF: ctor[376/417] @0x8b4ed7658
+[  4s] ELF: ctor[376/417] @0xf3dbfe658
 [  4s] ELF: ctor[376/417] OK
-[  4s] ELF: ctor[377/417] @0x8b4ed7708
+[  4s] ELF: ctor[377/417] @0xf3dbfe708
 [  4s] ELF: ctor[377/417] OK
-[  4s] ELF: ctor[378/417] @0x8b4ed77dc
+[  4s] ELF: ctor[378/417] @0xf3dbfe7dc
 [  4s] ELF: ctor[378/417] OK
-[  4s] ELF: ctor[379/417] @0x8b4ed788c
+[  4s] ELF: ctor[379/417] @0xf3dbfe88c
 [  4s] ELF: ctor[379/417] OK
-[  4s] ELF: ctor[380/417] @0x8b4ed793c
+[  4s] ELF: ctor[380/417] @0xf3dbfe93c
 [  4s] ELF: ctor[380/417] OK
-[  4s] ELF: ctor[381/417] @0x8b4ed7a18
+[  4s] ELF: ctor[381/417] @0xf3dbfea18
 [  4s] ELF: ctor[381/417] OK
-[  4s] ELF: ctor[382/417] @0x8b4ed7ac8
+[  4s] ELF: ctor[382/417] @0xf3dbfeac8
 [  4s] ELF: ctor[382/417] OK
-[  4s] ELF: ctor[383/417] @0x8b4ed7b78
+[  4s] ELF: ctor[383/417] @0xf3dbfeb78
 [  4s] ELF: ctor[383/417] OK
-[  4s] ELF: ctor[384/417] @0x8b4ed7c28
+[  4s] ELF: ctor[384/417] @0xf3dbfec28
 [  4s] ELF: ctor[384/417] OK
-[  4s] ELF: ctor[385/417] @0x8b4ed7cd8
+[  4s] ELF: ctor[385/417] @0xf3dbfecd8
 [  4s] ELF: ctor[385/417] OK
-[  4s] ELF: ctor[386/417] @0x8b4ed7d88
+[  4s] ELF: ctor[386/417] @0xf3dbfed88
 [  4s] ELF: ctor[386/417] OK
-[  4s] ELF: ctor[387/417] @0x8b4ed7e38
+[  4s] ELF: ctor[387/417] @0xf3dbfee38
 [  4s] ELF: ctor[387/417] OK
-[  4s] ELF: ctor[388/417] @0x8b4ed7ee8
+[  4s] ELF: ctor[388/417] @0xf3dbfeee8
 [  4s] ELF: ctor[388/417] OK
-[  4s] ELF: ctor[389/417] @0x8b4ed7f98
+[  4s] ELF: ctor[389/417] @0xf3dbfef98
 [  4s] ELF: ctor[389/417] OK
-[  4s] ELF: ctor[390/417] @0x8b4ed8048
+[  4s] ELF: ctor[390/417] @0xf3dbff048
 [  4s] ELF: ctor[390/417] OK
-[  4s] ELF: ctor[391/417] @0x8b4ed80f8
+[  4s] ELF: ctor[391/417] @0xf3dbff0f8
 [  4s] ELF: ctor[391/417] OK
-[  4s] ELF: ctor[392/417] @0x8b4ed81a8
+[  4s] ELF: ctor[392/417] @0xf3dbff1a8
 [  4s] ELF: ctor[392/417] OK
-[  4s] ELF: ctor[393/417] @0x8b4ed8258
+[  4s] ELF: ctor[393/417] @0xf3dbff258
 [  4s] ELF: ctor[393/417] OK
-[  4s] ELF: ctor[394/417] @0x8b4ed8308
+[  4s] ELF: ctor[394/417] @0xf3dbff308
 [  4s] ELF: ctor[394/417] OK
-[  4s] ELF: ctor[395/417] @0x8b4ed83b8
+[  4s] ELF: ctor[395/417] @0xf3dbff3b8
 [  4s] ELF: ctor[395/417] OK
-[  4s] ELF: ctor[396/417] @0x8b4ed8468
+[  4s] ELF: ctor[396/417] @0xf3dbff468
 [  4s] ELF: ctor[396/417] OK
-[  4s] ELF: ctor[397/417] @0x8b4ed8518
+[  4s] ELF: ctor[397/417] @0xf3dbff518
 [  4s] ELF: ctor[397/417] OK
-[  4s] ELF: ctor[398/417] @0x8b4ed85f4
+[  4s] ELF: ctor[398/417] @0xf3dbff5f4
 [  4s] ELF: ctor[398/417] OK
-[  4s] ELF: ctor[399/417] @0x8b4ed86a4
+[  4s] ELF: ctor[399/417] @0xf3dbff6a4
 [  4s] ELF: ctor[399/417] OK
-[  4s] ELF: ctor[400/417] @0x8b4ed8754
+[  4s] ELF: ctor[400/417] @0xf3dbff754
 [  4s] ELF: ctor[400/417] OK
-[  4s] ELF: ctor[401/417] @0x8b4ed8804
+[  4s] ELF: ctor[401/417] @0xf3dbff804
 [  4s] ELF: ctor[401/417] OK
-[  4s] ELF: ctor[402/417] @0x8b4ed88b4
+[  4s] ELF: ctor[402/417] @0xf3dbff8b4
 [  4s] ELF: ctor[402/417] OK
-[  4s] ELF: ctor[403/417] @0x8b4ed8964
+[  4s] ELF: ctor[403/417] @0xf3dbff964
 [  4s] ELF: ctor[403/417] OK
-[  4s] ELF: ctor[404/417] @0x8b4ed8a14
+[  4s] ELF: ctor[404/417] @0xf3dbffa14
 [  4s] ELF: ctor[404/417] OK
-[  4s] ELF: ctor[405/417] @0x8b4ed8ac4
+[  4s] ELF: ctor[405/417] @0xf3dbffac4
 [  4s] ELF: ctor[405/417] OK
-[  4s] ELF: ctor[406/417] @0x8b4ed8b74
+[  4s] ELF: ctor[406/417] @0xf3dbffb74
 [  4s] ELF: ctor[406/417] OK
-[  4s] ELF: ctor[407/417] @0x8b4ed8c48
+[  4s] ELF: ctor[407/417] @0xf3dbffc48
 [  4s] ELF: ctor[407/417] OK
-[  4s] ELF: ctor[408/417] @0x8b4ed8cf8
+[  4s] ELF: ctor[408/417] @0xf3dbffcf8
 [  4s] ELF: ctor[408/417] OK
-[  4s] ELF: ctor[409/417] @0x8b4ed8da8
+[  4s] ELF: ctor[409/417] @0xf3dbffda8
 [  4s] ELF: ctor[409/417] OK
-[  4s] ELF: ctor[410/417] @0x8b4ed8e58
+[  4s] ELF: ctor[410/417] @0xf3dbffe58
 [  4s] ELF: ctor[410/417] OK
-[  4s] ELF: ctor[411/417] @0x8b4ed8f08
+[  4s] ELF: ctor[411/417] @0xf3dbfff08
 [  4s] ELF: ctor[411/417] OK
-[  4s] ELF: ctor[412/417] @0x8b4ed8fb8
+[  4s] ELF: ctor[412/417] @0xf3dbfffb8
 [  4s] ELF: ctor[412/417] OK
-[  4s] ELF: ctor[413/417] @0x8b4ed9068
+[  4s] ELF: ctor[413/417] @0xf3dc00068
 [  4s] ELF: ctor[413/417] OK
-[  4s] ELF: ctor[414/417] @0x8b4ed9118
+[  4s] ELF: ctor[414/417] @0xf3dc00118
 [  4s] ELF: ctor[414/417] OK
-[  4s] ELF: ctor[415/417] @0x8b4ed91c8
+[  4s] ELF: ctor[415/417] @0xf3dc001c8
 [  4s] ELF: ctor[415/417] OK
-[  4s] ELF: ctor[416/417] @0x8b4ed9224
+[  4s] ELF: ctor[416/417] @0xf3dc00224
 [  4s] ELF: ctor[416/417] OK
-[  4s] ELF: ctor[417/417] @0x8b4ed98ec
+[  4s] ELF: ctor[417/417] @0xf3dc008ec
 [  4s] syscall(178) → ENOSYS  x3
 [  4s] ELF: ctor[417/417] OK
 [  4s] ELF: libgame.so: ctors done ok=417 failed=0 skipped=0
 [  4s] Scanning for Java_ native methods in main .so...
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_closeWithEulaDecline @0x8b51be214
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onPaymentWallAdsUpdated @0x8b50c800c
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesMove @0x8b5204200
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_userHasGivenConsentForTargetedAds @0x8b50c7e94
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getPlayerInfoAdFreeStatus @0x8b50c8f10
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoStartedFail @0x8b50c8f6c
-[  4s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSignInCompleted @0x8b514d778
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItemEnabled @0x8b50c7d8c
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeKeyDown @0x8b5204478
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeOnResume @0x8b5203a18
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getPlayerInfoGDPRValue @0x8b50c8ecc
-[  4s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDataLoadedGarage @0x8b514d8d8
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_passGDPRConsentValueToNativeSide @0x8b50c7ec0
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_consentFormHasBeenShown @0x8b50c8f54
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_updateRingerStateAndVolumeLevel @0x8b51bddd4
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setPromoClosed @0x8b51be210
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItemPrice @0x8b50c7a84
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_eulaHasBeenAccepted @0x8b51be230
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoStartedSuccess @0x8b50c8f84
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_createRewardedInterstitialFrequencyCap @0x8b51be1a8
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_userHasNotGivenConsentForTargetedAds @0x8b50c7eac
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_crossPromoShowing @0x8b51bddcc
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxBitmap_nativeInitBitmapDC @0x8b5203320
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit @0x8b4ed9fb8
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeDeleteBackward @0x8b5203908
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInsertText @0x8b5203894
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeResize @0x8b4ed9f6c
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getPlayerConsentLocation @0x8b50c8ff0
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_interstialClosed @0x8b51bdd38
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_createInterstitialFrequencyCap @0x8b51be158
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setNativePlayerGDPRStatus @0x8b50c9450
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getContentVersionFromGlobalH @0x8b514d770
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnCountryCode @0x8b50c8ff4
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoCompletedSuccess @0x8b50c8fb4
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesBegin @0x8b5204128
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnFileDownloadResult @0x8b50c8df4
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeGetContentText @0x8b520391c
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxActivity_nativeSetPaths @0x8b5203e48
-[  4s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDataLoaded @0x8b514d7f0
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onControllerKeyEvent @0x8b4f756ac
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItem @0x8b50c7bc4
-[  4s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDeviceLimitReached @0x8b514d7a0
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnMissionJson @0x8b50c8c58
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_isTestingMode @0x8b514d768
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeOnPause @0x8b52039cc
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setServerTime @0x8b50c7dec
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoCompletedFail @0x8b50c8f9c
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_startPopupOfferHandler @0x8b50c8eb4
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_clearStoreItems @0x8b50c7f3c
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onRewardedInterstitialCompleted @0x8b50c8fcc
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesEnd @0x8b5204194
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onControllerConnectionEvent @0x8b4f759ec
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesCancel @0x8b520433c
-[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeRender @0x8b52039b0
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnPopupOfferJson @0x8b50c8d30
-[  4s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDataLoadedSkins @0x8b514d9c0
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setCustomRewardVideoAdCompleted @0x8b50c7e80
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_crossPromoClosed @0x8b51bddd0
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_reportConsentDialogDismissed @0x8b50c8f68
-[  4s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onAchievementProgressLoaded @0x8b514daa8
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItemCurrencyCode @0x8b50c7b24
-[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_UpdateLevelBattles @0x8b50c7a70
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_closeWithEulaDecline @0xf3dee5214
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onPaymentWallAdsUpdated @0xf3ddef00c
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesMove @0xf3df2b200
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_userHasGivenConsentForTargetedAds @0xf3ddeee94
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getPlayerInfoAdFreeStatus @0xf3ddeff10
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoStartedFail @0xf3ddeff6c
+[  4s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSignInCompleted @0xf3de74778
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItemEnabled @0xf3ddeed8c
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeKeyDown @0xf3df2b478
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeOnResume @0xf3df2aa18
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getPlayerInfoGDPRValue @0xf3ddefecc
+[  4s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDataLoadedGarage @0xf3de748d8
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_passGDPRConsentValueToNativeSide @0xf3ddeeec0
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_consentFormHasBeenShown @0xf3ddeff54
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_updateRingerStateAndVolumeLevel @0xf3dee4dd4
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setPromoClosed @0xf3dee5210
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItemPrice @0xf3ddeea84
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_eulaHasBeenAccepted @0xf3dee5230
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoStartedSuccess @0xf3ddeff84
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_createRewardedInterstitialFrequencyCap @0xf3dee51a8
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_userHasNotGivenConsentForTargetedAds @0xf3ddeeeac
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_crossPromoShowing @0xf3dee4dcc
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxBitmap_nativeInitBitmapDC @0xf3df2a320
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit @0xf3dc00fb8
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeDeleteBackward @0xf3df2a908
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInsertText @0xf3df2a894
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeResize @0xf3dc00f6c
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getPlayerConsentLocation @0xf3ddefff0
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_interstialClosed @0xf3dee4d38
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_createInterstitialFrequencyCap @0xf3dee5158
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setNativePlayerGDPRStatus @0xf3ddf0450
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getContentVersionFromGlobalH @0xf3de74770
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnCountryCode @0xf3ddefff4
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoCompletedSuccess @0xf3ddeffb4
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesBegin @0xf3df2b128
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnFileDownloadResult @0xf3ddefdf4
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeGetContentText @0xf3df2a91c
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxActivity_nativeSetPaths @0xf3df2ae48
+[  4s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDataLoaded @0xf3de747f0
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onControllerKeyEvent @0xf3dc9c6ac
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItem @0xf3ddeebc4
+[  4s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDeviceLimitReached @0xf3de747a0
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnMissionJson @0xf3ddefc58
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_isTestingMode @0xf3de74768
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeOnPause @0xf3df2a9cc
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setServerTime @0xf3ddeedec
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoCompletedFail @0xf3ddeff9c
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_startPopupOfferHandler @0xf3ddefeb4
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_clearStoreItems @0xf3ddeef3c
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onRewardedInterstitialCompleted @0xf3ddeffcc
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesEnd @0xf3df2b194
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onControllerConnectionEvent @0xf3dc9c9ec
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesCancel @0xf3df2b33c
+[  4s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeRender @0xf3df2a9b0
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnPopupOfferJson @0xf3ddefd30
+[  4s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDataLoadedSkins @0xf3de749c0
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setCustomRewardVideoAdCompleted @0xf3ddeee80
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_crossPromoClosed @0xf3dee4dd0
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_reportConsentDialogDismissed @0xf3ddeff68
+[  4s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onAchievementProgressLoaded @0xf3de74aa8
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItemCurrencyCode @0xf3ddeeb24
+[  4s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_UpdateLevelBattles @0xf3ddeea70
 [  4s] JAVA_METHOD: 62 total Java_ symbols found
 [  4s] ELF: loading complete — game execution on main thread
-[  4s] AndroidTLS: old TPIDR_EL0=0x0 — installing fake TLS @0xc83373750
+[  4s] AndroidTLS: old TPIDR_EL0=0x0 — installing fake TLS @0x9d61e0750
 [  4s] audio: assets dir = sdmc:/AndroidHorizonNX/games/com.fingersoft.hillclimb/assets
 [  4s] audio: SDL_mixer ready (codecs=0x18)
 [  4s] UserDefaults: loaded 5302 ints, 3 floats, 49 strings
 [  4s] EGL: using SDL2 context on main thread
-[  4s] Calling JNI_OnLoad @0x8b4ed9d78 ...
+[  4s] Calling JNI_OnLoad @0xf3dc00d78 ...
 [  4s] [main] JNI_OnLoad: Init
 [  4s] JNI FindClass: org/cocos2dx/lib/Cocos2dxActivity
 [  4s] [main] JNI_OnLoad: Cached global reference for org/cocos2dx/lib/Cocos2dxActivity
 [  4s] JNI_OnLoad returned: 0x10004
 [  4s] No NativeActivity — Cocos2d-x direct Java_ path
-[  4s] Cocos2d-x: nativeSetPaths @0x8b5203e48
+[  4s] Cocos2d-x: nativeSetPaths @0xf3df2ae48
 [  4s] Cocos2d-x: nativeSetPaths OK
-[  4s] Cocos2d-x: nativeInit @0x8b4ed9fb8 1280x720
+[  4s] Cocos2d-x: nativeInit @0xf3dc00fb8 1280x720
 [  4s] syscall(178) → ENOSYS
 [  4s] [CCApplication_android Debug] Cocos2D-X - CCApplication::run() called
 [  4s] JNI FindClass: org/cocos2dx/lib/Cocos2dxRenderer
@@ -1033,10 +1033,10 @@
 [  4s] JNI FindClass: org/cocos2dx/lib/Cocos2dxUserDefault
 [  4s] JNI GetStaticMethodID: getIntegerForKey (Ljava/lang/String;I)I
 [  4s] JNI GetStaticMethodID: getStringForKey (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-[  5s] JNI FindClass: com/fingersoft/game/MainActivity
-[  5s] JNI GetStaticMethodID: getMarketVariation ()I
-[  5s] JNI GetStaticMethodID: isTv ()Z
-[  5s] JNI CallStaticBooleanMethodV: isTv → false
+[  4s] JNI FindClass: com/fingersoft/game/MainActivity
+[  4s] JNI GetStaticMethodID: getMarketVariation ()I
+[  4s] JNI GetStaticMethodID: isTv ()Z
+[  4s] JNI CallStaticBooleanMethodV: isTv → false
 [  5s] JNI GetStaticMethodID: hasValue (Ljava/lang/String;)Z
 [  5s] JNI CallStaticBooleanMethodV: hasValue → false
 [  5s] JNI GetStaticMethodID: getDeviceLanguage ()Ljava/lang/String;
@@ -1060,9 +1060,9 @@
 [  5s] JNI GetStaticMethodID: startAdView ()V
 [  5s] JNI CallStaticVoidMethodV: startAdView ()V
 [  5s] Cocos2d-x: nativeInit OK
-[  5s] touch: begin=0x8b5204128 end=0x8b5204194 move=0x8b5204200 keyDown=0x8b5204478
-[  5s] Cocos2d-x: nativeRender @0x8b52039b0 — game loop
-[  6s] branding: probe [0]=0,0,0(want 46,51,63)X [1]=0,0,0(want 46,51,63)X [2]=0,0,0(want 46,51,63)X → no match
+[  5s] touch: begin=0xf3df2b128 end=0xf3df2b194 move=0xf3df2b200 keyDown=0xf3df2b478
+[  5s] Cocos2d-x: nativeRender @0xf3df2a9b0 — game loop
+[  6s] branding: probe [0]=0,0,0(want 46,51,63)X [1]=0,0,0(want 46,51,63)X [2]=0,0,0(want 16,19,27)X → no match
 [  6s] [libSimpleAudioEngine] Get Env
 [  6s] JNI GetStaticMethodID: getAndroidVersion ()Ljava/lang/String;
 [  6s] JNI CallStaticObjectMethodV: getAndroidVersion ()Ljava/lang/String; → ""
@@ -1080,24 +1080,25 @@
 [  9s] audio: music sdmc:/AndroidHorizonNX/games/com.fingersoft.hillclimb/assets/audio/bgmusic00.ogg loop=1
 [  9s] [libSimpleAudioEngine] Get Env
 [  9s] JNI GetStaticMethodID: setBackgroundMusicVolume (F)V
+[  9s] branding: overlay ready (570x31 texture)
 [ 19s] [libSimpleAudioEngine] Get Env  x14
 [ 22s] game stdio: libpng warning: iCCP: known incorrect sRGB profile
 [ 22s] game: frame 300
-[ 23s] branding: probe [0]=48,54,66(want 46,51,63) [1]=45,49,60(want 46,51,63) [2]=16,19,27(want 46,51,63)X → no match
+[ 23s] branding: probe [0]=48,54,66(want 46,51,63) [1]=45,49,60(want 46,51,63) [2]=16,19,27(want 16,19,27) → MATCH
 [ 26s] screenshot: sdmc:/AndroidHorizonNX/screenshots/game_frame300.png
 [ 26s] syscall(178) → ENOSYS
 [ 26s] JNI GetStaticMethodID: getFilesDirectory ()Ljava/lang/String;
 [ 26s] JNI CallStaticObjectMethodV: getFilesDirectory ()Ljava/lang/String; → ""
 [ 26s] JNI GetStaticMethodID: setIntegerForKey (Ljava/lang/String;I)V
 [ 26s] JNI setIntegerForKey(maxSkippableMissions, 2)
-[ 26s] JNI setIntegerForKey(gemCompensationForExcessiveNitros, 2000)
+[ 27s] JNI setIntegerForKey(gemCompensationForExcessiveNitros, 2000)
 [ 27s] JNI GetStaticMethodID: flush ()V
 [ 27s] UserDefaults: saved 5302 ints, 3 floats, 49 strings
-[ 28s] JNI GetStaticMethodID: sendMissionJsonRequestToUrl (Ljava/lang/String;)V
-[ 28s] JNI CallStaticVoidMethodV: sendMissionJsonRequestToUrl (Ljava/lang/String;)V
-[ 28s] [fsgame] Event start time 1783281251
+[ 27s] JNI GetStaticMethodID: sendMissionJsonRequestToUrl (Ljava/lang/String;)V
+[ 27s] JNI CallStaticVoidMethodV: sendMissionJsonRequestToUrl (Ljava/lang/String;)V
+[ 27s] [fsgame] Event start time 1783281251
 [ 28s] [fsgame] Roadtrip event start time 1783281251
-[ 28s] JNI setIntegerForKey(last_saved_timestamp, 1783299088)
+[ 28s] JNI setIntegerForKey(last_saved_timestamp, 1783300138)
 [ 28s] JNI setIntegerForKey(stage, 0)
 [ 28s] JNI setIntegerForKey(coins, 6180)
 [ 28s] JNI setIntegerForKey(highscore, 0)
@@ -1139,7 +1140,7 @@
 [ 28s] JNI setIntegerForKey(eula_has_been_accepted, 1)
 [ 28s] JNI setIntegerForKey(eula_accepted_version, 1)
 [ 28s] JNI setIntegerForKey(bundlea, 13)
-[ 28s] JNI setIntegerForKey(bundlerefsh, 1783298463)
+[ 28s] JNI setIntegerForKey(bundlerefsh, 1783299801)
 [ 28s] JNI setIntegerForKey(chal, 0)
 [ 28s] JNI setIntegerForKey(chalc, 4)
 [ 28s] JNI setIntegerForKey(chalfa, 5)
@@ -1378,10 +1379,10 @@
 [ 28s] JNI setIntegerForKey(dieseltruck_unlocked, 0)
 [ 28s] JNI setIntegerForKey(dieseltruck_chestconsumed, 0)
 [ 28s] JNI setIntegerForKey(dieseltruck_powerupsel, 0)
-[ 29s] JNI setStringForKey(dieseltruck_attachments, "")
-[ 29s] JNI setIntegerForKey(rallycar_engine, 1)
-[ 29s] JNI setIntegerForKey(rallycar_engineH, 1)
-[ 29s] JNI setIntegerForKey(rallycar_suspension, 1)
+[ 28s] JNI setStringForKey(dieseltruck_attachments, "")
+[ 28s] JNI setIntegerForKey(rallycar_engine, 1)
+[ 28s] JNI setIntegerForKey(rallycar_engineH, 1)
+[ 28s] JNI setIntegerForKey(rallycar_suspension, 1)
 [ 29s] JNI setIntegerForKey(rallycar_suspensionH, 1)
 [ 29s] JNI setIntegerForKey(rallycar_tires, 1)
 [ 29s] JNI setIntegerForKey(rallycar_tiresH, 1)
@@ -1656,10 +1657,10 @@
 [ 29s] JNI setIntegerForKey(carcar_powerupsel, 0)
 [ 29s] JNI setStringForKey(carcar_attachments, "")
 [ 29s] JNI setIntegerForKey(aircar_engine, 1)
-[ 29s] JNI setIntegerForKey(aircar_engineH, 1)
-[ 29s] JNI setIntegerForKey(aircar_suspension, 1)
-[ 29s] JNI setIntegerForKey(aircar_suspensionH, 1)
-[ 29s] JNI setIntegerForKey(aircar_tires, 1)
+[ 30s] JNI setIntegerForKey(aircar_engineH, 1)
+[ 30s] JNI setIntegerForKey(aircar_suspension, 1)
+[ 30s] JNI setIntegerForKey(aircar_suspensionH, 1)
+[ 30s] JNI setIntegerForKey(aircar_tires, 1)
 [ 30s] JNI setIntegerForKey(aircar_tiresH, 1)
 [ 30s] JNI setIntegerForKey(aircar_fuel, 1)
 [ 30s] JNI setIntegerForKey(aircar_fuelH, 1)
@@ -1926,7 +1927,7 @@
 [ 32s] UserDefaults: saved 5302 ints, 3 floats, 49 strings
 [ 32s] [fsgame] Loading (intro) event assets ...
 [ 32s] [fsgame] Load event texture asset (1:stages/super_countryside/super-countryside-day-sky.png)
-[ 32s] pthread_create: real thread fn=0x8b521418c handle=0x38189e6d0 core=1
+[ 32s] pthread_create: real thread fn=0xf3df3b18c handle=0x6f2613580 core=1
 [ 32s] [fsgame] Load event texture asset (2:stages/super_countryside/super-countryside-day-parallax2.png)
 [ 32s] [fsgame] Load event texture asset (3:stages/super_countryside/terrain-ground.png)
 [ 32s] [fsgame] Load event texture asset (4:stages/super_countryside/terrain-surface.png)
@@ -2007,7 +2008,7 @@
 [ 39s] [fsgame] Event textures asset loaded (11/11)
 [ 39s] [fsgame] Event textures asset loaded (12/12)
 [ 39s] [fsgame] Event textures asset loaded (13/13)
-[ 39s] [fsgame] Event textures asset loaded (14/14)
+[ 40s] [fsgame] Event textures asset loaded (14/14)
 [ 40s] [fsgame] Event textures asset loaded (15/15)
 [ 40s] [fsgame] Event textures asset loaded (16/16)
 [ 40s] [fsgame] Event textures asset loaded (17/17)
@@ -2057,18 +2058,18 @@
 [ 40s] JNI GetStaticMethodID: hasInstallReward ()Z
 [ 44s] JNI CallStaticBooleanMethodV: hasInstallReward → false
 [ 44s] game: frame 600
-[ 44s] branding: probe [0]=48,54,66(want 46,51,63) [1]=45,49,60(want 46,51,63) [2]=16,19,27(want 46,51,63)X → no match
-[ 45s] [libSimpleAudioEngine] Get Env
-[ 45s] UserDefaults: saved 5302 ints, 3 floats, 49 strings
-[ 45s] JNI GetStaticMethodID: isFacebookLikeIAPPerformed ()I
-[ 45s] JNI GetStaticMethodID: stopAdView ()V
-[ 45s] JNI CallStaticVoidMethodV: stopAdView ()V
-[ 45s] JNI GetStaticMethodID: trackPage (Ljava/lang/String;)V
-[ 46s] JNI CallStaticVoidMethodV: trackPage (Ljava/lang/String;)V
-[ 46s] game stdio: libpng warning: iCCP: known incorrect sRGB profile
-[ 46s] Cocos2d-x: game loop FAULT sig=257 esr=0x92000004 pc=0x8b4f97bb8 far=0xfffffffffffffff8 sym=Java_com_fingersoft_game_MainActivity_onControllerConnectionEvent+0x221cc frame=621 — stop
-[ 46s] FAULT pc 0x8b4f97bb8: region=0x8b4d62000 size=0x748000 type=0x14 perm=r-x
-[ 46s] FAULT far 0xfffffffffffffff8: region=0x1000000000 size=0xfffffff000000000 type=0x10 perm=---
-[ 46s] FAULT pc: sdmc:/AndroidHorizonNX/games/com.fingersoft.hillclimb/lib/libgame.so +0x235bb8 sym=Java_com_fingersoft_game_MainActivity_onControllerConnectionEvent+0x221cc
-[ 46s] INSN: [pc-12]=8b170c09 [pc-8]=f9000fe9 [pc-4]=a90023e0 [pc]=f9400289 [pc+4]=f8008509
-[ 46s] Cocos2d-x: loop done frames=621
+[ 46s] branding: probe [0]=48,54,66(want 46,51,63) [1]=45,49,60(want 46,51,63) [2]=16,19,27(want 16,19,27) → MATCH
+[ 47s] [libSimpleAudioEngine] Get Env
+[ 48s] UserDefaults: saved 5302 ints, 3 floats, 49 strings
+[ 48s] JNI GetStaticMethodID: isFacebookLikeIAPPerformed ()I
+[ 48s] JNI GetStaticMethodID: stopAdView ()V
+[ 48s] JNI CallStaticVoidMethodV: stopAdView ()V
+[ 48s] JNI GetStaticMethodID: trackPage (Ljava/lang/String;)V
+[ 48s] JNI CallStaticVoidMethodV: trackPage (Ljava/lang/String;)V
+[ 48s] game stdio: libpng warning: iCCP: known incorrect sRGB profile
+[ 48s] Cocos2d-x: game loop FAULT sig=257 esr=0x92000004 pc=0xf3dcbebb8 far=0xfffffffffffffff8 sym=Java_com_fingersoft_game_MainActivity_onControllerConnectionEvent+0x221cc frame=772 — stop
+[ 48s] FAULT pc 0xf3dcbebb8: region=0xf3da89000 size=0x748000 type=0x14 perm=r-x
+[ 48s] FAULT far 0xfffffffffffffff8: region=0x1000000000 size=0xfffffff000000000 type=0x10 perm=---
+[ 48s] FAULT pc: sdmc:/AndroidHorizonNX/games/com.fingersoft.hillclimb/lib/libgame.so +0x235bb8 sym=Java_com_fingersoft_game_MainActivity_onControllerConnectionEvent+0x221cc
+[ 48s] INSN: [pc-12]=8b170c09 [pc-8]=f9000fe9 [pc-4]=a90023e0 [pc]=f9400289 [pc+4]=f8008509
+[ 48s] Cocos2d-x: loop done frames=772

@@ -260,6 +260,10 @@ Hill Climb Racing has **native MOGA controller support already built in** — co
 
 This is the real blocker on docked mode: right now only touch input is implemented (handheld-only), which is why docked mode is disabled entirely — there's no controller input path yet at all, MOGA-shaped or otherwise. Not started; noted here as a promising, concrete lead for whoever picks this up next (PRs welcome).
 
+### Long-term vision
+
+If this approach proves out across many games (not just Hill Climb Racing), the plan is to grow it into a **Tico emulator core** — a proper, reusable core for running Android games natively, rather than a single-game-at-a-time compat layer. Not started, not scoped yet — noted here as the long-term direction this project is aiming toward.
+
 ### Not Planned (for now)
 
 - Online / multiplayer games (Roblox, Fortnite, etc.)
@@ -271,6 +275,11 @@ This is the real blocker on docked mode: right now only touch input is implement
 ## Changelog
 
 > Most recent first.
+
+### 0.1.81 — Decisive flicker fix: crash now exits cleanly instead of trying to recover
+
+- [x] **Found the real mechanism behind the flicker, and stopped guessing at symptoms.** The log confirmed a real background thread (the game's own asset loader, spawned via our `pthread_create` → real libnx thread support) was still running at the time of a crash, 16 seconds after it started. We have no registry of threads a game spawns and no safe way to force-stop arbitrary running native code — so after a crash, there's no way to guarantee that thread (or others) isn't still executing, still touching shared JNI/audio/heap state, actively racing whatever the launcher tries to draw next. Two different one-time GL/EGL state fixes (swap-desync in 0.1.78, vsync in 0.1.79) didn't change the reported behaviour at all, which fits an *active, ongoing* conflict far better than a static leftover-state bug.
+- [x] **Fix: a caught crash no longer tries to return to the launcher's menu in the same process.** It logs the crash, then exits the whole app cleanly — Horizon OS tears down every thread in the process together, which a same-process "return to menu" fundamentally can't guarantee on its own. This trades "seamlessly keep browsing other games after a crash" for "guaranteed no flicker, ever" — given the app already required a full restart before a *second* game launch anyway, landing back at a restart after a crash is a smaller regression than an unrecoverable flicker loop.
 
 ### 0.1.80 — Overlay confirmed working + permanent hide latch
 
