@@ -1,0 +1,4 @@
+#Launcher (AndroidHorizonNX)
+aaronateataco:90
+#Translation Core
+aaronateataco:2

@@ -45,6 +45,36 @@ jobs:
           path: core
           fetch-depth: 0
 
+      - name: Fetch org contributors for in-app credits
+        env:
+          # ORG_PAT is optional: a classic/fine-grained PAT with read access
+          # across the whole org, set as a repo secret if/when private repos
+          # (like `website`) should be included in the in-app credits too.
+          # Falls back to the workflow's own auto-generated token, which can
+          # only see PUBLIC repos in the org — private ones are silently
+          # skipped (with a warning in the log) rather than failing the build.
+          GH_TOKEN: ${{ secrets.ORG_PAT || secrets.GITHUB_TOKEN }}
+        run: |
+          fetch_repo_contributors() {
+            repo="$1"; title="$2"
+            resp=$(curl -s -H "Authorization: token $GH_TOKEN" \
+              "https://api.github.com/repos/AndroidHorizon/$repo/contributors?per_page=100")
+            if echo "$resp" | grep -q '"message"'; then
+              echo "::warning::Couldn't fetch contributors for $repo (private + no ORG_PAT secret?) — skipping" >&2
+              return
+            fi
+            echo "#$title"
+            echo "$resp" | grep -E '"login"|"contributions"' | paste -d' ' - - \
+              | sed -E 's/.*"login": *"([^"]+)".*"contributions": *([0-9]+).*/\1:\2/'
+          }
+          {
+            fetch_repo_contributors "AndroidHorizonNX" "Launcher (AndroidHorizonNX)"
+            fetch_repo_contributors "AHNX-Translation-Core" "Translation Core"
+            fetch_repo_contributors "website" "Website"
+          } > launcher/romfs/contributors.txt
+          echo "--- contributors.txt ---"
+          cat launcher/romfs/contributors.txt
+
       - name: Build launcher
         run: docker run --rm -v ${{ github.workspace }}/launcher:/project -w /project devkitpro/devkita64:latest make
 
