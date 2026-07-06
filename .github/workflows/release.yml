@@ -125,6 +125,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # Only the bundled SD-card zip is published — the loose x64/x32
+          # NROs are build intermediates, not something someone should grab
+          # individually and drop in the wrong place. One asset, one clear
+          # "drag this onto your SD card" story.
           PRERELEASE_FLAG="--prerelease"
           if [ "${{ inputs.prerelease }}" = "false" ]; then PRERELEASE_FLAG=""; fi
           gh release create "${{ steps.ver.outputs.tag }}" \
@@ -132,7 +136,4 @@ jobs:
             --title "${{ steps.ver.outputs.tag }}" \
             --notes-file CHANGELOG.md \
             $PRERELEASE_FLAG \
-            launcher/AndroidHorizonNX.nro \
-            core/AHNX-Translation-Core-x64.nro \
-            core/core32/AHNX-Translation-Core-x32.nro \
             AndroidHorizon-sdcard.zip
