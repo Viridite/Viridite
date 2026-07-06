@@ -364,11 +364,12 @@ If this approach proves out across many games (not just Hill Climb Racing), the 
 
 > Most recent first.
 
-### 0.1.124 — Real file attachment on the submission form
+### 0.1.125 — Real large-file APK uploads (R2 direct upload, bypassing two separate platform limits)
 
 - [x] The three log fields on the [submission form](https://androidhorizon.github.io/website/submit.html) now have an actual file picker (reads the `.txt` client-side and fills the box), not just a paste box — first version only had the latter despite implying "attach."
-- [x] **The APK itself can now be attached directly** (up to 20MB — empirically the largest GitHub's Contents API reliably accepts is somewhere between 25-40MB), as an alternative to pasting a download link. The Worker writes the uploaded bytes straight through to `compat-reports/pending/<id>/game.apk`; the Action uses it directly instead of downloading, when present.
-- [x] Verified live end-to-end twice — once via a pasted link, once via a real direct file upload of the same APK, confirming both produce byte-identical SHA-256 hashes.
+- [x] **The APK itself can now be attached directly, at real-world sizes** (~100-150MB, not a token amount). First attempt routed the upload through the Worker as base64 JSON into GitHub's Contents API — capped at ~20-30MB, nowhere near enough (real APKs run ~120MB). The fix: the browser asks the Worker for a short-lived presigned R2 URL (hand-rolled AWS SigV4 signing over Web Crypto, no SDK) and uploads the file **directly to Cloudflare R2**, never through the Worker at all — sidestepping both GitHub's Contents API ceiling and Cloudflare Workers' own ~100MB request-body limit (confirmed empirically: 99MB request body got through to the Worker, 100MB got a hard edge-level 503). At submission time the Worker resolves the upload into a presigned GET URL and passes it through as an ordinary `apk_url`, so the Action's download step needed zero changes for this.
+- [x] Verified live end-to-end at real scale: a genuine 110MB file uploaded directly to R2 and was subsequently downloaded and fully read by the Action (confirmed via its own error output correctly parsing all 110MB before rejecting the synthetic test content).
+- [x] R2 bucket has a 2-day object-lifecycle expiry rule as a cleanup safety net, independent of whether a submission ever finishes processing.
 
 ### 0.1.123 — Compat submissions moved from a GitHub issue form to the website
 
