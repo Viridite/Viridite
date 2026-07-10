@@ -272,7 +272,7 @@ This needs an `ORG_PAT` repo secret (a classic PAT with `repo` scope across the 
 
 ## TODO / Roadmap
 
-> Items are roughly ordered by priority. "Phase 0" is the current work.
+> **The living version of this lives on the [public roadmap project board](https://github.com/orgs/AndroidHorizon/projects/1)** (also viewable at [androidhorizon.aaronworld.uk/roadmap.html](https://androidhorizon.aaronworld.uk/roadmap.html)) — that's what gets updated going forward, not this section. What's below is kept as the last detailed narrative snapshot; items are roughly ordered by priority, "Phase 0" is the current work.
 
 ### Phase 0 — Make any game do *something* (in progress)
 
@@ -363,6 +363,12 @@ If this approach proves out across many games (not just Hill Climb Racing), the 
 ## Changelog
 
 > Most recent first.
+
+### 0.1.126 — Hardened the UserDefaults background-save fix against a startup race
+
+- [x] The first community hardware report (Hill Climb Racing 1.67.0, submitted 2026-07-06 via APKPure) logged **77 severe frame stalls, worst 8160ms**, most matching a known pattern: `UserDefaults: saved ...` immediately followed by a `STALL(severe)` a frame later. Root cause (quantified back in 0.1.65's entry, actually fixed same day as the report in Translation Core commit `5062ee4`): each debounced save still did its `fopen`/`fwrite`-loop/`rename` synchronously on whatever thread called `UserDefault.flush()` — almost always the render thread. That commit moved the actual disk write to a small dedicated background thread; the calling thread now just takes a cheap snapshot under lock and hands it off.
+- [x] **Follow-up hardening, this pass:** the background thread's own startup (`ensureSaveThreadStarted()`) checked-then-set `g_save_thread_started` with no lock around it. Harmless if `UserDefault.flush()` only ever comes from one thread, but the code's own comment already conceded that's "almost always" true, not guaranteed — and this game does spin up real pthreads via our `pthread_create` shim. Two threads racing through that check on the very first flush could both `threadCreate()`/`condvarInit()` the same global thread/condvar. Now guarded by a dedicated start-lock.
+- [x] **Not yet re-verified on hardware** — same policy as every other perf claim in this project. The one-time ~8160ms stall right after `startAdvertisements`/`hasVideoCampaigns` at first load is a separate, unexplained cost: it's logged immediately before the game's own `[fsgame] Event textures asset loaded (33/33)` line, i.e. it's the game's *own* native code synchronously decoding its Event-screen texture atlas, not one of our JNI stubs — our socket layer is fully stubbed (`ECONNREFUSED` on `connect()`, no hang possible) so it isn't a network timeout either. Left open as a lower-priority item; a fresh hardware run + resubmission (which overwrites the stale report per the usual pipeline rule) is needed to see how much of the 77-stall count the background-thread fix actually closes out.
 
 ### 0.1.125 — Real large-file APK uploads (R2 direct upload, bypassing two separate platform limits)
 
