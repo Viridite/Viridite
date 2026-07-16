@@ -29,3 +29,18 @@ std::vector<ApkInfo> scanApks       (const std::string& dir);
 
 // Returns true if <pkg_name> has an .installed marker in the games directory.
 bool                 apkIsInstalled (const std::string& pkg_name);
+
+// Per-APK framerate cap, read by AHNX-Translation-Core at launch (see
+// readFpsCap in loader.cpp). 0 = uncapped/default.
+int  apkGetFpsCap (const std::string& pkg_name);
+bool apkSetFpsCap (const std::string& pkg_name, int fps); // fps<=0 clears it
+
+// Deletes the extracted install (games/<pkg_name>/ — libs, assets, save
+// data, cached hash/settings, everything) so the next launch re-extracts
+// from the .apk fresh. Does not touch the .apk file itself.
+bool apkDeleteInstalledData(const std::string& pkg_name);
+
+// Deletes the raw .apk file from the apks/ folder. Does not touch any
+// already-extracted install under games/<pkg_name>/ — call
+// apkDeleteInstalledData too if the caller wants both gone.
+bool apkDeleteFile(const std::string& apk_path);

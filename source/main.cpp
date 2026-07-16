@@ -667,9 +667,9 @@ struct App {
         }
 
         bool docked = appletGetOperationMode() == AppletOperationMode_Console;
-        drawFooterBar({{BG(GLYPH_A, "A"), "Launch"}, {BG(GLYPH_X, "X"), "Reinstall"},
-                       {BG(GLYPH_Y, "Y"), "Rescan"}, {BG(GLYPH_MINUS, "-"), "About"},
-                       {BG(GLYPH_PLUS, "+"), "Quit"}},
+        drawFooterBar({{BG(GLYPH_A, "A"), "Launch"}, {BG(GLYPH_B, "B"), "Manage"},
+                       {BG(GLYPH_X, "X"), "Reinstall"}, {BG(GLYPH_Y, "Y"), "Rescan"},
+                       {BG(GLYPH_MINUS, "-"), "About"}, {BG(GLYPH_PLUS, "+"), "Quit"}},
                       docked ? "Docked — games need handheld (touch screen)" : "");
 
         SDL_RenderPresent(rdr);
@@ -774,6 +774,128 @@ struct App {
             SDL_RenderPresent(rdr);
             SDL_Delay(16);
         }
+    }
+
+    // ------------------------------------------------------------------
+    // Manage overlay for the currently-selected APK: framerate cap and
+    // delete. Bound to B on the main list, which was otherwise unused there
+    // (B only means "back" on the sub-screens this launcher already has).
+    // The actual cap is read and applied by AHNX-Translation-Core at launch
+    // (see readFpsCap in loader.cpp) — this screen just writes the
+    // .fps_cap marker file the same way apkIsInstalled reads .installed.
+    void showManage() {
+        if (apks.empty()) return;
+        int idx = selected;
+        if (idx < 0 || idx >= (int)apks.size()) return;
+        ApkInfo apk = apks[idx]; // copy — index may shift under us after a delete+rescan
+        std::string pkg = apk.packageName.empty() ? apk.filename : apk.packageName;
+
+        static const int ROW_FPS = 0, ROW_DELETE = 1, ROW_COUNT = 2;
+        int  row           = 0;
+        int  fpsCap        = apkGetFpsCap(pkg); // 0 = default/uncapped
+        bool confirmDelete = false;
+        bool deleted       = false;
+        bool done          = false;
+
+        std::vector<SDL_Rect> rowRects(ROW_COUNT);
+
+        auto toggleFps = [&]() {
+            fpsCap = (fpsCap == 30) ? 0 : 30;
+            apkSetFpsCap(pkg, fpsCap);
+        };
+        auto activateDelete = [&]() {
+            if (!confirmDelete) { confirmDelete = true; return; }
+            apkDeleteInstalledData(pkg);
+            apkDeleteFile(apk.path);
+            deleted = true;
+            done    = true;
+        };
+        auto activate = [&](int r) {
+            if (r == ROW_FPS)    toggleFps();
+            else if (r == ROW_DELETE) activateDelete();
+        };
+
+        while (!done) {
+            SDL_Event ev;
+            while (SDL_PollEvent(&ev)) {
+                if (ev.type == SDL_QUIT) { done = true; break; }
+                if (ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_ESCAPE) done = true;
+
+                if (ev.type == SDL_JOYBUTTONDOWN) {
+                    if (ev.jbutton.button == BTN_B) {
+                        if (confirmDelete) confirmDelete = false;
+                        else done = true;
+                    } else if (ev.jbutton.button == BTN_A) {
+                        activate(row);
+                    }
+                }
+                if (ev.type == SDL_JOYHATMOTION) {
+                    if (ev.jhat.value & SDL_HAT_DOWN) { row = std::min(row + 1, ROW_COUNT - 1); confirmDelete = false; }
+                    if (ev.jhat.value & SDL_HAT_UP)   { row = std::max(row - 1, 0);              confirmDelete = false; }
+                }
+
+                if (ev.type == SDL_FINGERDOWN) touchDragging = false;
+                if (ev.type == SDL_FINGERUP && !touchDragging) {
+                    int px = (int)(ev.tfinger.x * SW);
+                    int py = (int)(ev.tfinger.y * SH);
+                    int hit = hitTestFooter(px, py);
+                    if (hit == 0) {
+                        if (confirmDelete) confirmDelete = false;
+                        else done = true;
+                    } else if (hit == 1) {
+                        activate(row);
+                    } else {
+                        for (int r = 0; r < ROW_COUNT; r++) {
+                            const SDL_Rect& rr = rowRects[r];
+                            if (rr.w > 0 && px >= rr.x && px < rr.x + rr.w &&
+                                py >= rr.y && py < rr.y + rr.h) {
+                                if (r == row) activate(r);
+                                else { row = r; confirmDelete = false; }
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            drawBackground();
+            drawHeaderBar();
+
+            int y = LIST_Y + 30;
+            drawText(fLg, clamp(fLg, "Manage: " + apk.appName, SW - 60), C_WHITE, 30, y);
+            y += 50;
+
+            const int ROW_H = 74;
+            const char* fpsLabel = (fpsCap == 30) ? "Framerate cap: 30fps (battery-friendly)"
+                                                    : "Framerate cap: Default (uncapped)";
+            const char* deleteLabel = confirmDelete
+                ? "Delete this game — press A again to confirm, cannot be undone"
+                : "Delete this game (removes the APK and any installed data)";
+            const char* labels[ROW_COUNT] = { fpsLabel, deleteLabel };
+
+            for (int r = 0; r < ROW_COUNT; r++) {
+                SDL_Rect card = {24, y, SW - 48, ROW_H - 10};
+                rowRects[r] = card;
+                bool sel = (r == row);
+                SDL_Color bg = sel ? (r == ROW_DELETE && confirmDelete ? SDL_Color{90, 24, 24, 235}
+                                                                        : C_SEL)
+                                    : SDL_Color{24, 22, 70, 200};
+                fill(card.x, card.y, card.w, card.h, bg);
+                if (sel) fill(card.x, card.y, 5, card.h, r == ROW_DELETE ? C_ERR : C_RIM);
+                SDL_Color textCol = (r == ROW_DELETE) ? (confirmDelete ? C_ERR : C_WARN) : C_WHITE;
+                drawText(fMd, labels[r], textCol, card.x + 24, card.y + (card.h - 22) / 2);
+                y += ROW_H;
+            }
+
+            drawFooterBar({{BG(GLYPH_B, "B"), confirmDelete ? "Cancel" : "Back"},
+                           {BG(GLYPH_A, "A"), row == ROW_DELETE ? (confirmDelete ? "Confirm delete" : "Delete")
+                                                                 : "Toggle"}});
+
+            SDL_RenderPresent(rdr);
+            SDL_Delay(16);
+        }
+
+        if (deleted) rescan();
     }
 
     // ------------------------------------------------------------------
@@ -895,6 +1017,7 @@ int main(int, char**) {
                         break;
 
                     case BTN_B:
+                        if (!app.apks.empty()) app.showManage();
                         break;
                 }
             }
@@ -967,17 +1090,19 @@ int main(int, char**) {
                 int py = (int)(ev.tfinger.y * SH);
                 int hit = app.hitTestFooter(px, py);
                 // Hitbox index matches the order hints were passed to
-                // drawFooterBar() in render(): A/Launch, X/Reinstall,
-                // Y/Rescan, -/About, +/Quit.
+                // drawFooterBar() in render(): A/Launch, B/Manage,
+                // X/Reinstall, Y/Rescan, -/About, +/Quit.
                 if (hit == 0) {
                     if (!app.apks.empty()) app.launchGame(app.apks[app.selected], &handoff);
                 } else if (hit == 1) {
-                    if (!app.apks.empty()) app.launchGame(app.apks[app.selected], &handoff);
+                    if (!app.apks.empty()) app.showManage();
                 } else if (hit == 2) {
-                    app.rescan();
+                    if (!app.apks.empty()) app.launchGame(app.apks[app.selected], &handoff);
                 } else if (hit == 3) {
-                    app.showAbout();
+                    app.rescan();
                 } else if (hit == 4) {
+                    app.showAbout();
+                } else if (hit == 5) {
                     quit = true;
                 } else if (!app.apks.empty() && py >= LIST_Y && py < LIST_Y + LIST_H) {
                     int row = app.scroll + (py - LIST_Y) / ITEM_H;

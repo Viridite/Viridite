@@ -4,6 +4,7 @@
 #include <sys/stat.h>
 #include <algorithm>
 #include <cstring>
+#include <cstdio>
 
 // ---------------------------------------------------------------------------
 // Byte helpers
@@ -396,6 +397,68 @@ bool apkIsInstalled(const std::string& pkg_name) {
     std::string marker = std::string("sdmc:/AndroidHorizonNX/games/") + pkg_name + "/.installed";
     struct stat st;
     return stat(marker.c_str(), &st) == 0;
+}
+
+// ---------------------------------------------------------------------------
+// Per-APK settings + delete
+// ---------------------------------------------------------------------------
+int apkGetFpsCap(const std::string& pkg_name) {
+    if (pkg_name.empty()) return 0;
+    std::string path = std::string("sdmc:/AndroidHorizonNX/games/") + pkg_name + "/.fps_cap";
+    FILE* f = fopen(path.c_str(), "r");
+    if (!f) return 0;
+    int fps = 0;
+    if (fscanf(f, "%d", &fps) != 1) fps = 0;
+    fclose(f);
+    return fps;
+}
+
+bool apkSetFpsCap(const std::string& pkg_name, int fps) {
+    if (pkg_name.empty()) return false;
+    std::string dir  = std::string("sdmc:/AndroidHorizonNX/games/") + pkg_name;
+    std::string path = dir + "/.fps_cap";
+    // The games/<pkg> dir may not exist yet if this APK has never been
+    // launched — create it so the choice survives until first install
+    // (launchApk's own mkdirp on the Core side is idempotent either way).
+    mkdir(dir.c_str(), 0777);
+    if (fps <= 0) { remove(path.c_str()); return true; }
+    FILE* f = fopen(path.c_str(), "w");
+    if (!f) return false;
+    fprintf(f, "%d", fps);
+    fclose(f);
+    return true;
+}
+
+// Recursively removes a file or directory. Used for wiping an extracted
+// install (games/<pkg>/), which can contain a real directory tree (lib/,
+// assets/, save data) rather than the single flat files the rest of this
+// launcher deals with.
+static bool removeRecursive(const std::string& path) {
+    struct stat st;
+    if (stat(path.c_str(), &st) != 0) return true; // already gone
+    if (!S_ISDIR(st.st_mode)) return remove(path.c_str()) == 0;
+
+    DIR* d = opendir(path.c_str());
+    if (!d) return false;
+    bool ok = true;
+    struct dirent* ent;
+    while ((ent = readdir(d))) {
+        std::string name = ent->d_name;
+        if (name == "." || name == "..") continue;
+        if (!removeRecursive(path + "/" + name)) ok = false;
+    }
+    closedir(d);
+    return (remove(path.c_str()) == 0) && ok;
+}
+
+bool apkDeleteInstalledData(const std::string& pkg_name) {
+    if (pkg_name.empty()) return false;
+    return removeRecursive(std::string("sdmc:/AndroidHorizonNX/games/") + pkg_name);
+}
+
+bool apkDeleteFile(const std::string& apk_path) {
+    if (apk_path.empty()) return false;
+    return remove(apk_path.c_str()) == 0;
 }
 
 std::vector<ApkInfo> scanApks(const std::string& dir) {

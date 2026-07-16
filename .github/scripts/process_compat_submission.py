@@ -36,6 +36,10 @@ VERDICT_LABEL = {
 }
 
 STALL_RE = re.compile(r'(stall|STALL\(severe\)): frame (\d+) stalled for (\d+)ms')
+ENV_BUILD_RE = re.compile(r'env: Android Horizon \(Translation Core\) build (\S+)')
+ENV_FIRMWARE_RE = re.compile(r'env: Switch firmware (\S+)')
+ENV_ATMOSPHERE_RE = re.compile(r'env: Atmosphere (\S+)')
+LOGGED_APK_SHA256_RE = re.compile(r'launchApk: apk sha256=([0-9a-f]{64})')
 FRAME_EVIDENCE_RE = re.compile(r'\bframe\s+\d+\b', re.IGNORECASE)
 ERROR_MARKERS = [
     "abort", "fatal", "unresolved symbol", "font load failed",
@@ -199,6 +203,35 @@ def check_play_store_category(package):
     return "UNKNOWN"
 
 
+def parse_env_header(compat_log):
+    """Reads the env: header AHNX-Translation-Core logs at the top of
+    compat_log.txt (build/firmware/Atmosphere — see loader.cpp). Older
+    submissions predate this header and simply won't match; callers should
+    render that as an explicit "unknown", not guess a value."""
+    build_m = ENV_BUILD_RE.search(compat_log)
+    firmware_m = ENV_FIRMWARE_RE.search(compat_log)
+    atmosphere_m = ENV_ATMOSPHERE_RE.search(compat_log)
+    return {
+        "engine_build": build_m.group(1) if build_m else None,
+        "switch_firmware": firmware_m.group(1) if firmware_m else None,
+        "atmosphere_version": atmosphere_m.group(1) if atmosphere_m else None,
+    }
+
+
+def check_apk_integrity(compat_log, submitted_apk_sha256):
+    """Cross-checks the submitted APK's hash (computed fresh from the just-
+    downloaded APK, see apk_sha256 in main()) against the hash the engine
+    itself logged for the APK it actually ran (see apkSha256Cached in
+    AHNX-Translation-Core's loader.cpp) — confirms the attached logs really
+    came from the APK this report claims, not a different build submitted
+    under the same link/upload."""
+    m = LOGGED_APK_SHA256_RE.search(compat_log)
+    if not m:
+        return "not_logged", None
+    logged = m.group(1)
+    return ("match" if logged == submitted_apk_sha256 else "mismatch"), logged
+
+
 def analyze_logs(launcher_log, compat_log, core_log):
     combined = "\n".join([launcher_log, compat_log, core_log])
     stalls, severe = [], 0
@@ -245,6 +278,25 @@ def analyze_logs(launcher_log, compat_log, core_log):
     }
 
 
+def format_env_line(meta):
+    build = meta.get("engine_build") or "Unknown (submitted before build/firmware logging existed)"
+    firmware = meta.get("switch_firmware") or "Unknown"
+    atmosphere = meta.get("atmosphere_version") or "Unknown"
+    return f"**Test environment:** Android Horizon build `{build}`, Switch firmware `{firmware}`, Atmosphere `{atmosphere}`  "
+
+
+APK_INTEGRITY_LABEL = {
+    "match":      "✅ Matches — logs came from this exact APK",
+    "mismatch":   "⚠️ MISMATCH — logs were generated from a different APK than the one submitted here",
+    "not_logged": "❓ Not available (submitted before this check existed, or the engine build predates it)",
+}
+
+
+def format_apk_integrity_line(meta):
+    check = meta.get("apk_integrity_check") or "not_logged"
+    return f"**APK integrity check:** {APK_INTEGRITY_LABEL[check]}  "
+
+
 def build_report_md(meta, analysis, old_meta):
     lines = [
         f"# {meta['game_name']} — {meta['version_name']}", "",
@@ -252,8 +304,10 @@ def build_report_md(meta, analysis, old_meta):
         f"**Verdict:** {VERDICT_LABEL[analysis['verdict']]}  ",
         f"**Source:** {meta['source_site']} — {meta['apk_url']}  ",
         f"**APK SHA-256:** `{meta['apk_sha256']}`  ",
+        format_apk_integrity_line(meta),
         f"**Play Store category check:** {meta['play_store_category_check']}  ",
         f"**Submitted by:** {meta['submitted_by']}  ",
+        format_env_line(meta),
     ]
     if old_meta:
         lines.append(f"**Supersedes:** submission by {old_meta.get('submitted_by')} on {old_meta.get('submitted_at')}  ")
@@ -374,6 +428,8 @@ def main():
         return
 
     analysis = analyze_logs(launcher_log, compat_log, core_log)
+    env_info = parse_env_header(compat_log)
+    apk_integrity_check, logged_apk_sha256 = check_apk_integrity(compat_log, apk_sha256)
 
     pkg = safe_path_component(package)
     ver = safe_path_component(version_name)
@@ -414,6 +470,8 @@ def main():
         "submitted_by": github_username or "anonymous", "submitted_at": now,
         "notes": notes, "play_store_category_check": play_status,
         "superseded_submission_by": old_meta.get("submitted_by") if old_meta else None,
+        **env_info,
+        "apk_integrity_check": apk_integrity_check,
     }
     with open(os.path.join(target, "meta.json"), "w") as f:
         json.dump(meta, f, indent=2)
