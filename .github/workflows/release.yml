@@ -44,6 +44,9 @@ jobs:
           repository: AndroidHorizon/AHNX-Translation-Core
           path: core
           fetch-depth: 0
+          # The Unity runtime (AHNX-Unity-Runtime) is a submodule compiled into
+          # the Core — pull it so its src/ is present for the build.
+          submodules: recursive
 
       - name: Fetch org contributors for in-app credits
         env:
