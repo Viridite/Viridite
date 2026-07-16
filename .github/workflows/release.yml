@@ -135,7 +135,13 @@ jobs:
             if [ -z "$LAST_TAG" ]; then
               TAG="v0.1.1-testing-alpha"
             else
-              NUM=$(echo "$LAST_TAG" | grep -oE '[0-9]+' | sed -n '2p')
+              # Third number is the patch (v<major>.<minor>.<patch>-...).
+              # An earlier version of this grabbed the SECOND number (the
+              # minor) — which only looked right while minor and patch
+              # happened to be equal (v0.1.1 → "bump 1 → 2" → v0.1.2), then
+              # collided with the existing tag on the very next run
+              # (v0.1.2 → "bump 1 → 2" → v0.1.2 again).
+              NUM=$(echo "$LAST_TAG" | grep -oE '[0-9]+' | sed -n '3p')
               MAJOR_MINOR=$(echo "$LAST_TAG" | grep -oE '^v[0-9]+\.[0-9]+')
               NEXT=$((NUM + 1))
               TAG="${MAJOR_MINOR}.${NEXT}-testing-alpha"
