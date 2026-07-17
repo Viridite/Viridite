@@ -22,7 +22,7 @@ DATA		:=	data
 INCLUDES	:=	include
 ROMFS		:=	romfs
 
-APP_TITLE	:= Android Horizon
+APP_TITLE	:= Viridite
 APP_AUTHOR	:= aaronworld.uk
 APP_VERSION	:= 0.1.$(shell cat $(TOPDIR)/build_number.txt 2>/dev/null || echo 0)
 
