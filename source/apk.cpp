@@ -293,6 +293,21 @@ static std::vector<uint8_t> readZipEntry(unzFile zf, const char* name) {
 
 // ---------------------------------------------------------------------------
 // Public API
+// Minimal extractor for a flat JSON string field: "key":"value". Enough for a
+// XAPK manifest.json (package_name/name/version_name); not a general parser.
+static std::string jsonStrField(const std::string& j, const char* key) {
+    std::string needle = std::string("\"") + key + "\"";
+    size_t k = j.find(needle);
+    if (k == std::string::npos) return {};
+    size_t colon = j.find(':', k + needle.size());
+    if (colon == std::string::npos) return {};
+    size_t q1 = j.find('"', colon);
+    if (q1 == std::string::npos) return {};
+    size_t q2 = j.find('"', q1 + 1);
+    if (q2 == std::string::npos) return {};
+    return j.substr(q1 + 1, q2 - q1 - 1);
+}
+
 // ---------------------------------------------------------------------------
 ApkInfo parseApk(const std::string& path) {
     ApkInfo info;
@@ -300,16 +315,50 @@ ApkInfo parseApk(const std::string& path) {
 
     size_t slash = path.rfind('/');
     info.filename = (slash != std::string::npos) ? path.substr(slash + 1) : path;
-    // Fallback display name = filename without .apk
-    info.appName = info.filename.size() > 4
-        ? info.filename.substr(0, info.filename.size() - 4)
-        : info.filename;
+    // Fallback display name = filename without the extension
+    size_t dot = info.filename.rfind('.');
+    info.appName = (dot != std::string::npos) ? info.filename.substr(0, dot) : info.filename;
 
     struct stat st;
     if (stat(path.c_str(), &st) == 0) info.fileSizeBytes = (uint64_t)st.st_size;
 
     unzFile zf = unzOpen(path.c_str());
     if (!zf) return info;
+
+    // ── XAPK? A ZIP of APKs. Read its manifest.json + icon.png and take arch
+    // from which config.<abi> split it carries (real APKs have no .apk members).
+    {
+        bool isXapk = false, arm64Split = false, arm32Split = false;
+        if (unzGoToFirstFile(zf) == UNZ_OK) {
+            char name[1024];
+            do {
+                if (unzGetCurrentFileInfo(zf, nullptr, name, sizeof(name), nullptr, 0, nullptr, 0) != UNZ_OK) break;
+                std::string n = name;
+                if (n.size() > 4 && n.compare(n.size() - 4, 4, ".apk") == 0) {
+                    isXapk = true;
+                    if (n.find("config.arm64_v8a") != std::string::npos) arm64Split = true;
+                    else if (n.find("config.armeabi") != std::string::npos || n.find("config.x86") != std::string::npos) arm32Split = true;
+                }
+            } while (unzGoToNextFile(zf) == UNZ_OK);
+        }
+        if (isXapk) {
+            auto mj = readZipEntry(zf, "manifest.json");
+            std::string j(mj.begin(), mj.end());
+            std::string pkg = jsonStrField(j, "package_name");
+            std::string nm  = jsonStrField(j, "name");
+            std::string ver = jsonStrField(j, "version_name");
+            if (!pkg.empty()) info.packageName = pkg;
+            if (!nm.empty())  info.appName     = nm;
+            if (!ver.empty()) info.versionName = ver;
+            auto icon = readZipEntry(zf, "icon.png");
+            if (!icon.empty()) info.iconPng = std::move(icon);
+            info.arch = arm64Split ? ApkArch::Arm64
+                      : arm32Split ? ApkArch::Arm32Only
+                      : ApkArch::Unknown;
+            unzClose(zf);
+            return info;
+        }
+    }
 
     // ── Step 0: which native lib ABI(s) does this APK ship? ─────────────
     // Walk every entry once looking for lib/arm64-v8a/ vs any other lib/<abi>/
@@ -466,9 +515,13 @@ std::vector<ApkInfo> scanApks(const std::string& dir) {
     DIR* d = opendir(dir.c_str());
     if (!d) return result;
     struct dirent* ent;
+    auto hasExt = [](const std::string& s, const char* ext) {
+        size_t n = strlen(ext);
+        return s.size() > n && s.compare(s.size() - n, n, ext) == 0;
+    };
     while ((ent = readdir(d))) {
         std::string name = ent->d_name;
-        if (name.size() > 4 && name.compare(name.size() - 4, 4, ".apk") == 0) {
+        if (hasExt(name, ".apk") || hasExt(name, ".xapk")) {
             ApkInfo info = parseApk(dir + "/" + name);
             const std::string& pkg = info.packageName.empty() ? info.filename : info.packageName;
             info.installed = apkIsInstalled(pkg);
