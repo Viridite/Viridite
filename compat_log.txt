@@ -1,0 +1,1347 @@
+[  0s] env: Android Horizon (Translation Core) build 0.1.128
+[  0s] env: Switch firmware 22.1.0
+[  0s] env: Atmosphere 1.11.2
+[  0s] launchApk: sdmc:/AndroidHorizonNX/apks/com.orbital.brainiton_1.6.18-216_minAPI16(arm64-v8a)(nodpi)_apkmirror.com.apk  pkg=com.orbital.brainiton  installed=1
+[  0s] launchApk: apk sha256=8b2c6307dd5f31a6d335a4ff29a2334f6e55898fbce8d3975e2216dd07a72786
+[  0s] launchApk: fps cap=none (default)
+[  0s] Already installed — skipping extraction
+[  0s] findAllSos: libmain.so (6144 bytes)
+[  0s] findAllSos: libgpg.so (3718560 bytes)
+[  0s] findAllSos: libunity.so (13585456 bytes)
+[  0s] findAllSos: libil2cpp.so (46554008 bytes)
+[  0s] engine: Unity IL2CPP detected (libunity.so/libil2cpp.so) — routing to AHNX-Unity-Runtime bringup
+[  0s] Setting up JNI environment...
+[  0s] Loading: libmain.so
+[  0s] ELF: loading sdmc:/AndroidHorizonNX/games/com.orbital.brainiton/lib/libmain.so
+[  0s] SplitMap: reserved code_va=0xe31d62000 data_va=0xe31d72000 write_va=0x94243000 csz=0x10000 dsz=0x1000
+[  0s] ELF: stage alloc OK
+[  0s] ELF: stage zeroed
+[  0s] ELF: seg[0] vaddr=0x0 filesz=0xd20 memsz=0xd20 flags=0x5
+[  0s] ELF: seg[1] vaddr=0x10d20 filesz=0x2b0 memsz=0x2b8 flags=0x6
+[  0s] ELF: segs copied to stage
+[  0s] ELF: stage[0]=0x464c457f after segs copy
+[  0s] ELF: dyn: strtab=0x488/223 symtab=0x290 syment=24 rela=0x5d8/168 jmprel=0x680/240 init_arr=0x10d20/8
+[  0s] ELF: so built sym_count=21 strsz=223
+[  0s] ELF: registered
+[  0s] ELF: rela 7 entries
+[  0s] RELA: all 7 entries processed
+[  0s] ELF: rela done
+[  0s] ELF: jmprel 10 entries
+[  0s] JMPREL: all 10 entries processed
+[  0s] ELF: jmprel done
+[  0s] ELF: strtab/symtab copied
+[  0s] GOT[0] @va+0xf48 = 0x925af3bb0
+[  0s] GOT[1] @va+0xf50 = 0x9261f0fc0
+[  0s] GOT[2] @va+0xf58 = 0x925af3bc0
+[  0s] GOT[3] @va+0xf60 = 0x925af61f0
+[  0s] GOT[4] @va+0xf68 = 0x925af7080
+[  0s] SplitMap: code_va=0xe31d62000 Rx data_va=0xe31d72000 Rw OK
+[  0s] ELF: JIT copy done, stage freed
+[  0s] ELF: 1 constructors deferred (arr=0xe31d72d20)
+[  0s] ELF: loaded OK code_exec=0xe31d62000 data_exec=0xe31d72000 sym_count=21 unresolved=0
+[  0s] Loading: libgpg.so
+[  0s] ELF: loading sdmc:/AndroidHorizonNX/games/com.orbital.brainiton/lib/libgpg.so
+[  0s] SplitMap: reserved code_va=0x1a923000 data_va=0x1ac97000 write_va=0x8f89bc000 csz=0x374000 dsz=0x30000
+[  0s] ELF: stage alloc OK
+[  0s] ELF: stage zeroed
+[  0s] ELF: seg[0] vaddr=0x0 filesz=0x363b7c memsz=0x363b7c flags=0x5
+[  0s] ELF: seg[1] vaddr=0x3740c8 filesz=0x27430 memsz=0x2f888 flags=0x6
+[  0s] ELF: segs copied to stage
+[  0s] ELF: stage[0]=0x464c457f after segs copy
+[  0s] ELF: dyn: strtab=0x4b760/826798 symtab=0x11c50 syment=24 rela=0x11a240/348216 jmprel=0x16f278/73584 init_arr=0x3740c8/88
+[  0s] ELF: so built sym_count=9846 strsz=826798
+[  0s] ELF: registered
+[  0s] ELF: rela 14509 entries
+[  0s] RELA: all 14509 entries processed
+[  0s] ELF: rela done
+[  0s] ELF: jmprel 3066 entries
+[  0s] JMPREL: all 3066 entries processed
+[  0s] ELF: jmprel done
+[  0s] ELF: strtab/symtab copied
+[  0s] GOT[0] @va+0x1ed20 = 0x1ab138cc
+[  0s] GOT[1] @va+0x1ed28 = 0x1ab5b73c
+[  0s] GOT[2] @va+0x1ed30 = 0x1ab3e0bc
+[  0s] GOT[3] @va+0x1ed38 = 0x1aaf70a0
+[  0s] GOT[4] @va+0x1ed40 = 0x1aadb40c
+[  0s] SplitMap: code_va=0x1a923000 Rx data_va=0x1ac97000 Rw OK
+[  0s] ELF: JIT copy done, stage freed
+[  0s] ELF: 11 constructors deferred (arr=0x1ac970c8)
+[  0s] ELF: loaded OK code_exec=0x1a923000 data_exec=0x1ac97000 sym_count=9846 unresolved=0
+[  0s] Loading: libunity.so
+[  0s] ELF: loading sdmc:/AndroidHorizonNX/games/com.orbital.brainiton/lib/libunity.so
+[  0s] SplitMap: reserved code_va=0x9ab42c000 data_va=0x9ac0e5000 write_va=0x637bac000 csz=0xcb9000 dsz=0x190000
+[  0s] ELF: stage alloc OK
+[  0s] ELF: stage zeroed
+[  0s] ELF: seg[0] vaddr=0x0 filesz=0xca90bc memsz=0xca90bc flags=0x5
+[  0s] ELF: seg[1] vaddr=0xcb90c0 filesz=0x4b230 memsz=0x18f678 flags=0x6
+[  0s] ELF: segs copied to stage
+[  0s] ELF: stage[0]=0x464c457f after segs copy
+[  0s] ELF: dyn: strtab=0x2620/3342 symtab=0xaa8 syment=24 rela=0x3610/566568 jmprel=0x8db38/6840 init_arr=0xcb90c0/3856
+[  0s] ELF: so built sym_count=293 strsz=3342
+[  0s] ELF: registered
+[  0s] ELF: rela 23607 entries
+[  0s] RELA: all 23607 entries processed
+[  0s] ELF: rela done
+[  0s] ELF: jmprel 285 entries
+[  0s] ELF: unresolved: inflateInit2_
+[  0s] ELF: unresolved: inflate
+[  0s] ELF: unresolved: inflateEnd
+[  0s] JMPREL: all 285 entries processed
+[  0s] ELF: jmprel done
+[  0s] ELF: strtab/symtab copied
+[  0s] GOT[0] @va+0x35870 = 0x925af2b50
+[  0s] GOT[1] @va+0x35878 = 0x9261e85a0
+[  0s] GOT[2] @va+0x35880 = 0x9261f3b40
+[  0s] GOT[3] @va+0x35888 = 0x925af62a0
+[  0s] GOT[4] @va+0x35890 = 0x9261d9f80
+[  0s] SplitMap: code_va=0x9ab42c000 Rx data_va=0x9ac0e5000 Rw OK
+[  0s] ELF: JIT copy done, stage freed
+[  0s] ELF: 482 constructors deferred (arr=0x9ac0e50c0)
+[  0s] ELF: loaded OK code_exec=0x9ab42c000 data_exec=0x9ac0e5000 sym_count=293 unresolved=3
+[  0s] Loading: libil2cpp.so
+[  1s] ELF: loading sdmc:/AndroidHorizonNX/games/com.orbital.brainiton/lib/libil2cpp.so
+[  1s] SplitMap: reserved code_va=0xa37b4d000 data_va=0xa3a414000 write_va=0x7ab621000 csz=0x28c7000 dsz=0x61c000
+[  1s] ELF: stage alloc OK
+[  1s] ELF: stage zeroed
+[  1s] ELF: seg[0] vaddr=0x0 filesz=0x28b6e24 memsz=0x28b6e24 flags=0x5
+[  1s] ELF: seg[1] vaddr=0x28c7000 filesz=0x3ae308 memsz=0x61bcc0 flags=0x6
+[  1s] ELF: segs copied to stage
+[  1s] ELF: stage[0]=0x464c457f after segs copy
+[  1s] ELF: dyn: strtab=0x56c8/18567 symtab=0x1510 syment=24 rela=0xa530/8858328 jmprel=0x87d008/8592 init_arr=0x28c7000/352
+[  1s] ELF: so built sym_count=701 strsz=18567
+[  1s] ELF: registered
+[  1s] ELF: rela 369097 entries
+[  1s] RELA: all 369097 entries processed
+[  1s] ELF: rela done
+[  1s] ELF: jmprel 358 entries
+[  1s] JMPREL: all 358 entries processed
+[  1s] ELF: jmprel done
+[  1s] ELF: strtab/symtab copied
+[  1s] GOT[0] @va+0x2aa9d0 = 0x9261e85a0
+[  1s] GOT[1] @va+0x2aa9d8 = 0x9261f3b40
+[  1s] GOT[2] @va+0x2aa9e0 = 0xa385114bc
+[  1s] GOT[3] @va+0x2aa9e8 = 0x925af55b0
+[  1s] GOT[4] @va+0x2aa9f0 = 0xa3850b544
+[  1s] SplitMap: code_va=0xa37b4d000 Rx data_va=0xa3a414000 Rw OK
+[  1s] ELF: JIT copy done, stage freed
+[  1s] ELF: 44 constructors deferred (arr=0xa3a414000)
+[  1s] ELF: loaded OK code_exec=0xa37b4d000 data_exec=0xa3a414000 sym_count=701 unresolved=3
+[  1s] ELF: 3 total unresolved symbols across all libs
+[  1s] AndroidTLS: old TPIDR_EL0=0x0 — installing fake TLS @0x926491750
+[  1s] CTORS: starting 538 constructors — this may take 30-120s, please wait
+[  1s] ELF: libmain.so: running 1 constructors
+[  1s] ELF: init_arr[0]=0x0
+[  1s] ELF: libmain.so: ctors done ok=0 failed=0 skipped=1
+[  1s] ELF: libgpg.so: running 11 constructors
+[  1s] ELF: init_arr[0]=0x1aab01b0
+[  1s] ELF: init_arr[1]=0x1aab01e4
+[  1s] ELF: init_arr[2]=0x1aab022c
+[  1s] ELF: init_arr[3]=0x1aab15e4
+[  1s] ELF: ctor[1/11] @0x1aab01b0
+[  1s] ELF: ctor[1/11] OK
+[  1s] ELF: ctor[2/11] @0x1aab01e4
+[  1s] ELF: ctor[2/11] OK
+[  1s] ELF: ctor[3/11] @0x1aab022c
+[  1s] ELF: ctor[3/11] OK
+[  1s] ELF: ctor[4/11] @0x1aab15e4
+[  1s] ELF: ctor[4/11] OK
+[  1s] ELF: ctor[5/11] @0x1aab1614
+[  1s] ELF: ctor[5/11] OK
+[  1s] ELF: ctor[6/11] @0x1aab180c
+[  1s] ELF: ctor[6/11] OK
+[  1s] ELF: ctor[7/11] @0x1aab1830
+[  1s] ELF: ctor[7/11] OK
+[  1s] ELF: ctor[8/11] @0x1aab1870
+[  1s] ELF: ctor[8/11] OK
+[  1s] ELF: ctor[9/11] @0x1aab1894
+[  1s] ELF: ctor[9/11] OK
+[  1s] ELF: ctor[10/11] @0x1aab1964
+[  1s] ELF: ctor[10/11] OK
+[  1s] ELF: ctor[11/11] @0x1aab1a0c
+[  1s] ELF: ctor[11/11] OK
+[  1s] ELF: libgpg.so: ctors done ok=11 failed=0 skipped=0
+[  1s] ELF: libunity.so: running 482 constructors
+[  1s] ELF: init_arr[0]=0x9ab4bc82c
+[  1s] ELF: init_arr[1]=0x9ab4bc954
+[  1s] ELF: init_arr[2]=0x9ab4bca18
+[  1s] ELF: init_arr[3]=0x9ab4bca8c
+[  1s] ELF: ctor[1/482] @0x9ab4bc82c
+[  1s] ELF: ctor[1/482] OK
+[  1s] ELF: ctor[2/482] @0x9ab4bc954
+[  1s] ELF: ctor[2/482] OK
+[  1s] ELF: ctor[3/482] @0x9ab4bca18
+[  1s] pthread_key_create → key=0 dtor=0x0
+[  1s] ELF: ctor[3/482] OK
+[  1s] ELF: ctor[4/482] @0x9ab4bca8c
+[  1s] ELF: ctor[4/482] OK
+[  1s] ELF: ctor[5/482] @0x9ab4bcae8
+[  1s] ELF: ctor[5/482] OK
+[  1s] ELF: ctor[6/482] @0x9ab4bcb48
+[  1s] ELF: ctor[6/482] OK
+[  1s] ELF: ctor[7/482] @0x9ab4bcc64
+[  1s] ELF: ctor[7/482] OK
+[  1s] ELF: ctor[8/482] @0x9ab4bccdc
+[  1s] ELF: ctor[8/482] OK
+[  1s] ELF: ctor[9/482] @0x9ab4bcd54
+[  1s] ELF: ctor[9/482] OK
+[  1s] ELF: ctor[10/482] @0x9ab4bcd84
+[  1s] ELF: ctor[10/482] OK
+[  1s] ELF: ctor[11/482] @0x9ab4bcdfc
+[  1s] ELF: ctor[11/482] OK
+[  1s] ELF: ctor[12/482] @0x9ab4bce5c
+[  1s] ELF: ctor[12/482] OK
+[  1s] ELF: ctor[13/482] @0x9ab4bcf00
+[  1s] ELF: ctor[13/482] OK
+[  1s] ELF: ctor[14/482] @0x9ab4bd13c
+[  1s] ELF: ctor[14/482] OK
+[  1s] ELF: ctor[15/482] @0x9ab4bd19c
+[  1s] ELF: ctor[15/482] OK
+[  1s] ELF: ctor[16/482] @0x9ab4bd1fc
+[  1s] ELF: ctor[16/482] OK
+[  1s] ELF: ctor[17/482] @0x9ab4bd270
+[  1s] ELF: ctor[17/482] OK
+[  1s] ELF: ctor[18/482] @0x9ab4bd2c8
+[  1s] pthread_key_create → key=1 dtor=0x0
+[  1s] ELF: ctor[18/482] OK
+[  1s] ELF: ctor[19/482] @0x9ab4bd4fc
+[  1s] ELF: ctor[19/482] OK
+[  1s] ELF: ctor[20/482] @0x9ab4bd904
+[  1s] ELF: ctor[20/482] OK
+[  1s] ELF: ctor[21/482] @0x9ab4bd968
+[  1s] ELF: ctor[21/482] OK
+[  1s] ELF: ctor[22/482] @0x9ab4bdb98
+[  1s] ELF: ctor[22/482] OK
+[  1s] ELF: ctor[23/482] @0x9ab4bdc7c
+[  1s] ELF: ctor[23/482] OK
+[  1s] ELF: ctor[24/482] @0x9ab4bdd78
+[  1s] ELF: ctor[24/482] OK
+[  1s] ELF: ctor[25/482] @0x9ab4bdf14
+[  1s] ELF: ctor[25/482] OK
+[  1s] ELF: ctor[26/482] @0x9ab4be008
+[  1s] pthread_key_create → key=2 dtor=0x0
+[  1s] ELF: ctor[26/482] OK
+[  1s] ELF: ctor[27/482] @0x9ab4be190
+[  1s] ELF: ctor[27/482] OK
+[  1s] ELF: ctor[28/482] @0x9ab4be314
+[  1s] ELF: ctor[28/482] OK
+[  1s] ELF: ctor[29/482] @0x9ab4be484
+[  1s] ELF: ctor[29/482] OK
+[  1s] ELF: ctor[30/482] @0x9ab4be788
+[  1s] ELF: ctor[30/482] OK
+[  1s] ELF: ctor[31/482] @0x9ab4be9cc
+[  1s] ELF: ctor[31/482] OK
+[  1s] ELF: ctor[32/482] @0x9ab4bead8
+[  1s] ELF: ctor[32/482] OK
+[  1s] ELF: ctor[33/482] @0x9ab4bedc8
+[  1s] ELF: ctor[33/482] OK
+[  1s] ELF: ctor[34/482] @0x9ab4befb4
+[  2s] ELF: ctor[34/482] OK
+[  2s] ELF: ctor[35/482] @0x9ab4bf418
+[  2s] ELF: ctor[35/482] OK
+[  2s] ELF: ctor[36/482] @0x9ab4bf534
+[  2s] ELF: ctor[36/482] OK
+[  2s] ELF: ctor[37/482] @0x9ab4bf5b0
+[  2s] ELF: ctor[37/482] OK
+[  2s] ELF: ctor[38/482] @0x9ab4bf89c
+[  2s] ELF: ctor[38/482] OK
+[  2s] ELF: ctor[39/482] @0x9ab4c0d58
+[  2s] ELF: ctor[39/482] OK
+[  2s] ELF: ctor[40/482] @0x9ab4c0f50
+[  2s] ELF: ctor[40/482] OK
+[  2s] ELF: ctor[41/482] @0x9ab4c0fc0
+[  2s] ELF: ctor[41/482] OK
+[  2s] ELF: ctor[42/482] @0x9ab4c11b4
+[  2s] ELF: ctor[42/482] OK
+[  2s] ELF: ctor[43/482] @0x9ab4c1220
+[  2s] ELF: ctor[43/482] OK
+[  2s] ELF: ctor[44/482] @0x9ab4c1264
+[  2s] ELF: ctor[44/482] OK
+[  2s] ELF: ctor[45/482] @0x9ab4c12e4
+[  2s] ELF: ctor[45/482] OK
+[  2s] ELF: ctor[46/482] @0x9ab4c133c
+[  2s] ELF: ctor[46/482] OK
+[  2s] ELF: ctor[47/482] @0x9ab4c1394
+[  2s] ELF: ctor[47/482] OK
+[  2s] ELF: ctor[48/482] @0x9ab4c13ec
+[  2s] ELF: ctor[48/482] OK
+[  2s] ELF: ctor[49/482] @0x9ab4c1444
+[  2s] ELF: ctor[49/482] OK
+[  2s] ELF: ctor[50/482] @0x9ab4c149c
+[  2s] ELF: ctor[50/482] OK
+[  2s] ELF: ctor[51/482] @0x9ab4c14f4
+[  2s] ELF: ctor[51/482] OK
+[  2s] ELF: ctor[52/482] @0x9ab4c154c
+[  2s] ELF: ctor[52/482] OK
+[  2s] ELF: ctor[53/482] @0x9ab4c15a4
+[  2s] ELF: ctor[53/482] OK
+[  2s] ELF: ctor[54/482] @0x9ab4c1604
+[  2s] ELF: ctor[54/482] OK
+[  2s] ELF: ctor[55/482] @0x9ab4c17d8
+[  2s] ELF: ctor[55/482] OK
+[  2s] ELF: ctor[56/482] @0x9ab4c1874
+[  2s] ELF: ctor[56/482] OK
+[  2s] ELF: ctor[57/482] @0x9ab4c1928
+[  2s] ELF: ctor[57/482] OK
+[  2s] ELF: ctor[58/482] @0x9ab4c19f4
+[  2s] pthread_key_create → key=3 dtor=0x0
+[  2s] ELF: ctor[58/482] OK
+[  2s] ELF: ctor[59/482] @0x9ab4c227c
+[  2s] ELF: ctor[59/482] OK
+[  2s] ELF: ctor[60/482] @0x9ab4c2658
+[  2s] ELF: ctor[60/482] OK
+[  2s] ELF: ctor[61/482] @0x9ab4c2850
+[  2s] ELF: ctor[61/482] OK
+[  2s] ELF: ctor[62/482] @0x9ab4c2d24
+[  2s] ELF: ctor[62/482] OK
+[  2s] ELF: ctor[63/482] @0x9ab4c2fb4
+[  2s] ELF: ctor[63/482] OK
+[  2s] ELF: ctor[64/482] @0x9ab4c2ffc
+[  2s] ELF: ctor[64/482] OK
+[  2s] ELF: ctor[65/482] @0x9ab4c3074
+[  2s] ELF: ctor[65/482] OK
+[  2s] ELF: ctor[66/482] @0x9ab4c3104
+[  2s] ELF: ctor[66/482] OK
+[  2s] ELF: ctor[67/482] @0x9ab4c31a8
+[  2s] ELF: ctor[67/482] OK
+[  2s] ELF: ctor[68/482] @0x9ab4c327c
+[  2s] ELF: ctor[68/482] OK
+[  2s] ELF: ctor[69/482] @0x9ab4c3324
+[  2s] pthread_key_create → key=4 dtor=0x0
+[  2s] pthread_key_create → key=5 dtor=0x0
+[  2s] ELF: ctor[69/482] OK
+[  2s] ELF: ctor[70/482] @0x9ab4c34d0
+[  2s] ELF: ctor[70/482] OK
+[  2s] ELF: ctor[71/482] @0x9ab4c3578
+[  2s] ELF: ctor[71/482] OK
+[  2s] ELF: ctor[72/482] @0x9ab4c37a4
+[  2s] ELF: ctor[72/482] OK
+[  2s] ELF: ctor[73/482] @0x9ab4c3820
+[  2s] ELF: ctor[73/482] OK
+[  2s] ELF: ctor[74/482] @0x9ab4c38ac
+[  2s] ELF: ctor[74/482] OK
+[  2s] ELF: ctor[75/482] @0x9ab4c391c
+[  2s] ELF: ctor[75/482] OK
+[  2s] ELF: ctor[76/482] @0x9ab4c3b20
+[  2s] pthread_key_create → key=6 dtor=0x0
+[  2s] ELF: ctor[76/482] OK
+[  2s] ELF: ctor[77/482] @0x9ab4c3bec
+[  2s] ELF: ctor[77/482] OK
+[  2s] ELF: ctor[78/482] @0x9ab4c3de0
+[  2s] pthread_key_create → key=7 dtor=0x0
+[  2s] ELF: ctor[78/482] OK
+[  2s] ELF: ctor[79/482] @0x9ab4c3eb4
+[  2s] ELF: ctor[79/482] OK
+[  2s] ELF: ctor[80/482] @0x9ab4c3fa8
+[  2s] ELF: ctor[80/482] OK
+[  2s] ELF: ctor[81/482] @0x9ab4c4020
+[  2s] ELF: ctor[81/482] OK
+[  2s] ELF: ctor[82/482] @0x9ab4c4080
+[  2s] ELF: ctor[82/482] OK
+[  2s] ELF: ctor[83/482] @0x9ab4c4178
+[  2s] ELF: ctor[83/482] OK
+[  2s] ELF: ctor[84/482] @0x9ab4c4198
+[  2s] ELF: ctor[84/482] OK
+[  2s] ELF: ctor[85/482] @0x9ab4c41e0
+[  2s] ELF: ctor[85/482] OK
+[  2s] ELF: ctor[86/482] @0x9ab4c4224
+[  2s] ELF: ctor[86/482] OK
+[  2s] ELF: ctor[87/482] @0x9ab4c4234
+[  2s] ELF: ctor[87/482] OK
+[  2s] ELF: ctor[88/482] @0x9ab4c4400
+[  2s] ELF: ctor[88/482] OK
+[  2s] ELF: ctor[89/482] @0x9ab4c4534
+[  2s] ELF: ctor[89/482] OK
+[  2s] ELF: ctor[90/482] @0x9ab4c454c
+[  2s] ELF: ctor[90/482] OK
+[  2s] ELF: ctor[91/482] @0x9ab4c4570
+[  2s] ELF: ctor[91/482] OK
+[  2s] ELF: ctor[92/482] @0x9ab4c46f8
+[  2s] ELF: ctor[92/482] OK
+[  2s] ELF: ctor[93/482] @0x9ab4c4748
+[  2s] ELF: ctor[93/482] OK
+[  2s] ELF: ctor[94/482] @0x9ab4c4788
+[  2s] ELF: ctor[94/482] OK
+[  2s] ELF: ctor[95/482] @0x9ab4c48b4
+[  2s] ELF: ctor[95/482] OK
+[  2s] ELF: ctor[96/482] @0x9ab4c490c
+[  2s] ELF: ctor[96/482] OK
+[  2s] ELF: ctor[97/482] @0x9ab4c4994
+[  2s] ELF: ctor[97/482] OK
+[  2s] ELF: ctor[98/482] @0x9ab4c4a08
+[  2s] ELF: ctor[98/482] OK
+[  2s] ELF: ctor[99/482] @0x9ab4c4a90
+[  2s] ELF: ctor[99/482] OK
+[  2s] ELF: ctor[100/482] @0x9ab4c4c74
+[  2s] ELF: ctor[100/482] OK
+[  2s] ELF: ctor[101/482] @0x9ab4c4f58
+[  2s] ELF: ctor[101/482] OK
+[  2s] ELF: ctor[102/482] @0x9ab4c4e34
+[  2s] ELF: ctor[102/482] OK
+[  2s] ELF: ctor[103/482] @0x9ab4c4fb4
+[  2s] ELF: ctor[103/482] OK
+[  2s] ELF: ctor[104/482] @0x9ab4c5038
+[  2s] ELF: ctor[104/482] OK
+[  2s] ELF: ctor[105/482] @0x9ab4c50a0
+[  2s] ELF: ctor[105/482] OK
+[  2s] ELF: ctor[106/482] @0x9ab4c5100
+[  2s] ELF: ctor[106/482] OK
+[  2s] ELF: ctor[107/482] @0x9ab4c51a4
+[  2s] pthread_key_create → key=8 dtor=0x0
+[  2s] ELF: ctor[107/482] OK
+[  2s] ELF: ctor[108/482] @0x9ab4c5228
+[  2s] ELF: ctor[108/482] OK
+[  2s] ELF: ctor[109/482] @0x9ab4c52a8
+[  2s] ELF: ctor[109/482] OK
+[  2s] ELF: ctor[110/482] @0x9ab4c53c8
+[  2s] ELF: ctor[110/482] OK
+[  2s] ELF: ctor[111/482] @0x9ab4c548c
+[  2s] ELF: ctor[111/482] OK
+[  2s] ELF: ctor[112/482] @0x9ab4c566c
+[  2s] ELF: ctor[112/482] OK
+[  2s] ELF: ctor[113/482] @0x9ab4c56ec
+[  2s] ELF: ctor[113/482] OK
+[  2s] ELF: ctor[114/482] @0x9ab4c5840
+[  2s] ELF: ctor[114/482] OK
+[  2s] ELF: ctor[115/482] @0x9ab4c5970
+[  2s] ELF: ctor[115/482] OK
+[  2s] ELF: ctor[116/482] @0x9ab4c5994
+[  2s] ELF: ctor[116/482] OK
+[  2s] ELF: ctor[117/482] @0x9ab4c5ad0
+[  2s] ELF: ctor[117/482] OK
+[  2s] ELF: ctor[118/482] @0x9ab4c5ca0
+[  2s] ELF: ctor[118/482] OK
+[  2s] ELF: ctor[119/482] @0x9ab4c5f14
+[  2s] ELF: ctor[119/482] OK
+[  2s] ELF: ctor[120/482] @0x9ab4c87f4
+[  2s] ELF: ctor[120/482] OK
+[  2s] ELF: ctor[121/482] @0x9ab4c8908
+[  2s] ELF: ctor[121/482] OK
+[  2s] ELF: ctor[122/482] @0x9ab4c8ba4
+[  2s] ELF: ctor[122/482] OK
+[  2s] ELF: ctor[123/482] @0x9ab4c8bc0
+[  2s] ELF: ctor[123/482] OK
+[  2s] ELF: ctor[124/482] @0x9ab4c8cc0
+[  2s] ELF: ctor[124/482] OK
+[  2s] ELF: ctor[125/482] @0x9ab4c8d28
+[  2s] ELF: ctor[125/482] OK
+[  2s] ELF: ctor[126/482] @0x9ab4c8dc0
+[  2s] ELF: ctor[126/482] OK
+[  2s] ELF: ctor[127/482] @0x9ab4c8e18
+[  2s] ELF: ctor[127/482] OK
+[  2s] ELF: ctor[128/482] @0x9ab4c9058
+[  2s] ELF: ctor[128/482] OK
+[  2s] ELF: ctor[129/482] @0x9ab4c916c
+[  2s] ELF: ctor[129/482] OK
+[  2s] ELF: ctor[130/482] @0x9ab4c9778
+[  2s] ELF: ctor[130/482] OK
+[  2s] ELF: ctor[131/482] @0x9ab4c978c
+[  2s] ELF: ctor[131/482] OK
+[  2s] ELF: ctor[132/482] @0x9ab4c9834
+[  2s] ELF: ctor[132/482] OK
+[  2s] ELF: ctor[133/482] @0x9ab4c9894
+[  2s] ELF: ctor[133/482] OK
+[  2s] ELF: ctor[134/482] @0x9ab4c98f4
+[  2s] ELF: ctor[134/482] OK
+[  2s] ELF: ctor[135/482] @0x9ab4c9958
+[  2s] ELF: ctor[135/482] OK
+[  2s] ELF: ctor[136/482] @0x9ab4c99b0
+[  2s] ELF: ctor[136/482] OK
+[  2s] ELF: ctor[137/482] @0x9ab4c99d8
+[  2s] ELF: ctor[137/482] OK
+[  2s] ELF: ctor[138/482] @0x9ab4c9a20
+[  2s] ELF: ctor[138/482] OK
+[  2s] ELF: ctor[139/482] @0x9ab4c9a8c
+[  2s] ELF: ctor[139/482] OK
+[  2s] ELF: ctor[140/482] @0x9ab4c9b64
+[  2s] ELF: ctor[140/482] OK
+[  2s] ELF: ctor[141/482] @0x9ab4c9c2c
+[  2s] ELF: ctor[141/482] OK
+[  2s] ELF: ctor[142/482] @0x9ab4c9d24
+[  2s] ELF: ctor[142/482] OK
+[  2s] ELF: ctor[143/482] @0x9ab4c9d44
+[  2s] ELF: ctor[143/482] OK
+[  2s] ELF: ctor[144/482] @0x9ab4c9e6c
+[  2s] ELF: ctor[144/482] OK
+[  2s] ELF: ctor[145/482] @0x9ab4c9ee4
+[  2s] ELF: ctor[145/482] OK
+[  2s] ELF: ctor[146/482] @0x9ab4ca004
+[  2s] ELF: ctor[146/482] OK
+[  2s] ELF: ctor[147/482] @0x9ab4ca060
+[  2s] ELF: ctor[147/482] OK
+[  2s] ELF: ctor[148/482] @0x9ab4ca178
+[  2s] ELF: ctor[148/482] OK
+[  2s] ELF: ctor[149/482] @0x9ab4ca1a8
+[  2s] pthread_key_create → key=9 dtor=0x0
+[  2s] ELF: ctor[149/482] OK
+[  2s] ELF: ctor[150/482] @0x9ab4ca21c
+[  2s] ELF: ctor[150/482] OK
+[  2s] ELF: ctor[151/482] @0x9ab4ca24c
+[  2s] ELF: ctor[151/482] OK
+[  2s] ELF: ctor[152/482] @0x9ab4ca2c8
+[  2s] ELF: ctor[152/482] OK
+[  2s] ELF: ctor[153/482] @0x9ab4ca380
+[  2s] ELF: ctor[153/482] OK
+[  2s] ELF: ctor[154/482] @0x9ab4ca3bc
+[  2s] ELF: ctor[154/482] OK
+[  2s] ELF: ctor[155/482] @0x9ab4ca41c
+[  2s] ELF: ctor[155/482] OK
+[  2s] ELF: ctor[156/482] @0x9ab4ca464
+[  2s] ELF: ctor[156/482] OK
+[  2s] ELF: ctor[157/482] @0x9ab4ca558
+[  2s] ELF: ctor[157/482] OK
+[  2s] ELF: ctor[158/482] @0x9ab4ca818
+[  2s] ELF: ctor[158/482] OK
+[  2s] ELF: ctor[159/482] @0x9ab4caa28
+[  2s] ELF: ctor[159/482] OK
+[  2s] ELF: ctor[160/482] @0x9ab4caacc
+[  2s] ELF: ctor[160/482] OK
+[  2s] ELF: ctor[161/482] @0x9ab4cacd4
+[  2s] ELF: ctor[161/482] OK
+[  2s] ELF: ctor[162/482] @0x9ab4cadd0
+[  2s] ELF: ctor[162/482] OK
+[  2s] ELF: ctor[163/482] @0x9ab4cae50
+[  2s] ELF: ctor[163/482] OK
+[  2s] ELF: ctor[164/482] @0x9ab4caee8
+[  2s] ELF: ctor[164/482] OK
+[  2s] ELF: ctor[165/482] @0x9ab4caf6c
+[  2s] ELF: ctor[165/482] OK
+[  2s] ELF: ctor[166/482] @0x9ab4cb060
+[  2s] ELF: ctor[166/482] OK
+[  2s] ELF: ctor[167/482] @0x9ab4cb090
+[  2s] ELF: ctor[167/482] OK
+[  2s] ELF: ctor[168/482] @0x9ab4cb2dc
+[  3s] ELF: ctor[168/482] OK
+[  3s] ELF: ctor[169/482] @0x9ab4cb354
+[  3s] ELF: ctor[169/482] OK
+[  3s] ELF: ctor[170/482] @0x9ab4cb3b4
+[  3s] ELF: ctor[170/482] OK
+[  3s] ELF: ctor[171/482] @0x9ab4cb484
+[  3s] ELF: ctor[171/482] OK
+[  3s] ELF: ctor[172/482] @0x9ab4cc41c
+[  3s] ELF: ctor[172/482] OK
+[  3s] ELF: ctor[173/482] @0x9ab4cc494
+[  3s] ELF: ctor[173/482] OK
+[  3s] ELF: ctor[174/482] @0x9ab4cc50c
+[  3s] ELF: ctor[174/482] OK
+[  3s] ELF: ctor[175/482] @0x9ab4cc664
+[  3s] ELF: ctor[175/482] OK
+[  3s] ELF: ctor[176/482] @0x9ab4cc6c4
+[  3s] ELF: ctor[176/482] OK
+[  3s] ELF: ctor[177/482] @0x9ab4cc734
+[  3s] ELF: ctor[177/482] OK
+[  3s] ELF: ctor[178/482] @0x9ab4cc794
+[  3s] ELF: ctor[178/482] OK
+[  3s] ELF: ctor[179/482] @0x9ab4cc8bc
+[  3s] ELF: ctor[179/482] OK
+[  3s] ELF: ctor[180/482] @0x9ab4ccab4
+[  3s] ELF: ctor[180/482] OK
+[  3s] ELF: ctor[181/482] @0x9ab4ccb14
+[  3s] ELF: ctor[181/482] OK
+[  3s] ELF: ctor[182/482] @0x9ab4ccb8c
+[  3s] ELF: ctor[182/482] OK
+[  3s] ELF: ctor[183/482] @0x9ab4ccbf8
+[  3s] ELF: ctor[183/482] OK
+[  3s] ELF: ctor[184/482] @0x9ab4ccca8
+[  3s] ELF: ctor[184/482] OK
+[  3s] ELF: ctor[185/482] @0x9ab4ccd60
+[  3s] ELF: ctor[185/482] OK
+[  3s] ELF: ctor[186/482] @0x9ab4ccddc
+[  3s] ELF: ctor[186/482] OK
+[  3s] ELF: ctor[187/482] @0x9ab4cceb4
+[  3s] ELF: ctor[187/482] OK
+[  3s] ELF: ctor[188/482] @0x9ab4ccef8
+[  3s] ELF: ctor[188/482] OK
+[  3s] ELF: ctor[189/482] @0x9ab4ccfd4
+[  3s] ELF: ctor[189/482] OK
+[  3s] ELF: ctor[190/482] @0x9ab4cd024
+[  3s] ELF: ctor[190/482] OK
+[  3s] ELF: ctor[191/482] @0x9ab4cd084
+[  3s] ELF: ctor[191/482] OK
+[  3s] ELF: ctor[192/482] @0x9ab4cd104
+[  3s] ELF: ctor[192/482] OK
+[  3s] ELF: ctor[193/482] @0x9ab4cd164
+[  3s] ELF: ctor[193/482] OK
+[  3s] ELF: ctor[194/482] @0x9ab4cd1c4
+[  3s] ELF: ctor[194/482] OK
+[  3s] ELF: ctor[195/482] @0x9ab4cd224
+[  3s] ELF: ctor[195/482] OK
+[  3s] ELF: ctor[196/482] @0x9ab4cd284
+[  3s] ELF: ctor[196/482] OK
+[  3s] ELF: ctor[197/482] @0x9ab4cd2e4
+[  3s] ELF: ctor[197/482] OK
+[  3s] ELF: ctor[198/482] @0x9ab4cd344
+[  3s] ELF: ctor[198/482] OK
+[  3s] ELF: ctor[199/482] @0x9ab4cd3a4
+[  3s] ELF: ctor[199/482] OK
+[  3s] ELF: ctor[200/482] @0x9ab4cd404
+[  3s] ELF: ctor[200/482] OK
+[  3s] ELF: ctor[201/482] @0x9ab4cd464
+[  3s] ELF: ctor[201/482] OK
+[  3s] ELF: ctor[202/482] @0x9ab4cd4c4
+[  3s] ELF: ctor[202/482] OK
+[  3s] ELF: ctor[203/482] @0x9ab4cd5a8
+[  3s] ELF: ctor[203/482] OK
+[  3s] ELF: ctor[204/482] @0x9ab4cd6f4
+[  3s] ELF: ctor[204/482] OK
+[  3s] ELF: ctor[205/482] @0x9ab4cd754
+[  3s] ELF: ctor[205/482] OK
+[  3s] ELF: ctor[206/482] @0x9ab4cd7b4
+[  3s] ELF: ctor[206/482] OK
+[  3s] ELF: ctor[207/482] @0x9ab4cd858
+[  3s] ELF: ctor[207/482] OK
+[  3s] ELF: ctor[208/482] @0x9ab4cd8b8
+[  3s] ELF: ctor[208/482] OK
+[  3s] ELF: ctor[209/482] @0x9ab4cf174
+[  3s] ELF: ctor[209/482] OK
+[  3s] ELF: ctor[210/482] @0x9ab4cf824
+[  3s] ELF: ctor[210/482] OK
+[  3s] ELF: ctor[211/482] @0x9ab4cfb8c
+[  3s] ELF: ctor[211/482] OK
+[  3s] ELF: ctor[212/482] @0x9ab4d60d8
+[  3s] ELF: ctor[212/482] OK
+[  3s] ELF: ctor[213/482] @0x9ab4d6494
+[  3s] ELF: ctor[213/482] OK
+[  3s] ELF: ctor[214/482] @0x9ab4d7028
+[  3s] ELF: ctor[214/482] OK
+[  3s] ELF: ctor[215/482] @0x9ab4d7924
+[  3s] ELF: ctor[215/482] OK
+[  3s] ELF: ctor[216/482] @0x9ab4d7a00
+[  3s] ELF: ctor[216/482] OK
+[  3s] ELF: ctor[217/482] @0x9ab4d7a2c
+[  3s] ELF: ctor[217/482] OK
+[  3s] ELF: ctor[218/482] @0x9ab4d7ac0
+[  3s] ELF: ctor[218/482] OK
+[  3s] ELF: ctor[219/482] @0x9ab4d7adc
+[  3s] ELF: ctor[219/482] OK
+[  3s] ELF: ctor[220/482] @0x9ab4d7b48
+[  3s] ELF: ctor[220/482] OK
+[  3s] ELF: ctor[221/482] @0x9ab4d7ba8
+[  3s] ELF: ctor[221/482] OK
+[  3s] ELF: ctor[222/482] @0x9ab4d7c08
+[  3s] ELF: ctor[222/482] OK
+[  3s] ELF: ctor[223/482] @0x9ab4d7c68
+[  3s] ELF: ctor[223/482] OK
+[  3s] ELF: ctor[224/482] @0x9ab4d7cf0
+[  3s] ELF: ctor[224/482] OK
+[  3s] ELF: ctor[225/482] @0x9ab4d7dc4
+[  3s] ELF: ctor[225/482] OK
+[  3s] ELF: ctor[226/482] @0x9ab4d7e24
+[  3s] ELF: ctor[226/482] OK
+[  3s] ELF: ctor[227/482] @0x9ab4d7ec4
+[  3s] ELF: ctor[227/482] OK
+[  3s] ELF: ctor[228/482] @0x9ab4d7f24
+[  3s] ELF: ctor[228/482] OK
+[  3s] ELF: ctor[229/482] @0x9ab4d7fbc
+[  3s] ELF: ctor[229/482] OK
+[  3s] ELF: ctor[230/482] @0x9ab4d8058
+[  3s] ELF: ctor[230/482] OK
+[  3s] ELF: ctor[231/482] @0x9ab4d80d4
+[  3s] ELF: ctor[231/482] OK
+[  3s] ELF: ctor[232/482] @0x9ab4d8190
+[  3s] ELF: ctor[232/482] OK
+[  3s] ELF: ctor[233/482] @0x9ab4d81f0
+[  3s] ELF: ctor[233/482] OK
+[  3s] ELF: ctor[234/482] @0x9ab4d82ec
+[  3s] ELF: ctor[234/482] OK
+[  3s] ELF: ctor[235/482] @0x9ab4d83f4
+[  3s] ELF: ctor[235/482] OK
+[  3s] ELF: ctor[236/482] @0x9ab4d848c
+[  3s] ELF: ctor[236/482] OK
+[  3s] ELF: ctor[237/482] @0x9ab4d84a8
+[  3s] ELF: ctor[237/482] OK
+[  3s] ELF: ctor[238/482] @0x9ab4d84ec
+[  3s] pthread_key_create → key=10 dtor=0x0
+[  3s] ELF: ctor[238/482] OK
+[  3s] ELF: ctor[239/482] @0x9ab4d8560
+[  3s] pthread_key_create → key=11 dtor=0x0
+[  3s] ELF: ctor[239/482] OK
+[  3s] ELF: ctor[240/482] @0x9ab4d85b4
+[  3s] ELF: ctor[240/482] OK
+[  3s] ELF: ctor[241/482] @0x9ab4d862c
+[  3s] ELF: ctor[241/482] OK
+[  3s] ELF: ctor[242/482] @0x9ab4d86e8
+[  3s] ELF: ctor[242/482] OK
+[  3s] ELF: ctor[243/482] @0x9ab4d8730
+[  3s] ELF: ctor[243/482] OK
+[  3s] ELF: ctor[244/482] @0x9ab4d8790
+[  3s] ELF: ctor[244/482] OK
+[  3s] ELF: ctor[245/482] @0x9ab4d87f0
+[  3s] ELF: ctor[245/482] OK
+[  3s] ELF: ctor[246/482] @0x9ab4d8850
+[  3s] ELF: ctor[246/482] OK
+[  3s] ELF: ctor[247/482] @0x9ab4d8928
+[  3s] ELF: ctor[247/482] OK
+[  3s] ELF: ctor[248/482] @0x9ab4d89d0
+[  3s] ELF: ctor[248/482] OK
+[  3s] ELF: ctor[249/482] @0x9ab4d8a30
+[  3s] ELF: ctor[249/482] OK
+[  3s] ELF: ctor[250/482] @0x9ab4d8a90
+[  3s] ELF: ctor[250/482] OK
+[  3s] ELF: ctor[251/482] @0x9ab4d8c80
+[  3s] ELF: ctor[251/482] OK
+[  3s] ELF: ctor[252/482] @0x9ab4d8cec
+[  3s] ELF: ctor[252/482] OK
+[  3s] ELF: ctor[253/482] @0x9ab4d9010
+[  3s] ELF: ctor[253/482] OK
+[  3s] ELF: ctor[254/482] @0x9ab4d9070
+[  3s] ELF: ctor[254/482] OK
+[  3s] ELF: ctor[255/482] @0x9ab4d9178
+[  3s] ELF: ctor[255/482] OK
+[  3s] ELF: ctor[256/482] @0x9ab4d91d8
+[  3s] ELF: ctor[256/482] OK
+[  3s] ELF: ctor[257/482] @0x9ab4d9238
+[  3s] ELF: ctor[257/482] OK
+[  3s] ELF: ctor[258/482] @0x9ab4d92d0
+[  3s] ELF: ctor[258/482] OK
+[  3s] ELF: ctor[259/482] @0x9ab4d9304
+[  3s] ELF: ctor[259/482] OK
+[  3s] ELF: ctor[260/482] @0x9ab4d9500
+[  3s] ELF: ctor[260/482] OK
+[  3s] ELF: ctor[261/482] @0x9ab4d9560
+[  3s] ELF: ctor[261/482] OK
+[  3s] ELF: ctor[262/482] @0x9ab4d95c8
+[  3s] ELF: ctor[262/482] OK
+[  3s] ELF: ctor[263/482] @0x9ab4d95f8
+[  3s] ELF: ctor[263/482] OK
+[  3s] ELF: ctor[264/482] @0x9ab4d9658
+[  3s] ELF: ctor[264/482] OK
+[  3s] ELF: ctor[265/482] @0x9ab4d96b8
+[  3s] ELF: ctor[265/482] OK
+[  3s] ELF: ctor[266/482] @0x9ab4d978c
+[  3s] ELF: ctor[266/482] OK
+[  3s] ELF: ctor[267/482] @0x9ab4d97ec
+[  3s] ELF: ctor[267/482] OK
+[  3s] ELF: ctor[268/482] @0x9ab4d98f0
+[  3s] ELF: ctor[268/482] OK
+[  3s] ELF: ctor[269/482] @0x9ab4d9974
+[  3s] ELF: ctor[269/482] OK
+[  3s] ELF: ctor[270/482] @0x9ab4d99d4
+[  3s] ELF: ctor[270/482] OK
+[  3s] ELF: ctor[271/482] @0x9ab4d9a34
+[  3s] ELF: ctor[271/482] OK
+[  3s] ELF: ctor[272/482] @0x9ab4d9a94
+[  3s] ELF: ctor[272/482] OK
+[  3s] ELF: ctor[273/482] @0x9ab4d9dfc
+[  3s] ELF: ctor[273/482] OK
+[  3s] ELF: ctor[274/482] @0x9ab4d9ea8
+[  3s] ELF: ctor[274/482] OK
+[  3s] ELF: ctor[275/482] @0x9ab4d9fe0
+[  3s] ELF: ctor[275/482] OK
+[  3s] ELF: ctor[276/482] @0x9ab4da0e8
+[  3s] ELF: ctor[276/482] OK
+[  3s] ELF: ctor[277/482] @0x9ab4da1dc
+[  3s] ELF: ctor[277/482] OK
+[  3s] ELF: ctor[278/482] @0x9ab4da254
+[  3s] ELF: ctor[278/482] OK
+[  3s] ELF: ctor[279/482] @0x9ab4da2b4
+[  3s] ELF: ctor[279/482] OK
+[  3s] ELF: ctor[280/482] @0x9ab4da358
+[  3s] ELF: ctor[280/482] OK
+[  3s] ELF: ctor[281/482] @0x9ab4da430
+[  3s] pthread_key_create → key=12 dtor=0x0
+[  3s] ELF: ctor[281/482] OK
+[  3s] ELF: ctor[282/482] @0x9ab4da5c0
+[  3s] ELF: ctor[282/482] OK
+[  3s] ELF: ctor[283/482] @0x9ab4da754
+[  3s] ELF: ctor[283/482] OK
+[  3s] ELF: ctor[284/482] @0x9ab4da7b4
+[  3s] ELF: ctor[284/482] OK
+[  3s] ELF: ctor[285/482] @0x9ab4da828
+[  3s] ELF: ctor[285/482] OK
+[  3s] ELF: ctor[286/482] @0x9ab4da8d4
+[  3s] ELF: ctor[286/482] OK
+[  3s] ELF: ctor[287/482] @0x9ab4da984
+[  3s] ELF: ctor[287/482] OK
+[  3s] ELF: ctor[288/482] @0x9ab4dac7c
+[  3s] ELF: ctor[288/482] OK
+[  3s] ELF: ctor[289/482] @0x9ab4dacf4
+[  3s] ELF: ctor[289/482] OK
+[  3s] ELF: ctor[290/482] @0x9ab4dae30
+[  3s] ELF: ctor[290/482] OK
+[  3s] ELF: ctor[291/482] @0x9ab4daecc
+[  3s] ELF: ctor[291/482] OK
+[  3s] ELF: ctor[292/482] @0x9ab4dafc0
+[  3s] ELF: ctor[292/482] OK
+[  3s] ELF: ctor[293/482] @0x9ab4dc020
+[  3s] ELF: ctor[293/482] OK
+[  3s] ELF: ctor[294/482] @0x9ab4dc0d0
+[  3s] ELF: ctor[294/482] OK
+[  3s] ELF: ctor[295/482] @0x9ab4dc240
+[  3s] ELF: ctor[295/482] OK
+[  3s] ELF: ctor[296/482] @0x9ab4dc3a0
+[  3s] ELF: ctor[296/482] OK
+[  3s] ELF: ctor[297/482] @0x9ab4dc484
+[  3s] ELF: ctor[297/482] OK
+[  3s] ELF: ctor[298/482] @0x9ab4dc4d0
+[  3s] ELF: ctor[298/482] OK
+[  3s] ELF: ctor[299/482] @0x9ab4dc4fc
+[  3s] ELF: ctor[299/482] OK
+[  3s] ELF: ctor[300/482] @0x9ab4dc768
+[  3s] ELF: ctor[300/482] OK
+[  3s] ELF: ctor[301/482] @0x9ab4dc794
+[  3s] ELF: ctor[301/482] OK
+[  3s] ELF: ctor[302/482] @0x9ab4dc898
+[  3s] ELF: ctor[302/482] OK
+[  3s] ELF: ctor[303/482] @0x9ab4dc8c4
+[  3s] ELF: ctor[303/482] OK
+[  3s] ELF: ctor[304/482] @0x9ab4dc900
+[  3s] ELF: ctor[304/482] OK
+[  3s] ELF: ctor[305/482] @0x9ab4dca78
+[  4s] ELF: ctor[305/482] OK
+[  4s] ELF: ctor[306/482] @0x9ab4dcbf0
+[  4s] ELF: ctor[306/482] OK
+[  4s] ELF: ctor[307/482] @0x9ab4dcd68
+[  4s] ELF: ctor[307/482] OK
+[  4s] ELF: ctor[308/482] @0x9ab4dcd94
+[  4s] ELF: ctor[308/482] OK
+[  4s] ELF: ctor[309/482] @0x9ab4dcf0c
+[  4s] ELF: ctor[309/482] OK
+[  4s] ELF: ctor[310/482] @0x9ab4dd084
+[  4s] ELF: ctor[310/482] OK
+[  4s] ELF: ctor[311/482] @0x9ab4dd1a0
+[  4s] ELF: ctor[311/482] OK
+[  4s] ELF: ctor[312/482] @0x9ab4dd2bc
+[  4s] ELF: ctor[312/482] OK
+[  4s] ELF: ctor[313/482] @0x9ab4dd2e8
+[  4s] ELF: ctor[313/482] OK
+[  4s] ELF: ctor[314/482] @0x9ab4dd414
+[  4s] ELF: ctor[314/482] OK
+[  4s] ELF: ctor[315/482] @0x9ab4dd540
+[  4s] ELF: ctor[315/482] OK
+[  4s] ELF: ctor[316/482] @0x9ab4dd6bc
+[  4s] ELF: ctor[316/482] OK
+[  4s] ELF: ctor[317/482] @0x9ab4dd7f8
+[  4s] ELF: ctor[317/482] OK
+[  4s] ELF: ctor[318/482] @0x9ab4dd980
+[  4s] ELF: ctor[318/482] OK
+[  4s] ELF: ctor[319/482] @0x9ab4ddadc
+[  4s] ELF: ctor[319/482] OK
+[  4s] ELF: ctor[320/482] @0x9ab4ddc14
+[  4s] ELF: ctor[320/482] OK
+[  4s] ELF: ctor[321/482] @0x9ab4ddc68
+[  4s] ELF: ctor[321/482] OK
+[  4s] ELF: ctor[322/482] @0x9ab4ddcac
+[  4s] ELF: ctor[322/482] OK
+[  4s] ELF: ctor[323/482] @0x9ab4ddd68
+[  4s] ELF: ctor[323/482] OK
+[  4s] ELF: ctor[324/482] @0x9ab4dddb0
+[  4s] ELF: ctor[324/482] OK
+[  4s] ELF: ctor[325/482] @0x9ab4dddf8
+[  4s] ELF: ctor[325/482] OK
+[  4s] ELF: ctor[326/482] @0x9ab4dde40
+[  4s] ELF: ctor[326/482] OK
+[  4s] ELF: ctor[327/482] @0x9ab4dde88
+[  4s] ELF: ctor[327/482] OK
+[  4s] ELF: ctor[328/482] @0x9ab4dded0
+[  4s] ELF: ctor[328/482] OK
+[  4s] ELF: ctor[329/482] @0x9ab4ddf18
+[  4s] ELF: ctor[329/482] OK
+[  4s] ELF: ctor[330/482] @0x9ab4ddf60
+[  4s] ELF: ctor[330/482] OK
+[  4s] ELF: ctor[331/482] @0x9ab4ddfa8
+[  4s] ELF: ctor[331/482] OK
+[  4s] ELF: ctor[332/482] @0x9ab4ddff0
+[  4s] ELF: ctor[332/482] OK
+[  4s] ELF: ctor[333/482] @0x9ab4de038
+[  4s] ELF: ctor[333/482] OK
+[  4s] ELF: ctor[334/482] @0x9ab4de080
+[  4s] ELF: ctor[334/482] OK
+[  4s] ELF: ctor[335/482] @0x9ab4de0c8
+[  4s] ELF: ctor[335/482] OK
+[  4s] ELF: ctor[336/482] @0x9ab4de110
+[  4s] ELF: ctor[336/482] OK
+[  4s] ELF: ctor[337/482] @0x9ab4de158
+[  4s] ELF: ctor[337/482] OK
+[  4s] ELF: ctor[338/482] @0x9ab4de1a0
+[  4s] ELF: ctor[338/482] OK
+[  4s] ELF: ctor[339/482] @0x9ab4de1e8
+[  4s] ELF: ctor[339/482] OK
+[  4s] ELF: ctor[340/482] @0x9ab4de230
+[  4s] ELF: ctor[340/482] OK
+[  4s] ELF: ctor[341/482] @0x9ab4de278
+[  4s] ELF: ctor[341/482] OK
+[  4s] ELF: ctor[342/482] @0x9ab4de2c0
+[  4s] ELF: ctor[342/482] OK
+[  4s] ELF: ctor[343/482] @0x9ab4de308
+[  4s] ELF: ctor[343/482] OK
+[  4s] ELF: ctor[344/482] @0x9ab4de350
+[  4s] ELF: ctor[344/482] OK
+[  4s] ELF: ctor[345/482] @0x9ab4de398
+[  4s] ELF: ctor[345/482] OK
+[  4s] ELF: ctor[346/482] @0x9ab4de3e0
+[  4s] ELF: ctor[346/482] OK
+[  4s] ELF: ctor[347/482] @0x9ab4de428
+[  4s] ELF: ctor[347/482] OK
+[  4s] ELF: ctor[348/482] @0x9ab4de470
+[  4s] ELF: ctor[348/482] OK
+[  4s] ELF: ctor[349/482] @0x9ab4de4b8
+[  4s] ELF: ctor[349/482] OK
+[  4s] ELF: ctor[350/482] @0x9ab4de500
+[  4s] ELF: ctor[350/482] OK
+[  4s] ELF: ctor[351/482] @0x9ab4de548
+[  4s] ELF: ctor[351/482] OK
+[  4s] ELF: ctor[352/482] @0x9ab4de590
+[  4s] ELF: ctor[352/482] OK
+[  4s] ELF: ctor[353/482] @0x9ab4de5d8
+[  4s] ELF: ctor[353/482] OK
+[  4s] ELF: ctor[354/482] @0x9ab4de620
+[  4s] ELF: ctor[354/482] OK
+[  4s] ELF: ctor[355/482] @0x9ab4de668
+[  4s] ELF: ctor[355/482] OK
+[  4s] ELF: ctor[356/482] @0x9ab4de6b0
+[  4s] ELF: ctor[356/482] OK
+[  4s] ELF: ctor[357/482] @0x9ab4de6f8
+[  4s] ELF: ctor[357/482] OK
+[  4s] ELF: ctor[358/482] @0x9ab4de740
+[  4s] ELF: ctor[358/482] OK
+[  4s] ELF: ctor[359/482] @0x9ab4de788
+[  4s] ELF: ctor[359/482] OK
+[  4s] ELF: ctor[360/482] @0x9ab4de7d0
+[  4s] ELF: ctor[360/482] OK
+[  4s] ELF: ctor[361/482] @0x9ab4de818
+[  4s] ELF: ctor[361/482] OK
+[  4s] ELF: ctor[362/482] @0x9ab4de860
+[  4s] ELF: ctor[362/482] OK
+[  4s] ELF: ctor[363/482] @0x9ab4de8a8
+[  4s] ELF: ctor[363/482] OK
+[  4s] ELF: ctor[364/482] @0x9ab4de8f0
+[  4s] ELF: ctor[364/482] OK
+[  4s] ELF: ctor[365/482] @0x9ab4de938
+[  4s] ELF: ctor[365/482] OK
+[  4s] ELF: ctor[366/482] @0x9ab4de980
+[  4s] ELF: ctor[366/482] OK
+[  4s] ELF: ctor[367/482] @0x9ab4de9c8
+[  4s] ELF: ctor[367/482] OK
+[  4s] ELF: ctor[368/482] @0x9ab4dea10
+[  4s] ELF: ctor[368/482] OK
+[  4s] ELF: ctor[369/482] @0x9ab4dea58
+[  4s] ELF: ctor[369/482] OK
+[  4s] ELF: ctor[370/482] @0x9ab4deaa0
+[  4s] ELF: ctor[370/482] OK
+[  4s] ELF: ctor[371/482] @0x9ab4deae8
+[  4s] ELF: ctor[371/482] OK
+[  4s] ELF: ctor[372/482] @0x9ab4deb30
+[  4s] ELF: ctor[372/482] OK
+[  4s] ELF: ctor[373/482] @0x9ab4deb78
+[  4s] ELF: ctor[373/482] OK
+[  4s] ELF: ctor[374/482] @0x9ab4debc0
+[  4s] ELF: ctor[374/482] OK
+[  4s] ELF: ctor[375/482] @0x9ab4dec08
+[  4s] ELF: ctor[375/482] OK
+[  4s] ELF: ctor[376/482] @0x9ab4dec50
+[  4s] ELF: ctor[376/482] OK
+[  4s] ELF: ctor[377/482] @0x9ab4dec98
+[  4s] ELF: ctor[377/482] OK
+[  4s] ELF: ctor[378/482] @0x9ab4dece0
+[  4s] ELF: ctor[378/482] OK
+[  4s] ELF: ctor[379/482] @0x9ab4ded28
+[  4s] ELF: ctor[379/482] OK
+[  4s] ELF: ctor[380/482] @0x9ab4ded70
+[  4s] ELF: ctor[380/482] OK
+[  4s] ELF: ctor[381/482] @0x9ab4dedb8
+[  4s] ELF: ctor[381/482] OK
+[  4s] ELF: ctor[382/482] @0x9ab4dee00
+[  4s] ELF: ctor[382/482] OK
+[  4s] ELF: ctor[383/482] @0x9ab4dee48
+[  4s] ELF: ctor[383/482] OK
+[  4s] ELF: ctor[384/482] @0x9ab4dee90
+[  4s] ELF: ctor[384/482] OK
+[  4s] ELF: ctor[385/482] @0x9ab4deed8
+[  4s] ELF: ctor[385/482] OK
+[  4s] ELF: ctor[386/482] @0x9ab4def20
+[  4s] ELF: ctor[386/482] OK
+[  4s] ELF: ctor[387/482] @0x9ab4def68
+[  4s] ELF: ctor[387/482] OK
+[  4s] ELF: ctor[388/482] @0x9ab4defb0
+[  4s] ELF: ctor[388/482] OK
+[  4s] ELF: ctor[389/482] @0x9ab4deff8
+[  4s] ELF: ctor[389/482] OK
+[  4s] ELF: ctor[390/482] @0x9ab4df040
+[  4s] ELF: ctor[390/482] OK
+[  4s] ELF: ctor[391/482] @0x9ab4df088
+[  4s] ELF: ctor[391/482] OK
+[  4s] ELF: ctor[392/482] @0x9ab4df0d0
+[  4s] ELF: ctor[392/482] OK
+[  4s] ELF: ctor[393/482] @0x9ab4df118
+[  4s] ELF: ctor[393/482] OK
+[  4s] ELF: ctor[394/482] @0x9ab4df160
+[  4s] ELF: ctor[394/482] OK
+[  4s] ELF: ctor[395/482] @0x9ab4df1a8
+[  4s] ELF: ctor[395/482] OK
+[  4s] ELF: ctor[396/482] @0x9ab4df1f0
+[  4s] ELF: ctor[396/482] OK
+[  4s] ELF: ctor[397/482] @0x9ab4df238
+[  4s] ELF: ctor[397/482] OK
+[  4s] ELF: ctor[398/482] @0x9ab4df280
+[  4s] ELF: ctor[398/482] OK
+[  4s] ELF: ctor[399/482] @0x9ab4df2c8
+[  4s] ELF: ctor[399/482] OK
+[  4s] ELF: ctor[400/482] @0x9ab4df310
+[  4s] ELF: ctor[400/482] OK
+[  4s] ELF: ctor[401/482] @0x9ab4df358
+[  4s] ELF: ctor[401/482] OK
+[  4s] ELF: ctor[402/482] @0x9ab4df3a0
+[  4s] ELF: ctor[402/482] OK
+[  4s] ELF: ctor[403/482] @0x9ab4df3e8
+[  4s] ELF: ctor[403/482] OK
+[  4s] ELF: ctor[404/482] @0x9ab4df430
+[  4s] ELF: ctor[404/482] OK
+[  4s] ELF: ctor[405/482] @0x9ab4df478
+[  4s] ELF: ctor[405/482] OK
+[  4s] ELF: ctor[406/482] @0x9ab4df4c0
+[  4s] ELF: ctor[406/482] OK
+[  4s] ELF: ctor[407/482] @0x9ab4df508
+[  4s] ELF: ctor[407/482] OK
+[  4s] ELF: ctor[408/482] @0x9ab4df550
+[  4s] ELF: ctor[408/482] OK
+[  4s] ELF: ctor[409/482] @0x9ab4df598
+[  4s] ELF: ctor[409/482] OK
+[  4s] ELF: ctor[410/482] @0x9ab4df5e0
+[  4s] ELF: ctor[410/482] OK
+[  4s] ELF: ctor[411/482] @0x9ab4df628
+[  4s] ELF: ctor[411/482] OK
+[  4s] ELF: ctor[412/482] @0x9ab4df670
+[  4s] ELF: ctor[412/482] OK
+[  4s] ELF: ctor[413/482] @0x9ab4df6b8
+[  4s] ELF: ctor[413/482] OK
+[  4s] ELF: ctor[414/482] @0x9ab4df700
+[  4s] ELF: ctor[414/482] OK
+[  4s] ELF: ctor[415/482] @0x9ab4df748
+[  4s] ELF: ctor[415/482] OK
+[  4s] ELF: ctor[416/482] @0x9ab4df790
+[  4s] ELF: ctor[416/482] OK
+[  4s] ELF: ctor[417/482] @0x9ab4df7d8
+[  4s] ELF: ctor[417/482] OK
+[  4s] ELF: ctor[418/482] @0x9ab4df820
+[  4s] ELF: ctor[418/482] OK
+[  4s] ELF: ctor[419/482] @0x9ab4df868
+[  4s] ELF: ctor[419/482] OK
+[  4s] ELF: ctor[420/482] @0x9ab4df8b0
+[  4s] ELF: ctor[420/482] OK
+[  4s] ELF: ctor[421/482] @0x9ab4df8f8
+[  4s] ELF: ctor[421/482] OK
+[  4s] ELF: ctor[422/482] @0x9ab4df940
+[  4s] ELF: ctor[422/482] OK
+[  4s] ELF: ctor[423/482] @0x9ab4df988
+[  4s] ELF: ctor[423/482] OK
+[  4s] ELF: ctor[424/482] @0x9ab4df9d0
+[  4s] ELF: ctor[424/482] OK
+[  4s] ELF: ctor[425/482] @0x9ab4dfa18
+[  4s] ELF: ctor[425/482] OK
+[  4s] ELF: ctor[426/482] @0x9ab4dfa60
+[  4s] ELF: ctor[426/482] OK
+[  4s] ELF: ctor[427/482] @0x9ab4dfaa8
+[  4s] ELF: ctor[427/482] OK
+[  4s] ELF: ctor[428/482] @0x9ab4dfaf0
+[  4s] ELF: ctor[428/482] OK
+[  4s] ELF: ctor[429/482] @0x9ab4dfb38
+[  4s] ELF: ctor[429/482] OK
+[  4s] ELF: ctor[430/482] @0x9ab4dfb80
+[  4s] ELF: ctor[430/482] OK
+[  4s] ELF: ctor[431/482] @0x9ab4dfbc8
+[  4s] ELF: ctor[431/482] OK
+[  4s] ELF: ctor[432/482] @0x9ab4dfc10
+[  4s] ELF: ctor[432/482] OK
+[  4s] ELF: ctor[433/482] @0x9ab4dfc58
+[  4s] ELF: ctor[433/482] OK
+[  4s] ELF: ctor[434/482] @0x9ab4dfca0
+[  4s] ELF: ctor[434/482] OK
+[  4s] ELF: ctor[435/482] @0x9ab4dfce8
+[  4s] ELF: ctor[435/482] OK
+[  4s] ELF: ctor[436/482] @0x9ab4dfd30
+[  4s] ELF: ctor[436/482] OK
+[  4s] ELF: ctor[437/482] @0x9ab4dfd78
+[  4s] ELF: ctor[437/482] OK
+[  4s] ELF: ctor[438/482] @0x9ab4dfdc0
+[  4s] ELF: ctor[438/482] OK
+[  4s] ELF: ctor[439/482] @0x9ab4dfe08
+[  4s] ELF: ctor[439/482] OK
+[  4s] ELF: ctor[440/482] @0x9ab4dfe50
+[  4s] ELF: ctor[440/482] OK
+[  4s] ELF: ctor[441/482] @0x9ab4dfe98
+[  4s] ELF: ctor[441/482] OK
+[  4s] ELF: ctor[442/482] @0x9ab4dfee0
+[  4s] ELF: ctor[442/482] OK
+[  4s] ELF: ctor[443/482] @0x9ab4dff28
+[  4s] ELF: ctor[443/482] OK
+[  4s] ELF: ctor[444/482] @0x9ab4dff70
+[  4s] ELF: ctor[444/482] OK
+[  5s] ELF: ctor[445/482] @0x9ab4dffb8
+[  5s] ELF: ctor[445/482] OK
+[  5s] ELF: ctor[446/482] @0x9ab4e0000
+[  5s] ELF: ctor[446/482] OK
+[  5s] ELF: ctor[447/482] @0x9ab4e0048
+[  5s] ELF: ctor[447/482] OK
+[  5s] ELF: ctor[448/482] @0x9ab4e0090
+[  5s] ELF: ctor[448/482] OK
+[  5s] ELF: ctor[449/482] @0x9ab4e00d8
+[  5s] ELF: ctor[449/482] OK
+[  5s] ELF: ctor[450/482] @0x9ab4e0120
+[  5s] ELF: ctor[450/482] OK
+[  5s] ELF: ctor[451/482] @0x9ab4e0168
+[  5s] ELF: ctor[451/482] OK
+[  5s] ELF: ctor[452/482] @0x9ab4e01b0
+[  5s] ELF: ctor[452/482] OK
+[  5s] ELF: ctor[453/482] @0x9ab4e01f8
+[  5s] ELF: ctor[453/482] OK
+[  5s] ELF: ctor[454/482] @0x9ab4e0240
+[  5s] ELF: ctor[454/482] OK
+[  5s] ELF: ctor[455/482] @0x9ab4e0288
+[  5s] ELF: ctor[455/482] OK
+[  5s] ELF: ctor[456/482] @0x9ab4e02d0
+[  5s] ELF: ctor[456/482] OK
+[  5s] ELF: ctor[457/482] @0x9ab4e0318
+[  5s] ELF: ctor[457/482] OK
+[  5s] ELF: ctor[458/482] @0x9ab4e0360
+[  5s] ELF: ctor[458/482] OK
+[  5s] ELF: ctor[459/482] @0x9ab4e03a8
+[  5s] ELF: ctor[459/482] OK
+[  5s] ELF: ctor[460/482] @0x9ab4e03f0
+[  5s] pthread_key_create → key=13 dtor=0x925af5f00
+[  5s] ELF: ctor[460/482] OK
+[  5s] ELF: ctor[461/482] @0x9ab4e0434
+[  5s] ELF: ctor[461/482] OK
+[  5s] ELF: ctor[462/482] @0x9ab4e0470
+[  5s] ELF: ctor[462/482] OK
+[  5s] ELF: ctor[463/482] @0x9ab4e0484
+[  5s] ELF: ctor[463/482] OK
+[  5s] ELF: ctor[464/482] @0x9ab4e04bc
+[  5s] ELF: ctor[464/482] OK
+[  5s] ELF: ctor[465/482] @0x9ab4e04cc
+[  5s] ELF: ctor[465/482] OK
+[  5s] ELF: ctor[466/482] @0x9ab4e057c
+[  5s] ELF: ctor[466/482] OK
+[  5s] ELF: ctor[467/482] @0x9ab4e0768
+[  5s] ELF: ctor[467/482] OK
+[  5s] ELF: ctor[468/482] @0x9ab4e07b0
+[  5s] ELF: ctor[468/482] OK
+[  5s] ELF: ctor[469/482] @0x9ab4e07f8
+[  5s] ELF: ctor[469/482] OK
+[  5s] ELF: ctor[470/482] @0x9ab4e0840
+[  5s] ELF: ctor[470/482] OK
+[  5s] ELF: ctor[471/482] @0x9ab4e096c
+[  5s] ELF: ctor[471/482] OK
+[  5s] ELF: ctor[472/482] @0x9ab4e0b08
+[  5s] ELF: ctor[472/482] OK
+[  5s] ELF: ctor[473/482] @0x9ab4e0c44
+[  5s] ELF: ctor[473/482] OK
+[  5s] ELF: ctor[474/482] @0x9ab4e0dac
+[  5s] ELF: ctor[474/482] OK
+[  5s] ELF: ctor[475/482] @0x9ab4e0ed8
+[  5s] ELF: ctor[475/482] OK
+[  5s] ELF: ctor[476/482] @0x9ab4e0f04
+[  5s] ELF: ctor[476/482] OK
+[  5s] ELF: ctor[477/482] @0x9ab4e10d8
+[  5s] ELF: ctor[477/482] OK
+[  5s] ELF: ctor[478/482] @0x9ab4e11cc
+[  5s] ELF: ctor[478/482] OK
+[  5s] ELF: ctor[479/482] @0x9ab4e12c0
+[  5s] ELF: ctor[479/482] OK
+[  5s] ELF: ctor[480/482] @0x9ab4e130c
+[  5s] ELF: ctor[480/482] OK
+[  5s] ELF: ctor[481/482] @0x9ab4e1324
+[  5s] pthread_key_create → key=14 dtor=0x9abe30340
+[  5s] ELF: ctor[481/482] OK
+[  5s] ELF: libunity.so: ctors done ok=481 failed=0 skipped=1
+[  5s] ELF: libil2cpp.so: running 44 constructors
+[  5s] ELF: init_arr[0]=0xa383cd86c
+[  5s] ELF: init_arr[1]=0xa383cd8e4
+[  5s] ELF: init_arr[2]=0xa383cdad8
+[  5s] ELF: init_arr[3]=0xa383cdb6c
+[  5s] ELF: ctor[1/44] @0xa383cd86c
+[  5s] ELF: ctor[1/44] OK
+[  5s] ELF: ctor[2/44] @0xa383cd8e4
+[  5s] ELF: ctor[2/44] OK
+[  5s] ELF: ctor[3/44] @0xa383cdad8
+[  5s] ELF: ctor[3/44] OK
+[  5s] ELF: ctor[4/44] @0xa383cdb6c
+[  5s] ELF: ctor[4/44] OK
+[  5s] ELF: ctor[5/44] @0xa383cdbac
+[  5s] ELF: ctor[5/44] OK
+[  5s] ELF: ctor[6/44] @0xa383cdbe8
+[  5s] ELF: ctor[6/44] OK
+[  5s] ELF: ctor[7/44] @0xa383cdc24
+[  5s] pthread_key_create → key=15 dtor=0x0
+[  5s] ELF: ctor[7/44] OK
+[  5s] ELF: ctor[8/44] @0xa383cdca8
+[  5s] ELF: ctor[8/44] OK
+[  5s] ELF: ctor[9/44] @0xa383cdd0c
+[  5s] ELF: ctor[9/44] OK
+[  5s] ELF: ctor[10/44] @0xa383cddb4
+[  5s] ELF: ctor[10/44] OK
+[  5s] ELF: ctor[11/44] @0xa383cddf4
+[  5s] ELF: ctor[11/44] OK
+[  5s] ELF: ctor[12/44] @0xa383cde34
+[  5s] ELF: ctor[12/44] OK
+[  5s] ELF: ctor[13/44] @0xa383cdeb0
+[  5s] ELF: ctor[13/44] OK
+[  5s] ELF: ctor[14/44] @0xa383cdf6c
+[  5s] ELF: ctor[14/44] OK
+[  5s] ELF: ctor[15/44] @0xa383cdfe8
+[  5s] ELF: ctor[15/44] OK
+[  5s] ELF: ctor[16/44] @0xa383ce024
+[  5s] ELF: ctor[16/44] OK
+[  5s] ELF: ctor[17/44] @0xa383ce094
+[  5s] ELF: ctor[17/44] OK
+[  5s] ELF: ctor[18/44] @0xa383ce19c
+[  5s] pthread_key_create → key=16 dtor=0x0
+[  5s] ELF: ctor[18/44] OK
+[  5s] ELF: ctor[19/44] @0xa383ce1d8
+[  5s] ELF: ctor[19/44] OK
+[  5s] ELF: ctor[20/44] @0xa383ce22c
+[  5s] pthread_key_create → key=17 dtor=0x0
+[  5s] pthread_key_create → key=18 dtor=0x0
+[  5s] ELF: ctor[20/44] OK
+[  5s] ELF: ctor[21/44] @0xa383ce2dc
+[  5s] ELF: ctor[21/44] OK
+[  5s] ELF: ctor[22/44] @0xa383ce318
+[  5s] ELF: ctor[22/44] OK
+[  5s] ELF: ctor[23/44] @0xa383ce35c
+[  5s] ELF: ctor[23/44] OK
+[  5s] ELF: ctor[24/44] @0xa383ce474
+[  5s] ELF: ctor[24/44] OK
+[  5s] ELF: ctor[25/44] @0xa383ce638
+[  5s] ELF: ctor[25/44] OK
+[  5s] ELF: ctor[26/44] @0xa383ce65c
+[  5s] ELF: ctor[26/44] OK
+[  5s] ELF: ctor[27/44] @0xa383ce6b0
+[  5s] ELF: ctor[27/44] OK
+[  5s] ELF: ctor[28/44] @0xa383ce6d4
+[  5s] ELF: ctor[28/44] OK
+[  5s] ELF: ctor[29/44] @0xa383ce734
+[  5s] ELF: ctor[29/44] OK
+[  5s] ELF: ctor[30/44] @0xa383ce770
+[  5s] ELF: ctor[30/44] OK
+[  5s] ELF: ctor[31/44] @0xa383ce794
+[  5s] ELF: ctor[31/44] OK
+[  5s] ELF: ctor[32/44] @0xa383ce834
+[  5s] ELF: ctor[32/44] OK
+[  5s] ELF: ctor[33/44] @0xa383ce89c
+[  5s] ELF: ctor[33/44] OK
+[  5s] ELF: ctor[34/44] @0xa383ce8b8
+[  5s] ELF: ctor[34/44] OK
+[  5s] ELF: ctor[35/44] @0xa383ce8f0
+[  5s] ELF: ctor[35/44] OK
+[  5s] ELF: ctor[36/44] @0xa383ce914
+[  5s] ELF: ctor[36/44] OK
+[  5s] ELF: ctor[37/44] @0xa383ce984
+[  5s] pthread_key_create → key=19 dtor=0x0
+[  5s] ELF: ctor[37/44] OK
+[  5s] ELF: ctor[38/44] @0xa383ce9c0
+[  5s] ELF: ctor[38/44] OK
+[  5s] ELF: ctor[39/44] @0xa383ce9ec
+[  5s] ELF: ctor[39/44] OK
+[  5s] ELF: ctor[40/44] @0xa383cea04
+[  5s] pthread_key_create → key=20 dtor=0xa38511e8c
+[  5s] ELF: ctor[40/44] OK
+[  5s] ELF: ctor[41/44] @0xa383cea64
+[  5s] ELF: ctor[41/44] OK
+[  5s] ELF: ctor[42/44] @0xa383ceab0
+[  5s] ELF: ctor[42/44] OK
+[  5s] ELF: ctor[43/44] @0xa383ceba4
+[  5s] ELF: ctor[43/44] OK
+[  5s] ELF: libil2cpp.so: ctors done ok=43 failed=0 skipped=1
+[  5s] Scanning for Java_ native methods in main .so...
+[  5s] JAVA_METHOD: 0 total Java_ symbols found
+[  5s] ELF: loading complete — game execution on main thread
+[  5s] perf: CPU boost mode -> FastLoad (game startup/loading, GPU throttled)
+[  5s] AndroidTLS: old TPIDR_EL0=0x0 — installing fake TLS @0x926491750
+[  5s] audio: assets dir = sdmc:/AndroidHorizonNX/games/com.orbital.brainiton/assets
+[  5s] audio: SDL_mixer ready (codecs=0x18)
+[  5s] UserDefaults: no save file (fresh run)
+[  5s] EGL: using SDL2 context on main thread
+[  5s] main/render thread tid=0x9265865b0
+[  5s] ═══ AHNX Unity Runtime: bringup start ═══
+[  5s] unity: pkg=sdmc:/AndroidHorizonNX/games/com.orbital.brainiton lib_dir=sdmc:/AndroidHorizonNX/games/com.orbital.brainiton/lib
+[  5s] dlopen: libmain.so already loaded → 0x11f234b40
+[  5s] dlopen: libunity.so already loaded → 0x11fc99040
+[  5s] dlopen: libil2cpp.so already loaded → 0x11f238040
+[  5s] dlopen: libgpg.so already loaded → 0x1207ef0c0
+[  5s] unity: libs — main=0x11f234b40 unity=0x11fc99040 il2cpp=0x11f238040
+[  5s] unity: calling libmain.so JNI_OnLoad @0xe31d6283c ...
+[  5s] JNI FindClass: com/unity3d/player/NativeLoader
+[  5s] JNI RegisterNative: load
+[  5s] JNI RegisterNative: unload
+[  5s] unity: libmain.so JNI_OnLoad returned 0x10006
+[  5s] unity: calling libunity.so JNI_OnLoad @0x9ab6a1ccc ...
+[  5s] JNI FindClass: com/unity3d/player/UnityPlayer
+[  5s] JNI RegisterNative: initJni
+[  5s] JNI RegisterNative: nativeDone
+[  5s] JNI RegisterNative: nativePause
+[  5s] JNI RegisterNative: nativeRecreateGfxState
+[  5s] JNI RegisterNative: nativeSendSurfaceChangedEvent
+[  5s] JNI RegisterNative: nativeRender
+[  5s] JNI RegisterNative: nativeResume
+[  5s] JNI RegisterNative: nativeLowMemory
+[  5s] JNI RegisterNative: nativeFocusChanged
+[  5s] JNI RegisterNative: nativeSetInputString
+[  5s] JNI RegisterNative: nativeSetInputSelection
+[  5s] JNI RegisterNative: nativeSoftInputClosed
+[  5s] JNI RegisterNative: nativeSoftInputCanceled
+[  5s] JNI RegisterNative: nativeSoftInputLostFocus
+[  5s] JNI RegisterNative: nativeInitWebRequest
+[  5s] JNI RegisterNative: nativeInjectEvent
+[  5s] JNI RegisterNative: nativeUnitySendMessage
+[  5s] JNI RegisterNative: nativeIsAutorotationOn
+[  5s] JNI RegisterNative: nativeMuteMasterAudio
+[  5s] JNI RegisterNative: nativeRestartActivityIndicator
+[  5s] JNI FindClass: com/unity3d/player/ReflectionHelper
+[  5s] JNI RegisterNative: nativeProxyInvoke
+[  5s] JNI RegisterNative: nativeProxyFinalize
+[  5s] JNI RegisterNative: nativeProxyLogJNIInvokeException
+[  5s] JNI FindClass: com/unity3d/player/GoogleARCoreApi
+[  5s] JNI RegisterNative: initializeARCore
+[  5s] JNI RegisterNative: pauseARCore
+[  5s] JNI RegisterNative: resumeARCore
+[  5s] JNI FindClass: com/unity3d/player/GoogleVrProxy
+[  5s] JNI RegisterNative: initVrJni
+[  5s] JNI RegisterNative: setVrVideoTransform
+[  5s] JNI RegisterNative: isQuiting
+[  5s] JNI FindClass: com/unity3d/player/Camera2Wrapper
+[  5s] JNI RegisterNative: initCamera2Jni
+[  5s] JNI RegisterNative: nativeFrameReady
+[  5s] JNI RegisterNative: nativeSurfaceTextureReady
+[  5s] unity: libunity.so JNI_OnLoad returned 0x10006
+[  5s] unity: entry points — initJni=0x9ab6a12b4 nativeRender=0x9ab6a154c il2cpp_init=0xa384cdfd4
+[  5s] unity: calling initJni(env, activity, context) — Unity init begins
+[  5s] JNI FindClass: bitter/jnibridge/JNIBridge
+[  5s] JNI RegisterNative: invoke
+[  5s] JNI RegisterNative: delete
+[  5s] pthread_getspecific(key=13) → scratch buf (first use)
+[  5s] JNI FindClass: java/lang/StringBuilder
+[  5s] JNI GetMethodID: <init> ()V
+[  5s] JNI FindClass: android/app/Activity
+[  5s] JNI GetMethodID: getIntent ()Landroid/content/Intent;
+[  5s] JNI CallObjectMethodV
+[  5s] JNI FindClass: android/content/Intent
+[  5s] JNI GetMethodID: getExtras ()Landroid/os/Bundle;
+[  5s] JNI CallObjectMethodV
+[  5s] JNI FindClass: android/os/Bundle
+[  5s] JNI GetMethodID: containsKey (Ljava/lang/String;)Z
+[  5s] JNI GetMethodID: getBoolean (Ljava/lang/String;)Z
+[  5s] JNI GetMethodID: toString ()Ljava/lang/String;
+[  5s] JNI FindClass: android/content/Context
+[  5s] JNI GetMethodID: getAssets ()Landroid/content/res/AssetManager;
+[  5s] JNI CallObjectMethodV
+[  6s] JNI FindClass: android/content/res/AssetManager
+[  6s] JNI GetMethodID: open (Ljava/lang/String;)Ljava/io/InputStream;
+[  6s] JNI CallObjectMethodV
+[  6s] JNI FindClass: java/io/IOException
+[  6s] JNI FindClass: java/util/Scanner
+[  6s] JNI GetMethodID: <init> (Ljava/io/InputStream;Ljava/lang/String;)V
+[  6s] JNI GetMethodID: useDelimiter (Ljava/lang/String;)Ljava/util/Scanner;
+[  6s] JNI GetMethodID: next ()Ljava/lang/String;
+[  6s] JNI FindClass: java/util/NoSuchElementException
+[  6s] unity: initJni returned (did not fault)
+[  6s] unity: calling nativeRender() once (no surface yet — diagnostic)
+[  6s] pthread_getspecific(key=3) → scratch buf (first use)
+[  6s] JNI FindClass: android/content/pm/PackageManager
+[  6s] JNI GetStaticFieldID: GET_META_DATA I
+[  6s] JNI GetMethodID: getPackageManager ()Landroid/content/pm/PackageManager;
+[  6s] JNI CallObjectMethodV
+[  6s] JNI GetMethodID: getPackageName ()Ljava/lang/String;
+[  6s] JNI CallObjectMethodV
+[  6s] JNI GetMethodID: getApplicationInfo (Ljava/lang/String;I)Landroid/content/pm/ApplicationInfo;
+[  6s] JNI CallObjectMethodV
+[  6s] JNI FindClass: android/content/pm/PackageItemInfo
+[  6s] JNI GetFieldID: metaData Landroid/os/Bundle;

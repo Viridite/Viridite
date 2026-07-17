@@ -36,7 +36,9 @@ VERDICT_LABEL = {
 }
 
 STALL_RE = re.compile(r'(stall|STALL\(severe\)): frame (\d+) stalled for (\d+)ms')
-ENV_BUILD_RE = re.compile(r'env: Android Horizon \(Translation Core\) build (\S+)')
+# Matches both the current "Verdite" env line and the pre-rebrand
+# "Android Horizon" one, so historical logs keep parsing.
+ENV_BUILD_RE = re.compile(r'env: (?:Verdite|Android Horizon) \(Translation Core\) build (\S+)')
 ENV_FIRMWARE_RE = re.compile(r'env: Switch firmware (\S+)')
 ENV_ATMOSPHERE_RE = re.compile(r'env: Atmosphere (\S+)')
 LOGGED_APK_SHA256_RE = re.compile(r'launchApk: apk sha256=([0-9a-f]{64})')

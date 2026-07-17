@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 
-// Which native library ABI(s) an APK ships. Android Horizon's engine only
+// Which native library ABI(s) an APK ships. Verdite's engine only
 // loads AArch64 (arm64-v8a) code — detected up front during scanning so the
 // launcher can tag/gray out anything that can't run, instead of only finding
 // out after a full extraction attempt.

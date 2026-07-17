@@ -165,7 +165,7 @@ struct App {
     bool init() {
         mkdir("sdmc:/AndroidHorizonNX", 0777);
         logOpen();
-        logMsg("Android Horizon launcher starting");
+        logMsg("Verdite launcher starting");
 
         if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) != 0) {
             logSDL("SDL_Init failed"); logClose(); return false;
@@ -177,7 +177,7 @@ struct App {
             logSDL("TTF_Init failed"); logClose(); return false;
         }
 
-        win = SDL_CreateWindow("Android Horizon",
+        win = SDL_CreateWindow("Verdite",
             SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
             SW, SH, SDL_WINDOW_SHOWN);
         if (!win) { logSDL("CreateWindow failed"); logClose(); return false; }
@@ -368,8 +368,8 @@ struct App {
     void drawHeaderBar(const std::string& rightText = "") {
         fill(0, 0, SW, HEADER_H, {24, 22, 86, 205});
         fill(0, HEADER_H - 3, SW, 3, C_RIM);
-        int w = drawText(fLg, "Android ", C_WHITE, 30, (HEADER_H - 28) / 2);
-        w += drawText(fLg, "Horizon", C_OK, 30 + w, (HEADER_H - 28) / 2);
+        int w = drawText(fLg, "Verd", C_WHITE, 30, (HEADER_H - 28) / 2);
+        w += drawText(fLg, "ite", C_OK, 30 + w, (HEADER_H - 28) / 2);
         drawText(fSm, BUILD_VERSION, C_DIM, 30 + w + 14, (HEADER_H + 4) / 2);
         if (!rightText.empty()) {
             int tw = 0, th = 0;
@@ -760,7 +760,7 @@ struct App {
                 drawText(f, s, col, (SW - w) / 2, y);
                 y += h + 10;
             };
-            center(fLg, "Android Horizon", C_WHITE);
+            center(fLg, "Verdite", C_WHITE);
             center(fSm, BUILD_VERSION, C_DIM);
             center(fSm, "by aaronworld.uk", C_GRAY);
             y += 10;

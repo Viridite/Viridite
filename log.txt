@@ -1,0 +1,11 @@
+Android Horizon starting
+  BFTTF open failed: Couldn't load font file
+  font: romfs DejaVuSans
+  BFTTF open failed: Couldn't load font file
+  font: romfs DejaVuSans
+  BFTTF open failed: Couldn't load font file
+  font: romfs DejaVuSans
+  NintendoExt font unavailable — text hints
+init complete
+core-x64: argc=2 argv[0]=sdmc:/switch/AndroidHorizonNX/AHNX-Translation-Core-x64.nro argv[1]=com.orbital.brainiton
+sdmc:/AndroidHorizonNX/screenshots/ui_loading.png

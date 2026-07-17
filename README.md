@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="AndroidHorizonNX.jpg" width="128" height="128" style="border-radius:16px" alt="Android Horizon logo" />
+<img src="AndroidHorizonNX.jpg" width="128" height="128" style="border-radius:16px" alt="Verdite logo" />
 
-# Android Horizon
+# Verdite
 
 **Run Android games natively on Nintendo Switch Horizon OS — without Android**
 
@@ -30,7 +30,7 @@
 
 ## What Is This?
 
-Android Horizon is a **compatibility / translation layer** that lets Android native (NDK) games run directly on the Nintendo Switch's **Horizon OS** — the Switch's real operating system.
+Verdite is a **compatibility / translation layer** that lets Android native (NDK) games run directly on the Nintendo Switch's **Horizon OS** — the Switch's real operating system.
 
 **This is NOT Android running on the Switch.** There is no Android OS, no emulator, no virtual machine. The game's ARM64 machine code runs directly on the Switch's Tegra X1 processor, the same chip Android phones use. A thin shim layer fakes just enough of the Android runtime (libc, OpenGL ES, JNI, asset management) that the game's native `.so` library doesn't notice it isn't on Android.
 
@@ -73,7 +73,7 @@ The road here, each step root-caused on real hardware: JIT data pages needed RW 
 
 ## Screenshots
 
-**Every screenshot below was captured automatically by Android Horizon itself, on real Switch hardware** — the launcher saves a PNG of each UI screen to `sdmc:/AndroidHorizonNX/screenshots/`, and the game loop snapshots the actual GL framebuffer at milestone frames to prove what really rendered. None of these are mockups or emulator captures.
+**Every screenshot below was captured automatically by Verdite itself, on real Switch hardware** — the launcher saves a PNG of each UI screen to `sdmc:/AndroidHorizonNX/screenshots/`, and the game loop snapshots the actual GL framebuffer at milestone frames to prove what really rendered. None of these are mockups or emulator captures.
 
 | | |
 |---|---|
@@ -88,9 +88,9 @@ The road here, each step root-caused on real hardware: JIT data pages needed RW 
 
 ## Controls
 
-> **Handheld mode only.** Android games use touch screen input. The Switch touchscreen only works in handheld mode — in docked mode there is no touch input, so games will be uncontrollable. Android Horizon detects docked mode and shows a warning in the footer.
+> **Handheld mode only.** Android games use touch screen input. The Switch touchscreen only works in handheld mode — in docked mode there is no touch input, so games will be uncontrollable. Verdite detects docked mode and shows a warning in the footer.
 
-**Android Horizon launcher controls (in the APK browser):**
+**Verdite launcher controls (in the APK browser):**
 
 | Button | Action |
 |--------|--------|
@@ -106,11 +106,11 @@ The road here, each step root-caused on real hardware: JIT data pages needed RW 
 
 ## Forwarders — a dedicated home-menu icon per game
 
-Android Horizon can boot straight into one specific game, skipping the app-list picker entirely — the same idea as a RetroArch forwarder that jumps straight into a ROM+core instead of RetroArch's own content browser.
+Verdite can boot straight into one specific game, skipping the app-list picker entirely — the same idea as a RetroArch forwarder that jumps straight into a ROM+core instead of RetroArch's own content browser.
 
-**How it works:** pass the game's package name (e.g. `com.fingersoft.hillclimb`) as the first argument when launching `AndroidHorizonNX.nro`. This uses libnx's standard `envSetNextLoad(path, argv)` chain-load mechanism — the same one homebrew forwarders (RetroArch included) use to hand a target path + argument string to the next NRO. Any forwarder tool whose NSP/NRO creation flow lets you specify a launch argument (not just a target path) can point at `AndroidHorizonNX.nro` this way; whether Sphaira's own forwarder builder exposes an argument field specifically hasn't been checked against its current version — worth confirming there first since that's what's already in use for launching Android Horizon itself.
+**How it works:** pass the game's package name (e.g. `com.fingersoft.hillclimb`) as the first argument when launching `AndroidHorizonNX.nro`. This uses libnx's standard `envSetNextLoad(path, argv)` chain-load mechanism — the same one homebrew forwarders (RetroArch included) use to hand a target path + argument string to the next NRO. Any forwarder tool whose NSP/NRO creation flow lets you specify a launch argument (not just a target path) can point at `AndroidHorizonNX.nro` this way; whether Sphaira's own forwarder builder exposes an argument field specifically hasn't been checked against its current version — worth confirming there first since that's what's already in use for launching Verdite itself.
 
-If the requested package isn't installed (or the argument is stale/wrong), Android Horizon falls back to the normal app-list picker with an on-screen notice, rather than failing silently.
+If the requested package isn't installed (or the argument is stale/wrong), Verdite falls back to the normal app-list picker with an on-screen notice, rather than failing silently.
 
 ---
 
@@ -128,7 +128,7 @@ If the requested package isn't installed (or the argument is stale/wrong), Andro
 
 Requires [devkitPro](https://devkitpro.org/) with `devkitA64` and `libnx` installed.
 
-As of 0.1.120, Android Horizon is split across **two repositories** as well as two NRO binaries — this repo builds the launcher/picker only; the actual game-loading "Translation Core" engine (plus the x32 placeholder) lives in **[AHNX-Translation-Core](https://github.com/AndroidHorizon/AHNX-Translation-Core)**. See [Architecture](#architecture--launcher--translation-core) below for why.
+As of 0.1.120, Verdite is split across **two repositories** as well as two NRO binaries — this repo builds the launcher/picker only; the actual game-loading "Translation Core" engine (plus the x32 placeholder) lives in **[AHNX-Translation-Core](https://github.com/AndroidHorizon/AHNX-Translation-Core)**. See [Architecture](#architecture--launcher--translation-core) below for why.
 
 To build everything and get a drag-to-SD-card layout, clone both repos as siblings:
 
@@ -158,7 +158,7 @@ switch-mesa switch-glad switch-curl switch-mbedtls
 
 ## Architecture — launcher + Translation Core
 
-Android Horizon is split into two pieces, in two separate repos, that chain-load into each other rather than being one monolithic binary:
+Verdite is split into two pieces, in two separate repos, that chain-load into each other rather than being one monolithic binary:
 
 - **[AndroidHorizonNX](https://github.com/AndroidHorizon/AndroidHorizonNX)** (this repo) → builds `AndroidHorizonNX.nro` — the picker. Scans `sdmc:/AndroidHorizonNX/apks/`, tags each APK with which native ABI(s) it ships, shows the list, and — on launch — hands off to the right engine via `envSetNextLoad(path, argv)` (the same chain-load mechanism [forwarders](#forwarders--a-dedicated-home-menu-icon-per-game) use), passing the package name as `argv[1]`. It has no ELF loader, JNI shim, or game-engine code of its own at all — this repo is deliberately small.
 - **[AHNX-Translation-Core](https://github.com/AndroidHorizon/AHNX-Translation-Core)** → builds `AHNX-Translation-Core-x64.nro` — the real engine: everything this README describes above (ELF loading, JIT, the JNI/Bionic compat layer, audio, sensors, the whole thing). It always expects a package name in `argv[1]` — launching it directly without one just shows a message pointing back at the launcher, it's not meant to be run standalone. The same repo also builds `AHNX-Translation-Core-x32.nro` — a placeholder. **32-bit (`armeabi-v7a`) binaries are not supported at the moment** — running AArch32 code on Switch is possible in principle (there's real prior art for it via a per-title Atmosphere address-space override), but the one real precedent project we found for this depends on a 32-bit build of libnx that isn't publicly available anywhere, and building one from scratch is a substantial, uncertain undertaking of its own. The launcher detects 32-bit-only APKs during scanning and blocks launching them with an explanation, rather than attempting to chain-load into this placeholder — it exists to complete the on-disk layout, not because it does anything yet.
@@ -205,7 +205,7 @@ Confirmed on hardware: SDL finger events drive the game's own touch natives, and
 
 ### 9. Shop screen crashes back to the launcher — **ACTIVE INVESTIGATION**
 
-Opening the in-game Shop crashes out to the Android Horizon menu. No fault or abort was captured in the log from the crash session (the log simply stops mid-stream with no exit marker), which pointed at a possible deadlock in the crash-forensics logger itself: if the crashing thread happened to fault while already holding the log's mutex (e.g. mid-format inside an ordinary log call), the old fault handler would try to take that same mutex to report the crash and hang forever — a real bug, now fixed with a lock-free emergency logger for exactly this scenario. The Shop is also the most network/IAP-heavy screen, and until this build `isNetworkAvailable` always claimed "online" regardless of the Switch's actual connection — an offline Switch reporting itself online could easily send the game into a real network call that has no chance of succeeding. Both fixes are in; needs a fresh test + log to confirm.
+Opening the in-game Shop crashes out to the Verdite menu. No fault or abort was captured in the log from the crash session (the log simply stops mid-stream with no exit marker), which pointed at a possible deadlock in the crash-forensics logger itself: if the crashing thread happened to fault while already holding the log's mutex (e.g. mid-format inside an ordinary log call), the old fault handler would try to take that same mutex to report the crash and hang forever — a real bug, now fixed with a lock-free emergency logger for exactly this scenario. The Shop is also the most network/IAP-heavy screen, and until this build `isNetworkAvailable` always claimed "online" regardless of the Switch's actual connection — an offline Switch reporting itself online could easily send the game into a real network call that has no chance of succeeding. Both fixes are in; needs a fresh test + log to confirm.
 
 ### 10. Save persistence — needs a confirmed round-trip test
 
@@ -213,13 +213,13 @@ The UserDefault store now loads from and saves to `<game>/userdefaults.bin` (int
 
 ### 11. One game session per app launch
 
-Launching a second game session in the same Android Horizon process reads garbage ("not an ARM binary") — leftover JIT memory regions and threads from the first session aren't unloaded. Currently guarded with an on-screen notice instead of a crash; a real unload path is future work.
+Launching a second game session in the same Verdite process reads garbage ("not an ARM binary") — leftover JIT memory regions and threads from the first session aren't unloaded. Currently guarded with an on-screen notice instead of a crash; a real unload path is future work.
 
 ---
 
 ## Performance Expectations (Hill Climb Racing 1.67.0)
 
-We're testing the `.apk` release of **Hill Climb Racing 1.67.0** specifically — the current Play Store release ships as a `.xapk`. Android Horizon's APK parser only understands plain `.apk` files right now, so `.xapk` support is out of scope until a later phase.
+We're testing the `.apk` release of **Hill Climb Racing 1.67.0** specifically — the current Play Store release ships as a `.xapk`. Verdite's APK parser only understands plain `.apk` files right now, so `.xapk` support is out of scope until a later phase.
 
 Measured numbers from hardware:
 
@@ -320,7 +320,7 @@ This needs an `ORG_PAT` repo secret (a classic PAT with `repo` scope across the 
 
 ### Phase 3 — Polish
 
-- [x] NRO icon (Android Horizon themed — green planet with curved text)
+- [x] NRO icon (Verdite themed — green planet with curved text)
 - [x] **Icon-themed UI** — animated starfield, planet-horizon scenery, borealis-style glowing focus card, HOS button glyphs from the system font
 - [x] GitHub avatar on About screen (bundled static image — no runtime fetch)
 - [x] About screen (press **−**)
@@ -460,7 +460,7 @@ Went back through the compat layer specifically looking for real, avoidable over
 
 ### 0.1.105 — Forwarder support + SVG background
 
-- [x] **Forwarder / direct-launch support**: Android Horizon now reads `argv[1]` as a package name to boot straight into, skipping the app-list picker entirely — the same mechanism RetroArch forwarders use (`envSetNextLoad(path, argv)`) to jump straight into a ROM+core instead of RetroArch's own content browser. A small forwarder NRO (Sphaira, hbmenu, or anything that can chain-load with an argument) pointed at `AndroidHorizonNX.nro` with a game's package name now gets its own dedicated "launch this one game" icon on the home menu. If the requested package isn't found/installed, it falls back to the normal picker with an on-screen notice instead of failing silently. A successful session already exits the whole process directly from inside the game loop (see the 0.1.102 fix below), so a forwarder-launched game closes straight back to the Switch home menu, never through our own UI.
+- [x] **Forwarder / direct-launch support**: Verdite now reads `argv[1]` as a package name to boot straight into, skipping the app-list picker entirely — the same mechanism RetroArch forwarders use (`envSetNextLoad(path, argv)`) to jump straight into a ROM+core instead of RetroArch's own content browser. A small forwarder NRO (Sphaira, hbmenu, or anything that can chain-load with an argument) pointed at `AndroidHorizonNX.nro` with a game's package name now gets its own dedicated "launch this one game" icon on the home menu. If the requested package isn't found/installed, it falls back to the normal picker with an on-screen notice instead of failing silently. A successful session already exits the whole process directly from inside the game loop (see the 0.1.102 fix below), so a forwarder-launched game closes straight back to the Switch home menu, never through our own UI.
 - [x] **Launcher background is now a real SVG**, rasterized once at startup instead of ~50 lines of hand-coded scanline gradient/circle math. Turns out devkitPro's SDL2_image portlib already bundles `nanosvg` internally for exactly this (found out the hard way — vendoring our own copy collided at link time with symbols already inside `libSDL2_image.a`), so this ended up being a plain `IMG_Load("romfs:/background.svg")` call, same as any other image this project loads. The animated twinkling starfield is unchanged (still drawn fresh every frame in C++, since that's genuine per-frame animation a static raster shouldn't own) — only the static sky/planet/horizon-glow layer moved to `romfs/background.svg`, easy to open and re-art-direct in any real vector editor going forward.
 
 ### 0.1.102 — Fixed the + button flicker (same bug as the crash flicker, different trigger)
@@ -528,20 +528,20 @@ Approached this round of stutter/perf work the way a Switch porting engineer wou
 
 ### 0.1.87 — Shop crash guard + stability pass
 
-- [x] **The Shop no longer crashes the game.** Its crash is deterministic (same faulting instruction across multiple hardware runs) but deep in stripped game code we can't disassemble or fix directly. Instead of guessing at the Shop button's on-screen touch position to block it, the fix hooks a signal the game already gives us: `trackPage("...")` fires as it enters a new screen, and `jstring` values in this JNI layer are directly readable C strings — no extra decoding needed. If the page name contains "shop" (case-insensitive), Android Horizon floods the game with synthetic BACK-button presses for the next ~1.5 seconds and swallows touch input during that window, forcing its own navigation to bounce back out before the crash-prone code ever runs.
+- [x] **The Shop no longer crashes the game.** Its crash is deterministic (same faulting instruction across multiple hardware runs) but deep in stripped game code we can't disassemble or fix directly. Instead of guessing at the Shop button's on-screen touch position to block it, the fix hooks a signal the game already gives us: `trackPage("...")` fires as it enters a new screen, and `jstring` values in this JNI layer are directly readable C strings — no extra decoding needed. If the page name contains "shop" (case-insensitive), Verdite floods the game with synthetic BACK-button presses for the next ~1.5 seconds and swallows touch input during that window, forcing its own navigation to bounce back out before the crash-prone code ever runs.
 - [x] **Stability fix found while building the above:** the BACK-press countdown was originally only decremented when the underlying native call succeeded — if that function pointer were ever null, the guard would swallow all touch input for the rest of the session instead of just its intended 1.5s window. Decoupled the countdown from the call so it always expires on schedule.
-- [x] **Confirmed on hardware: the crash-triggers-clean-exit fix from 0.1.81 works** — a crash now closes Android Horizon cleanly with no flicker.
+- [x] **Confirmed on hardware: the crash-triggers-clean-exit fix from 0.1.81 works** — a crash now closes Verdite cleanly with no flicker.
 
 ### 0.1.83 — Per-game asset patch mechanism (Switch controller guide images)
 
-- [x] **New: automatic per-game asset patching.** Hill Climb Racing bundles onboarding reference images for MOGA Bluetooth controllers (confirmed via `moga_pro_guide`/`moga_pocket_guide` save keys). Added a general mechanism (`applyGamePatches` in `loader.cpp`) that swaps specific extracted asset files for bundled Android Horizon replacements, matched by package name. Runs after every launch (fresh install or cached), so it stays current even if the replacement image changes across builds. The replacement is scaled to match the *original* file's exact dimensions (read from the file being replaced, not hardcoded) so it always drops in at the size the game's own UI expects.
+- [x] **New: automatic per-game asset patching.** Hill Climb Racing bundles onboarding reference images for MOGA Bluetooth controllers (confirmed via `moga_pro_guide`/`moga_pocket_guide` save keys). Added a general mechanism (`applyGamePatches` in `loader.cpp`) that swaps specific extracted asset files for bundled Verdite replacements, matched by package name. Runs after every launch (fresh install or cached), so it stays current even if the replacement image changes across builds. The replacement is scaled to match the *original* file's exact dimensions (read from the file being replaced, not hardcoded) so it always drops in at the size the game's own UI expects.
 - [x] First patch target: replacing `Moga_Pro_Guide.png` with a Switch controller-equivalent button-layout image — laying groundwork for the Phase 4 controller-support idea above. **Now active** — the real replacement image is bundled into `romfs/patches/hillclimb/moga_pro_guide.png`. `Moga_Pocket_Guide.png` is still a no-op until that image is provided too.
 
 ### 0.1.81 — Decisive flicker fix: crash now exits cleanly instead of trying to recover — **CONFIRMED FIXED ON HARDWARE**
 
 - [x] **Found the real mechanism behind the flicker, and stopped guessing at symptoms.** The log confirmed a real background thread (the game's own asset loader, spawned via our `pthread_create` → real libnx thread support) was still running at the time of a crash, 16 seconds after it started. We have no registry of threads a game spawns and no safe way to force-stop arbitrary running native code — so after a crash, there's no way to guarantee that thread (or others) isn't still executing, still touching shared JNI/audio/heap state, actively racing whatever the launcher tries to draw next. Two different one-time GL/EGL state fixes (swap-desync in 0.1.78, vsync in 0.1.79) didn't change the reported behaviour at all, which fits an *active, ongoing* conflict far better than a static leftover-state bug.
 - [x] **Fix: a caught crash no longer tries to return to the launcher's menu in the same process.** It logs the crash, then exits the whole app cleanly — Horizon OS tears down every thread in the process together, which a same-process "return to menu" fundamentally can't guarantee on its own. This trades "seamlessly keep browsing other games after a crash" for "guaranteed no flicker, ever" — given the app already required a full restart before a *second* game launch anyway, landing back at a restart after a crash is a smaller regression than an unrecoverable flicker loop.
-- [x] **Confirmed on real hardware**: the flicker is gone. A crash now closes Android Horizon cleanly instead.
+- [x] **Confirmed on real hardware**: the flicker is gone. A crash now closes Verdite cleanly instead.
 
 ### 0.1.80 — Overlay confirmed working + permanent hide latch
 
@@ -574,9 +574,9 @@ Approached this round of stutter/perf work the way a Switch porting engineer wou
 - [x] **Fixed the branding overlay turning the screen black** — cocos2d-x keeps its own internal cache of GL state (current shader/buffer/texture/attributes) and skips re-setting things it thinks are unchanged. Our raw GL draw call changed real state behind its back, desyncing that cache; the game's very next draw call fed the GPU stale attribute data, producing a solid black frame. Fixed by saving every piece of global GL state we touch (program, bound buffer/texture, blend func, depth/cull enables) and restoring it exactly afterward, and moving our vertex attributes to indices 8/9 that cocos2d-x never touches.
 - [x] Repositioned next to (not above) the game's own version text, matching a real handheld-mode screenshot — bolded our font to better match its weight. Position is an estimate (no way to pixel-measure a pasted screenshot without the underlying file); expect a follow-up nudge once seen live on hardware.
 
-### 0.1.71 — Android Horizon branding on the game's loading screen
+### 0.1.71 — Verdite branding on the game's loading screen
 
-- [x] **Branding overlay** — while the game shows its own loading screen, Android Horizon now draws "Android Horizon v0.1.71" (white/green, matching the launcher's palette) in the bottom-left corner, right above the game's own version text. Implemented as a small standalone GLES2 textured quad composited directly into the game's rendered frame (drawn after `nativeRender()`, before the buffer swap) — not a hack of the game's own font/UI, just an independent overlay layered on top.
+- [x] **Branding overlay** — while the game shows its own loading screen, Verdite now draws "Verdite v0.1.71" (white/green, matching the launcher's palette) in the bottom-left corner, right above the game's own version text. Implemented as a small standalone GLES2 textured quad composited directly into the game's rendered frame (drawn after `nativeRender()`, before the buffer swap) — not a hack of the game's own font/UI, just an independent overlay layered on top.
 - [x] The overlay hides itself automatically the moment the game calls `splashScreenHasCompleted` (a real JNI hook, not a frame-count guess), so it never appears over menus or gameplay.
 - [x] **Shop crash: real forensics captured for the first time** — `far=0xfffffffffffffff8` (address **-8**), a classic null-object/empty-container null+small-offset dereference, firing right as the game calls `trackPage(...)` (almost certainly `"Shop"`) and starts decoding shop item images. Leading theory: the shop looks up an in-app product our compat layer doesn't provide data for, and an unchecked "not found" path indexes a null/empty container. Not yet fixed — the crash site itself is deep in stripped game code we can't disassemble from here — but any future crash will now log with this same level of detail.
 
@@ -593,7 +593,7 @@ Approached this round of stutter/perf work the way a Switch porting engineer wou
 - [x] **Saves now persist** — the UserDefault store was RAM-only, so every launch looked like a first run (ToS screen again, progress lost). It now loads from `<game>/userdefaults.bin` before the game starts and saves on every `UserDefault.flush` and at exit. Ints, floats, bools, and strings all covered (floats/bools weren't even stored before).
 - [x] **Real connectivity reported** — `isNetworkAvailable` now asks the Switch (nifm) instead of always claiming "online". An offline Switch gets Android's normal offline code paths — the game handles that natively, and it likely defuses the shop's network/IAP flows (the playtest's only crash).
 - [x] **Effect volume fixed** — `playEffect`'s gain parameter was discarded, so looping effects (the engine!) played at 100%. Gain is now applied per channel. (Pitch modulation isn't supported by SDL_mixer, so the engine is volume-correct but monotone for now.)
-- [x] **Relaunch guard** — launching a second game session in one app run crashes the loader (leftover JIT regions/threads from the first session; "not an ARM binary"). Until real unloading exists, a second launch shows a "restart Android Horizon to play again" notice instead of crashing.
+- [x] **Relaunch guard** — launching a second game session in one app run crashes the loader (leftover JIT regions/threads from the first session; "not an ARM binary"). Until real unloading exists, a second launch shows a "restart Verdite to play again" notice instead of crashing.
 - [x] Async Java callback pattern established (`compatFindGameSym`) — used for `returnCountryCode`, ready for `setServerTime`/`returnMissionJson`/`returnFileDownloadResult` if the game stalls on them.
 
 ### 0.1.66 — Touch confirmed + post-EULA spinner fixed
@@ -656,7 +656,7 @@ Approached this round of stutter/perf work the way a Switch porting engineer wou
 - [x] **SplitMap crash fixed** — root cause: `svcCreateCodeMemory` was called before `memcpy`, making the backing buffer inaccessible at userspace. Fixed by deferring `svcCreateCodeMemory` + `svcControlCodeMemory` to after the memcpy. All three `.so` files should now load past the ELF copy stage.
 - [x] **RELA/JMPREL logging dramatically reduced** — removed per-entry log lines (one `fflush` per entry on FAT32 was taking ~38 seconds for libapplovin alone). Now only unresolved symbols, WARN lines, and the end-of-table summary are logged — `applyRela` goes from ~8000 lines to ~30 per library.
 - [x] **+ button exits progress screen** — press **+** at any time during ELF loading to stop waiting and return to the APK list
-- [x] **Renamed to Android Horizon / AndroidHorizonNX** — reflects the project's purpose (Android on HorizonOS) more clearly
+- [x] **Renamed to Verdite / AndroidHorizonNX** — reflects the project's purpose (Android on HorizonOS) more clearly
 - [x] **Live animated progress screen** — loader now runs on a background libnx thread; main thread renders at ~60fps with: animated scan bar (always moving, independent of load progress), live tail of `compat_log.txt` (13 lines, colour-coded for errors/warnings), elapsed time display per stage, "still working" notice after 30s
 - [x] **Log timestamps** — every `compat_log.txt` entry prefixed with `[Xs]` seconds-since-launch
 - [x] **Immediate constructor logging** — each `ELF: ctor[k/417] @ptr` is force-flushed to disk and the live display the instant before the constructor runs, so a hanging constructor is immediately identifiable
@@ -664,7 +664,7 @@ Approached this round of stutter/perf work the way a Switch porting engineer wou
 - [x] **Avatar fix** — `socketInitializeDefault()` added so curl/BSD sockets work in homebrew; GitHub URL corrected to Aaronateataco
 - [x] **Expanded log ring buffer** (5×92 → 20×128 bytes) for richer in-memory log feed
 - [x] **All 403 JMPREL entries resolve** — hardware-confirmed; constructors are now the active frontier
-- [x] **Android Horizon icon** — green planet with "ANDROID HORIZON" curved above the horizon, space background with stars
+- [x] **Verdite icon** — green planet with "ANDROID HORIZON" curved above the horizon, space background with stars
 - [x] **About screen** (press **−**) with GitHub avatar (bundled static image) + project info
 - [x] **Reinstall button** (**X**) — re-extracts APK without needing to delete the game folder
 
@@ -722,7 +722,7 @@ Since this is the very first playable build, there is some jank. Here is what yo
 - **Performance:** Hitting the "play" button is a bit laggy since it's not optimized yet, and the frame rate drops when you use certain power-ups.
 - **Crashes:** Don't try to open the shop or use online features. Hitting the share button just gives an empty achievement, and going online might crash it.
 
-The good news? When it does crash, it just safely drops you back to the Android Horizon app. It actually handles the crashes natively, so you don't get kicked out to that scary Atmosphere error screen with all the binaries!
+The good news? When it does crash, it just safely drops you back to the Verdite app. It actually handles the crashes natively, so you don't get kicked out to that scary Atmosphere error screen with all the binaries!
 
 **[Tech Specs & Outro]**
 
@@ -736,22 +736,22 @@ Thanks for watching, go test it out, and have fun!
 
 ## Credits & Prior Art
 
-Android Horizon's core idea — load a game's real Android `.so` binary, patch/resolve what it needs, and run it natively instead of emulating anything — turns out to be a whole established homebrew niche, not something invented here from scratch. Researched this properly and want to credit it clearly:
+Verdite's core idea — load a game's real Android `.so` binary, patch/resolve what it needs, and run it natively instead of emulating anything — turns out to be a whole established homebrew niche, not something invented here from scratch. Researched this properly and want to credit it clearly:
 
 - **so_util** (by [TheOfficialFloW](https://github.com/TheOfficialFloW) / Andy Nguyen) — the original ELF-loading technique this whole scene is built on, first used to run Android games natively on PS Vita.
 - **[Rinnegatamante](https://github.com/Rinnegatamante)**, Bythos, frangarcj, CBPS, and the wider PS Vita homebrew scene — extended so_util across 45+ Android-to-Vita game ports (GTA: San Andreas, several Final Fantasy titles, Crazy Taxi, and many more).
-- **[max_nx](https://github.com/fgsfdsfgs/max_nx)** (fgsfdsfgs / Andy Nguyen) — the direct Nintendo Switch precedent: an AArch64 port of the same technique, running Max Payne Mobile's real Android binary natively on Switch. This is the closest existing project to what Android Horizon does, and reviewing its source (loader, symbol resolution, hooking approach) directly informed two concrete changes here:
+- **[max_nx](https://github.com/fgsfdsfgs/max_nx)** (fgsfdsfgs / Andy Nguyen) — the direct Nintendo Switch precedent: an AArch64 port of the same technique, running Max Payne Mobile's real Android binary natively on Switch. This is the closest existing project to what Verdite does, and reviewing its source (loader, symbol resolution, hooking approach) directly informed two concrete changes here:
   - A preflight check that the JIT-related syscalls (`svcCreateCodeMemory`/`svcControlCodeMemory`) are actually available before attempting to load a game, with a clear error if not — max_nx does the same check for its own required syscalls.
   - Writing a distinctive, out-of-range "poison" address into any unresolved import instead of leaving it null, so a bug that reaches an unimplemented function crashes with an unmistakable signature instead of an ordinary null-pointer mystery — adapted from max_nx's `taint_missing_imports` approach.
 - **[ffd_nx](https://github.com/NaGaa95/ffd_nx)** (NaGaa95) — a Final Fantasy Dimensions Switch port built directly on top of max_nx's loader, good confirmation this approach generalizes beyond a single game.
 
-Worth being clear about scope: max_nx's own source (loader internals, Max Payne-specific function hooks, OpenAL/OpenGL patches) is written for a different, much simpler native-Android game and doesn't transplant directly — Hill Climb Racing's cocos2d-x/JNI-Java-bridge architecture needs a real JNI/JavaVM emulation layer that Max Payne barely uses at all, and Android Horizon's ELF loader already has its own working (independently-arrived-at, and in some respects more complete) approach to threading, audio, and JNI dispatch. What's genuinely reusable — the two safety techniques above, plus the general validation that our independent design choices (fake stdio array, Bionic mutex sentinel handling, the TPIDR_EL0-is-zero-on-Switch workaround) match this established prior art — has been folded in with credit. The rest stays project-specific by necessity, not by not looking.
+Worth being clear about scope: max_nx's own source (loader internals, Max Payne-specific function hooks, OpenAL/OpenGL patches) is written for a different, much simpler native-Android game and doesn't transplant directly — Hill Climb Racing's cocos2d-x/JNI-Java-bridge architecture needs a real JNI/JavaVM emulation layer that Max Payne barely uses at all, and Verdite's ELF loader already has its own working (independently-arrived-at, and in some respects more complete) approach to threading, audio, and JNI dispatch. What's genuinely reusable — the two safety techniques above, plus the general validation that our independent design choices (fake stdio array, Bionic mutex sentinel handling, the TPIDR_EL0-is-zero-on-Switch workaround) match this established prior art — has been folded in with credit. The rest stays project-specific by necessity, not by not looking.
 
 ---
 
 ## License
 
-This project is licensed under the Android Horizon NX Free & Source-Available License v1.0 - see [LICENSE](LICENSE) for the full text.
+This project is licensed under the Verdite Free & Source-Available License v1.0 - see [LICENSE](LICENSE) for the full text.
 
 In plain English: This project is 100% free for the community to use, copy, modify, and share. However, you are strictly forbidden from selling this code, its ports, or any derivative works. If you fork or modify this project, you must prominently credit Aaronateataco, keep your source code publicly available, and distribute your version under this exact same license.
 
@@ -759,7 +759,7 @@ Voluntary donations/tips are perfectly fine, but the software itself must always
 
 There is no warranty — if it breaks your Switch, that's on you (please use CFW responsibly).
 
-The license does not cover the Android games themselves — those belong to their respective developers. Android Horizon only provides the compatibility layer.
+The license does not cover the Android games themselves — those belong to their respective developers. Verdite only provides the compatibility layer.
 
 ---
 
