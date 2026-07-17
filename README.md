@@ -7,14 +7,14 @@
 **Run Android games natively on Nintendo Switch Horizon OS — without Android**
 
 [![License: Source Available](https://img.shields.io/badge/License-Source__Available-orange.svg)](LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/Aaronateataco/AndroidHorizonNX?style=social)](https://github.com/Aaronateataco/AndroidHorizonNX/stargazers)
+[![GitHub Stars](https://img.shields.io/github/stars/Viridite/Viridite?style=social)](https://github.com/Viridite/Viridite/stargazers)
 [![Status](https://img.shields.io/badge/status-playable-brightgreen.svg)](#status)
 [![Built with Claude AI](https://img.shields.io/badge/built%20with-Claude%20AI-orange.svg)](https://anthropic.com)
 [![Platform](https://img.shields.io/badge/platform-Nintendo%20Switch-red.svg)](#)
 
-*Made by [aaronworld.uk](https://aaronworld.uk) · [Give it a star ⭐](https://github.com/Aaronateataco/AndroidHorizonNX/stargazers) if you find it interesting!*
+*Made by [aaronworld.uk](https://aaronworld.uk) · [Give it a star ⭐](https://github.com/Viridite/Viridite/stargazers) if you find it interesting!*
 
-**[Website](https://androidhorizon.aaronworld.uk/) · [Compatibility list](https://androidhorizon.aaronworld.uk/compatibility.html) · [Docs](https://androidhorizon.aaronworld.uk/docs/index.html) · [Releases](https://github.com/AndroidHorizon/AndroidHorizonNX/releases)**
+**[Website](https://androidhorizon.aaronworld.uk/) · [Compatibility list](https://androidhorizon.aaronworld.uk/compatibility.html) · [Docs](https://androidhorizon.aaronworld.uk/docs/index.html) · [Releases](https://github.com/Viridite/Viridite/releases)**
 
 </div>
 
@@ -128,15 +128,15 @@ If the requested package isn't installed (or the argument is stale/wrong), Virid
 
 Requires [devkitPro](https://devkitpro.org/) with `devkitA64` and `libnx` installed.
 
-As of 0.1.120, Viridite is split across **two repositories** as well as two NRO binaries — this repo builds the launcher/picker only; the actual game-loading "Translation Core" engine (plus the x32 placeholder) lives in **[AHNX-Translation-Core](https://github.com/AndroidHorizon/AHNX-Translation-Core)**. See [Architecture](#architecture--launcher--translation-core) below for why.
+As of 0.1.120, Viridite is split across **two repositories** as well as two NRO binaries — this repo builds the launcher/picker only; the actual game-loading "Translation Core" engine (plus the x32 placeholder) lives in **[AHNX-Translation-Core](https://github.com/Viridite/VNX-Translation-Core)**. See [Architecture](#architecture--launcher--translation-core) below for why.
 
 To build everything and get a drag-to-SD-card layout, clone both repos as siblings:
 
 ```sh
 export DEVKITPRO=/opt/devkitpro
-git clone https://github.com/AndroidHorizon/AndroidHorizonNX.git
-git clone https://github.com/AndroidHorizon/AHNX-Translation-Core.git
-cd AndroidHorizonNX
+git clone https://github.com/Viridite/Viridite.git
+git clone https://github.com/Viridite/VNX-Translation-Core.git
+cd Viridite
 ./build_all.sh
 ```
 
@@ -144,7 +144,7 @@ Output: `testingbuild/AndroidHorizonNX.nro` (copy to `sdmc:/switch/`) and `testi
 
 Just want the launcher on its own? `make` in this repo builds `AndroidHorizonNX.nro` by itself. The Core repo has its own build instructions for its two pieces.
 
-**Prebuilt releases** (no toolchain needed) are published on this repo's [Releases page](https://github.com/AndroidHorizon/AndroidHorizonNX/releases) — each one bundles the launcher plus both Translation Core builds, ready to drag onto an SD card.
+**Prebuilt releases** (no toolchain needed) are published on this repo's [Releases page](https://github.com/Viridite/Viridite/releases) — each one bundles the launcher plus both Translation Core builds, ready to drag onto an SD card.
 
 ### Dependencies (via pacman/devkitPro)
 
@@ -160,8 +160,8 @@ switch-mesa switch-glad switch-curl switch-mbedtls
 
 Viridite is split into two pieces, in two separate repos, that chain-load into each other rather than being one monolithic binary:
 
-- **[AndroidHorizonNX](https://github.com/AndroidHorizon/AndroidHorizonNX)** (this repo) → builds `AndroidHorizonNX.nro` — the picker. Scans `sdmc:/AndroidHorizonNX/apks/`, tags each APK with which native ABI(s) it ships, shows the list, and — on launch — hands off to the right engine via `envSetNextLoad(path, argv)` (the same chain-load mechanism [forwarders](#forwarders--a-dedicated-home-menu-icon-per-game) use), passing the package name as `argv[1]`. It has no ELF loader, JNI shim, or game-engine code of its own at all — this repo is deliberately small.
-- **[AHNX-Translation-Core](https://github.com/AndroidHorizon/AHNX-Translation-Core)** → builds `AHNX-Translation-Core-x64.nro` — the real engine: everything this README describes above (ELF loading, JIT, the JNI/Bionic compat layer, audio, sensors, the whole thing). It always expects a package name in `argv[1]` — launching it directly without one just shows a message pointing back at the launcher, it's not meant to be run standalone. The same repo also builds `AHNX-Translation-Core-x32.nro` — a placeholder. **32-bit (`armeabi-v7a`) binaries are not supported at the moment** — running AArch32 code on Switch is possible in principle (there's real prior art for it via a per-title Atmosphere address-space override), but the one real precedent project we found for this depends on a 32-bit build of libnx that isn't publicly available anywhere, and building one from scratch is a substantial, uncertain undertaking of its own. The launcher detects 32-bit-only APKs during scanning and blocks launching them with an explanation, rather than attempting to chain-load into this placeholder — it exists to complete the on-disk layout, not because it does anything yet.
+- **[AndroidHorizonNX](https://github.com/Viridite/Viridite)** (this repo) → builds `AndroidHorizonNX.nro` — the picker. Scans `sdmc:/AndroidHorizonNX/apks/`, tags each APK with which native ABI(s) it ships, shows the list, and — on launch — hands off to the right engine via `envSetNextLoad(path, argv)` (the same chain-load mechanism [forwarders](#forwarders--a-dedicated-home-menu-icon-per-game) use), passing the package name as `argv[1]`. It has no ELF loader, JNI shim, or game-engine code of its own at all — this repo is deliberately small.
+- **[AHNX-Translation-Core](https://github.com/Viridite/VNX-Translation-Core)** → builds `AHNX-Translation-Core-x64.nro` — the real engine: everything this README describes above (ELF loading, JIT, the JNI/Bionic compat layer, audio, sensors, the whole thing). It always expects a package name in `argv[1]` — launching it directly without one just shows a message pointing back at the launcher, it's not meant to be run standalone. The same repo also builds `AHNX-Translation-Core-x32.nro` — a placeholder. **32-bit (`armeabi-v7a`) binaries are not supported at the moment** — running AArch32 code on Switch is possible in principle (there's real prior art for it via a per-title Atmosphere address-space override), but the one real precedent project we found for this depends on a 32-bit build of libnx that isn't publicly available anywhere, and building one from scratch is a substantial, uncertain undertaking of its own. The launcher detects 32-bit-only APKs during scanning and blocks launching them with an explanation, rather than attempting to chain-load into this placeholder — it exists to complete the on-disk layout, not because it does anything yet.
 
 Why split it this way: the two execution states (AArch64 for 64-bit games, AArch32 for a hypothetical future 32-bit engine) can't coexist in one running process — a Switch process runs in one execution state for its whole lifetime. Splitting the picker out from the engine means adding a real 32-bit engine later is "point the launcher at a new NRO," not "rewrite everything." Splitting them into separate *repos* on top of that keeps the launcher (small, stable, rarely needs to change) decoupled from the engine (where almost all the actual development happens) — releases and issues for "the app won't launch" versus "the game crashes" land in the right place instead of one giant repo mixing both concerns.
 
@@ -263,7 +263,7 @@ The pipeline (website form → Cloudflare Worker → `repository_dispatch` → `
 3. Package name, version, display name, and icon are read straight out of the manifest/resources via androguard — not typed in anywhere, so they can't drift from what was actually tested.
 4. Checks the Play Store listing for the package name and rejects it if Play Store categorizes it as a non-game app.
 5. Runs the three logs through the same kind of analysis used to chase the frame-stall work above — counts stalls/severe stalls, scans for known crash/error signatures, and checks whether the game ever actually rendered a frame — to produce a verdict (Playable / Runs with issues / Fails to launch / Inconclusive).
-6. Commits the logs + a generated report (including the APK's SHA-256) to [compat-reports](https://github.com/AndroidHorizon/compat-reports) and updates the data the [compatibility page](https://androidhorizon.aaronworld.uk/compatibility.html) renders. A repeat submission for the same package+version **overwrites** the previous one — only the latest result per version is kept. The `pending/` entry is deleted once processed.
+6. Commits the logs + a generated report (including the APK's SHA-256) to [compat-reports](https://github.com/Viridite/compat-reports) and updates the data the [compatibility page](https://androidhorizon.aaronworld.uk/compatibility.html) renders. A repeat submission for the same package+version **overwrites** the previous one — only the latest result per version is kept. The `pending/` entry is deleted once processed.
 7. If you gave a GitHub username (optional, unverified — just for display), it's credited on the [Credits page](https://androidhorizon.aaronworld.uk/credits.html) and the launcher's own About screen, under Testers.
 
 This needs an `ORG_PAT` repo secret (a classic PAT with `repo` scope across the org) configured on this repo — the Action reads and writes `compat-reports` directly, so unlike the old issue-based flow there's no degraded fallback mode; without it, the run just fails visibly in the Actions tab, with an `error.txt` left next to the pending submission in `compat-reports`.
@@ -272,7 +272,7 @@ This needs an `ORG_PAT` repo secret (a classic PAT with `repo` scope across the 
 
 ## TODO / Roadmap
 
-> **The living version of this lives on the [public roadmap project board](https://github.com/orgs/AndroidHorizon/projects/1)** (also viewable at [androidhorizon.aaronworld.uk/roadmap.html](https://androidhorizon.aaronworld.uk/roadmap.html)) — that's what gets updated going forward, not this section. What's below is kept as the last detailed narrative snapshot; items are roughly ordered by priority, "Phase 0" is the current work.
+> **The living version of this lives on the [public roadmap project board](https://github.com/orgs/Viridite/projects/1)** (also viewable at [androidhorizon.aaronworld.uk/roadmap.html](https://androidhorizon.aaronworld.uk/roadmap.html)) — that's what gets updated going forward, not this section. What's below is kept as the last detailed narrative snapshot; items are roughly ordered by priority, "Phase 0" is the current work.
 
 ### Phase 0 — Make any game do *something* (in progress)
 
@@ -389,7 +389,7 @@ If this approach proves out across many games (not just Hill Climb Racing), the 
 
 - [x] **A structured "Game compatibility report" issue form** on this repo — asks for the APK link, source site, package/version, and all three log files, auto-labeled `compat-report`.
 - [x] **A fully automated processing workflow** (`compat-submission.yml` + `process_compat_submission.py`): validates the APK link (must end in `.apk`), downloads and sniffs it's a real ZIP, extracts the game's icon, checks the Play Store category to reject non-games, and runs the same kind of stall/crash analysis used to chase frame-stall bugs above to produce an automatic verdict.
-- [x] Results (logs + a generated report + an icon) are committed to a new **[compat-reports](https://github.com/AndroidHorizon/compat-reports)** repo, which the website's compatibility page now renders as a second, community-submitted table. A repeat submission for the same package+version overwrites the older one entirely — only the latest result per version survives.
+- [x] Results (logs + a generated report + an icon) are committed to a new **[compat-reports](https://github.com/Viridite/compat-reports)** repo, which the website's compatibility page now renders as a second, community-submitted table. A repeat submission for the same package+version overwrites the older one entirely — only the latest result per version survives.
 - [x] The originating issue gets one summary comment, then is **closed and locked** — it's a data intake form, not a discussion thread.
 - [x] Publishing needs an `ORG_PAT` repo secret; without it the analysis still runs and posts its results as a comment, just left open and labeled `needs-manual-review` instead of published.
 

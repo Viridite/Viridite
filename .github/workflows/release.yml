@@ -32,7 +32,7 @@ jobs:
   build-and-release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout launcher (AndroidHorizonNX)
+      - name: Checkout launcher (Viridite)
         uses: actions/checkout@v4
         with:
           path: launcher
@@ -41,7 +41,7 @@ jobs:
       - name: Checkout Translation Core
         uses: actions/checkout@v4
         with:
-          repository: AndroidHorizon/AHNX-Translation-Core
+          repository: Viridite/VNX-Translation-Core
           path: core
           fetch-depth: 0
           # The Unity runtime (AHNX-Unity-Runtime) is a submodule compiled into
@@ -61,7 +61,7 @@ jobs:
           fetch_repo_contributors() {
             repo="$1"; title="$2"
             resp=$(curl -s -H "Authorization: token $GH_TOKEN" \
-              "https://api.github.com/repos/AndroidHorizon/$repo/contributors?per_page=100")
+              "https://api.github.com/repos/Viridite/$repo/contributors?per_page=100")
             if echo "$resp" | grep -q '"message"'; then
               echo "::warning::Couldn't fetch contributors for $repo (private + no ORG_PAT secret?) — skipping" >&2
               return
@@ -78,7 +78,7 @@ jobs:
             # straight from the same games.json the website's Credits page
             # reads. Skip the category entirely if nobody's submitted a name
             # yet, rather than showing an empty heading in the About screen.
-            resp=$(curl -s "https://raw.githubusercontent.com/AndroidHorizon/compat-reports/main/data/games.json")
+            resp=$(curl -s "https://raw.githubusercontent.com/Viridite/compat-reports/main/data/games.json")
             names=$(echo "$resp" | grep -o '"submitted_by": *"[^"]*"' \
               | sed -E 's/.*"submitted_by": *"([^"]*)"/\1/' | grep -v '^$' | sort -u)
             if [ -n "$names" ]; then
@@ -87,8 +87,8 @@ jobs:
             fi
           }
           {
-            fetch_repo_contributors "AndroidHorizonNX" "Launcher (AndroidHorizonNX)"
-            fetch_repo_contributors "AHNX-Translation-Core" "Translation Core"
+            fetch_repo_contributors "Viridite" "Launcher (Viridite)"
+            fetch_repo_contributors "VNX-Translation-Core" "Translation Core"
             fetch_repo_contributors "website" "Website"
             fetch_testers
           } > launcher/romfs/contributors.txt
@@ -162,7 +162,7 @@ jobs:
             echo
             echo "Automated build via GitHub Actions. Bundles the launcher + both Translation Core binaries — drag \`AndroidHorizonNX.nro\` and the \`AndroidHorizonNX/\` folder from \`AndroidHorizon-sdcard.zip\` straight onto your SD card's \`/switch/\` folder."
             echo
-            echo "### Launcher (AndroidHorizonNX) changes"
+            echo "### Launcher (Viridite) changes"
             echo
             if [ -n "$LAUNCHER_LAST_TAG" ]; then
               (cd launcher && git log "${LAUNCHER_LAST_TAG}..HEAD" --pretty=format:"- %s (%h, %ad)" --date=short)

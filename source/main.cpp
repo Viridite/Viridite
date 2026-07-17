@@ -746,7 +746,7 @@ struct App {
                 SDL_Rect dst = {avX, avY, avSz, avSz};
                 SDL_RenderCopy(rdr, avatarTex, nullptr, &dst);
             } else {
-                drawMonogram("AndroidHorizon", avX, avY, avSz);
+                drawMonogram("Viridite", avX, avY, avSz);
                 static const std::string FETCH = "Loading avatar...";
                 int fw = 0, fh = 0;
                 TTF_SizeUTF8(fSm, FETCH.c_str(), &fw, &fh);

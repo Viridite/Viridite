@@ -1,4 +1,4 @@
-#Launcher (AndroidHorizonNX)
+#Launcher (Viridite)
 aaronateataco:90
 #Translation Core
 aaronateataco:2

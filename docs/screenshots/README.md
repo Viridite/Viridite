@@ -13,5 +13,5 @@ README embeds them from here.
 
 Gameplay/loading-screen screenshots (`ui_loading.png`, `ui_result.png`,
 `game_frame*.png`) now live in the
-[AHNX-Translation-Core](https://github.com/AndroidHorizon/AHNX-Translation-Core)
+[AHNX-Translation-Core](https://github.com/Viridite/VNX-Translation-Core)
 repo instead, since those screens are captured by the engine, not the launcher.

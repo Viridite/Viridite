@@ -383,7 +383,7 @@ def main():
 
     workdir = tempfile.mkdtemp()
     reports_dir = os.path.join(workdir, "compat-reports")
-    clone_url = f"https://{org_pat}@github.com/AndroidHorizon/compat-reports.git"
+    clone_url = f"https://{org_pat}@github.com/Viridite/compat-reports.git"
     subprocess.run(["git", "clone", "--depth", "1", clone_url, reports_dir], check=True, capture_output=True)
 
     pending_dir = os.path.join(reports_dir, "pending", submission_id)
