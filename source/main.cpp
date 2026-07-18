@@ -980,6 +980,14 @@ struct App {
         // its own log.txt. The real argument goes at argv[1] instead, same
         // convention any normal argv[0]-is-the-program-path command line
         // would use.
+        // Two builds of one game can share a package id (e.g. an arm64 and an
+        // arm32 HCR). argv only carries the package, so record the exact file
+        // the user picked in a marker the Core reads to disambiguate.
+        {
+            FILE* lm = fopen("sdmc:/Viridite/.launch_apk", "w");
+            if (lm) { fputs(apk.path.c_str(), lm); fclose(lm); }
+        }
+
         std::string argvStr = std::string(corePath) + " " + pkg;
         logMsg(("launchGame: chain-loading to " + std::string(corePath) +
                 " argv=\"" + argvStr + "\"").c_str());
