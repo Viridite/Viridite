@@ -579,55 +579,57 @@ bool updateApply(const UpdateInfo& info,
         size_t slash = to.find_last_of('/');
         if (slash != std::string::npos) ensureDir(to.substr(0, slash));
 
-        // Move the existing file aside instead of writing over it.
+        // Write the new file under a temporary name FIRST, and only move the
+        // existing one once that has fully succeeded.
         //
-        // Opening sdmc:/switch/Viridite.nro for writing fails with EIO on real
-        // hardware, because that's the NRO this process is executing — the
-        // running file is locked, which an earlier comment here wrongly assumed
-        // it wasn't. Renaming within the same directory only rewrites a
-        // directory entry, so it survives the file being open, and afterwards
-        // the target name is free and the new file can simply be created.
+        // Two hardware failures shaped this. Writing straight over the target
+        // fails with EIO for the launcher's own NRO — Horizon keeps the running
+        // executable's path locked. Renaming it aside first frees the directory
+        // entry, and that rename does succeed, but *creating* a file at that
+        // path still failed afterwards — and by then the original had already
+        // been moved, so a failed update left no launcher at all. Restoring it
+        // failed too, which is the worst possible outcome and was entirely the
+        // fault of moving the original before knowing the write would work.
         //
-        // Falls back to overwriting in place if the rename is refused, since
-        // that path does work for the Core binaries (nothing is executing
-        // those) and is what shipped before.
+        // Writing to <target>.new touches no locked path, so it either succeeds
+        // completely or changes nothing. The swap is then two renames, which is
+        // the one operation this filesystem has demonstrably allowed on a
+        // running NRO.
+        std::string tmp = to + ".new";
         std::string bak = to + ".bak";
-        remove(bak.c_str());
+        remove(tmp.c_str());
+        if (!copyFile(from, tmp, err)) {
+            remove(tmp.c_str());
+            removeRecursive(WORK_DIR);
+            return false;                       // nothing has been touched yet
+        }
 
-        bool hadOld = false, movedAside = false;
-        {
-            struct stat st;
-            if (stat(to.c_str(), &st) == 0) {
-                hadOld = true;
-                if (rename(to.c_str(), bak.c_str()) == 0) {
-                    movedAside = true;
-                } else {
-                    // Couldn't move it — keep a copy so an in-place write that
-                    // fails part-way can still be undone.
-                    std::string bakErr;
-                    if (!copyFile(to, bak, &bakErr)) {
-                        *err = "couldn't back up " + to + ": " + bakErr;
-                        removeRecursive(WORK_DIR);
-                        return false;
-                    }
-                }
+        struct stat st;
+        bool hadOld = (stat(to.c_str(), &st) == 0);
+        if (hadOld) {
+            remove(bak.c_str());
+            if (rename(to.c_str(), bak.c_str()) != 0) {
+                *err = "couldn't move " + to + " aside (" + strerror(errno) + ")";
+                remove(tmp.c_str());
+                removeRecursive(WORK_DIR);
+                return false;                   // still untouched
             }
         }
 
-        if (!copyFile(from, to, err)) {
-            // Put the old file back rather than leaving a hole (or a
-            // half-written NRO) where a working one used to be.
-            if (hadOld) {
-                std::string ignored;
-                bool restored = movedAside ? (rename(bak.c_str(), to.c_str()) == 0)
-                                           : copyFile(bak, to, &ignored);
-                if (!restored)
-                    *err += " — the previous file is still at " + bak +
-                            ", rename it back by hand before relaunching";
-                else
-                    *err += " (previous version restored)";
+        if (rename(tmp.c_str(), to.c_str()) != 0) {
+            std::string why = strerror(errno);
+            // Put the original back. It was only moved a moment ago, by the
+            // same operation in reverse, so this is the most likely thing to
+            // work — but say exactly what to do if it doesn't.
+            if (hadOld && rename(bak.c_str(), to.c_str()) == 0) {
+                *err = "couldn't install " + to + " (" + why + ") — previous version restored";
+            } else if (hadOld) {
+                *err = "couldn't install " + to + " (" + why + ") — the previous file is at " +
+                       bak + ", rename it back to " + to + " before relaunching";
+            } else {
+                *err = "couldn't install " + to + " (" + why + ")";
             }
-            if (!hadOld || !movedAside) remove(bak.c_str());
+            remove(tmp.c_str());
             removeRecursive(WORK_DIR);
             return false;
         }
