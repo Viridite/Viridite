@@ -259,14 +259,68 @@ static std::vector<std::string> resolveResId(
     return out;
 }
 
-// Pick the best icon path from the list returned by resolveResId
-static std::string bestIconPath(const std::vector<std::string>& paths) {
-    static const char* densities[] = {
-        "xxxhdpi", "xxhdpi", "xhdpi", "hdpi", "mdpi", nullptr
+// Rank an icon path by the density bucket in its directory name. Higher is
+// better; -1 means no recognisable density.
+//
+// Matched against the directory segment rather than by plain substring search:
+// "hdpi" is a substring of "xxxhdpi", so a naive find() ranks every high-density
+// icon as if it were the lowest bucket. The old code only got away with that
+// because it happened to test the buckets in descending order.
+static int densityRank(const std::string& path) {
+    static const struct { const char* tag; int rank; } BUCKETS[] = {
+        {"-xxxhdpi", 6}, {"-xxhdpi", 5}, {"-xhdpi", 4},
+        {"-hdpi",    3}, {"-mdpi",   2}, {"-ldpi",  1},
+        // anydpi/nodpi carry no size information of their own, and anydpi is
+        // usually an adaptive-icon XML rather than a bitmap, so they rank below
+        // any real density bucket but above "no idea".
+        {"-anydpi",  0}, {"-nodpi",  0},
     };
-    for (int d = 0; densities[d]; d++)
-        for (const auto& s : paths)
-            if (s.find(densities[d]) != std::string::npos) return s;
+    size_t slash = path.find_last_of('/');
+    std::string dir = (slash == std::string::npos) ? path : path.substr(0, slash);
+    for (const auto& b : BUCKETS) {
+        size_t at = dir.find(b.tag);
+        if (at == std::string::npos) continue;
+        // Must end the segment or be followed by a version qualifier (-v4, -v26).
+        size_t after = at + strlen(b.tag);
+        if (after == dir.size() || dir[after] == '-' || dir[after] == '/')
+            return b.rank;
+    }
+    return -1;
+}
+
+// Pixel width straight out of a PNG's IHDR, or 0 if these bytes aren't a PNG.
+// Used to compare icons by real resolution instead of trusting the density
+// folder they were filed under.
+static size_t pngWidth(const std::vector<uint8_t>& data) {
+    static const uint8_t SIG[8] = {0x89,'P','N','G',0x0D,0x0A,0x1A,0x0A};
+    if (data.size() < 24 || memcmp(data.data(), SIG, 8) != 0) return 0;
+    if (memcmp(data.data() + 12, "IHDR", 4) != 0) return 0;
+    const uint8_t* w = data.data() + 16;             // big-endian u32
+    return ((size_t)w[0] << 24) | ((size_t)w[1] << 16) | ((size_t)w[2] << 8) | w[3];
+}
+
+// Adaptive-icon XML isn't an image we can decode — skip it rather than hand
+// SDL_image a blob of AXML and get a blank tile.
+static bool isBitmapIcon(const std::string& path) {
+    auto ends = [&](const char* e) {
+        size_t n = strlen(e);
+        return path.size() >= n && path.compare(path.size() - n, n, e) == 0;
+    };
+    return ends(".png") || ends(".webp") || ends(".jpg") || ends(".jpeg");
+}
+
+// Pick the best icon path from the list returned by resolveResId.
+static std::string bestIconPath(const std::vector<std::string>& paths) {
+    const std::string* best = nullptr;
+    int bestRank = -2;
+    for (const auto& s : paths) {
+        if (!isBitmapIcon(s)) continue;
+        int r = densityRank(s);
+        if (r > bestRank) { bestRank = r; best = &s; }
+    }
+    if (best) return *best;
+    // Nothing recognisable — fall back to the first entry so behaviour matches
+    // what this did before rather than silently giving up.
     return paths.empty() ? "" : paths[0];
 }
 
@@ -431,9 +485,31 @@ ApkInfo parseApk(const std::string& path) {
             "res/mipmap-xxhdpi/ic_launcher.webp",
             nullptr
         };
+        // Take the highest-resolution candidate that's actually present rather
+        // than the first one that happens to exist. Density folder names are
+        // only a hint — plenty of APKs ship a "xxxhdpi" icon that's smaller
+        // than their "xhdpi" one — so where the bytes decode as PNG, compare
+        // the real pixel width from the IHDR and keep the biggest.
+        size_t bestPixels = 0;
+        int    bestRank   = -2;
         for (int i = 0; CANDIDATES[i]; i++) {
             auto icon = readZipEntry(zf, CANDIDATES[i]);
-            if (!icon.empty()) { info.iconPng = std::move(icon); break; }
+            if (icon.empty()) continue;
+
+            size_t px = pngWidth(icon);              // 0 if not a PNG (e.g. WebP)
+            int    rk = densityRank(CANDIDATES[i]);
+
+            bool better;
+            if (px && bestPixels)      better = px > bestPixels;   // both measurable
+            else if (px && !bestPixels) better = true;             // measurable beats guessed
+            else if (!px && bestPixels) better = false;
+            else                        better = rk > bestRank;    // neither: trust density
+
+            if (better || info.iconPng.empty()) {
+                info.iconPng = std::move(icon);
+                bestPixels   = px;
+                bestRank     = rk;
+            }
         }
     }
 

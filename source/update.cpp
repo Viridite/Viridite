@@ -11,6 +11,7 @@
 #include <thread>
 #include <cstdio>
 #include <cstring>
+#include <cerrno>
 #include <cstdlib>
 #include <vector>
 
@@ -372,6 +373,41 @@ static bool looksLikeNro(const std::string& path) {
     return ok && memcmp(magic, "NRO0", 4) == 0;
 }
 
+// Streams one file over another. Hardware showed rename() failing outright for
+// sdmc:/Viridite/update/staging/Viridite.nro -> sdmc:/switch/Viridite.nro
+// ("couldn't write sdmc:/switch/Viridite.nro"), which is the cross-directory
+// case on the Switch's SD filesystem. Writing the bytes works regardless of
+// whether the FS layer will move an entry between directories or replace an
+// existing one, and it also happens to be fine for the NRO we're running:
+// hbloader read that into memory at launch and isn't holding the file.
+static bool copyFile(const std::string& from, const std::string& to, std::string* err) {
+    FILE* in = fopen(from.c_str(), "rb");
+    if (!in) { *err = "can't read " + from + " (" + strerror(errno) + ")"; return false; }
+    FILE* out = fopen(to.c_str(), "wb");
+    if (!out) {
+        fclose(in);
+        *err = "can't open " + to + " for writing (" + strerror(errno) + ")";
+        return false;
+    }
+
+    std::vector<char> buf(256 * 1024);
+    bool ok = true;
+    size_t n;
+    while ((n = fread(buf.data(), 1, buf.size(), in)) > 0) {
+        if (fwrite(buf.data(), 1, n, out) != n) {
+            *err = "write failed on " + to + " (" + strerror(errno) + ") — SD card full?";
+            ok = false;
+            break;
+        }
+    }
+    if (ok && ferror(in)) { *err = "read failed on " + from + " (" + strerror(errno) + ")"; ok = false; }
+    fclose(in);
+    // fclose flushes; a failure here means bytes never reached the card, which
+    // matters more than usual when the file being written is an executable.
+    if (fclose(out) != 0 && ok) { *err = "couldn't flush " + to + " (" + strerror(errno) + ")"; ok = false; }
+    return ok;
+}
+
 static bool ensureDir(const std::string& p) {
     mkdir(p.c_str(), 0777);
     struct stat st;
@@ -532,14 +568,34 @@ bool updateApply(const UpdateInfo& info,
         size_t slash = to.find_last_of('/');
         if (slash != std::string::npos) ensureDir(to.substr(0, slash));
 
+        // Back the current file up by copying, then overwrite it in place. The
+        // backup has to be a copy rather than a rename for the same reason the
+        // install is: renaming is what failed here on real hardware.
         std::string bak = to + ".bak";
         remove(bak.c_str());
-        rename(to.c_str(), bak.c_str());                // no-op if `to` is absent
+        bool hadOld = false;
+        {
+            struct stat st;
+            if (stat(to.c_str(), &st) == 0) {
+                std::string bakErr;
+                if (!copyFile(to, bak, &bakErr)) {
+                    *err = "couldn't back up " + to + ": " + bakErr;
+                    removeRecursive(WORK_DIR);
+                    return false;
+                }
+                hadOld = true;
+            }
+        }
 
-        if (rename(from.c_str(), to.c_str()) != 0) {
-            // Put the old one back rather than leaving a hole where an NRO was.
-            rename(bak.c_str(), to.c_str());
-            *err = "couldn't write " + to;
+        if (!copyFile(from, to, err)) {
+            // Put the old bytes back rather than leaving a half-written NRO
+            // where a working one used to be.
+            if (hadOld) {
+                std::string restoreErr;
+                if (!copyFile(bak, to, &restoreErr))
+                    *err += " (and restoring the previous file failed: " + restoreErr + ")";
+            }
+            remove(bak.c_str());
             removeRecursive(WORK_DIR);
             return false;
         }
