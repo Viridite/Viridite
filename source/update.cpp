@@ -14,6 +14,7 @@
 #include <cerrno>
 #include <cstdlib>
 #include <vector>
+#include <algorithm>
 
 // Releases live on the launcher repo; the bundle asset is built by release.yml.
 static const char* RELEASES_API =
@@ -559,6 +560,16 @@ bool updateApply(const UpdateInfo& info,
     // Only now does anything outside the work directory change. Each file is
     // replaced by renaming the verified copy over it, keeping one .bak behind
     // so a failure part-way still leaves a runnable launcher on the card.
+    // The launcher's own NRO goes first. It's the one file that can fail —
+    // it's the executable this code is running from — so attempting it before
+    // anything else means a failure leaves the whole install untouched rather
+    // than half-updated with a launcher and Cores from different releases.
+    std::sort(files.begin(), files.end(), [](const std::string& a, const std::string& b) {
+        bool la = (a == "Viridite.nro"), lb = (b == "Viridite.nro");
+        if (la != lb) return la;
+        return a < b;
+    });
+
     progress("Installing", 0);
     int done = 0;
     for (const auto& rel : files) {
@@ -568,34 +579,55 @@ bool updateApply(const UpdateInfo& info,
         size_t slash = to.find_last_of('/');
         if (slash != std::string::npos) ensureDir(to.substr(0, slash));
 
-        // Back the current file up by copying, then overwrite it in place. The
-        // backup has to be a copy rather than a rename for the same reason the
-        // install is: renaming is what failed here on real hardware.
+        // Move the existing file aside instead of writing over it.
+        //
+        // Opening sdmc:/switch/Viridite.nro for writing fails with EIO on real
+        // hardware, because that's the NRO this process is executing — the
+        // running file is locked, which an earlier comment here wrongly assumed
+        // it wasn't. Renaming within the same directory only rewrites a
+        // directory entry, so it survives the file being open, and afterwards
+        // the target name is free and the new file can simply be created.
+        //
+        // Falls back to overwriting in place if the rename is refused, since
+        // that path does work for the Core binaries (nothing is executing
+        // those) and is what shipped before.
         std::string bak = to + ".bak";
         remove(bak.c_str());
-        bool hadOld = false;
+
+        bool hadOld = false, movedAside = false;
         {
             struct stat st;
             if (stat(to.c_str(), &st) == 0) {
-                std::string bakErr;
-                if (!copyFile(to, bak, &bakErr)) {
-                    *err = "couldn't back up " + to + ": " + bakErr;
-                    removeRecursive(WORK_DIR);
-                    return false;
-                }
                 hadOld = true;
+                if (rename(to.c_str(), bak.c_str()) == 0) {
+                    movedAside = true;
+                } else {
+                    // Couldn't move it — keep a copy so an in-place write that
+                    // fails part-way can still be undone.
+                    std::string bakErr;
+                    if (!copyFile(to, bak, &bakErr)) {
+                        *err = "couldn't back up " + to + ": " + bakErr;
+                        removeRecursive(WORK_DIR);
+                        return false;
+                    }
+                }
             }
         }
 
         if (!copyFile(from, to, err)) {
-            // Put the old bytes back rather than leaving a half-written NRO
-            // where a working one used to be.
+            // Put the old file back rather than leaving a hole (or a
+            // half-written NRO) where a working one used to be.
             if (hadOld) {
-                std::string restoreErr;
-                if (!copyFile(bak, to, &restoreErr))
-                    *err += " (and restoring the previous file failed: " + restoreErr + ")";
+                std::string ignored;
+                bool restored = movedAside ? (rename(bak.c_str(), to.c_str()) == 0)
+                                           : copyFile(bak, to, &ignored);
+                if (!restored)
+                    *err += " — the previous file is still at " + bak +
+                            ", rename it back by hand before relaunching";
+                else
+                    *err += " (previous version restored)";
             }
-            remove(bak.c_str());
+            if (!hadOld || !movedAside) remove(bak.c_str());
             removeRecursive(WORK_DIR);
             return false;
         }
