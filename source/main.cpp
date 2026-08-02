@@ -42,6 +42,56 @@ static const char* CORE_X64_PATH = "sdmc:/switch/Viridite/Viridite-Translation-C
 // natives the Core resolves). Only these get asked how they should be
 // launched — for anything else the question has one answer, so asking would
 // just be a step in the way.
+// What the console actually has attached right now. The picker offers these
+// rather than a fixed list, so nobody is asked to choose a Pro Controller
+// they haven't got — and the guide the game shows can match the thing in
+// their hands instead of a generic pad.
+enum class PadKind { None, Pro, Handheld, JoyDual, JoyLeft, JoyRight };
+
+static const char* padKindId(PadKind k) {
+    switch (k) {
+        case PadKind::Pro:      return "pro";
+        case PadKind::Handheld: return "handheld";
+        case PadKind::JoyDual:  return "joycon_dual";
+        case PadKind::JoyLeft:  return "joycon_left";
+        case PadKind::JoyRight: return "joycon_right";
+        default:                return "touch";
+    }
+}
+static const char* padKindName(PadKind k) {
+    switch (k) {
+        case PadKind::Pro:      return "Pro Controller";
+        case PadKind::Handheld: return "Handheld (Joy-Cons attached)";
+        case PadKind::JoyDual:  return "Joy-Cons (detached pair)";
+        case PadKind::JoyLeft:  return "Left Joy-Con (sideways)";
+        case PadKind::JoyRight: return "Right Joy-Con (sideways)";
+        default:                return "Touch screen";
+    }
+}
+
+// Distinct controllers currently connected, best-fit first. Handheld and a
+// paired set report separately, so both can be offered when both exist.
+static std::vector<PadKind> detectPads() {
+    std::vector<PadKind> out;
+    auto add = [&](PadKind k) {
+        if (std::find(out.begin(), out.end(), k) == out.end()) out.push_back(k);
+    };
+    hidInitializeNpad();
+    u32 hh = hidGetNpadStyleSet(HidNpadIdType_Handheld);
+    if (hh & HidNpadStyleTag_NpadHandheld) add(PadKind::Handheld);
+    // Players 1-8; in practice only the first couple matter, but a pad paired
+    // to a later slot is still a pad someone can play with.
+    for (int i = 0; i < 8; i++) {
+        u32 st = hidGetNpadStyleSet((HidNpadIdType)(HidNpadIdType_No1 + i));
+        if (st & HidNpadStyleTag_NpadFullKey)  add(PadKind::Pro);
+        if (st & HidNpadStyleTag_NpadHandheld) add(PadKind::Handheld);
+        if (st & HidNpadStyleTag_NpadJoyDual)  add(PadKind::JoyDual);
+        if (st & HidNpadStyleTag_NpadJoyLeft)  add(PadKind::JoyLeft);
+        if (st & HidNpadStyleTag_NpadJoyRight) add(PadKind::JoyRight);
+    }
+    return out;
+}
+
 static bool hasControllerSupport(const std::string& pkg) {
     return pkg == "com.fingersoft.hillclimb";
 }
@@ -1241,28 +1291,39 @@ struct App {
     // and there's nothing to choose. Handheld genuinely has both, and which one
     // someone wants isn't guessable — HCR plays quite differently on a pad than
     // with touch steering. Returns false if the launch was cancelled.
-    bool askLaunchMode(const std::string& appName, bool* useController) {
-        int  choice = 0;                       // 0 = controller, 1 = touch
+    // Offers whatever is actually plugged in, plus touch when the console has a
+    // screen to touch. Docked with one pad attached there's nothing to choose,
+    // so this isn't called at all — see launchGame.
+    // Returns false if the launch was cancelled.
+    bool askLaunchMode(const std::string& appName,
+                       const std::vector<PadKind>& pads, bool offerTouch,
+                       PadKind* chosen) {
+        std::vector<PadKind> opts = pads;
+        if (offerTouch) opts.push_back(PadKind::None);   // None == touch screen
+        if (opts.empty()) { *chosen = PadKind::None; return true; }
+
+        int  sel = 0;
         bool done = false, cancelled = false;
+        const int ROW_H = 78, TOP = LIST_Y + 96;
+
         while (!done) {
             SDL_Event ev;
             while (SDL_PollEvent(&ev)) {
                 if (ev.type == SDL_QUIT) { cancelled = true; done = true; break; }
                 Act a = actionFor(ev);
                 if (ev.type == SDL_JOYHATMOTION) {
-                    if (ev.jhat.value & (SDL_HAT_UP | SDL_HAT_LEFT))    a = Act::Up;
-                    if (ev.jhat.value & (SDL_HAT_DOWN | SDL_HAT_RIGHT)) a = Act::Down;
+                    if (ev.jhat.value & SDL_HAT_UP)   a = Act::Up;
+                    if (ev.jhat.value & SDL_HAT_DOWN) a = Act::Down;
                 }
-                if      (a == Act::Up   || a == Act::PageUp)   choice = 0;
-                else if (a == Act::Down || a == Act::PageDown) choice = 1;
+                if      (a == Act::Up)      sel = (sel - 1 + (int)opts.size()) % (int)opts.size();
+                else if (a == Act::Down)    sel = (sel + 1) % (int)opts.size();
                 else if (a == Act::Confirm) done = true;
                 else if (a == Act::Manage || a == Act::Quit) { cancelled = true; done = true; }
 
                 if (ev.type == SDL_FINGERUP) {
-                    int py = (int)(ev.tfinger.y * SH);
-                    int r  = (py - (LIST_Y + 96)) / 78;
-                    if (r >= 0 && r <= 1) {
-                        if (r == choice) done = true; else choice = r;
+                    int r = ((int)(ev.tfinger.y * SH) - TOP) / ROW_H;
+                    if (r >= 0 && r < (int)opts.size()) {
+                        if (r == sel) done = true; else sel = r;
                     }
                 }
             }
@@ -1271,26 +1332,22 @@ struct App {
             drawHeaderBar();
             int y = LIST_Y + 30;
             drawText(fLg, clamp(fLg, appName, SW - 60), C_WHITE, 30, y); y += 42;
-            drawText(fSm, "How do you want to play?", C_GRAY, 30, y);    y += 24;
+            drawText(fSm, "How do you want to play?", C_GRAY, 30, y);
 
-            const char* titles[2] = {"Controller", "Touch screen"};
-            const char* subs[2]   = {
-                "Shoulders accelerate and brake, D-pad and face buttons for menus",
-                "Tap and hold the on-screen pedals, the same as on a phone"};
-            for (int r = 0; r < 2; r++) {
-                int ry = LIST_Y + 96 + r * 78;
-                if (r == choice) {
-                    fill(24, ry - 6, SW - 48, 70, C_SEL);
-                    fill(24, ry - 6, 4, 70, C_OK);
-                }
-                drawText(fMd, titles[r], C_WHITE, 44, ry + 4);
-                drawText(fSm, subs[r],   C_GRAY,  44, ry + 32);
+            for (int r = 0; r < (int)opts.size(); r++) {
+                int ry = TOP + r * ROW_H;
+                if (r == sel) { fill(24, ry - 6, SW - 48, ROW_H - 8, C_SEL); fill(24, ry - 6, 4, ROW_H - 8, C_OK); }
+                drawText(fMd, padKindName(opts[r]), C_WHITE, 44, ry + 4);
+                const char* sub = (opts[r] == PadKind::None)
+                    ? "Tap and hold the on-screen controls, the same as on a phone"
+                    : "Shoulders accelerate and brake, D-pad and face buttons for menus";
+                drawText(fSm, sub, C_GRAY, 44, ry + 32);
             }
             drawFooterBar({{BG(GLYPH_A, "A"), "Play"}, {BG(GLYPH_B, "B"), "Back"}}, "");
             SDL_RenderPresent(rdr);
             SDL_Delay(16);
         }
-        *useController = (choice == 0);
+        *chosen = opts[sel];
         return !cancelled;
     }
 
@@ -1349,23 +1406,35 @@ struct App {
         }
 
         // Input mode, passed to the Core the same way as the FPS cap: a marker
-        // file it reads once at launch. Docked has no touch screen, so a pad is
-        // the only option and there's nothing worth asking; handheld has both,
-        // and the answer changes how the game plays, so it's the user's call.
+        // file it reads once at launch. The Core uses it both to decide whether
+        // to register a controller at all and to pick which guide image to
+        // patch into the game, so the diagram matches what's in your hands.
         {
-            bool useController = true;
+            PadKind chosen = PadKind::None;
             bool dockedNow = appletGetOperationMode() == AppletOperationMode_Console;
-            if (!dockedNow && hasControllerSupport(pkg)) {
-                if (!askLaunchMode(apk.appName, &useController)) {
+            std::vector<PadKind> pads = detectPads();
+
+            if (!hasControllerSupport(pkg)) {
+                // No controller path in this game — touch is the only answer,
+                // and asking would be a step in the way.
+                chosen = PadKind::None;
+            } else if (pads.empty()) {
+                chosen = PadKind::None;               // nothing attached
+            } else if (dockedNow && pads.size() == 1) {
+                chosen = pads[0];                     // no touch screen, one pad
+            } else {
+                // Docked offers pads only (no screen to touch); handheld offers
+                // touch as well.
+                if (!askLaunchMode(apk.appName, pads, !dockedNow, &chosen)) {
                     if (outHandled) *outHandled = false;
-                    return false;                       // backed out of the picker
+                    return false;                     // backed out of the picker
                 }
             }
             FILE* im = fopen("sdmc:/Viridite/.launch_input", "w");
-            if (im) { fputs(useController ? "controller" : "touch", im); fclose(im); }
-            logMsg((std::string("launch input mode: ") +
-                    (useController ? "controller" : "touch") +
-                    (dockedNow ? " (docked)" : " (handheld)")).c_str());
+            if (im) { fputs(padKindId(chosen), im); fclose(im); }
+            logMsg((std::string("launch input mode: ") + padKindId(chosen) +
+                    (dockedNow ? " (docked)" : " (handheld)") +
+                    " — detected " + std::to_string(pads.size()) + " pad(s)").c_str());
         }
 
         std::string argvStr = std::string(corePath) + " " + pkg;
