@@ -174,8 +174,17 @@ static Act actionFor(const SDL_Event& ev) {
 //   username:contributions
 //   #Next category title
 //   ...
-struct Contributor { std::string name; int contributions; SDL_Texture* avatar = nullptr; };
-struct ContributorCategory { std::string title; std::vector<Contributor> people; };
+// One entry per HUMAN, not per category. contributors.txt is grouped by area
+// (Launcher / Translation Core / Website / Testers), so someone who worked
+// across several of them used to be listed once per group — with a single
+// active contributor that made the whole credits reel the same name repeated.
+// Roles are collected onto the person instead.
+struct Person {
+    std::string name;
+    int contributions = 0;
+    std::vector<std::string> roles;
+    SDL_Texture* avatar = nullptr;
+};
 
 // ---------------------------------------------------------------------------
 struct App {
@@ -223,7 +232,8 @@ struct App {
     float touchScrollAccY = 0.0f;
 
     // Credits (About screen), loaded once from romfs at startup.
-    std::vector<ContributorCategory> contributors;
+    std::vector<Person> people;
+    std::string curTitle;                 // category being parsed
     std::vector<SDL_Texture*> contributorAvatarTextures; // owns every unique avatar texture, for cleanup()
     float  creditsScroll     = 0.0f;
     Uint32 lastCreditsStick  = 0;
@@ -343,28 +353,55 @@ struct App {
     // list — e.g. a local dev build made without running the CI step that
     // generates it — not a fatal error.
     void loadContributors() {
-        contributors.clear();
+        people.clear();
+        curTitle.clear();
         FILE* f = fopen("romfs:/contributors.txt", "r");
         if (!f) { logMsg("contributors.txt not present — About screen credits will be empty"); return; }
+        auto addPerson = [&](const std::string& n, const std::string& role, int contrib) {
+            std::string key = n; std::transform(key.begin(), key.end(), key.begin(), ::tolower);
+            for (auto& pr : people) {
+                std::string k2 = pr.name; std::transform(k2.begin(), k2.end(), k2.begin(), ::tolower);
+                if (k2 == key) {
+                    pr.contributions += contrib;
+                    if (std::find(pr.roles.begin(), pr.roles.end(), role) == pr.roles.end())
+                        pr.roles.push_back(role);
+                    return;
+                }
+            }
+            Person np; np.name = n; np.contributions = contrib; np.roles.push_back(role);
+            people.push_back(np);
+        };
         char line[256];
-        ContributorCategory* cur = nullptr;
         while (fgets(line, sizeof(line), f)) {
             std::string s(line);
             while (!s.empty() && (s.back() == '\n' || s.back() == '\r')) s.pop_back();
             if (s.empty()) continue;
             if (s[0] == '#') {
-                contributors.push_back({s.substr(1), {}});
-                cur = &contributors.back();
-            } else if (cur) {
+                curTitle = s.substr(1);
+            } else if (!curTitle.empty()) {
                 size_t p = s.find(':');
-                Contributor c;
-                c.name          = (p == std::string::npos) ? s : s.substr(0, p);
-                c.contributions = (p == std::string::npos) ? 0 : atoi(s.substr(p + 1).c_str());
-                cur->people.push_back(c);
+                std::string name = (p == std::string::npos) ? s : s.substr(0, p);
+                int  n = (p == std::string::npos) ? 0 : atoi(s.substr(p + 1).c_str());
+                while (!name.empty() && (name.front() == ' ' || name.front() == '\t')) name.erase(name.begin());
+                while (!name.empty() && (name.back()  == ' ' || name.back()  == '\t')) name.pop_back();
+                if (name.empty()) continue;
+                addPerson(name, curTitle, n);
             }
         }
         fclose(f);
-        logMsg(("contributors.txt loaded: " + std::to_string(contributors.size()) + " categories").c_str());
+
+        // Most commits first; people credited only for testing (no commits)
+        // sort after, alphabetically.
+        std::sort(people.begin(), people.end(), [](const Person& a, const Person& b) {
+            if (a.contributions != b.contributions) return a.contributions > b.contributions;
+            std::string la = a.name, lb = b.name;
+            std::transform(la.begin(), la.end(), la.begin(), ::tolower);
+            std::transform(lb.begin(), lb.end(), lb.begin(), ::tolower);
+            return la < lb;
+        });
+
+        logMsg(("contributors.txt loaded: " + std::to_string(people.size()) +
+                " people").c_str());
         loadContributorAvatars();
     }
 
@@ -378,18 +415,16 @@ struct App {
         for (auto* t : contributorAvatarTextures) if (t) SDL_DestroyTexture(t);
         contributorAvatarTextures.clear();
         std::map<std::string, SDL_Texture*> byName;
-        for (auto& cat : contributors) {
-            for (auto& p : cat.people) {
-                auto it = byName.find(p.name);
-                if (it != byName.end()) { p.avatar = it->second; continue; }
-                std::string path = "romfs:/avatars/" + p.name + ".png";
-                SDL_Surface* surf = IMG_Load(path.c_str());
-                SDL_Texture* tex = surf ? SDL_CreateTextureFromSurface(rdr, surf) : nullptr;
-                if (surf) SDL_FreeSurface(surf);
-                byName[p.name] = tex;
-                if (tex) contributorAvatarTextures.push_back(tex);
-                p.avatar = tex;
-            }
+        for (auto& p : people) {
+            auto it = byName.find(p.name);
+            if (it != byName.end()) { p.avatar = it->second; continue; }
+            std::string path = "romfs:/avatars/" + p.name + ".png";
+            SDL_Surface* surf = IMG_Load(path.c_str());
+            SDL_Texture* tex = surf ? SDL_CreateTextureFromSurface(rdr, surf) : nullptr;
+            if (surf) SDL_FreeSurface(surf);
+            byName[p.name] = tex;
+            if (tex) contributorAvatarTextures.push_back(tex);
+            p.avatar = tex;
         }
     }
 
@@ -558,14 +593,13 @@ struct App {
     // rows) keeps this simple since category headers and person rows have
     // different heights.
     void drawContributors(int top) {
-        if (contributors.empty()) return;
-        const int CAT_H    = 34;
-        const int PERSON_H = 34;
+        if (people.empty()) return;
+        const int PERSON_H = 46;
         const int GAP_H    = 16;
         const int AV_SZ    = 28;
 
         int total = 0;
-        for (auto& cat : contributors) total += CAT_H + (int)cat.people.size() * PERSON_H + GAP_H;
+        total = (int)people.size() * PERSON_H + GAP_H;
 
         int viewH = (SH - FOOTER_H - 10) - top;
         int maxScroll = std::max(0, total - viewH);
@@ -581,31 +615,34 @@ struct App {
 
         int y = top - (int)creditsScroll;
         int cx = SW / 2 - 220;
-        for (auto& cat : contributors) {
-            if (y + CAT_H >= top && y < top + viewH)
-                drawText(fMd, cat.title, C_OK, cx, y + 4);
-            y += CAT_H;
-            for (auto& p : cat.people) {
-                if (y + PERSON_H >= top && y < top + viewH) {
-                    int avY = y + (PERSON_H - AV_SZ) / 2;
-                    if (p.avatar) {
-                        SDL_Rect dst = {cx, avY, AV_SZ, AV_SZ};
-                        SDL_RenderCopy(rdr, p.avatar, nullptr, &dst);
-                    } else {
-                        drawMonogram(p.name, cx, avY, AV_SZ);
-                    }
-                    drawText(fSm, p.name, C_WHITE, cx + AV_SZ + 12, y + (PERSON_H - 18) / 2);
-                    if (p.contributions > 0) {
-                        std::string cnt = std::to_string(p.contributions) +
-                                          (p.contributions == 1 ? " commit" : " commits");
-                        int cw = 0, ch = 0;
-                        TTF_SizeUTF8(fSm, cnt.c_str(), &cw, &ch);
-                        drawText(fSm, cnt, C_DIM, cx + 440 - cw, y + (PERSON_H - 18) / 2);
-                    }
+        for (auto& p : people) {
+            if (y + PERSON_H >= top && y < top + viewH) {
+                int avY = y + (PERSON_H - AV_SZ) / 2;
+                if (p.avatar) {
+                    SDL_Rect dst = {cx, avY, AV_SZ, AV_SZ};
+                    SDL_RenderCopy(rdr, p.avatar, nullptr, &dst);
+                } else {
+                    drawMonogram(p.name, cx, avY, AV_SZ);
                 }
-                y += PERSON_H;
+                drawText(fSm, p.name, C_WHITE, cx + AV_SZ + 12, y + 3);
+
+                // Which areas they worked on, in place of the old per-category
+                // headings — the same person no longer needs a row each.
+                std::string roles;
+                for (size_t i = 0; i < p.roles.size(); i++)
+                    roles += (i ? " · " : "") + p.roles[i];
+                if (!roles.empty())
+                    drawText(fSm, roles, C_DIM, cx + AV_SZ + 12, y + 3 + 18);
+
+                if (p.contributions > 0) {
+                    std::string cnt = std::to_string(p.contributions) +
+                                      (p.contributions == 1 ? " commit" : " commits");
+                    int cw = 0, ch = 0;
+                    TTF_SizeUTF8(fSm, cnt.c_str(), &cw, &ch);
+                    drawText(fSm, cnt, C_DIM, cx + 440 - cw, y + 3);
+                }
             }
-            y += GAP_H;
+            y += PERSON_H;
         }
 
         SDL_RenderSetClipRect(rdr, nullptr);
@@ -970,7 +1007,7 @@ struct App {
             // alone for a bit — any manual scroll above resets the idle
             // timer, so it never fights input while someone's actually
             // reading a specific section.
-            if (!contributors.empty() && SDL_GetTicks() - lastCreditsInput > 2500)
+            if (!people.empty() && SDL_GetTicks() - lastCreditsInput > 2500)
                 creditsScroll += 0.6f;
 
             std::vector<uint8_t> img;
@@ -1017,7 +1054,7 @@ struct App {
             drawContributors(y + 20);
 
             drawFooterBar({{BG(GLYPH_B, "B"), "Back to menu"}},
-                          contributors.empty() ? "" : "Scroll credits: D-Pad / stick / touch drag");
+                          people.empty() ? "" : "Scroll credits: D-Pad / stick / touch drag");
 
             SDL_RenderPresent(rdr);
             SDL_Delay(16);
