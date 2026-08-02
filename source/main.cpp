@@ -12,9 +12,12 @@
 #include <string>
 #include <vector>
 
+#include <curl/curl.h>
+
 #include "apk.h"
 #include "avatar.h"
 #include "build_number.h"
+#include "update.h"
 
 static const char* APK_DIR = "sdmc:/Viridite/apks";
 
@@ -129,6 +132,11 @@ struct App {
     Uint32 noticeUntil = 0;
     std::string noticeText;
 
+    // ── Self-update ───────────────────────────────────────────────────
+    bool       netReady    = false;   // socket + curl came up
+    bool       updateSeen  = false;   // the check's result has been consumed
+    UpdateInfo update;                // valid once updateSeen
+
     // ── Touch navigation ──────────────────────────────────────────────
     // Footer button hitboxes, refreshed every drawFooterBar() call so a
     // tap can be matched back to whichever hint (by index, same order the
@@ -195,6 +203,15 @@ struct App {
         mkdir("sdmc:/Viridite", 0777);
         logOpen();
         logMsg("Viridite launcher starting");
+
+        // Networking, for the self-update check. curl on this toolchain runs
+        // TLS through the Switch's own ssl sysmodule, so it needs the socket
+        // driver up but no CA bundle of our own. A console with no network
+        // just makes the check fail quietly — it never blocks the launcher.
+        socketInitializeDefault();
+        curl_global_init(CURL_GLOBAL_DEFAULT);
+        netReady = true;
+        updateCheckStart();
 
         if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) != 0) {
             logSDL("SDL_Init failed"); logClose(); return false;
@@ -310,6 +327,11 @@ struct App {
         if (win)  SDL_DestroyWindow(win);
         romfsExit(); plExit();
         TTF_Quit(); IMG_Quit(); SDL_Quit();
+        if (netReady) {
+            updateCheckJoin();          // must outlive curl_global_cleanup()
+            curl_global_cleanup();
+            socketExit();
+        }
         logMsg("cleanup done");
         logClose();
     }
@@ -707,6 +729,109 @@ struct App {
 
         SDL_RenderPresent(rdr);
     }
+
+    // ------------------------------------------------------------------
+    // Update prompt. Deliberately a confirm rather than a silent auto-apply:
+    // this replaces the NRO the console is about to run, and doing that to
+    // someone mid-session without asking is how a good session turns into a
+    // non-booting SD card. The CHECK is automatic; applying is one button.
+    void showUpdatePrompt() {
+        if (!update.available) return;
+        bool done = false, install = false;
+
+        while (!done) {
+            SDL_Event ev;
+            while (SDL_PollEvent(&ev)) {
+                if (ev.type == SDL_QUIT) { done = true; }
+                if (ev.type == SDL_JOYBUTTONDOWN) {
+                    if (ev.jbutton.button == BTN_A) { install = true; done = true; }
+                    if (ev.jbutton.button == BTN_B) { done = true; }
+                }
+                if (ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_ESCAPE) done = true;
+            }
+
+            drawBackground();
+            drawHeaderBar();
+            int y = LIST_Y + 30;
+            drawText(fLg, "Update available", C_WHITE, 30, y);              y += 46;
+            drawText(fMd, std::string("New:     ") + update.tag, C_WHITE, 30, y);   y += 30;
+            drawText(fMd, std::string("Current: ") + updateCurrentVersion(), C_DIM, 30, y); y += 40;
+            if (update.assetSize > 0)
+                drawText(fSm, "Download: " + formatSize((uint64_t)update.assetSize), C_DIM, 30, y);
+            y += 34;
+            drawText(fSm, "Replaces the launcher and both Translation Core binaries", C_DIM, 30, y); y += 22;
+            drawText(fSm, "on your SD card. Your APKs, saves and settings are untouched.", C_DIM, 30, y);
+
+            drawFooterBar({{BG(GLYPH_A, "A"), "Install"}, {BG(GLYPH_B, "B"), "Not now"}}, "");
+            SDL_RenderPresent(rdr);
+            SDL_Delay(16);
+        }
+
+        if (!install) return;
+        runUpdateInstall();
+    }
+
+    void runUpdateInstall() {
+        // updateApply() blocks, so the progress callback is what keeps the
+        // screen alive — it draws and presents a frame each time it's called.
+        auto draw = [&](const char* stage, int pct) {
+            drawBackground();
+            drawHeaderBar();
+            int y = LIST_Y + 40;
+            drawText(fLg, stage, C_WHITE, 30, y); y += 50;
+
+            int barW = SW - 120, barH = 18, barX = 30;
+            fill(barX, y, barW, barH, {0, 0, 0, 40});
+            if (pct >= 0) {
+                fill(barX, y, (barW * std::clamp(pct, 0, 100)) / 100, barH, C_OK);
+                char buf[16]; snprintf(buf, sizeof buf, "%d%%", std::clamp(pct, 0, 100));
+                drawText(fSm, buf, C_DIM, barX, y + barH + 10);
+            } else {
+                // No Content-Length — show motion rather than a fake percentage.
+                fill(barX, y, barW, barH, {0, 0, 0, 25});
+                drawText(fSm, "working...", C_DIM, barX, y + barH + 10);
+            }
+            drawText(fSm, "Don't power off or eject the SD card.", C_WARN, 30, y + barH + 42);
+            SDL_RenderPresent(rdr);
+            // Keep the applet responsive so Horizon doesn't consider us hung.
+            SDL_Event e; while (SDL_PollEvent(&e)) {}
+        };
+
+        std::string err;
+        bool ok = updateApply(update, draw, &err);
+
+        logMsg(ok ? "update: installed OK" : ("update: FAILED — " + err).c_str());
+
+        bool done = false;
+        while (!done) {
+            SDL_Event ev;
+            while (SDL_PollEvent(&ev)) {
+                if (ev.type == SDL_QUIT) done = true;
+                if (ev.type == SDL_JOYBUTTONDOWN &&
+                    (ev.jbutton.button == BTN_A || ev.jbutton.button == BTN_B)) done = true;
+            }
+            drawBackground();
+            drawHeaderBar();
+            int y = LIST_Y + 40;
+            if (ok) {
+                drawText(fLg, "Update installed", C_WHITE, 30, y); y += 46;
+                drawText(fMd, "Now running " + update.tag + " after a restart.", C_DIM, 30, y); y += 34;
+                drawText(fSm, "Press A to close Viridite, then launch it again", C_DIM, 30, y); y += 22;
+                drawText(fSm, "from hbmenu to start the new version.", C_DIM, 30, y);
+            } else {
+                drawText(fLg, "Update failed", C_WARN, 30, y); y += 46;
+                drawText(fSm, err, C_DIM, 30, y); y += 30;
+                drawText(fSm, "Nothing was replaced — your install is unchanged.", C_DIM, 30, y); y += 22;
+                drawText(fSm, "Details are in sdmc:/Viridite/launcher_log.txt", C_DIM, 30, y);
+            }
+            drawFooterBar({{BG(GLYPH_A, "A"), ok ? "Quit" : "Back"}}, "");
+            SDL_RenderPresent(rdr);
+            SDL_Delay(16);
+        }
+        updateQuitRequested = ok;
+    }
+
+    bool updateQuitRequested = false;
 
     // ------------------------------------------------------------------
     void showAbout() {
@@ -1164,6 +1289,29 @@ int main(int, char**) {
                         else
                             app.selected = row;
                     }
+                }
+            }
+        }
+
+        // The update check runs on its own thread; pick the answer up whenever
+        // it lands rather than blocking startup on the network. Only a genuine
+        // newer release interrupts — a failed check just goes in the log, since
+        // "couldn't reach GitHub" is not something to stop someone's session
+        // for, and plenty of Switches run permanently offline.
+        if (!quit && !handoff && app.netReady && !app.updateSeen) {
+            UpdateInfo info;
+            if (updateCheckPoll(&info)) {
+                app.updateSeen = true;
+                app.update     = info;
+                if (!info.error.empty()) {
+                    logMsg(("update check: " + info.error).c_str());
+                } else if (info.available) {
+                    logMsg(("update check: " + info.tag + " available (running " +
+                                updateCurrentVersion() + ")").c_str());
+                    app.showUpdatePrompt();
+                    if (app.updateQuitRequested) quit = true;
+                } else {
+                    logMsg(("update check: up to date (" + info.tag + ")").c_str());
                 }
             }
         }

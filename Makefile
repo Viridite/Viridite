@@ -43,6 +43,7 @@ LIBS	:=	-lSDL2_ttf -lSDL2_image -lSDL2main -lSDL2 \
 			-lfreetype -lharfbuzz \
 			-lpng -ljpeg -lwebp -lwebpdemux \
 			-lminizip -lbz2 -lz \
+			-lcurl \
 			-lEGL -lGLESv2 -lglapi -ldrm_nouveau \
 			-lnx
 
@@ -111,6 +112,14 @@ all: $(BUILD)
 
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
+# Same build-number stamping the Core does. Without this the launcher shipped a
+# hand-written build_number.h that said v0.1.1 forever, so the version on screen
+# had no relationship to the release you were running — and the updater has
+# nothing to compare a release tag against.
+	@NEW=$$(( $$(cat $(CURDIR)/build_number.txt 2>/dev/null || echo 0) + 1 )); \
+	 echo $$NEW > $(CURDIR)/build_number.txt; \
+	 printf '#pragma once\n#define BUILD_NUMBER %d\n#define BUILD_VERSION "v0.1.%d testing-alpha"\n#define VIRIDITE_VERSION "%s"\n' \
+	   $$NEW $$NEW "$${VIRIDITE_VERSION:-dev}" > $(CURDIR)/include/build_number.h
 	@rm -f $(CURDIR)/$(TARGET).nacp
 	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
 

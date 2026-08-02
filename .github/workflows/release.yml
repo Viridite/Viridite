@@ -111,23 +111,12 @@ jobs:
           echo "--- avatars fetched ---"
           ls -la launcher/romfs/avatars/
 
-      - name: Build launcher
-        run: docker run --rm -v ${{ github.workspace }}/launcher:/project -w /project devkitpro/devkita64:latest make
-
-      - name: Build Translation Core (x64)
-        run: docker run --rm -e VIRIDITE_VERSION="${{ inputs.version }}" -v ${{ github.workspace }}/core:/project -w /project devkitpro/devkita64:latest make
-
-      - name: Build Translation Core (x32, placeholder)
-        run: docker run --rm -v ${{ github.workspace }}/core/core32:/project -w /project devkitpro/devkita64:latest make
-
-      - name: Assemble SD-card layout
-        run: |
-          mkdir -p dist/Viridite
-          cp launcher/Viridite.nro dist/Viridite.nro
-          cp core/Viridite-Translation-Core-x64.nro dist/Viridite/Viridite-Translation-Core-x64.nro
-          cp core/core32/Viridite-Translation-Core-x32.nro dist/Viridite/Viridite-Translation-Core-x32.nro
-          (cd dist && zip -r ../Viridite-sdcard.zip .)
-
+      # Must run BEFORE the builds: both binaries stamp this version into
+      # themselves, and the launcher compares it against the newest published
+      # release to decide whether an update exists. This step used to sit after
+      # the builds and they used `inputs.version` directly — which is empty on
+      # an auto-bumped release, so those builds stamped "dev" and a released
+      # launcher had no version to compare against.
       - name: Determine release tag
         id: ver
         run: |
@@ -152,6 +141,23 @@ jobs:
           fi
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "Releasing as $TAG"
+
+      - name: Build launcher
+        run: docker run --rm -e VIRIDITE_VERSION="${{ steps.ver.outputs.tag }}" -v ${{ github.workspace }}/launcher:/project -w /project devkitpro/devkita64:latest make
+
+      - name: Build Translation Core (x64)
+        run: docker run --rm -e VIRIDITE_VERSION="${{ steps.ver.outputs.tag }}" -v ${{ github.workspace }}/core:/project -w /project devkitpro/devkita64:latest make
+
+      - name: Build Translation Core (x32, placeholder)
+        run: docker run --rm -v ${{ github.workspace }}/core/core32:/project -w /project devkitpro/devkita64:latest make
+
+      - name: Assemble SD-card layout
+        run: |
+          mkdir -p dist/Viridite
+          cp launcher/Viridite.nro dist/Viridite.nro
+          cp core/Viridite-Translation-Core-x64.nro dist/Viridite/Viridite-Translation-Core-x64.nro
+          cp core/core32/Viridite-Translation-Core-x32.nro dist/Viridite/Viridite-Translation-Core-x32.nro
+          (cd dist && zip -r ../Viridite-sdcard.zip .)
 
       - name: Generate in-depth changelog
         id: changelog
