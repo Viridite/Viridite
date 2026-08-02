@@ -373,6 +373,11 @@ struct App {
         curl_global_init(CURL_GLOBAL_DEFAULT);
         netReady = true;
         updateCheckStart();
+        // Logged on the way IN, not just on the way out. The check waits up to
+        // 10s for the console to associate with a network before it can say
+        // anything, and a log dumped inside that window used to end at "init
+        // complete" — indistinguishable from the launcher having hung.
+        logMsg("update check: started (waiting for network, up to 10s)");
 
         if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) != 0) {
             logSDL("SDL_Init failed"); logClose(); return false;
