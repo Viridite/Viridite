@@ -53,7 +53,18 @@ VERDICT_OVERRIDES = {
 STALL_RE = re.compile(r'(stall|STALL\(severe\)): frame (\d+) stalled for (\d+)ms')
 # Matches both the current "Viridite" env line and the pre-rebrand
 # "Android Horizon" one, so historical logs keep parsing.
-ENV_BUILD_RE = re.compile(r'env: (?:Viridite|Android Horizon) \(Translation Core\) build (\S+)')
+#
+# Two build-number spellings, because the Core's env line has changed shape:
+#   old: "... (Translation Core) build 0.1.120"
+#   new: "... (Translation Core) v0.2.0-testing-alpha (build 0.1.126)"
+# The release-version field was added in front of the build number without
+# this regex being updated to match, so every submission since then parsed as
+# engine_build=None and got reported as "submitted before build/firmware
+# logging existed" — which was the opposite of true. The optional
+# "<version> (" group below absorbs that field when present.
+ENV_BUILD_RE = re.compile(
+    r'env: (?:Viridite|Android Horizon) \(Translation Core\) (?:\S+ \()?build ([^)\s]+)\)?'
+)
 ENV_FIRMWARE_RE = re.compile(r'env: Switch firmware (\S+)')
 ENV_ATMOSPHERE_RE = re.compile(r'env: Atmosphere (\S+)')
 LOGGED_APK_SHA256_RE = re.compile(r'launchApk: apk sha256=([0-9a-f]{64})')
