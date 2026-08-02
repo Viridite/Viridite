@@ -581,6 +581,68 @@ bool apkDeleteInstalledData(const std::string& pkg_name) {
     return removeRecursive(std::string("sdmc:/Viridite/games/") + pkg_name);
 }
 
+// Android's Storage settings split, applied to how a game actually sits on the
+// SD card:
+//
+//   sdmc:/Viridite/games/<pkg>/lib      extracted .so   — re-extractable
+//   sdmc:/Viridite/games/<pkg>/assets   extracted files — re-extractable
+//   sdmc:/Viridite/games/<pkg>/userdefaults.bin         — the actual save
+//   sdmc:/Viridite/games/<pkg>/.installed, .fps_cap     — markers/settings
+//
+// Clear cache drops only what the Core can rebuild from the APK, so progress
+// survives; clear storage drops the lot, which is the "start again from
+// nothing" option.
+bool apkClearCache(const std::string& pkg_name) {
+    if (pkg_name.empty()) return false;
+    std::string base = std::string("sdmc:/Viridite/games/") + pkg_name;
+    struct stat st;
+    if (stat(base.c_str(), &st) != 0) return false;         // nothing installed
+
+    bool ok = removeRecursive(base + "/lib");
+    ok = removeRecursive(base + "/assets") && ok;
+    // Drop the marker too, so the next launch re-extracts instead of trusting
+    // a tree we just emptied.
+    remove((base + "/.installed").c_str());
+    return ok;
+}
+
+// Everything for this package, saves included — same as apkDeleteInstalledData
+// today, but named for what it means at the call site so the two buttons don't
+// read as the same operation.
+bool apkClearStorage(const std::string& pkg_name) {
+    return apkDeleteInstalledData(pkg_name);
+}
+
+// Bytes currently on the card for this package, split the same way, so the UI
+// can show what each button would actually reclaim.
+static uint64_t dirSize(const std::string& path) {
+    struct stat st;
+    if (stat(path.c_str(), &st) != 0) return 0;
+    if (!S_ISDIR(st.st_mode)) return (uint64_t)st.st_size;
+    DIR* d = opendir(path.c_str());
+    if (!d) return 0;
+    uint64_t total = 0;
+    struct dirent* ent;
+    while ((ent = readdir(d))) {
+        std::string n = ent->d_name;
+        if (n == "." || n == "..") continue;
+        total += dirSize(path + "/" + n);
+    }
+    closedir(d);
+    return total;
+}
+
+void apkGetStorageUsage(const std::string& pkg_name, uint64_t* cacheBytes, uint64_t* dataBytes) {
+    if (cacheBytes) *cacheBytes = 0;
+    if (dataBytes)  *dataBytes  = 0;
+    if (pkg_name.empty()) return;
+    std::string base = std::string("sdmc:/Viridite/games/") + pkg_name;
+    uint64_t cache = dirSize(base + "/lib") + dirSize(base + "/assets");
+    uint64_t all   = dirSize(base);
+    if (cacheBytes) *cacheBytes = cache;
+    if (dataBytes)  *dataBytes  = all > cache ? all - cache : 0;
+}
+
 bool apkDeleteFile(const std::string& apk_path) {
     if (apk_path.empty()) return false;
     return remove(apk_path.c_str()) == 0;

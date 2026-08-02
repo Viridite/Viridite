@@ -38,6 +38,14 @@ static const char* CORE_X64_PATH = "sdmc:/switch/Viridite/Viridite-Translation-C
 // it might work and then fails in game-specific ways, so we mark them
 // incompatible up front rather than let someone chase a crash we already know
 // about. Keyed by package id.
+// Games whose own code has a controller path we drive (see the controller
+// natives the Core resolves). Only these get asked how they should be
+// launched — for anything else the question has one answer, so asking would
+// just be a step in the way.
+static bool hasControllerSupport(const std::string& pkg) {
+    return pkg == "com.fingersoft.hillclimb";
+}
+
 static bool isCompatibleGame(const std::string& pkg) {
     return pkg == "com.fingersoft.hillclimb"   // Hill Climb Racing (cocos2d-x)
         || pkg == "com.fingersoft.hcr2"        // Hill Climb Racing 2 (cocos2d-x, arm32)
@@ -1075,12 +1083,20 @@ struct App {
         ApkInfo apk = apks[idx]; // copy — index may shift under us after a delete+rescan
         std::string pkg = apk.packageName.empty() ? apk.filename : apk.packageName;
 
-        static const int ROW_FPS = 0, ROW_DELETE = 1, ROW_COUNT = 2;
+        // Mirrors Android's app-info screen: cache and storage are separate
+        // actions, because "make it re-extract" and "throw my save away" are
+        // very different intentions that a single Delete button conflates.
+        static const int ROW_FPS = 0, ROW_CACHE = 1, ROW_STORAGE = 2,
+                         ROW_DELETE = 3, ROW_COUNT = 4;
         int  row           = 0;
         int  fpsCap        = apkGetFpsCap(pkg); // 0 = default/uncapped
         bool confirmDelete = false;
+        bool confirmCache  = false;
+        bool confirmData   = false;
         bool deleted       = false;
         bool done          = false;
+        uint64_t cacheBytes = 0, dataBytes = 0;
+        apkGetStorageUsage(pkg, &cacheBytes, &dataBytes);
 
         std::vector<SDL_Rect> rowRects(ROW_COUNT);
 
@@ -1095,10 +1111,33 @@ struct App {
             deleted = true;
             done    = true;
         };
-        auto activate = [&](int r) {
-            if (r == ROW_FPS)    toggleFps();
-            else if (r == ROW_DELETE) activateDelete();
+        auto activateCache = [&]() {
+            if (!confirmCache) { confirmCache = true; return; }
+            bool ok = apkClearCache(pkg);
+            apkGetStorageUsage(pkg, &cacheBytes, &dataBytes);
+            confirmCache = false;
+            noticeText  = ok ? "Cache cleared — the game will re-extract next launch."
+                             : "Nothing cached for this game.";
+            noticeUntil = SDL_GetTicks() + 4000;
+            logMsg(("manage: clear cache " + pkg + (ok ? " OK" : " (nothing to clear)")).c_str());
         };
+        auto activateStorage = [&]() {
+            if (!confirmData) { confirmData = true; return; }
+            bool ok = apkClearStorage(pkg);
+            apkGetStorageUsage(pkg, &cacheBytes, &dataBytes);
+            confirmData = false;
+            noticeText  = ok ? "Storage cleared — saves and settings for this game are gone."
+                             : "No stored data for this game.";
+            noticeUntil = SDL_GetTicks() + 4000;
+            logMsg(("manage: clear storage " + pkg + (ok ? " OK" : " (nothing to clear)")).c_str());
+        };
+        auto activate = [&](int r) {
+            if (r == ROW_FPS)          toggleFps();
+            else if (r == ROW_CACHE)   activateCache();
+            else if (r == ROW_STORAGE) activateStorage();
+            else if (r == ROW_DELETE)  activateDelete();
+        };
+        auto clearConfirms = [&]() { confirmDelete = confirmCache = confirmData = false; };
 
         while (!done) {
             SDL_Event ev;
@@ -1108,15 +1147,15 @@ struct App {
 
                 if (ev.type == SDL_JOYBUTTONDOWN) {
                     if (ev.jbutton.button == BTN_B) {
-                        if (confirmDelete) confirmDelete = false;
+                        if (confirmDelete || confirmCache || confirmData) clearConfirms();
                         else done = true;
                     } else if (ev.jbutton.button == BTN_A) {
                         activate(row);
                     }
                 }
                 if (ev.type == SDL_JOYHATMOTION) {
-                    if (ev.jhat.value & SDL_HAT_DOWN) { row = std::min(row + 1, ROW_COUNT - 1); confirmDelete = false; }
-                    if (ev.jhat.value & SDL_HAT_UP)   { row = std::max(row - 1, 0);              confirmDelete = false; }
+                    if (ev.jhat.value & SDL_HAT_DOWN) { row = std::min(row + 1, ROW_COUNT - 1); clearConfirms(); }
+                    if (ev.jhat.value & SDL_HAT_UP)   { row = std::max(row - 1, 0);              clearConfirms(); }
                 }
 
                 if (ev.type == SDL_FINGERDOWN) touchDragging = false;
@@ -1125,7 +1164,7 @@ struct App {
                     int py = (int)(ev.tfinger.y * SH);
                     int hit = hitTestFooter(px, py);
                     if (hit == 0) {
-                        if (confirmDelete) confirmDelete = false;
+                        if (confirmDelete || confirmCache || confirmData) clearConfirms();
                         else done = true;
                     } else if (hit == 1) {
                         activate(row);
@@ -1135,7 +1174,7 @@ struct App {
                             if (rr.w > 0 && px >= rr.x && px < rr.x + rr.w &&
                                 py >= rr.y && py < rr.y + rr.h) {
                                 if (r == row) activate(r);
-                                else { row = r; confirmDelete = false; }
+                                else { row = r; clearConfirms(); }
                                 break;
                             }
                         }
@@ -1156,7 +1195,14 @@ struct App {
             const char* deleteLabel = confirmDelete
                 ? "Delete this game — press A again to confirm, cannot be undone"
                 : "Delete this game (removes the APK and any installed data)";
-            const char* labels[ROW_COUNT] = { fpsLabel, deleteLabel };
+            std::string cacheLabel = confirmCache
+                ? "Clear cache — press A again to confirm (saves are kept)"
+                : "Clear cache (" + formatSize(cacheBytes) + ") — re-extracts next launch, saves kept";
+            std::string dataLabel = confirmData
+                ? "Clear storage — press A again to confirm, SAVES WILL BE LOST"
+                : "Clear storage (" + formatSize(dataBytes) + ") — deletes saves and settings too";
+            const char* labels[ROW_COUNT] = { fpsLabel, cacheLabel.c_str(),
+                                              dataLabel.c_str(), deleteLabel };
 
             for (int r = 0; r < ROW_COUNT; r++) {
                 SDL_Rect card = {24, y, SW - 48, ROW_H - 10};
@@ -1191,6 +1237,63 @@ struct App {
     // same mechanism external forwarders (Sphaira etc.) already use to jump
     // straight into a game; this launcher just uses it internally now too.
     // Returning from main() after this call lets hbloader perform the switch.
+    // Docked there's no touch screen, so a controller is the only way to play
+    // and there's nothing to choose. Handheld genuinely has both, and which one
+    // someone wants isn't guessable — HCR plays quite differently on a pad than
+    // with touch steering. Returns false if the launch was cancelled.
+    bool askLaunchMode(const std::string& appName, bool* useController) {
+        int  choice = 0;                       // 0 = controller, 1 = touch
+        bool done = false, cancelled = false;
+        while (!done) {
+            SDL_Event ev;
+            while (SDL_PollEvent(&ev)) {
+                if (ev.type == SDL_QUIT) { cancelled = true; done = true; break; }
+                Act a = actionFor(ev);
+                if (ev.type == SDL_JOYHATMOTION) {
+                    if (ev.jhat.value & (SDL_HAT_UP | SDL_HAT_LEFT))    a = Act::Up;
+                    if (ev.jhat.value & (SDL_HAT_DOWN | SDL_HAT_RIGHT)) a = Act::Down;
+                }
+                if      (a == Act::Up   || a == Act::PageUp)   choice = 0;
+                else if (a == Act::Down || a == Act::PageDown) choice = 1;
+                else if (a == Act::Confirm) done = true;
+                else if (a == Act::Manage || a == Act::Quit) { cancelled = true; done = true; }
+
+                if (ev.type == SDL_FINGERUP) {
+                    int py = (int)(ev.tfinger.y * SH);
+                    int r  = (py - (LIST_Y + 96)) / 78;
+                    if (r >= 0 && r <= 1) {
+                        if (r == choice) done = true; else choice = r;
+                    }
+                }
+            }
+
+            drawBackground();
+            drawHeaderBar();
+            int y = LIST_Y + 30;
+            drawText(fLg, clamp(fLg, appName, SW - 60), C_WHITE, 30, y); y += 42;
+            drawText(fSm, "How do you want to play?", C_GRAY, 30, y);    y += 24;
+
+            const char* titles[2] = {"Controller", "Touch screen"};
+            const char* subs[2]   = {
+                "Shoulders accelerate and brake, D-pad and face buttons for menus",
+                "Tap and hold the on-screen pedals, the same as on a phone"};
+            for (int r = 0; r < 2; r++) {
+                int ry = LIST_Y + 96 + r * 78;
+                if (r == choice) {
+                    fill(24, ry - 6, SW - 48, 70, C_SEL);
+                    fill(24, ry - 6, 4, 70, C_OK);
+                }
+                drawText(fMd, titles[r], C_WHITE, 44, ry + 4);
+                drawText(fSm, subs[r],   C_GRAY,  44, ry + 32);
+            }
+            drawFooterBar({{BG(GLYPH_A, "A"), "Play"}, {BG(GLYPH_B, "B"), "Back"}}, "");
+            SDL_RenderPresent(rdr);
+            SDL_Delay(16);
+        }
+        *useController = (choice == 0);
+        return !cancelled;
+    }
+
     bool launchGame(const ApkInfo& apk, bool* outHandled) {
         *outHandled = false;
         const std::string& pkg =
@@ -1243,6 +1346,26 @@ struct App {
         {
             FILE* lm = fopen("sdmc:/Viridite/.launch_apk", "w");
             if (lm) { fputs(apk.path.c_str(), lm); fclose(lm); }
+        }
+
+        // Input mode, passed to the Core the same way as the FPS cap: a marker
+        // file it reads once at launch. Docked has no touch screen, so a pad is
+        // the only option and there's nothing worth asking; handheld has both,
+        // and the answer changes how the game plays, so it's the user's call.
+        {
+            bool useController = true;
+            bool dockedNow = appletGetOperationMode() == AppletOperationMode_Console;
+            if (!dockedNow && hasControllerSupport(pkg)) {
+                if (!askLaunchMode(apk.appName, &useController)) {
+                    if (outHandled) *outHandled = false;
+                    return false;                       // backed out of the picker
+                }
+            }
+            FILE* im = fopen("sdmc:/Viridite/.launch_input", "w");
+            if (im) { fputs(useController ? "controller" : "touch", im); fclose(im); }
+            logMsg((std::string("launch input mode: ") +
+                    (useController ? "controller" : "touch") +
+                    (dockedNow ? " (docked)" : " (handheld)")).c_str());
         }
 
         std::string argvStr = std::string(corePath) + " " + pkg;

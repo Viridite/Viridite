@@ -40,6 +40,16 @@ bool apkSetFpsCap (const std::string& pkg_name, int fps); // fps<=0 clears it
 // from the .apk fresh. Does not touch the .apk file itself.
 bool apkDeleteInstalledData(const std::string& pkg_name);
 
+// Android's two Storage-settings actions. Clear cache drops only the extracted
+// lib/assets the Core can rebuild from the APK, so saves survive; clear storage
+// drops everything for the package, saves included.
+bool apkClearCache  (const std::string& pkg_name);
+bool apkClearStorage(const std::string& pkg_name);
+
+// Split of what's on the card for this package, so the UI can say what each
+// button would reclaim before it's pressed.
+void apkGetStorageUsage(const std::string& pkg_name, uint64_t* cacheBytes, uint64_t* dataBytes);
+
 // Deletes the raw .apk file from the apks/ folder. Does not touch any
 // already-extracted install under games/<pkg_name>/ — call
 // apkDeleteInstalledData too if the caller wants both gone.
