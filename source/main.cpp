@@ -7,6 +7,7 @@
 #include <cmath>
 #include <cstdio>
 #include <cstring>
+#include <cstdlib>
 #include <algorithm>
 #include <map>
 #include <string>
@@ -132,6 +133,10 @@ struct App {
     Uint32 noticeUntil = 0;
     std::string noticeText;
 
+    // Decoded BFTTF buffers. SDL_RWFromConstMem doesn't copy, so these must
+    // stay alive for as long as the fonts built on them.
+    std::vector<void*> fontBufs;
+
     // ── Self-update ───────────────────────────────────────────────────
     bool       netReady    = false;   // socket + curl came up
     bool       updateSeen  = false;   // the check's result has been consumed
@@ -160,31 +165,72 @@ struct App {
     Uint32 lastCreditsInput  = 0; // last manual scroll input; auto-scroll only kicks in once idle
 
     // ------------------------------------------------------------------
+    // The Switch's shared fonts aren't plain TTFs. They're BFTTF: two u32s of
+    // header followed by the real font, and the whole thing is XOR-obfuscated
+    // with a fixed key. Handing SDL_ttf the bytes 8 forward — as this used to —
+    // gives it ciphertext, so TTF_OpenFontRW rejected it every single launch
+    // ("BFTTF open failed: Couldn't load font file" in launcher_log.txt) and the
+    // UI silently ran on the romfs DejaVuSans fallback instead. That fallback
+    // has no Nintendo button glyphs at all, which is why the footer had been
+    // showing "A"/"B" as plain letters rather than the console's own symbols.
+    //
+    // Returns a malloc'd decoded buffer (recorded in fontBufs so cleanup() can
+    // free it — SDL_RWFromConstMem does not copy, so it has to outlive the font).
+    static const uint32_t BFTTF_MAGIC = 0x18029a7f;
+    static const uint32_t BFTTF_KEY   = 0x06186429;
+
+    uint8_t* decodeBfttf(const PlFontData& fd, size_t* outSize) {
+        if (fd.size < 8) return nullptr;
+        const uint32_t* src = (const uint32_t*)fd.address;
+        if ((src[0] ^ BFTTF_KEY) != BFTTF_MAGIC) return nullptr;   // not BFTTF
+        uint32_t size = src[1] ^ BFTTF_KEY;
+        if (size == 0 || size > fd.size) return nullptr;           // header lying
+
+        uint8_t* out = (uint8_t*)malloc(size);
+        if (!out) return nullptr;
+        // Local copy: taking the address of the static member below would
+        // ODR-use it, and it has no out-of-class definition.
+        const uint32_t key = BFTTF_KEY;
+        const uint8_t* keyb = (const uint8_t*)&key;
+        uint32_t words = size / 4;
+        uint32_t* dst  = (uint32_t*)out;
+        for (uint32_t i = 0; i < words; i++) dst[i] = src[2 + i] ^ key;
+        // Trailing bytes when size isn't a multiple of 4 (AArch64 is
+        // little-endian, so byte i of a word pairs with byte i&3 of the key).
+        for (uint32_t i = words * 4; i < size; i++)
+            out[i] = ((const uint8_t*)(src + 2))[i] ^ keyb[i & 3];
+
+        fontBufs.push_back(out);
+        *outSize = size;
+        return out;
+    }
+
+    TTF_Font* openSharedFont(PlSharedFontType type, int ptsize) {
+        PlFontData fd = {};
+        if (plGetSharedFontByType(&fd, type) != 0) return nullptr;
+        size_t size = 0;
+        uint8_t* data = decodeBfttf(fd, &size);
+        if (!data) return nullptr;
+        SDL_RWops* rw = SDL_RWFromConstMem(data, (int)size);
+        return TTF_OpenFontRW(rw, 1, ptsize);
+    }
+
     TTF_Font* openFont(int ptsize) {
         plInitialize(PlServiceType_User);
-        PlFontData fd = {};
-        if (plGetSharedFontByType(&fd, PlSharedFontType_Standard) == 0 && fd.size > 8) {
-            SDL_RWops* rw = SDL_RWFromConstMem(
-                (const uint8_t*)fd.address + 8, (int)fd.size - 8);
-            TTF_Font* f = TTF_OpenFontRW(rw, 1, ptsize);
-            if (f) { logMsg("  font: system BFTTF"); return f; }
-            logSDL("  BFTTF open failed");
-        }
+        TTF_Font* f = openSharedFont(PlSharedFontType_Standard, ptsize);
+        if (f) { logMsg("  font: system BFTTF"); return f; }
+        logSDL("  BFTTF open failed");
+
         romfsInit();
-        TTF_Font* f = TTF_OpenFont("romfs:/fonts/DejaVuSans.ttf", ptsize);
+        f = TTF_OpenFont("romfs:/fonts/DejaVuSans.ttf", ptsize);
         if (f) { logMsg("  font: romfs DejaVuSans"); return f; }
         logSDL("  romfs font open failed");
         return nullptr;
     }
 
     TTF_Font* openExtFont(int ptsize) {
-        PlFontData fd = {};
-        if (plGetSharedFontByType(&fd, PlSharedFontType_NintendoExt) == 0 && fd.size > 8) {
-            SDL_RWops* rw = SDL_RWFromConstMem(
-                (const uint8_t*)fd.address + 8, (int)fd.size - 8);
-            TTF_Font* f = TTF_OpenFontRW(rw, 1, ptsize);
-            if (f) { logMsg("  font: NintendoExt glyphs"); return f; }
-        }
+        TTF_Font* f = openSharedFont(PlSharedFontType_NintendoExt, ptsize);
+        if (f) { logMsg("  font: NintendoExt glyphs"); return f; }
         logMsg("  NintendoExt font unavailable — text hints");
         return nullptr;
     }
@@ -325,6 +371,8 @@ struct App {
         if (joy)  SDL_JoystickClose(joy);
         if (rdr)  SDL_DestroyRenderer(rdr);
         if (win)  SDL_DestroyWindow(win);
+        for (void* p : fontBufs) free(p);
+        fontBufs.clear();
         romfsExit(); plExit();
         TTF_Quit(); IMG_Quit(); SDL_Quit();
         if (netReady) {

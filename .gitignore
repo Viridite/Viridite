@@ -13,3 +13,6 @@ build/
 *.nso
 testingbuild/
 __pycache__/
+
+# SD-card dumps pulled off hardware for debugging — contains multi-GB APKs
+ViriditeDumps/
