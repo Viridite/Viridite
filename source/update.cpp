@@ -16,7 +16,12 @@
 
 // Releases live on the launcher repo; the bundle asset is built by release.yml.
 static const char* RELEASES_API =
-    "https://api.github.com/repos/Viridite/Viridite/releases?per_page=5";
+    "https://api.github.com/repos/Viridite/Viridite/releases?per_page=10";
+// Tags are checked too: the release workflow pushes the tag before creating the
+// release, so a tag can be ahead of anything downloadable. Knowing that is the
+// difference between "you're up to date" and "the build isn't published yet".
+static const char* TAGS_API =
+    "https://api.github.com/repos/Viridite/Viridite/tags?per_page=10";
 static const char* ASSET_NAME = "Viridite-sdcard.zip";
 
 // GitHub rejects requests without a User-Agent.
@@ -162,15 +167,13 @@ static UpdateInfo        g_result;
 static std::thread       g_thread;
 static std::atomic<bool> g_running{false};
 
-static void doCheck() {
-    UpdateInfo info;
-    info.checked = true;
-
+// GET into memory. Returns false and fills `err` on transport or HTTP failure.
+static bool httpGet(const char* url, std::string* out, std::string* err) {
     CURL* c = curl_easy_init();
-    if (!c) { info.error = "couldn't start curl"; g_result = info; g_checkDone = true; return; }
+    if (!c) { *err = "couldn't start curl"; return false; }
 
-    MemSink sink; sink.cap = 512 * 1024;
-    curl_easy_setopt(c, CURLOPT_URL, RELEASES_API);
+    MemSink sink; sink.cap = 1024 * 1024;
+    curl_easy_setopt(c, CURLOPT_URL, url);
     curl_easy_setopt(c, CURLOPT_WRITEFUNCTION, writeToMem);
     curl_easy_setopt(c, CURLOPT_WRITEDATA, &sink);
     applyCommonOpts(c);
@@ -180,18 +183,40 @@ static void doCheck() {
     curl_easy_getinfo(c, CURLINFO_RESPONSE_CODE, &http);
     curl_easy_cleanup(c);
 
-    if (rc != CURLE_OK) {
-        info.error = std::string("network: ") + curl_easy_strerror(rc);
-        g_result = info; g_checkDone = true; return;
-    }
+    if (rc != CURLE_OK) { *err = std::string("network: ") + curl_easy_strerror(rc); return false; }
     if (http != 200) {
         char buf[96];
         // 403 here is almost always the anonymous rate limit (60/hour per IP).
-        snprintf(buf, sizeof buf, http == 403
-                 ? "GitHub rate-limited us (HTTP 403) — try later"
-                 : "GitHub returned HTTP %ld", http);
-        info.error = buf;
-        g_result = info; g_checkDone = true; return;
+        if (http == 403) snprintf(buf, sizeof buf, "GitHub rate-limited us (HTTP 403) — try later");
+        else             snprintf(buf, sizeof buf, "GitHub returned HTTP %ld", http);
+        *err = buf;
+        return false;
+    }
+    *out = sink.data;
+    return true;
+}
+
+// Highest version among a /tags payload. Empty if none parse.
+static std::string highestTag(const std::string& body) {
+    std::string best;
+    for (size_t p = body.find("\"name\""); p != std::string::npos; p = body.find("\"name\"", p + 1)) {
+        std::string span = body.substr(p, 128);
+        std::string name = jsonStr(span, "name");
+        if (name.empty()) continue;
+        // Tags carry version-shaped names; anything else (a branch-ish tag)
+        // parses as 0.0.0 and loses to a real version.
+        if (best.empty() || isNewer(name, best)) best = name;
+    }
+    return best;
+}
+
+static void doCheck() {
+    UpdateInfo info;
+    info.checked = true;
+
+    std::string body, err;
+    if (!httpGet(RELEASES_API, &body, &err)) {
+        info.error = err; g_result = info; g_checkDone = true; return;
     }
 
     // Deliberately NOT /releases/latest: every Viridite release is published as
@@ -202,7 +227,6 @@ static void doCheck() {
     // costs nothing and stays correct if a release is ever published
     // out-of-order or backdated, where "newest by date" and "highest version"
     // stop being the same release.
-    const std::string& body = sink.data;
 
     // Split the array into per-release spans on "tag_name" boundaries so an
     // asset URL can never be attributed to a different release than its tag.
@@ -243,6 +267,15 @@ static void doCheck() {
     info.assetUrl  = bestUrl;
     info.assetSize = bestSize;
 
+    // Now the tags, so "newest tag or newest release, whichever is ahead" is
+    // what actually gets reported. A failure here is not fatal — the release
+    // answer alone is still useful, so this only ever adds information.
+    std::string tagsBody, tagsErr;
+    std::string newestTag;
+    if (httpGet(TAGS_API, &tagsBody, &tagsErr)) {
+        newestTag = highestTag(tagsBody);
+    }
+
     std::string cur = updateCurrentVersion();
     if (cur == "dev") {
         // A locally built binary has no meaningful place in the release
@@ -252,6 +285,14 @@ static void doCheck() {
         info.error = "release has no " + std::string(ASSET_NAME) + " asset";
     } else {
         info.available = isNewer(info.tag, cur);
+    }
+
+    // A tag ahead of the newest downloadable release means a release run is
+    // mid-flight or failed. Say so instead of reporting "up to date", but don't
+    // offer it as an update — there's no build behind it to install.
+    if (!newestTag.empty() && isNewer(newestTag, info.tag) && cur != "dev" &&
+        isNewer(newestTag, cur)) {
+        info.pendingTag = newestTag;
     }
 
     g_result = info;

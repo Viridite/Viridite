@@ -1303,6 +1303,10 @@ int main(int, char**) {
             if (updateCheckPoll(&info)) {
                 app.updateSeen = true;
                 app.update     = info;
+                if (!info.pendingTag.empty()) {
+                    logMsg(("update check: " + info.pendingTag +
+                            " is tagged but has no published build yet").c_str());
+                }
                 if (!info.error.empty()) {
                     logMsg(("update check: " + info.error).c_str());
                 } else if (info.available) {
