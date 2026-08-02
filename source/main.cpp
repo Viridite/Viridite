@@ -12,6 +12,8 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <atomic>
+#include <thread>
 
 #include <curl/curl.h>
 
@@ -56,6 +58,16 @@ static const char* padKindId(PadKind k) {
         case PadKind::JoyLeft:  return "joycon_left";
         case PadKind::JoyRight: return "joycon_right";
         default:                return "touch";
+    }
+}
+static const char* padKindIcon(PadKind k) {
+    switch (k) {
+        case PadKind::Pro:      return "romfs:/controllers/ctrl_pro.png";
+        case PadKind::Handheld: return "romfs:/controllers/ctrl_handheld.png";
+        case PadKind::JoyDual:  return "romfs:/controllers/ctrl_joycon_dual.png";
+        case PadKind::JoyLeft:  return "romfs:/controllers/ctrl_joycon_left.png";
+        case PadKind::JoyRight: return "romfs:/controllers/ctrl_joycon_right.png";
+        default:                return "romfs:/controllers/ctrl_touch.png";
     }
 }
 static const char* padKindName(PadKind k) {
@@ -1145,8 +1157,22 @@ struct App {
         bool confirmData   = false;
         bool deleted       = false;
         bool done          = false;
-        uint64_t cacheBytes = 0, dataBytes = 0;
-        apkGetStorageUsage(pkg, &cacheBytes, &dataBytes);
+        // Measured on a worker thread: over a real extracted game this reads
+        // thousands of files off the SD card, and doing it inline froze the
+        // screen until it finished.
+        std::atomic<uint64_t> cacheBytes{0}, dataBytes{0};
+        std::atomic<bool>     sizesReady{false};
+        std::thread sizer;
+        auto startSizing = [&]() {
+            if (sizer.joinable()) sizer.join();
+            sizesReady = false;
+            sizer = std::thread([&, pkg]() {
+                uint64_t c = 0, d = 0;
+                apkGetStorageUsage(pkg, &c, &d);
+                cacheBytes = c; dataBytes = d; sizesReady = true;
+            });
+        };
+        startSizing();
 
         std::vector<SDL_Rect> rowRects(ROW_COUNT);
 
@@ -1164,7 +1190,7 @@ struct App {
         auto activateCache = [&]() {
             if (!confirmCache) { confirmCache = true; return; }
             bool ok = apkClearCache(pkg);
-            apkGetStorageUsage(pkg, &cacheBytes, &dataBytes);
+            startSizing();
             confirmCache = false;
             noticeText  = ok ? "Cache cleared — the game will re-extract next launch."
                              : "Nothing cached for this game.";
@@ -1174,7 +1200,7 @@ struct App {
         auto activateStorage = [&]() {
             if (!confirmData) { confirmData = true; return; }
             bool ok = apkClearStorage(pkg);
-            apkGetStorageUsage(pkg, &cacheBytes, &dataBytes);
+            startSizing();
             confirmData = false;
             noticeText  = ok ? "Storage cleared — saves and settings for this game are gone."
                              : "No stored data for this game.";
@@ -1247,10 +1273,12 @@ struct App {
                 : "Delete this game (removes the APK and any installed data)";
             std::string cacheLabel = confirmCache
                 ? "Clear cache — press A again to confirm (saves are kept)"
-                : "Clear cache (" + formatSize(cacheBytes) + ") — re-extracts next launch, saves kept";
+                : "Clear cache (" + (sizesReady ? formatSize(cacheBytes) : std::string("measuring…")) +
+                  ") — re-extracts next launch, saves kept";
             std::string dataLabel = confirmData
                 ? "Clear storage — press A again to confirm, SAVES WILL BE LOST"
-                : "Clear storage (" + formatSize(dataBytes) + ") — deletes saves and settings too";
+                : "Clear storage (" + (sizesReady ? formatSize(dataBytes) : std::string("measuring…")) +
+                  ") — deletes saves and settings too";
             const char* labels[ROW_COUNT] = { fpsLabel, cacheLabel.c_str(),
                                               dataLabel.c_str(), deleteLabel };
 
@@ -1295,16 +1323,43 @@ struct App {
     // screen to touch. Docked with one pad attached there's nothing to choose,
     // so this isn't called at all — see launchGame.
     // Returns false if the launch was cancelled.
+    // Picks how to play by SHOWING the options — the actual controller you're
+    // holding, and a touch screen — rather than listing them as text. The
+    // artwork is the same set the in-game guide gets patched with, so what you
+    // choose here is what you see in the game's own help screen.
+    // Returns false if the launch was cancelled.
     bool askLaunchMode(const std::string& appName,
                        const std::vector<PadKind>& pads, bool offerTouch,
                        PadKind* chosen) {
         std::vector<PadKind> opts = pads;
-        if (offerTouch) opts.push_back(PadKind::None);   // None == touch screen
+        if (offerTouch) opts.push_back(PadKind::None);
         if (opts.empty()) { *chosen = PadKind::None; return true; }
+
+        // Load each icon once up front; a missing one just falls back to the
+        // name, so the picker still works if artwork is ever absent.
+        std::vector<SDL_Texture*> tex(opts.size(), nullptr);
+        std::vector<int> tw(opts.size(), 0), th(opts.size(), 0);
+        for (size_t i = 0; i < opts.size(); i++) {
+            SDL_Surface* sf = IMG_Load(padKindIcon(opts[i]));
+            if (!sf) { logMsg((std::string("picker: missing icon ") + padKindIcon(opts[i])).c_str()); continue; }
+            tex[i] = SDL_CreateTextureFromSurface(rdr, sf);
+            tw[i] = sf->w; th[i] = sf->h;
+            SDL_FreeSurface(sf);
+        }
 
         int  sel = 0;
         bool done = false, cancelled = false;
-        const int ROW_H = 78, TOP = LIST_Y + 96;
+
+        // Tiles sized to fit however many options there are, so two options get
+        // large icons and five still fit across the screen.
+        const int n       = (int)opts.size();
+        const int gap     = 24;
+        const int availW  = SW - 80;
+        const int tileW   = std::min(340, (availW - gap * (n - 1)) / std::max(1, n));
+        const int tileH   = 260;
+        const int totalW  = tileW * n + gap * (n - 1);
+        const int startX  = (SW - totalW) / 2;
+        const int tileY   = LIST_Y + 96;
 
         while (!done) {
             SDL_Event ev;
@@ -1312,41 +1367,72 @@ struct App {
                 if (ev.type == SDL_QUIT) { cancelled = true; done = true; break; }
                 Act a = actionFor(ev);
                 if (ev.type == SDL_JOYHATMOTION) {
-                    if (ev.jhat.value & SDL_HAT_UP)   a = Act::Up;
-                    if (ev.jhat.value & SDL_HAT_DOWN) a = Act::Down;
+                    if (ev.jhat.value & SDL_HAT_LEFT)  a = Act::PageUp;
+                    if (ev.jhat.value & SDL_HAT_RIGHT) a = Act::PageDown;
                 }
-                if      (a == Act::Up)      sel = (sel - 1 + (int)opts.size()) % (int)opts.size();
-                else if (a == Act::Down)    sel = (sel + 1) % (int)opts.size();
+                // Horizontal row, so left/right move between tiles; up/down are
+                // accepted too rather than doing nothing.
+                if      (a == Act::PageUp   || a == Act::Up)   sel = (sel - 1 + n) % n;
+                else if (a == Act::PageDown || a == Act::Down) sel = (sel + 1) % n;
                 else if (a == Act::Confirm) done = true;
                 else if (a == Act::Manage || a == Act::Quit) { cancelled = true; done = true; }
 
                 if (ev.type == SDL_FINGERUP) {
-                    int r = ((int)(ev.tfinger.y * SH) - TOP) / ROW_H;
-                    if (r >= 0 && r < (int)opts.size()) {
-                        if (r == sel) done = true; else sel = r;
+                    int px = (int)(ev.tfinger.x * SW), py = (int)(ev.tfinger.y * SH);
+                    for (int i = 0; i < n; i++) {
+                        int tx = startX + i * (tileW + gap);
+                        if (px >= tx && px < tx + tileW && py >= tileY && py < tileY + tileH) {
+                            if (i == sel) done = true; else sel = i;
+                            break;
+                        }
                     }
                 }
             }
 
             drawBackground();
             drawHeaderBar();
-            int y = LIST_Y + 30;
-            drawText(fLg, clamp(fLg, appName, SW - 60), C_WHITE, 30, y); y += 42;
+            int y = LIST_Y + 26;
+            drawText(fLg, clamp(fLg, appName, SW - 60), C_WHITE, 30, y); y += 40;
             drawText(fSm, "How do you want to play?", C_GRAY, 30, y);
 
-            for (int r = 0; r < (int)opts.size(); r++) {
-                int ry = TOP + r * ROW_H;
-                if (r == sel) { fill(24, ry - 6, SW - 48, ROW_H - 8, C_SEL); fill(24, ry - 6, 4, ROW_H - 8, C_OK); }
-                drawText(fMd, padKindName(opts[r]), C_WHITE, 44, ry + 4);
-                const char* sub = (opts[r] == PadKind::None)
-                    ? "Tap and hold the on-screen controls, the same as on a phone"
-                    : "Shoulders accelerate and brake, D-pad and face buttons for menus";
-                drawText(fSm, sub, C_GRAY, 44, ry + 32);
+            for (int i = 0; i < n; i++) {
+                int tx = startX + i * (tileW + gap);
+                bool on = (i == sel);
+
+                fill(tx, tileY, tileW, tileH, on ? C_SEL : C_HEADER);
+                // Accent frame on the selection so it reads at a glance.
+                if (on) {
+                    fill(tx, tileY, tileW, 4, C_OK);
+                    fill(tx, tileY + tileH - 4, tileW, 4, C_OK);
+                    fill(tx, tileY, 4, tileH, C_OK);
+                    fill(tx + tileW - 4, tileY, 4, tileH, C_OK);
+                } else {
+                    fill(tx, tileY, tileW, 1, C_DIV);
+                    fill(tx, tileY + tileH - 1, tileW, 1, C_DIV);
+                }
+
+                // Icon, fitted inside the tile with its aspect ratio kept.
+                if (tex[i] && tw[i] > 0 && th[i] > 0) {
+                    int boxW = tileW - 40, boxH = tileH - 78;
+                    float sc = std::min((float)boxW / tw[i], (float)boxH / th[i]);
+                    int dw = (int)(tw[i] * sc), dh = (int)(th[i] * sc);
+                    SDL_Rect dst{tx + (tileW - dw) / 2, tileY + 20 + (boxH - dh) / 2, dw, dh};
+                    SDL_RenderCopy(rdr, tex[i], nullptr, &dst);
+                }
+
+                std::string nm = clamp(fSm, padKindName(opts[i]), tileW - 20);
+                int nw = 0, nh = 0;
+                TTF_SizeUTF8(fSm, nm.c_str(), &nw, &nh);
+                drawText(fSm, nm, on ? C_WHITE : C_GRAY,
+                         tx + (tileW - nw) / 2, tileY + tileH - 34);
             }
+
             drawFooterBar({{BG(GLYPH_A, "A"), "Play"}, {BG(GLYPH_B, "B"), "Back"}}, "");
             SDL_RenderPresent(rdr);
             SDL_Delay(16);
         }
+
+        for (auto* t : tex) if (t) SDL_DestroyTexture(t);
         *chosen = opts[sel];
         return !cancelled;
     }

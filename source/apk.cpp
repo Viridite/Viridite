@@ -615,32 +615,39 @@ bool apkClearStorage(const std::string& pkg_name) {
 
 // Bytes currently on the card for this package, split the same way, so the UI
 // can show what each button would actually reclaim.
-static uint64_t dirSize(const std::string& path) {
-    struct stat st;
-    if (stat(path.c_str(), &st) != 0) return 0;
-    if (!S_ISDIR(st.st_mode)) return (uint64_t)st.st_size;
+//
+// ONE pass over the tree, classifying as it goes. The first version called a
+// recursive size helper three times — once for lib/, once for assets/, then
+// once for the whole package directory, which walked lib/ and assets/ again —
+// and ran it synchronously when the Manage screen opened. Over a real
+// extracted game that's thousands of files read off the SD card with nothing
+// rendering, which Horizon shows as a frozen app.
+static void walkUsage(const std::string& path, bool underCache,
+                      uint64_t* cache, uint64_t* data) {
     DIR* d = opendir(path.c_str());
-    if (!d) return 0;
-    uint64_t total = 0;
+    if (!d) return;
     struct dirent* ent;
     while ((ent = readdir(d))) {
         std::string n = ent->d_name;
         if (n == "." || n == "..") continue;
-        total += dirSize(path + "/" + n);
+        std::string full = path + "/" + n;
+        struct stat st;
+        if (stat(full.c_str(), &st) != 0) continue;
+        if (S_ISDIR(st.st_mode)) {
+            walkUsage(full, underCache || n == "lib" || n == "assets", cache, data);
+        } else {
+            *(underCache ? cache : data) += (uint64_t)st.st_size;
+        }
     }
     closedir(d);
-    return total;
 }
 
 void apkGetStorageUsage(const std::string& pkg_name, uint64_t* cacheBytes, uint64_t* dataBytes) {
-    if (cacheBytes) *cacheBytes = 0;
-    if (dataBytes)  *dataBytes  = 0;
-    if (pkg_name.empty()) return;
-    std::string base = std::string("sdmc:/Viridite/games/") + pkg_name;
-    uint64_t cache = dirSize(base + "/lib") + dirSize(base + "/assets");
-    uint64_t all   = dirSize(base);
+    uint64_t cache = 0, data = 0;
+    if (!pkg_name.empty())
+        walkUsage(std::string("sdmc:/Viridite/games/") + pkg_name, false, &cache, &data);
     if (cacheBytes) *cacheBytes = cache;
-    if (dataBytes)  *dataBytes  = all > cache ? all - cache : 0;
+    if (dataBytes)  *dataBytes  = data;
 }
 
 bool apkDeleteFile(const std::string& apk_path) {
