@@ -159,6 +159,54 @@ jobs:
           cp core/core32/Viridite-Translation-Core-x32.nro dist/Viridite/Viridite-Translation-Core-x32.nro
           (cd dist && zip -r ../Viridite-sdcard.zip .)
 
+      # Runs before anything is tagged or published, so a bad build fails the
+      # run instead of shipping. This matters more than it used to: the launcher
+      # now installs releases onto consoles by itself, so a broken asset would
+      # propagate rather than just sit on the releases page waiting to be
+      # noticed.
+      - name: Verify build artefacts
+        run: |
+          set -euo pipefail
+          fail() { echo "::error::$1"; exit 1; }
+
+          for f in dist/Viridite.nro \
+                   dist/Viridite/Viridite-Translation-Core-x64.nro \
+                   dist/Viridite/Viridite-Translation-Core-x32.nro; do
+            [ -f "$f" ] || fail "missing $f"
+            # A Switch executable carries "NRO0" at offset 0x10. Catches a
+            # truncated or otherwise junk build that still produced a file.
+            magic=$(dd if="$f" bs=1 skip=16 count=4 2>/dev/null || true)
+            [ "$magic" = "NRO0" ] || fail "$f is not a valid NRO (magic '$magic')"
+            size=$(stat -c%s "$f")
+            [ "$size" -gt 1000000 ] || fail "$f is only $size bytes — build produced a stub"
+            echo "ok: $f ($size bytes)"
+          done
+
+          # The zip is what people actually download and what the updater
+          # unpacks, so check its contents rather than trusting dist/.
+          for entry in Viridite.nro \
+                       Viridite/Viridite-Translation-Core-x64.nro \
+                       Viridite/Viridite-Translation-Core-x32.nro; do
+            unzip -l Viridite-sdcard.zip | grep -qF "$entry" || fail "zip is missing $entry"
+          done
+          echo "ok: zip contains all three binaries"
+
+          # The launcher compares this against the newest published release to
+          # decide whether an update exists, so a build that didn't get the
+          # version stamped would never see one. "dev" means VIRIDITE_VERSION
+          # didn't reach the build.
+          stamped=$(grep -oP '(?<=#define VIRIDITE_VERSION ")[^"]*' launcher/include/build_number.h || true)
+          [ -n "$stamped" ] || fail "launcher has no VIRIDITE_VERSION stamped"
+          [ "$stamped" != "dev" ] || fail "launcher stamped 'dev' — VIRIDITE_VERSION did not reach the build"
+          [ "$stamped" = "${{ steps.ver.outputs.tag }}" ] \
+            || fail "launcher stamped '$stamped' but releasing as '${{ steps.ver.outputs.tag }}'"
+          echo "ok: launcher stamped $stamped"
+
+          core_stamped=$(grep -oP '(?<=#define VIRIDITE_VERSION ")[^"]*' core/include/build_number.h || true)
+          [ "$core_stamped" = "${{ steps.ver.outputs.tag }}" ] \
+            || fail "Core stamped '$core_stamped' but releasing as '${{ steps.ver.outputs.tag }}'"
+          echo "ok: Core stamped $core_stamped"
+
       - name: Generate in-depth changelog
         id: changelog
         run: |
@@ -200,6 +248,7 @@ jobs:
           git push origin "${{ steps.ver.outputs.tag }}"
 
       - name: Create GitHub Release
+        id: release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -215,3 +264,30 @@ jobs:
             --notes-file CHANGELOG.md \
             $PRERELEASE_FLAG \
             Viridite-sdcard.zip
+
+      # The tag is pushed a step before the release is created, so a failure in
+      # between leaves a tag with no downloadable build behind it. The launcher
+      # reports that state rather than offering an uninstallable version, but
+      # it shouldn't persist — roll the tag back so the next run can reuse the
+      # number instead of skipping it.
+      - name: Roll back the tag if the release failed
+        if: failure() && steps.release.outcome == 'failure'
+        working-directory: launcher
+        run: |
+          echo "::warning::release creation failed — removing tag ${{ steps.ver.outputs.tag }}"
+          git push --delete origin "${{ steps.ver.outputs.tag }}" || true
+
+      - name: Confirm the published release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TAG="${{ steps.ver.outputs.tag }}"
+          # Read it back rather than trusting the create call: this is what the
+          # launcher's updater and the website's download link will resolve.
+          assets=$(gh release view "$TAG" --repo "${{ github.repository }}" --json assets --jq '[.assets[].name]|join(",")')
+          echo "published assets: $assets"
+          case "$assets" in
+            *Viridite-sdcard.zip*) echo "ok: bundle is attached and downloadable" ;;
+            *) echo "::error::release $TAG has no Viridite-sdcard.zip asset"; exit 1 ;;
+          esac
