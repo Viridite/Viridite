@@ -167,6 +167,31 @@ static UpdateInfo        g_result;
 static std::thread       g_thread;
 static std::atomic<bool> g_running{false};
 
+// Waits (up to timeoutMs) for the console to report an actual internet
+// connection, via the same nifm check the Core already uses.
+//
+// socketInitializeDefault() returning cleanly only means the socket driver is
+// up — it says nothing about whether the console has associated with a network,
+// and DNS fails with a bare "Couldn't resolve host name" until it has. Hardware
+// logs showed exactly that: the check fired the instant the launcher started
+// and lost the race. Since this all runs on the background thread, waiting here
+// costs the UI nothing.
+static bool waitForInternet(int timeoutMs) {
+    if (R_FAILED(nifmInitialize(NifmServiceType_User))) return false;
+    bool ok = false;
+    for (int waited = 0; ; waited += 500) {
+        NifmInternetConnectionType ct;
+        u32 strength = 0;
+        NifmInternetConnectionStatus st;
+        if (R_SUCCEEDED(nifmGetInternetConnectionStatus(&ct, &strength, &st)) &&
+            st == NifmInternetConnectionStatus_Connected) { ok = true; break; }
+        if (waited >= timeoutMs) break;
+        svcSleepThread(500ULL * 1000000ULL);   // 500ms
+    }
+    nifmExit();
+    return ok;
+}
+
 // GET into memory. Returns false and fills `err` on transport or HTTP failure.
 static bool httpGet(const char* url, std::string* out, std::string* err) {
     CURL* c = curl_easy_init();
@@ -183,7 +208,15 @@ static bool httpGet(const char* url, std::string* out, std::string* err) {
     curl_easy_getinfo(c, CURLINFO_RESPONSE_CODE, &http);
     curl_easy_cleanup(c);
 
-    if (rc != CURLE_OK) { *err = std::string("network: ") + curl_easy_strerror(rc); return false; }
+    if (rc != CURLE_OK) {
+        // Name resolution is the failure people actually hit, and curl's own
+        // wording for it doesn't tell a Switch owner anything actionable.
+        if (rc == CURLE_COULDNT_RESOLVE_HOST)
+            *err = "couldn't reach GitHub (DNS failed — is the console online?)";
+        else
+            *err = std::string("network: ") + curl_easy_strerror(rc);
+        return false;
+    }
     if (http != 200) {
         char buf[96];
         // 403 here is almost always the anonymous rate limit (60/hour per IP).
@@ -213,6 +246,14 @@ static std::string highestTag(const std::string& body) {
 static void doCheck() {
     UpdateInfo info;
     info.checked = true;
+
+    // Give the console a moment to actually get online before asking DNS
+    // anything. An offline Switch is a completely normal way to run this, so
+    // that isn't an error worth alarming anyone about — just say so and stop.
+    if (!waitForInternet(10000)) {
+        info.error = "no internet connection — skipped the update check";
+        g_result = info; g_checkDone = true; return;
+    }
 
     std::string body, err;
     if (!httpGet(RELEASES_API, &body, &err)) {
