@@ -19,10 +19,15 @@
 static const char* APK_DIR = "sdmc:/Viridite/apks";
 
 // Translation Core NROs live in a subfolder next to this launcher — same
-// convention as any other homebrew "app + resources" layout. x64 is real;
-// x32 is a placeholder (32-bit binaries aren't supported yet — see below).
+// convention as any other homebrew "app + resources" layout.
 static const char* CORE_X64_PATH = "sdmc:/switch/Viridite/Viridite-Translation-Core-x64.nro";
-static const char* CORE_X32_PATH = "sdmc:/switch/Viridite/Viridite-Translation-Core-x32.nro";
+// Nothing chain-loads this any more: allowlisted 32-bit titles go through the
+// x64 Core's ARM32 layer (see launchGame), so every launch targets x64. The
+// x32 NRO is still built and shipped to complete the on-disk layout, so the
+// path stays here as the record of where it lands — marked maybe_unused
+// rather than deleted, since dropping it would lose that and leave the
+// shipped file undocumented in the launcher that defines the layout.
+[[maybe_unused]] static const char* CORE_X32_PATH = "sdmc:/switch/Viridite/Viridite-Translation-Core-x32.nro";
 
 // Compatibility allowlist. The translation layer is validated end-to-end for
 // exactly these titles right now; every other APK boots far enough to look like
