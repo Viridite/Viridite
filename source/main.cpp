@@ -946,7 +946,6 @@ struct App {
                     if (ev.jbutton.button == BTN_A) { install = true; done = true; }
                     if (ev.jbutton.button == BTN_B) { done = true; }
                 }
-                if (ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_ESCAPE) done = true;
             }
 
             drawBackground();
@@ -1041,12 +1040,16 @@ struct App {
             SDL_Event ev;
             while (SDL_PollEvent(&ev)) {
                 if (ev.type == SDL_QUIT) { done = true; }
-                // Any of the back-ish inputs closes this, so nobody gets
-                // stuck on the credits because they pressed the "wrong" one.
-                if (ev.type == SDL_JOYBUTTONDOWN &&
-                    (ev.jbutton.button == BTN_B || ev.jbutton.button == BTN_MINUS ||
-                     ev.jbutton.button == BTN_A || ev.jbutton.button == BTN_PLUS))
-                    { done = true; }
+                // Any "do something" input closes this — the credits have no
+                // actions of their own beyond scrolling, so nobody should get
+                // stuck here for pressing the wrong button. Routed through the
+                // shared action layer so the shoulders and a keyboard work too.
+                {
+                    Act a = actionFor(ev);
+                    if (a == Act::Confirm || a == Act::Back || a == Act::Manage ||
+                        a == Act::Quit    || a == Act::About)
+                        done = true;
+                }
                 if (ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_ESCAPE)
                     { done = true; }
 
@@ -1156,6 +1159,7 @@ struct App {
         static const int ROW_FPS = 0, ROW_CACHE = 1, ROW_STORAGE = 2,
                          ROW_DELETE = 3, ROW_COUNT = 4;
         int  row           = 0;
+        Uint32 lastManageStick = 0;
         int  fpsCap        = apkGetFpsCap(pkg); // 0 = default/uncapped
         bool confirmDelete = false;
         bool confirmCache  = false;
@@ -1226,17 +1230,40 @@ struct App {
                 if (ev.type == SDL_QUIT) { done = true; break; }
                 if (ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_ESCAPE) done = true;
 
-                if (ev.type == SDL_JOYBUTTONDOWN) {
-                    if (ev.jbutton.button == BTN_B) {
-                        if (confirmDelete || confirmCache || confirmData) clearConfirms();
-                        else done = true;
-                    } else if (ev.jbutton.button == BTN_A) {
-                        activate(row);
+                // Same action layer the app list uses, so this screen answers
+                // to the stick, the shoulders and a keyboard rather than only
+                // A/B and the D-pad — it was the one screen that didn't.
+                Act a = actionFor(ev);
+                if (ev.type == SDL_JOYHATMOTION) {
+                    if (ev.jhat.value & SDL_HAT_DOWN) a = Act::Down;
+                    if (ev.jhat.value & SDL_HAT_UP)   a = Act::Up;
+                }
+                if (ev.type == SDL_JOYAXISMOTION) {
+                    Uint32 now = SDL_GetTicks();
+                    int ax = ev.jaxis.axis, v = ev.jaxis.value;
+                    if ((ax == AXIS_LY || ax == AXIS_RY) && now - lastManageStick > 180) {
+                        if      (v >  AXIS_DEADZONE) { a = Act::Down; lastManageStick = now; }
+                        else if (v < -AXIS_DEADZONE) { a = Act::Up;   lastManageStick = now; }
                     }
                 }
-                if (ev.type == SDL_JOYHATMOTION) {
-                    if (ev.jhat.value & SDL_HAT_DOWN) { row = std::min(row + 1, ROW_COUNT - 1); clearConfirms(); }
-                    if (ev.jhat.value & SDL_HAT_UP)   { row = std::max(row - 1, 0);              clearConfirms(); }
+
+                switch (a) {
+                    case Act::Up:       row = std::max(row - 1, 0);              clearConfirms(); break;
+                    case Act::Down:     row = std::min(row + 1, ROW_COUNT - 1);  clearConfirms(); break;
+                    case Act::Home:
+                    case Act::PageUp:   row = 0;                                 clearConfirms(); break;
+                    case Act::End:
+                    case Act::PageDown: row = ROW_COUNT - 1;                     clearConfirms(); break;
+                    case Act::Confirm:  activate(row); break;
+                    // B / Escape backs out — or cancels a pending confirmation
+                    // first, so it never destroys anything on the way out.
+                    case Act::Manage:
+                    case Act::Back:
+                    case Act::Quit:
+                        if (confirmDelete || confirmCache || confirmData) clearConfirms();
+                        else done = true;
+                        break;
+                    default: break;
                 }
 
                 if (ev.type == SDL_FINGERDOWN) touchDragging = false;
