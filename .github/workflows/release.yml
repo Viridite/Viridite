@@ -151,13 +151,20 @@ jobs:
       - name: Build Translation Core (x32, placeholder)
         run: docker run --rm -v ${{ github.workspace }}/core/core32:/project -w /project devkitpro/devkita64:latest make
 
+      - name: Build install overlay
+        run: docker run --rm -v ${{ github.workspace }}/launcher/overlay:/project -w /project devkitpro/devkita64:latest make
+
       - name: Assemble SD-card layout
         run: |
-          mkdir -p dist/Viridite
+          mkdir -p dist/Viridite dist/.overlays
           cp launcher/Viridite.nro dist/Viridite.nro
           cp core/Viridite-Translation-Core-x64.nro dist/Viridite/Viridite-Translation-Core-x64.nro
           cp core/core32/Viridite-Translation-Core-x32.nro dist/Viridite/Viridite-Translation-Core-x32.nro
-          (cd dist && zip -r ../Viridite-sdcard.zip .)
+          # Goes to /switch/.overlays/ — nx-ovlloader's directory, not ours. It
+          # is inert without that sysmodule installed, so shipping it costs
+          # nothing for people who don't use overlays.
+          cp launcher/overlay/Viridite.ovl dist/.overlays/Viridite.ovl
+          (cd dist && zip -r ../Viridite-sdcard.zip . -x '.DS_Store')
 
       # Runs before anything is tagged or published, so a bad build fails the
       # run instead of shipping. This matters more than it used to: the launcher
@@ -190,6 +197,19 @@ jobs:
             unzip -l Viridite-sdcard.zip | grep -qF "$entry" || fail "zip is missing $entry"
           done
           echo "ok: zip contains all three binaries"
+
+          # The overlay is checked apart from the loop above: it is a fraction
+          # of the size of the other binaries, so the "did this build produce a
+          # stub" threshold there would reject a perfectly good one.
+          ovl=dist/.overlays/Viridite.ovl
+          [ -f "$ovl" ] || fail "missing $ovl"
+          magic=$(dd if="$ovl" bs=1 skip=16 count=4 2>/dev/null || true)
+          [ "$magic" = "NRO0" ] || fail "$ovl is not a valid NRO (magic '$magic')"
+          osize=$(stat -c%s "$ovl")
+          [ "$osize" -gt 50000 ] || fail "$ovl is only $osize bytes"
+          unzip -l Viridite-sdcard.zip | grep -qF ".overlays/Viridite.ovl" \
+            || fail "zip is missing .overlays/Viridite.ovl"
+          echo "ok: overlay ($osize bytes)"
 
           # The launcher compares this against the newest published release to
           # decide whether an update exists, so a build that didn't get the

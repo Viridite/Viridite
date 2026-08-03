@@ -16,3 +16,11 @@ __pycache__/
 
 # SD-card dumps pulled off hardware for debugging — contains multi-GB APKs
 ViriditeDumps/
+
+# Overlay build output
+overlay/build/
+overlay/Viridite.elf
+overlay/Viridite.nro
+overlay/Viridite.nacp
+overlay/Viridite.ovl
+overlay/*.map
