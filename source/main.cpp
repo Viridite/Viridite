@@ -559,8 +559,82 @@ struct App {
         }
         avatarStart();
         loadContributors();
+        loadGroundwork();
         logMsg("init complete");
         return true;
+    }
+
+    // The groundwork list: everything the project is built on, mirroring the
+    // website's credits page so the console and the site cannot disagree about
+    // who is owed what. People are credited above; this is the work.
+    struct GroundItem { bool heading; std::string name, why; };
+    std::vector<GroundItem> ground;
+
+    void loadGroundwork() {
+        FILE* f = fopen("romfs:/groundwork.txt", "r");
+        if (!f) { logMsg("groundwork.txt not present — credits will show people only"); return; }
+        char line[512];
+        while (fgets(line, sizeof(line), f)) {
+            std::string l = line;
+            while (!l.empty() && (l.back() == '\n' || l.back() == '\r')) l.pop_back();
+            if (l.empty() || l[0] == '#') continue;
+            if (l[0] == '=') { ground.push_back({true, l.substr(1), ""}); continue; }
+            size_t bar = l.find('|');
+            if (bar == std::string::npos) ground.push_back({false, l, ""});
+            else ground.push_back({false, l.substr(0, bar), l.substr(bar + 1)});
+        }
+        fclose(f);
+        logMsg(("groundwork.txt loaded: " + std::to_string(ground.size()) + " entries").c_str());
+    }
+
+    // Draws the groundwork below the people. Returns the y it finished at so
+    // the caller can size the scroll region.
+    int drawGroundwork(int y) {
+        if (ground.empty()) return y;
+        int w = 0, h = 0;
+        TTF_SizeUTF8(fMd, "Groundwork", &w, &h);
+        drawText(fMd, "Groundwork", C_OK, (SW - w) / 2, y);
+        y += h + 6;
+        const char* sub = "What Viridite is built on";
+        TTF_SizeUTF8(fSm, sub, &w, &h);
+        drawText(fSm, sub, C_DIM, (SW - w) / 2, y);
+        y += h + 18;
+
+        for (const GroundItem& g : ground) {
+            if (y > SH) break;                       // scrolled past the bottom
+            if (g.heading) {
+                y += 10;
+                TTF_SizeUTF8(fSm, g.name.c_str(), &w, &h);
+                if (y > -h) drawText(fSm, g.name, C_OK, 60, y);
+                y += h + 8;
+                continue;
+            }
+            if (y > -60) {
+                drawText(fSm, g.name, C_WHITE, 76, y);
+                TTF_SizeUTF8(fSm, g.name.c_str(), &w, &h);
+                int ty = y + h + 2;
+                // Wrap the reason to the panel width rather than clipping it —
+                // these are sentences, not labels.
+                std::string rest = g.why;
+                while (!rest.empty() && ty < SH) {
+                    std::string fit = clamp(fSm, rest, SW - 200);
+                    if (fit.size() < rest.size() && fit.size() > 3) {
+                        size_t cut = fit.rfind(' ');
+                        if (cut != std::string::npos && cut > 8) fit = fit.substr(0, cut);
+                    }
+                    if (ty > -20) drawText(fSm, fit, C_GRAY, 92, ty);
+                    int lw = 0, lh = 0; TTF_SizeUTF8(fSm, fit.c_str(), &lw, &lh);
+                    ty += lh + 2;
+                    if (fit.size() >= rest.size()) break;
+                    rest = rest.substr(fit.size());
+                    while (!rest.empty() && rest[0] == ' ') rest.erase(0, 1);
+                }
+                y = ty + 8;
+            } else {
+                y += 44;                             // off-screen: advance only
+            }
+        }
+        return y;
     }
 
     // Parses romfs:/contributors.txt (see the format comment near the
@@ -903,13 +977,23 @@ struct App {
     // rows) keeps this simple since category headers and person rows have
     // different heights.
     void drawContributors(int top) {
-        if (people.empty()) return;
+        if (people.empty() && ground.empty()) return;
         const int PERSON_H = 46;
         const int GAP_H    = 16;
         const int AV_SZ    = 28;
 
         int total = 0;
         total = (int)people.size() * PERSON_H + GAP_H;
+        // The groundwork scrolls with the people rather than sitting below the
+        // clip region where it could never be reached. Headings are shorter
+        // than entries, and entries wrap to roughly two lines.
+        int groundH = 0;
+        if (!ground.empty()) {
+            groundH = 70;                                  // section title block
+            for (const GroundItem& g : ground)
+                groundH += g.heading ? 34 : 62;
+        }
+        total += groundH;
 
         int viewH = (SH - FOOTER_H - 10) - top;
         int maxScroll = std::max(0, total - viewH);
@@ -954,6 +1038,8 @@ struct App {
             }
             y += PERSON_H;
         }
+
+        if (!ground.empty()) y = drawGroundwork(y + 20);
 
         SDL_RenderSetClipRect(rdr, nullptr);
 

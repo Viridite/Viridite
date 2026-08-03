@@ -1,0 +1,29 @@
+# Groundwork — the projects, specifications and reverse-engineering Viridite is
+# built on. Mirrors https://viridite.aaronworld.uk/credits so the console and
+# the site never disagree about who is owed what.
+#
+# Format: "#" comment, "=" section heading, otherwise "Name|why it is credited".
+
+=Prior art — the same idea, done before
+TheOfficialFloW (Andy Nguyen)|so_util — the original ELF-loading technique this whole scene rests on, first used to run Android games natively on PS Vita
+Rinnegatamante, Bythos, frangarcj, CBPS|and the wider Vita homebrew scene, who extended it across 45+ Android-to-Vita ports
+fgsfdsfgs|max_nx — the Switch precedent. Two techniques came from reading it: a preflight check that the JIT syscalls exist, and poisoning unresolved imports so reaching one crashes unmistakably
+NaGaa95|ffd_nx — confirmation the approach generalises past a single game
+
+=Switch platform
+switchbrew wiki|Reverse-engineered Horizon OS documentation: syscalls, memory-type tables, NRO layout, the application-record model behind forwarders
+libnx|Beyond using it, reading it settles questions. Disassembling its exception entry stub proved svcReturnFromException runs before the user handler
+devkitPro / devkitA64|Toolchain and portlibs
+Atmosphere|The CFW everything runs under, and the crash-report format used for post-mortems
+WerWolv|libtesla and nx-ovlloader. Reading libtesla is how we found an overlay can reposition its own layer
+
+=Android
+AOSP|The binary XML and resources.arsc formats the APK parser implements, and bionic, whose libc surface the shim table is written against
+Material Design 3|Colour roles, the tonal-palette model, and the shape and motion scales this launcher is built to
+Google Fonts|Roboto Flex and Material Symbols Rounded, bundled under the OFL
+
+=Libraries and tools
+SDL2, SDL2_ttf, SDL2_image|Windowing, input, text and image decoding in both binaries
+minizip / zlib, libcurl, stb|Extraction, the self-updater, and font rasterisation
+newlib / dlmalloc|Its chunk layout and sysmalloc behaviour had to be understood in detail to diagnose the Brain It On! fault
+GNU binutils|objdump, readelf and nm. Most of the real diagnosis here has been reading AArch64 disassembly rather than adding logging
