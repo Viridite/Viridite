@@ -1469,7 +1469,7 @@ struct App {
         return !cancelled;
     }
 
-    bool launchGame(const ApkInfo& apk, bool* outHandled) {
+    bool launchGame(const ApkInfo& apk, bool* outHandled, bool skipInputPrompt = false) {
         *outHandled = false;
         const std::string& pkg =
             apk.packageName.empty() ? apk.filename : apk.packageName;
@@ -1532,7 +1532,11 @@ struct App {
             bool dockedNow = appletGetOperationMode() == AppletOperationMode_Console;
             std::vector<PadKind> pads = detectPads();
 
-            if (!hasControllerSupport(pkg)) {
+            if (skipInputPrompt) {
+                // Reinstall path: keep whatever was chosen last time rather
+                // than asking again for an action that isn't "start a game".
+                chosen = pads.empty() ? PadKind::None : pads[0];
+            } else if (!hasControllerSupport(pkg)) {
                 // No controller path in this game — touch is the only answer,
                 // and asking would be a step in the way.
                 chosen = PadKind::None;
@@ -1639,10 +1643,26 @@ int main(int, char**) {
                 case Act::Home:      if (haveApks) { app.selected = 0;         clampView(); } break;
                 case Act::End:       if (haveApks) { app.selected = count - 1; clampView(); } break;
                 case Act::Confirm:
-                case Act::Reinstall:
-                    // Reinstall is the same chain-load; the Core re-extracts
-                    // when it sees no cached install for this package.
                     if (haveApks) app.launchGame(app.apks[app.selected], &handoff);
+                    break;
+                case Act::Reinstall:
+                    // X means "reinstall", so actually make it reinstall: the
+                    // Core only re-extracts when the .installed marker is
+                    // absent, and this used to be the same call as A — which
+                    // launched the cached install unchanged. Dropping the
+                    // marker is what makes the next launch re-extract.
+                    //
+                    // It also skips the how-do-you-want-to-play prompt. That
+                    // question belongs to starting a game, not to reinstalling
+                    // one, and being asked it after pressing X reads like the
+                    // wrong button did something.
+                    if (haveApks) {
+                        const ApkInfo& a = app.apks[app.selected];
+                        std::string pk = a.packageName.empty() ? a.filename : a.packageName;
+                        apkClearCache(pk);
+                        logMsg(("reinstall: cleared cached install for " + pk).c_str());
+                        app.launchGame(a, &handoff, /*skipInputPrompt=*/true);
+                    }
                     break;
                 case Act::Manage:    if (haveApks) app.showManage(); break;
                 case Act::Rescan:    app.rescan(); break;

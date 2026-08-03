@@ -455,9 +455,42 @@ ApkInfo parseApk(const std::string& path) {
             }
             if (ax.iconResId) {
                 auto paths = resolveResId(arsc, ax.iconResId);
-                std::string iconPath = bestIconPath(paths);
-                if (!iconPath.empty())
-                    info.iconPng = readZipEntry(zf, iconPath.c_str());
+                // Read every candidate and keep the one with the most pixels.
+                //
+                // Density folders are only a hint, and plenty of APKs don't
+                // have them at all: Hill Climb Racing ships resource-obfuscated
+                // (res/as.png, res/uS.png …), so every candidate ranked equally
+                // and whichever came first won — which is how a small icon got
+                // picked while a 432x432 one sat right beside it. Measuring the
+                // decoded width is the only thing that actually answers "which
+                // of these is the best icon".
+                std::string bestPath;
+                std::vector<uint8_t> bestData;
+                size_t bestPx = 0;
+                int    bestRank = -2;
+                for (const auto& cand : paths) {
+                    if (!isBitmapIcon(cand)) continue;
+                    auto data = readZipEntry(zf, cand.c_str());
+                    if (data.empty()) continue;
+                    size_t px = pngWidth(data);         // 0 when not a PNG (WebP)
+                    int    rk = densityRank(cand);
+                    bool better;
+                    if (px && bestPx)        better = px > bestPx;
+                    else if (px && !bestPx)  better = true;      // measured beats guessed
+                    else if (!px && bestPx)  better = false;
+                    else                     better = rk > bestRank;
+                    if (better || bestData.empty()) {
+                        bestData = std::move(data);
+                        bestPath = cand; bestPx = px; bestRank = rk;
+                    }
+                }
+                if (!bestData.empty()) info.iconPng = std::move(bestData);
+                else {
+                    // Nothing decoded — fall back to the old path-based pick.
+                    std::string iconPath = bestIconPath(paths);
+                    if (!iconPath.empty())
+                        info.iconPng = readZipEntry(zf, iconPath.c_str());
+                }
             }
         }
     }
