@@ -856,6 +856,68 @@ Viridite's core idea — load a game's real Android `.so` binary, patch/resolve 
 
 Worth being clear about scope: max_nx's own source (loader internals, Max Payne-specific function hooks, OpenAL/OpenGL patches) is written for a different, much simpler native-Android game and doesn't transplant directly — Hill Climb Racing's cocos2d-x/JNI-Java-bridge architecture needs a real JNI/JavaVM emulation layer that Max Payne barely uses at all, and Viridite's ELF loader already has its own working (independently-arrived-at, and in some respects more complete) approach to threading, audio, and JNI dispatch. What's genuinely reusable — the two safety techniques above, plus the general validation that our independent design choices (fake stdio array, Bionic mutex sentinel handling, the TPIDR_EL0-is-zero-on-Switch workaround) match this established prior art — has been folded in with credit. The rest stays project-specific by necessity, not by not looking.
 
+
+### Groundwork — specs, research and libraries
+
+Prior art above is *other people's implementations of the same idea*. This is the
+documentation, reverse-engineering and code the project is actually built on top of.
+None of it is incidental: several of these are the reason a given subsystem works at
+all, and a few are the reason a bug got found.
+
+**Switch platform**
+
+- **[switchbrew wiki](https://switchbrew.org/)** — the reverse-engineered documentation
+  of Horizon OS. Syscall semantics, `MemoryType` and permission tables, NRO/NACP layout,
+  the `ns`/`ncm` application-record model behind forwarders, and the `svcSetHardwareBreakPoint`
+  contract all come from here.
+- **[libnx](https://github.com/switchbrew/libnx)** (switchbrew) — the homebrew C library.
+  Beyond using it, reading it settled real questions: disassembling its
+  `__libnx_exception_entry` is how we learned that `svcReturnFromException` is called
+  *before* the user handler runs, which killed an entire line of investigation into a
+  loading hang.
+- **[devkitPro / devkitA64](https://devkitpro.org/)** — toolchain and portlibs.
+- **[Atmosphère](https://github.com/Atmosphere-NX/Atmosphere)** (SciresM and contributors)
+  — the CFW everything runs under, and the source of the fatal/crash report format used
+  for post-mortem debugging.
+- **[nx-hbloader / nx-hbmenu](https://github.com/switchbrew/nx-hbloader)** — the
+  `envSetNextLoad` chain-loading contract the launcher and Translation Core hand off
+  through, including for the deep test's round trip.
+- **[libtesla](https://github.com/WerWolv/libtesla)** and
+  **[nx-ovlloader](https://github.com/WerWolv/nx-ovlloader)** (WerWolv) — the overlay
+  runtime. Reading libtesla is how we found that an overlay can reposition its own
+  layer (`viSetLayerPosition`/`viSetLayerSize` driven from `initServices`), which is
+  what makes an install card able to sit over a HOME-menu tile rather than in a sidebar.
+
+**Android**
+
+- **[AOSP](https://cs.android.com/)** — the binary XML (`AndroidManifest.xml`) and
+  `resources.arsc` formats the APK parser implements, and **bionic**'s libc surface,
+  which is the API the shim table is written against.
+- **[Material Design 3](https://m3.material.io/)** — colour roles, the tonal-palette
+  model, and the corner-radius and motion scales the launcher UI is built to.
+- **[Google Fonts](https://fonts.google.com/)** — Roboto Flex and Material Symbols
+  Rounded, both bundled under the OFL.
+
+**Libraries**
+
+- **[SDL2](https://libsdl.org/)**, SDL2_ttf, SDL2_image — windowing, input, text and
+  image decoding in both binaries.
+- **newlib** (and its dlmalloc-derived allocator) — whose chunk layout and `sysmalloc`
+  behaviour had to be understood in detail to diagnose the Brain It On! fault; the
+  boundary-tag invariant the heap checker validates comes straight from that design.
+- **minizip/zlib** — APK and update-bundle extraction.
+- **libcurl** + the Switch `ssl` sysmodule — the self-updater.
+- **[stb](https://github.com/nothings/stb)** (Sean Barrett) — `stb_truetype`, via libtesla.
+
+**Tools**
+
+- **[APKMirror](https://www.apkmirror.com/)** / **[APKPure](https://apkpure.com/)** —
+  where the test APKs came from; both record the exact version and ABI, which matters
+  when a bug turns out to be build-specific.
+- **objdump / readelf / nm** (GNU binutils) — most of the real diagnosis in this project
+  has been reading AArch64 disassembly of game binaries and of our own, rather than
+  adding logging.
+
 ---
 
 ## License
