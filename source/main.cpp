@@ -1100,8 +1100,20 @@ struct App {
                             noticeUntil = SDL_GetTicks() + 5000;
                             break;
                         }
-                        std::string arg = std::string(CORE_X64_PATH) + " --selftest";
-                        logMsg("self-test: handing off to the Core for the deep test");
+                        // Name the selected game. The Core tests one per
+                        // invocation, which is both what you want when you are
+                        // checking a specific title and the only thing that
+                        // works — a second load in the same process inherits
+                        // the first game's mappings.
+                        if (apks.empty()) {
+                            noticeText  = "No games to deep test.";
+                            noticeUntil = SDL_GetTicks() + 5000;
+                            break;
+                        }
+                        const ApkInfo& sel = apks[std::clamp(selected, 0, (int)apks.size() - 1)];
+                        std::string selPkg = sel.packageName.empty() ? sel.filename : sel.packageName;
+                        std::string arg = std::string(CORE_X64_PATH) + " --selftest " + selPkg;
+                        logMsg(("self-test: deep-testing " + selPkg + " in the Core").c_str());
                         if (R_SUCCEEDED(envSetNextLoad(CORE_X64_PATH, arg.c_str()))) {
                             deepTestHandoff = true;
                             done = true;

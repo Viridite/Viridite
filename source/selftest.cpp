@@ -146,8 +146,8 @@ static void selfTestCoreResults(std::vector<TestResult>& out) {
     FILE* f = fopen(kCorePath, "r");
     if (!f) {
         add(out, TestStatus::Warn, "Deep test",
-            "not run yet — press X on this screen to load every game without "
-            "starting it");
+            "not run yet — select a game, then press X here to load it "
+            "without starting it");
         return;
     }
     char line[512];
