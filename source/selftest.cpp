@@ -80,12 +80,25 @@ bool isValidNro(const char* path, size_t* size_out) {
 // the console to see it.
 static void selfTestLastRun(const std::string& pkg, const std::string& label,
                             std::vector<TestResult>& out) {
-    FILE* f = fopen("sdmc:/Viridite/compat_log.txt", "r");
+    // Try both plausible locations and say which was tried. "No log yet" and
+    // "the log is somewhere else" are different problems with different fixes,
+    // and a bare shrug does not distinguish them — the Core writes to the first
+    // of these, but a log that has been moved off the card looks identical to
+    // one that was never written.
+    static const char* kLogPaths[] = {
+        "sdmc:/Viridite/compat_log.txt",
+        "sdmc:/switch/Viridite/compat_log.txt",
+    };
+    FILE* f = nullptr;
+    const char* found = nullptr;
+    for (const char* lp : kLogPaths)
+        if ((f = fopen(lp, "r")) != nullptr) { found = lp; break; }
     if (!f) {
         add(out, TestStatus::Warn, (label + " — last run").c_str(),
-            "no compat_log.txt yet");
+            "no log at %s (has it been moved off the card?)", kLogPaths[0]);
         return;
     }
+    (void)found;
     char line[512];
     bool   thisGame = false, loaded = false, handedOff = false;
     int    faults = 0, wedged = 0;
