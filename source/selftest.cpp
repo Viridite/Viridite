@@ -31,7 +31,10 @@ constexpr char kCoreX32[] = "sdmc:/switch/Viridite/Viridite-Translation-Core-x32
 constexpr char kApkDir[]  = "sdmc:/Viridite/apks";
 // Alongside launcher_log.txt and compat_log.txt, not next to the NROs. That is
 // where every other log lives and where anyone would look for this one.
-constexpr char kOutPath[] = "sdmc:/Viridite/selftest.txt";
+constexpr char kOutPath[]  = "sdmc:/Viridite/selftest.txt";
+// Written by the Core's dry run and read back here after it hands control
+// back to us.
+constexpr char kCorePath[] = "sdmc:/Viridite/selftest_core.txt";
 
 void add(std::vector<TestResult>& out, TestStatus st, const char* name,
          const char* fmt, ...) __attribute__((format(printf, 4, 5)));
@@ -134,6 +137,33 @@ static void selfTestLastRun(const std::string& pkg, const std::string& label,
     else
         add(out, TestStatus::Warn, (label + " — last run").c_str(),
             "%s: did not finish loading, %d ctor fault(s)", version, faults);
+}
+
+// Results of the last Core dry run, if one has happened. This is the part that
+// actually exercises the loader — extract, map, relocate, resolve every
+// imported symbol — rather than reporting on a previous launch.
+static void selfTestCoreResults(std::vector<TestResult>& out) {
+    FILE* f = fopen(kCorePath, "r");
+    if (!f) {
+        add(out, TestStatus::Warn, "Deep test",
+            "not run yet — press X on this screen to load every game without "
+            "starting it");
+        return;
+    }
+    char line[512];
+    bool ok = fgets(line, sizeof(line), f) && strncmp(line, "v1", 2) == 0;
+    if (!ok) { fclose(f); return; }
+    while (fgets(line, sizeof(line), f)) {
+        char* nl = strpbrk(line, "\r\n"); if (nl) *nl = 0;
+        char* p1 = strchr(line, '|');  if (!p1) continue;
+        char* p2 = strchr(p1 + 1, '|'); if (!p2) continue;
+        *p1 = 0; *p2 = 0;
+        const char* verdict = line, *pkg = p1 + 1, *detail = p2 + 1;
+        TestStatus st = !strcmp(verdict, "PASS") ? TestStatus::Pass
+                      : !strcmp(verdict, "FAIL") ? TestStatus::Fail : TestStatus::Warn;
+        add(out, st, (std::string("Deep test — ") + pkg).c_str(), "%s", detail);
+    }
+    fclose(f);
 }
 
 std::vector<TestResult> selfTestRun(const std::vector<ApkInfo>& apks,
@@ -318,6 +348,8 @@ std::vector<TestResult> selfTestRun(const std::vector<ApkInfo>& apks,
             selfTestLastRun(pkg, label, out);
         }
     }
+
+    selfTestCoreResults(out);
 
     // ── Controllers and sensors ─────────────────────────────────────────────
     if (progress) progress("Checking controllers");

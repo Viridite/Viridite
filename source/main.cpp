@@ -1037,6 +1037,8 @@ struct App {
     // ------------------------------------------------------------------
     // Self-test results. Same action layer as everywhere else, so every input
     // works here too rather than only the one it was written against.
+    bool deepTestHandoff = false;   // set when X hands over to the Core
+
     void showSelfTest() {
         noticeText.clear();
 
@@ -1086,6 +1088,29 @@ struct App {
                     case Act::Home:     scroll = 0; break;
                     case Act::PageDown:
                     case Act::End:      scroll = std::max(0, (int)res.size() - VIS); break;
+                    case Act::Reinstall: {
+                        // X starts the deep test. It has to run in the Core —
+                        // that is where the loader lives, and testing a copy of
+                        // it in the launcher would be testing the wrong code.
+                        // So hand over, let it dry-load everything, and it
+                        // hands straight back to us with results on disk.
+                        struct stat cst;
+                        if (stat(CORE_X64_PATH, &cst) != 0) {
+                            noticeText  = "Translation Core not found — cannot deep test.";
+                            noticeUntil = SDL_GetTicks() + 5000;
+                            break;
+                        }
+                        std::string arg = std::string(CORE_X64_PATH) + " --selftest";
+                        logMsg("self-test: handing off to the Core for the deep test");
+                        if (R_SUCCEEDED(envSetNextLoad(CORE_X64_PATH, arg.c_str()))) {
+                            deepTestHandoff = true;
+                            done = true;
+                        } else {
+                            noticeText  = "Could not hand off to the Core.";
+                            noticeUntil = SDL_GetTicks() + 5000;
+                        }
+                        break;
+                    }
                     case Act::Back:
                     case Act::Manage:
                     case Act::Quit:
@@ -1131,7 +1156,8 @@ struct App {
                 drawText(fSm, sc, C_DIM, SW - 200, SH - FOOTER_H - 34);
             }
 
-            drawFooterBar({{"B", "Back"}, {"\u2191\u2193", "Scroll"}}, "Saved to selftest.txt");
+            drawFooterBar({{"B", "Back"}, {"X", "Deep test"}, {"\u2191\u2193", "Scroll"}},
+                          "Saved to selftest.txt");
             SDL_RenderPresent(rdr);
             SDL_Delay(16);
         }
@@ -1683,7 +1709,7 @@ struct App {
 };
 
 // ---------------------------------------------------------------------------
-int main(int, char**) {
+int main(int argc, char** argv) {
     App app;
 
     if (!app.init()) return 1;
@@ -1703,6 +1729,18 @@ int main(int, char**) {
     bool   handoff   = false;
     Uint32 lastStick = 0;
 
+    // The Core hands back with this after a deep test. Going straight to the
+    // results is the whole point — otherwise the run finishes and drops you on
+    // the app list with no sign anything happened.
+    for (int i = 1; i < argc; i++) {
+        if (argv[i] && strcmp(argv[i], "--selftest-results") == 0) {
+            logMsg("returned from the Core deep test — showing results");
+            app.showSelfTest();
+            app.render();
+            break;
+        }
+    }
+
     // Hold Y to open the self-test. A tap is still Rescan, so the two share a
     // button without either getting in the way: the hold only fires once the
     // threshold passes, and the tap only fires on release if it never did.
@@ -1721,6 +1759,7 @@ int main(int, char**) {
                 yConsumed = true;
                 app.noticeText.clear();
                 app.showSelfTest();
+                if (app.deepTestHandoff) { handoff = true; break; }
                 app.render();
                 continue;
             }
@@ -1815,7 +1854,9 @@ int main(int, char**) {
                     break;
                 case Act::Manage:    if (haveApks) app.showManage(); break;
                 case Act::Rescan:    app.rescan(); break;
-                case Act::SelfTest:  app.showSelfTest(); break;
+                case Act::SelfTest:  app.showSelfTest();
+                                     if (app.deepTestHandoff) handoff = true;
+                                     break;
                 case Act::About:     app.showAbout(); break;
                 case Act::Quit:      quit = true; break;
                 // The app list is the root screen — there's nothing to go back
