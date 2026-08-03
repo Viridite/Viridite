@@ -95,7 +95,8 @@ The road here, each step root-caused on real hardware: JIT data pages needed RW 
 | Input | Action |
 |--------|--------|
 | D-pad / either stick / swipe | Move through the game list |
-| **L** / **R** / **ZL** / **ZR** | Page a screenful at a time |
+| **L** / **R** / **ZR** | Page a screenful at a time |
+| **ZL** | Theme picker |
 | Stick click | Jump to the top |
 | **A** / tap a game | Launch |
 | **B** | Manage the selected game — or back out of any screen |
@@ -140,6 +141,74 @@ Press **B** on any game for its settings, mirroring Android's app-info screen:
 | **Delete** | The APK and all its data | Nothing |
 
 Each shows what it would actually reclaim, measured off the card, and needs a second press to confirm. Clearing the cache just means the game re-extracts next launch — progress is untouched. There's also a per-game framerate cap here.
+
+---
+
+## Look and feel — Material You
+
+The launcher is built on [Material 3](https://m3.material.io/), properly rather than
+approximately. Every colour is a Material **role** generated from tonal palettes derived
+from a seed colour, so contrast relationships hold no matter which theme is active —
+that is the point of the system, and exactly what you lose by picking colours by eye.
+Shape follows the M3 corner-radius scale (4 / 8 / 12 / 16 / 24dp, plus full-round for
+pills), and a selected row is a filled shape rather than an outlined box, because that
+is how Android marks selection.
+
+Type is [Roboto Flex](https://fonts.google.com/specimen/Roboto+Flex) and icons are
+[Material Symbols Rounded](https://fonts.google.com/icons) — both Google's, both bundled
+under the OFL, nothing fetched at runtime. Clear cache gets the broom and clear storage
+gets the bin, the same icons Android Settings uses for the same jobs.
+
+Press **ZL** for the theme picker. Six schemes ship — Viridite, Mint and Violet, each in
+light and dark — and each row previews itself in its own colours. The choice persists in
+`sdmc:/Viridite/theme.txt`.
+
+---
+
+## Self-test — check a build without launching anything
+
+Hold **Y** for five seconds on the game list.
+
+It checks what otherwise only surfaces as a failed launch: that both Translation Core
+binaries exist *and* carry a real `NRO0` magic rather than being a truncated copy, that
+the bundled artwork and system font load, that the SD card is genuinely writable
+(written, read back, deleted — a full or read-only card passes a plain existence check),
+free space, and every game's manifest, install and architecture.
+
+It catches things like a game marked installed with no native libraries behind it — a
+half-finished extract that looks fine in the list and fails at launch with nothing to
+explain it. Results go to `sdmc:/Viridite/selftest.txt` and into `launcher_log.txt`.
+
+**Deep test:** with a game highlighted, press **X**. Viridite hands over to the
+Translation Core, which loads that game exactly as a real launch does — extracting,
+mapping every native library, relocating, resolving every imported symbol — then stops
+before any of the game's own code runs and hands straight back. Two seconds, and it
+reports the load time and unresolved-symbol count. Brain It On! currently returns
+*loaded in 1695ms, 0 unresolved symbols*, which is how we know the loader is sound and
+the fault is entirely in constructor execution.
+
+---
+
+## Screen orientation
+
+| Situation | Behaviour |
+|-----------|-----------|
+| Docked | Landscape, always — a television does not rotate |
+| Handheld, Joy-Cons attached | Landscape — you are holding it like a gamepad |
+| Handheld, Joy-Cons detached | Follows the console |
+
+A portrait game under a landscape rule is drawn at its own aspect down the middle with
+black bars either side, never stretched. Getting the bars to stay black takes more than
+a viewport: a `glClear` ignores the viewport entirely, so it is scissored to the content
+rect and the game's own scissor box restored exactly as it left it.
+
+**Hardware caveat:** a Switch console has no motion sensor of its own — the
+accelerometers are in the Joy-Cons. Attached, they are rigidly part of the console and
+report its orientation faithfully. Detached, they report their own, which says nothing
+about how the console is being held. So on a standard Switch the one case that asks for
+auto-rotation is the one case that cannot sense it, and Viridite holds the last known
+orientation rather than spinning the screen because a Joy-Con was set down on a table. A
+Switch Lite has a built-in sensor and does not have this problem.
 
 ---
 
@@ -270,11 +339,12 @@ Measured numbers from hardware:
 
 ## Game Compatibility List
 
-**Honest status check first:** only one game has ever actually been run against this project — **Hill Climb Racing 1.67.0**. There isn't a roster of other "integrated" games yet. Everything below is what the compat layer's actual API surface supports or is missing, so it's clear what a new game would need before it could be tried — not a list of titles confirmed to work.
+**Honest status check first:** two games have been run against this project in earnest — **Hill Climb Racing 1.67.0**, which is playable, and **Brain It On! 1.6.234**, which is not. Everything else below is what the compat layer's API surface supports or is missing, so it's clear what a new game would need before it could be tried — not a list of titles confirmed to work.
 
 | Game | Status | Notes |
 |---|---|---|
 | **Hill Climb Racing** 1.67.0 (Fingersoft) | ✅ Playable | The only game tested. Fully playable — touch controls, real audio, real threads, persistent saves, ~locked 60fps. One known deterministic crash on the Shop/IAP screen (root-caused, not yet patched — see Changelog). |
+| **Brain It On!** 1.6.234 (Orbital Nine) | ❌ Fails to launch | Unity/IL2CPP. Loads *completely* — all four native libraries map, and every one of its 2,641 imported symbols resolves — then 155 of `libunity.so`'s 421 static initialisers fault inside the allocator and the loading screen stops. The loader itself is verified sound: a dry load finishes in 1.7s with zero unresolved symbols. |
 | **Angry Birds Classic** ("WebPit" community build 7.3.0) | ❌ Unsupported | 32-bit only (`armeabi-v7a` + `x86`, no `arm64-v8a` at all — checked every entry in the APK directly). This specific build can't run here; a build that ships `arm64-v8a` (e.g. Rovio's later "Rovio Classics" rebrand, unconfirmed) would have a real chance. |
 
 The launcher now tags each scanned APK by architecture automatically and blocks launching anything 32-bit-only with an explanation, rather than only finding out after a failed extraction.
@@ -285,7 +355,7 @@ The launcher now tags each scanned APK by architecture automatically and blocks 
 - An engine that talks to "Android" through native JNI callbacks to a handful of Java-side helper classes (the cocos2d-x `SimpleAudioEngine`/`UserDefault`/activity-callback pattern HCR uses) — that's the actual, tested API surface this project emulates. A game built this way has a real chance even if it's never been tried.
 
 **What almost certainly won't work without a lot more work:**
-- **Unity games** (`libunity.so`/IL2CPP) — a completely different native runtime and JNI surface than what's implemented; nothing here targets it.
+- **Unity games** (`libunity.so`/IL2CPP) — a different native runtime and JNI surface from the cocos2d-x pattern this started against. This is now better understood than "unsupported": Brain It On! loads end to end with every imported symbol resolved, so the shim table covers Unity's libc and Android surface. What it does not survive is its own static initialisers, 155 of which fault in newlib's allocator. Loading a Unity game is solved; running one is not.
 - **Games leaning on Google Play Services** (Play Games sign-in, real ads, real IAP, Firebase, etc.) — those are stubbed out/no-op'd, not implemented (see "Not Planned" in the Roadmap below). A game that *requires* one of these to function past a login/paywall screen won't get past it.
 - **Anything needing real network multiplayer.**
 
