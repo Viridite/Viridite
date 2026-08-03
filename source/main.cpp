@@ -248,8 +248,11 @@ static Act actionFor(const SDL_Event& ev) {
             case BTN_PLUS:   return Act::Quit;
             case BTN_DUP:    return Act::Up;
             case BTN_DDOWN:  return Act::Down;
-            case BTN_ZL:     return Act::Theme;
+            // Both left triggers, because reaching for one and getting paging
+            // is worse than losing a second way to page — the D-pad and the
+            // right triggers still do that.
             case BTN_L:
+            case BTN_ZL:     return Act::Theme;
             case BTN_DLEFT:  return Act::PageUp;
             case BTN_R:
             case BTN_ZR:
@@ -810,8 +813,7 @@ struct App {
 
     void drawFooterBar(const std::vector<std::pair<std::string, std::string>>& hints,
                        const std::string& leftText = "") {
-        fill(0, SH - FOOTER_H, SW, FOOTER_H, {242, 248, 245, 235});
-        fill(0, SH - FOOTER_H, SW, 2, C_RIM);
+        fill(0, SH - FOOTER_H, SW, FOOTER_H, C_FOOTER);
         int cy = SH - FOOTER_H / 2;
         if (!leftText.empty())
             drawText(fSm, leftText, C_WARN, 30, cy - 9);
@@ -826,18 +828,32 @@ struct App {
             x -= lw;
             drawText(fSm, it->second, C_GRAY, x, cy - lh / 2);
             x -= 8;
-            if (fBtn && it->first.size() > 1) {
+            // Is this a controller glyph, or a label like "ZL"?
+            //
+            // This used to decide on length, which works for exactly as long as
+            // every label is one character: a UTF-8 button glyph is multi-byte,
+            // but so is "ZL", so it was rendered in the symbol font — where
+            // those letters do not exist — and the fallback below printed a
+            // literal "?". The lead byte answers the question properly, since
+            // the glyphs live in the private-use area and ASCII never does.
+            const bool isGlyph = !it->first.empty() &&
+                                 (unsigned char)it->first[0] >= 0x80;
+            if (fBtn && isGlyph) {
                 int gw = 0, gh = 0;
                 TTF_SizeUTF8(fBtn, it->first.c_str(), &gw, &gh);
                 x -= gw;
                 drawText(fBtn, it->first, C_WHITE, x, cy - gh / 2);
             } else {
-                x -= 26;
-                fillCircle(x + 13, cy, 13, {205, 244, 224, 255});
-                std::string letter = it->first.size() > 1 ? "?" : it->first;
+                // A pill sized to its text, so "ZL" and "L" both fit — Android
+                // renders key hints as labels rather than forcing them into a
+                // circle meant for one character.
                 int gw = 0, gh = 0;
-                TTF_SizeUTF8(fSm, letter.c_str(), &gw, &gh);
-                drawText(fSm, letter, C_WHITE, x + 13 - gw / 2, cy - gh / 2);
+                TTF_SizeUTF8(fSm, it->first.c_str(), &gw, &gh);
+                int pw = (gw > 14 ? gw : 14) + 16;
+                x -= pw;
+                fillRounded(x, cy - 14, pw, 28, M3_FULL, C_SEL);
+                drawText(fSm, it->first, C_ON_PRIMARY_CONTAINER,
+                         x + (pw - gw) / 2, cy - gh / 2);
             }
             // Hitbox covers the whole hint (glyph+label), padded a bit
             // vertically/horizontally so small touch inaccuracy still hits it.
@@ -1095,7 +1111,10 @@ struct App {
                     int bw = 0, bh = 0;
                     TTF_SizeUTF8(fSm, INST.c_str(), &bw, &bh);
                     int bx = SW - bw - 40;
-                    fill(bx - 6, iy + 14, bw + 12, bh, {205, 244, 224, 220});
+                    // M3 assist chip: pill-shaped, on a container tone, so it
+                    // re-colours with the theme like everything else.
+                    fillRounded(bx - 10, iy + 12, bw + 20, bh + 4, M3_FULL,
+                                C_PRIMARY_CONTAINER);
                     drawText(fSm, INST, C_INST, bx, iy + 14);
                 }
 
@@ -1133,7 +1152,7 @@ struct App {
         std::vector<std::pair<std::string, std::string>> hints = {
             {BG(GLYPH_A, "A"), "Launch"}, {BG(GLYPH_B, "B"), "Manage"},
             {BG(GLYPH_X, "X"), "Reinstall"}, {BG(GLYPH_Y, "Y"), "Rescan / hold: test"},
-                       {"ZL", "Theme"},
+                       {"L / ZL", "Theme"},
             {BG(GLYPH_MINUS, "-"), "About"}, {BG(GLYPH_PLUS, "+"), "Quit"}};
         if ((int)apks.size() > VISIBLE)
             hints.insert(hints.begin() + 1, {"L/R", "Page"});
