@@ -454,6 +454,14 @@ struct App {
     }
 
     TTF_Font* openFont(int ptsize) {
+        // The shared-font service has to be up regardless of which face we
+        // end up using: the Nintendo button glyphs come from it, and so does
+        // any CJK the bundled Latin font cannot cover. Moving plInitialize
+        // into the fallback path meant it never ran once Roboto loaded, which
+        // silently cost the A/B/X/Y glyphs — the footer fell back to letters
+        // and the self-test reported the system font as failed.
+        plInitialize(PlServiceType_User);
+
         // Roboto first. The Switch's own font is a fine UI face but it is
         // unmistakably Nintendo's, and this is supposed to read as Android —
         // typography does more of that work than colour does. Roboto Flex is
@@ -465,7 +473,6 @@ struct App {
 
         // Then the system font, which at least has the full CJK coverage that
         // a bundled Latin face does not.
-        plInitialize(PlServiceType_User);
         f = openSharedFont(PlSharedFontType_Standard, ptsize);
         if (f) { logMsg("  font: system BFTTF"); return f; }
         logSDL("  BFTTF open failed");

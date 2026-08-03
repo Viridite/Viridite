@@ -340,7 +340,26 @@ std::vector<TestResult> selfTestRun(const std::vector<ApkInfo>& apks,
                         closedir(ld);
                     }
                 }
-                if (nlibs == 0)
+                // Two versions of one game share a package name and therefore
+                // one install directory, so whichever was launched last owns
+                // it. Without saying so, Hill Climb Racing 1.67 reports three
+                // 32-bit libraries and looks broken, when what it is actually
+                // showing is 1.70's install. The Core re-extracts on launch
+                // when the marker does not match, so this is not a fault —
+                // but it is confusing to read without the explanation.
+                std::string from;
+                if (FILE* mf = fopen((dir + "/.installed").c_str(), "r")) {
+                    char b[512] = {0};
+                    if (fgets(b, sizeof(b), mf)) from = b;
+                    fclose(mf);
+                    while (!from.empty() && (from.back() == '\n' || from.back() == '\r'))
+                        from.pop_back();
+                }
+                if (!from.empty() && from != a.path) {
+                    add(out, TestStatus::Warn, (label + " — install").c_str(),
+                        "belongs to another build of this package — launching will "
+                        "re-extract (%d arm64, %d arm32 currently)", n64, n32);
+                } else if (nlibs == 0)
                     add(out, TestStatus::Fail, (label + " — install").c_str(),
                         "marked installed but neither lib/ nor lib32/ has any .so — "
                         "reinstall with X");
