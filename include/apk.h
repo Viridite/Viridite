@@ -19,6 +19,9 @@ struct ApkInfo {
     std::string packageName;
     std::string versionName;
     std::vector<uint8_t> iconPng;
+    // iconPng is released once the texture is built, so anything asking later
+    // whether the APK had an icon has to ask this instead.
+    bool        hasIcon       = false;
     uint64_t    fileSizeBytes = 0;
     bool        installed     = false;  // true if already extracted to games dir
     ApkArch     arch          = ApkArch::Unknown;

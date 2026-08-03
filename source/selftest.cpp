@@ -29,7 +29,9 @@ namespace {
 constexpr char kCoreX64[] = "sdmc:/switch/Viridite/Viridite-Translation-Core-x64.nro";
 constexpr char kCoreX32[] = "sdmc:/switch/Viridite/Viridite-Translation-Core-x32.nro";
 constexpr char kApkDir[]  = "sdmc:/Viridite/apks";
-constexpr char kOutPath[] = "sdmc:/switch/Viridite/selftest.txt";
+// Alongside launcher_log.txt and compat_log.txt, not next to the NROs. That is
+// where every other log lives and where anyone would look for this one.
+constexpr char kOutPath[] = "sdmc:/Viridite/selftest.txt";
 
 void add(std::vector<TestResult>& out, TestStatus st, const char* name,
          const char* fmt, ...) __attribute__((format(printf, 4, 5)));
@@ -198,7 +200,7 @@ std::vector<TestResult> selfTestRun(const std::vector<ApkInfo>& apks,
     {
         // Write, read back and delete. Anything less does not prove the card is
         // actually writable — a full or read-only card passes a stat().
-        const char* probe = "sdmc:/switch/Viridite/.selftest_probe";
+        const char* probe = "sdmc:/Viridite/.selftest_probe";
         bool wrote = false, matched = false;
         if (FILE* f = fopen(probe, "wb")) {
             wrote = fwrite("viridite", 1, 8, f) == 8;
@@ -261,7 +263,7 @@ std::vector<TestResult> selfTestRun(const std::vector<ApkInfo>& apks,
                     a.versionName.c_str(),
                     a.arch == ApkArch::Arm64 ? "arm64"
                       : a.arch == ApkArch::Arm32Only ? "32-bit only" : "unknown ABI",
-                    a.iconPng.empty() ? ", no icon" : "");
+                    a.hasIcon ? "" : ", no icon");
 
             // Install — the marker alone is not proof; the loader needs the
             // extracted libraries, and a marker left behind by a failed extract

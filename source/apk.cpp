@@ -501,12 +501,13 @@ ApkInfo parseApk(const std::string& path) {
                         bestPath = cand; bestPx = px; bestRank = rk;
                     }
                 }
-                if (!bestData.empty()) info.iconPng = std::move(bestData);
+                if (!bestData.empty()) { info.iconPng = std::move(bestData); info.hasIcon = true; }
                 else {
                     // Nothing decoded — fall back to the old path-based pick.
                     std::string iconPath = bestIconPath(paths);
                     if (!iconPath.empty())
                         info.iconPng = readZipEntry(zf, iconPath.c_str());
+                        info.hasIcon = !info.iconPng.empty();
                 }
             }
         }
