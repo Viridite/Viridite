@@ -793,12 +793,18 @@ struct App {
             if (s.x < 0) s.x += SW;
             float tw = 0.5f + 0.5f * sinf(now / 1000.0f * s.speed * 6.2832f + s.phase);
             Uint8 a  = (Uint8)(12 + 24 * tw);   // very faint green motes on white
-            fill((int)s.x, (int)s.y, s.sz, s.sz, {0, 190, 110, a});
+            SDL_Color m = C_OK; m.a = a;
+            fill((int)s.x, (int)s.y, s.sz, s.sz, m);
         }
     }
 
     void drawHeaderBar(const std::string& rightText = "") {
-        fill(0, 0, SW, HEADER_H, {255, 255, 255, 235});
+        // surfaceContainerLow, not white. This was the last fixed colour on a
+        // full-width surface, and in a dark theme the effect was exactly what
+        // you would expect: the text colour flipped to light while the bar
+        // stayed white, so the wordmark vanished into it and only the accent
+        // half stayed readable.
+        fill(0, 0, SW, HEADER_H, C_HEADER);
         // M3 top app bars sit on a container tone and separate by colour, not
         // by a rule underneath.
         int w = drawText(fLg, "Virid", C_WHITE, 30, (HEADER_H - 28) / 2);
@@ -1097,14 +1103,16 @@ struct App {
                     int bw = 0, bh = 0;
                     TTF_SizeUTF8(fSm, TAG.c_str(), &bw, &bh);
                     int bx = SW - bw - 40;
-                    fill(bx - 6, iy + 14, bw + 12, bh, {255, 238, 210, 220});
+                    fillRounded(bx - 10, iy + 12, bw + 20, bh + 4, M3_FULL,
+                                g_theme->tertiaryContainer);
                     drawText(fSm, TAG, C_WARN, bx, iy + 14);
                 } else if (!rowCompatible) {
                     static const std::string TAG = "INCOMPATIBLE";
                     int bw = 0, bh = 0;
                     TTF_SizeUTF8(fSm, TAG.c_str(), &bw, &bh);
                     int bx = SW - bw - 40;
-                    fill(bx - 6, iy + 14, bw + 12, bh, {253, 226, 226, 220});
+                    fillRounded(bx - 10, iy + 12, bw + 20, bh + 4, M3_FULL,
+                                C_ERR_CONTAINER);
                     drawText(fSm, TAG, C_ERR, bx, iy + 14);
                 } else if (apks[i].installed) {
                     static const std::string INST = "INSTALLED";
@@ -1142,7 +1150,8 @@ struct App {
             const char* msg = noticeText.c_str();
             int w = 0, h = 0;
             TTF_SizeUTF8(fSm, msg, &w, &h);
-            fill((SW - w) / 2 - 16, SH - FOOTER_H - 44, w + 32, 34, {253, 235, 238, 240});
+            fillRounded((SW - w) / 2 - 18, SH - FOOTER_H - 46, w + 36, 38, M3_FULL,
+                        C_ERR_CONTAINER);
             drawText(fSm, msg, C_WARN, (SW - w) / 2, SH - FOOTER_H - 36);
         }
 
@@ -1371,7 +1380,8 @@ struct App {
 
             drawBackground();
             drawHeaderBar();
-            fill(40, LIST_Y + 6, SW - 80, SH - LIST_Y - FOOTER_H - 12, {247, 251, 249, 235});
+            fillRounded(40, LIST_Y + 6, SW - 80, SH - LIST_Y - FOOTER_H - 12,
+                        M3_XL, C_SURF_HIGH);
 
             char hdr[96];
             snprintf(hdr, sizeof(hdr), "SELF-TEST  —  %d passed, %d warnings, %d failed",
