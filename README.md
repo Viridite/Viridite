@@ -88,19 +88,58 @@ The road here, each step root-caused on real hardware: JIT data pages needed RW 
 
 ## Controls
 
-> **Handheld mode only.** Android games use touch screen input. The Switch touchscreen only works in handheld mode — in docked mode there is no touch input, so games will be uncontrollable. Viridite detects docked mode and shows a warning in the footer.
+> **Docked play works for games that ship their own controller support.** Android games are built for touch, and the Switch touchscreen only works in handheld mode. Where a game has real gamepad support, Viridite drives it from the Switch pad — so those titles play docked. Hill Climb Racing is the first wired up this way. Everything else stays handheld-only, and the launcher says so in the footer when docked.
 
-**Viridite launcher controls (in the APK browser):**
+**In the launcher:**
 
-| Button | Action |
+| Input | Action |
 |--------|--------|
-| D-pad / Left stick / swipe | Navigate APK list |
-| **A** / tap a game (tap again to launch) | Launch selected APK |
-| **X** | Reinstall + Launch (re-extracts APK) |
-| **Y** / tap footer | Rescan APK folder |
-| **−** / tap footer | About screen (credits scroll via D-pad/stick/touch-drag) |
-| **+** / tap footer | Quit |
-| **B** | Back (on result/about screen) |
+| D-pad / either stick / swipe | Move through the game list |
+| **L** / **R** / **ZL** / **ZR** | Page a screenful at a time |
+| Stick click | Jump to the top |
+| **A** / tap a game | Launch |
+| **B** | Manage the selected game — or back out of any screen |
+| **X** | Reinstall + launch (re-extracts the APK) |
+| **Y** | Rescan the APK folder |
+| **−** | About and credits |
+| **+** | Quit |
+
+A USB keyboard works too — arrows and Page Up/Down to move, Enter to launch, Escape to back out. Every screen accepts the same set; there's no screen that only answers the D-pad.
+
+**Choosing how to play.** For a game with controller support, the launcher asks first, showing the controller it can actually see attached — Pro Controller, handheld, a Joy-Con pair, or a single Joy-Con held sideways — alongside a touch option. It only asks when there's a real choice: docked with one controller, or a game with no controller path, launches straight away. Your choice also selects which diagram gets patched into the game's own controller-help screen.
+
+**Hill Climb Racing:**
+
+| Input | Action |
+|--------|--------|
+| **R** / **ZR** | Accelerate |
+| **L** / **ZL** | Brake and reverse |
+| D-pad / face buttons | Menus |
+| **+** | Pause |
+
+That mapping was read out of the game's binary rather than guessed: its touch handler and its controller handler write the same two pieces of state, and the accelerator is the right-hand pedal on screen.
+
+---
+
+## Updating
+
+Viridite checks for a newer release at startup, on a background thread, so the game list stays responsive. If one exists you're asked whether to install it — nothing is downloaded or replaced unless you agree.
+
+An install replaces the launcher and both Translation Core binaries together, since a launcher from one release paired with a Core from another isn't a combination anyone tests. New files are written and verified before anything existing is touched, so a failed update leaves the install exactly as it was. A console with no network just skips the check.
+
+---
+
+## Managing a game
+
+Press **B** on any game for its settings, mirroring Android's app-info screen:
+
+| Action | Removes | Keeps |
+|--------|---------|-------|
+| **Clear cache** | Extracted libraries and assets | Saves and settings |
+| **Clear storage** | Everything for that game, saves included | Nothing |
+| **Delete** | The APK and all its data | Nothing |
+
+Each shows what it would actually reclaim, measured off the card, and needs a second press to confirm. Clearing the cache just means the game re-extracts next launch — progress is untouched. There's also a per-game framerate cap here.
 
 ---
 
