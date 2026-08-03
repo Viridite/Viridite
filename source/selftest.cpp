@@ -73,6 +73,54 @@ bool isValidNro(const char* path, size_t* size_out) {
 
 }  // namespace
 
+// Reads back the previous launch of this package from the Core's log. The
+// information is already being written; the only thing missing was anywhere on
+// the console to see it.
+static void selfTestLastRun(const std::string& pkg, const std::string& label,
+                            std::vector<TestResult>& out) {
+    FILE* f = fopen("sdmc:/Viridite/compat_log.txt", "r");
+    if (!f) {
+        add(out, TestStatus::Warn, (label + " — last run").c_str(),
+            "no compat_log.txt yet");
+        return;
+    }
+    char line[512];
+    bool   thisGame = false, loaded = false, handedOff = false;
+    int    faults = 0, wedged = 0;
+    char   version[64] = "?";
+    while (fgets(line, sizeof(line), f)) {
+        if (strstr(line, "launchApk:") && strstr(line, pkg.c_str())) thisGame = true;
+        if (strstr(line, "env: Viridite")) {
+            const char* v = strstr(line, "v0.");
+            if (v) { size_t n = 0; while (n < sizeof(version) - 1 && v[n] > ' ') { version[n] = v[n]; n++; } version[n] = 0; }
+        }
+        if (strstr(line, "FAULT"))                       faults++;
+        if (strstr(line, "loading complete"))            loaded = true;
+        if (strstr(line, "handing off to the game"))     handedOff = true;
+        if (strstr(line, "WATCHDOG: main thread"))       wedged++;
+    }
+    fclose(f);
+
+    if (!thisGame) {
+        add(out, TestStatus::Warn, (label + " — last run").c_str(),
+            "not the game in the current log");
+        return;
+    }
+    if (wedged)
+        add(out, TestStatus::Fail, (label + " — last run").c_str(),
+            "%s: loaded=%s, %d ctor fault(s), main thread wedged", version,
+            loaded ? "yes" : "no", faults);
+    else if (handedOff)
+        add(out, TestStatus::Pass, (label + " — last run").c_str(),
+            "%s: reached the game, %d ctor fault(s)", version, faults);
+    else if (loaded)
+        add(out, TestStatus::Warn, (label + " — last run").c_str(),
+            "%s: loaded but never handed off, %d ctor fault(s)", version, faults);
+    else
+        add(out, TestStatus::Warn, (label + " — last run").c_str(),
+            "%s: did not finish loading, %d ctor fault(s)", version, faults);
+}
+
 std::vector<TestResult> selfTestRun(const std::vector<ApkInfo>& apks,
                                     void (*progress)(const char*)) {
     std::vector<TestResult> out;
@@ -179,6 +227,11 @@ std::vector<TestResult> selfTestRun(const std::vector<ApkInfo>& apks,
     }
 
     // ── Games ───────────────────────────────────────────────────────────────
+    // Per game, not aggregate counts. The point of this mode is to answer "did
+    // my change break Brain It On" without launching it and reading logs on a
+    // PC, so each game gets checked through the whole chain the loader will
+    // walk: the APK parses, the install exists, the native libraries are
+    // actually there and are arm64, and what happened the last time it ran.
     if (progress) progress("Checking games");
     {
         DIR* d = opendir(kApkDir);
@@ -187,31 +240,67 @@ std::vector<TestResult> selfTestRun(const std::vector<ApkInfo>& apks,
                 "%s not found — nothing to launch", kApkDir);
         } else {
             closedir(d);
-            if (apks.empty()) {
+            if (apks.empty())
                 add(out, TestStatus::Warn, "Games folder", "no APKs found");
-            } else {
+            else
                 add(out, TestStatus::Pass, "Games folder", "%zu APK(s)", apks.size());
-                int noName = 0, noIcon = 0, noPkg = 0, arm32 = 0;
-                for (const ApkInfo& a : apks) {
-                    if (a.packageName.empty()) noPkg++;
-                    if (a.appName.empty())     noName++;
-                    if (a.iconPng.empty())     noIcon++;
-                    if (a.arch == ApkArch::Arm32Only) arm32++;
+        }
+
+        for (const ApkInfo& a : apks) {
+            const std::string pkg = a.packageName.empty() ? a.filename : a.packageName;
+            const std::string label = a.appName.empty() ? pkg : a.appName;
+
+            // Manifest — a package name is the one field nothing downstream can
+            // work without, so its absence is a failure rather than a warning.
+            if (a.packageName.empty())
+                add(out, TestStatus::Fail, label.c_str(), "manifest gave no package name");
+            else
+                add(out, TestStatus::Pass, label.c_str(), "%s%s%s, %s%s",
+                    a.packageName.c_str(),
+                    a.versionName.empty() ? "" : " v",
+                    a.versionName.c_str(),
+                    a.arch == ApkArch::Arm64 ? "arm64"
+                      : a.arch == ApkArch::Arm32Only ? "32-bit only" : "unknown ABI",
+                    a.iconPng.empty() ? ", no icon" : "");
+
+            // Install — the marker alone is not proof; the loader needs the
+            // extracted libraries, and a marker left behind by a failed extract
+            // is exactly the state that looks fine and then does not launch.
+            std::string dir = std::string("sdmc:/Viridite/games/") + pkg;
+            std::string lib = dir + "/lib";
+            if (!apkIsInstalled(pkg)) {
+                add(out, TestStatus::Warn, (label + " — install").c_str(),
+                    "not installed yet (will extract on first launch)");
+            } else {
+                int    nlibs = 0;
+                size_t total = 0, smallest = (size_t)-1;
+                std::string smallestName;
+                if (DIR* ld = opendir(lib.c_str())) {
+                    while (dirent* e = readdir(ld)) {
+                        std::string n = e->d_name;
+                        if (n.size() < 4 || n.substr(n.size() - 3) != ".so") continue;
+                        struct stat st;
+                        if (stat((lib + "/" + n).c_str(), &st) != 0) continue;
+                        nlibs++; total += (size_t)st.st_size;
+                        if ((size_t)st.st_size < smallest) { smallest = st.st_size; smallestName = n; }
+                    }
+                    closedir(ld);
                 }
-                // Each of these is a parse that silently degrades the UI rather
-                // than failing outright, so they are worth surfacing.
-                add(out, noPkg  ? TestStatus::Fail : TestStatus::Pass, "Manifest parsing",
-                    noPkg ? "%d APK(s) have no package name" : "all packages resolved", noPkg);
-                add(out, noName ? TestStatus::Warn : TestStatus::Pass, "App labels",
-                    noName ? "%d without a label" : "all labelled", noName);
-                add(out, noIcon ? TestStatus::Warn : TestStatus::Pass, "Icon extraction",
-                    noIcon ? "%d without an icon" : "all icons extracted", noIcon);
-                if (arm32)
-                    add(out, TestStatus::Warn, "Architecture",
-                        "%d 32-bit game(s) — experimental path", arm32);
+                if (nlibs == 0)
+                    add(out, TestStatus::Fail, (label + " — install").c_str(),
+                        "marked installed but %s has no .so files — reinstall with X", lib.c_str());
+                else if (smallest == 0)
+                    add(out, TestStatus::Fail, (label + " — install").c_str(),
+                        "%s is 0 bytes — the extract was interrupted", smallestName.c_str());
                 else
-                    add(out, TestStatus::Pass, "Architecture", "all 64-bit");
+                    add(out, TestStatus::Pass, (label + " — install").c_str(),
+                        "%d native lib(s), %.1f MB extracted", nlibs, total / 1048576.0);
             }
+
+            // Last run — the log already records what happened; reading it back
+            // turns "does this still work" into something answerable on the
+            // console instead of a launch and a file transfer.
+            selfTestLastRun(pkg, label, out);
         }
     }
 

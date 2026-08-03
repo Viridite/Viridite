@@ -1073,7 +1073,7 @@ struct App {
                 " failed").c_str());
 
         int scroll = 0;
-        const int VIS = 9;
+        const int VIS = 9;   // rows on screen; the list scrolls past this
         bool done = false;
         while (!done) {
             SDL_Event ev;
