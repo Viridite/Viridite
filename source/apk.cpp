@@ -69,6 +69,7 @@ struct AXMLResult {
     std::string appLabel;   // direct string if dataType==0x03
     uint32_t    labelResId = 0; // resource ref if dataType==0x01
     uint32_t    iconResId  = 0;
+    int         screenOrient = -1;  // android:screenOrientation, -1 = unspecified
 };
 
 static AXMLResult parseAXML(const std::vector<uint8_t>& data) {
@@ -115,6 +116,21 @@ static AXMLResult parseAXML(const std::vector<uint8_t>& data) {
                 }
 
             // ── <application> at depth 1 ──────────────────────────────────
+            } else if (depth == 2 && elem == "activity" && res.screenOrient < 0) {
+                // First activity declared is the launcher one in practice, and
+                // its orientation is what governs the game. Only the first is
+                // taken so a later settings or splash activity can't override.
+                for (uint16_t i = 0; i < attrCount; i++) {
+                    size_t ap = attrBase + i * attrSize;
+                    if (ap + 20 > sz) break;
+                    uint32_t an = r32(p + ap + 4);
+                    uint8_t  dt = p[ap + 15];
+                    uint32_t dv = r32(p + ap + 16);
+                    std::string attr = an < strs.size() ? strs[an] : "";
+                    if (attr == "screenOrientation" && dt == 0x10)  // INT_DEC
+                        res.screenOrient = (int)(int32_t)dv;
+                }
+
             } else if (depth == 1 && elem == "application") {
                 for (uint16_t i = 0; i < attrCount; i++) {
                     size_t ap = attrBase + i * attrSize;
@@ -439,6 +455,7 @@ ApkInfo parseApk(const std::string& path) {
     auto manifest = readZipEntry(zf, "AndroidManifest.xml");
     AXMLResult ax;
     if (!manifest.empty()) ax = parseAXML(manifest);
+    info.screenOrient = ax.screenOrient;
 
     if (!ax.packageName.empty()) info.packageName = ax.packageName;
     if (!ax.versionName.empty()) info.versionName = ax.versionName;
