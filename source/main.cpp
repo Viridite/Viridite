@@ -21,6 +21,7 @@
 #include "avatar.h"
 #include "build_number.h"
 #include "update.h"
+#include "selftest.h"
 
 static const char* APK_DIR = "sdmc:/Viridite/apks";
 
@@ -189,7 +190,7 @@ static const int AXIS_DEADZONE = 16384;
 // every screen re-deriving that mapping.
 enum class Act {
     None, Up, Down, PageUp, PageDown, Home, End,
-    Confirm, Back, Manage, Reinstall, Rescan, About, Quit
+    Confirm, Back, Manage, Reinstall, Rescan, About, SelfTest, Quit
 };
 
 // Buttons and keys. Stick/hat motion is continuous and rate-limited, so it's
@@ -200,7 +201,8 @@ static Act actionFor(const SDL_Event& ev) {
             case BTN_A:      return Act::Confirm;
             case BTN_B:      return Act::Manage;
             case BTN_X:      return Act::Reinstall;
-            case BTN_Y:      return Act::Rescan;
+            // BTN_Y is handled by the main loop: tap rescans, hold opens
+            // the self-test, and only a release can tell them apart.
             case BTN_MINUS:  return Act::About;
             case BTN_PLUS:   return Act::Quit;
             case BTN_DUP:    return Act::Up;
@@ -227,6 +229,7 @@ static Act actionFor(const SDL_Event& ev) {
             case SDLK_RETURN:   case SDLK_SPACE:return Act::Confirm;
             case SDLK_BACKSPACE:                return Act::Manage;
             case SDLK_r:                        return Act::Rescan;
+            case SDLK_t:                        return Act::SelfTest;
             case SDLK_i:                        return Act::About;
             case SDLK_ESCAPE:   case SDLK_q:    return Act::Quit;
             default:                            return Act::None;
@@ -919,7 +922,7 @@ struct App {
         // more than one screenful to page through.
         std::vector<std::pair<std::string, std::string>> hints = {
             {BG(GLYPH_A, "A"), "Launch"}, {BG(GLYPH_B, "B"), "Manage"},
-            {BG(GLYPH_X, "X"), "Reinstall"}, {BG(GLYPH_Y, "Y"), "Rescan"},
+            {BG(GLYPH_X, "X"), "Reinstall"}, {BG(GLYPH_Y, "Y"), "Rescan / hold: test"},
             {BG(GLYPH_MINUS, "-"), "About"}, {BG(GLYPH_PLUS, "+"), "Quit"}};
         if ((int)apks.size() > VISIBLE)
             hints.insert(hints.begin() + 1, {"L/R", "Page"});
@@ -1032,6 +1035,99 @@ struct App {
     bool updateQuitRequested = false;
 
     // ------------------------------------------------------------------
+    // Self-test results. Same action layer as everywhere else, so every input
+    // works here too rather than only the one it was written against.
+    void showSelfTest() {
+        noticeText.clear();
+
+        // Run it with the progress screen live: a few of the checks touch the
+        // SD card or the network, and a frozen screen for two seconds reads as
+        // a crash.
+        static App* s_self = nullptr; s_self = this;
+        auto onStage = [](const char* stage) {
+            if (!s_self) return;
+            s_self->noticeText  = std::string("Self-test: ") + stage + "...";
+            s_self->noticeUntil = SDL_GetTicks() + 4000;
+            s_self->render();
+        };
+        logMsg("self-test: starting");
+        std::vector<TestResult> res = selfTestRun(apks, onStage);
+        s_self = nullptr;
+        noticeText.clear();
+
+        int pass = 0, warn = 0, fail = 0;
+        for (const TestResult& r : res)
+            (r.status == TestStatus::Pass ? pass
+             : r.status == TestStatus::Warn ? warn : fail)++;
+        logMsg(("self-test: " + std::to_string(pass) + " passed, " +
+                std::to_string(warn) + " warnings, " + std::to_string(fail) +
+                " failed").c_str());
+
+        int scroll = 0;
+        const int VIS = 9;
+        bool done = false;
+        while (!done) {
+            SDL_Event ev;
+            while (SDL_PollEvent(&ev)) {
+                if (ev.type == SDL_QUIT) { done = true; break; }
+                switch (actionFor(ev)) {
+                    case Act::Up:       scroll = std::max(0, scroll - 1); break;
+                    case Act::Down:     scroll = std::min(std::max(0, (int)res.size() - VIS), scroll + 1); break;
+                    case Act::PageUp:
+                    case Act::Home:     scroll = 0; break;
+                    case Act::PageDown:
+                    case Act::End:      scroll = std::max(0, (int)res.size() - VIS); break;
+                    case Act::Back:
+                    case Act::Manage:
+                    case Act::Quit:
+                    case Act::Confirm:  done = true; break;
+                    default: break;
+                }
+                if (ev.type == SDL_JOYAXISMOTION) {
+                    int a = ev.jaxis.axis, v = ev.jaxis.value;
+                    static Uint32 last = 0; Uint32 now = SDL_GetTicks();
+                    if (now - last > 180) {
+                        if ((a == AXIS_LY || a == AXIS_RY) && v >  AXIS_DEADZONE) { scroll = std::min(std::max(0,(int)res.size()-VIS), scroll+1); last = now; }
+                        if ((a == AXIS_LY || a == AXIS_RY) && v < -AXIS_DEADZONE) { scroll = std::max(0, scroll-1); last = now; }
+                    }
+                }
+            }
+
+            drawBackground();
+            drawHeaderBar();
+            fill(40, LIST_Y + 6, SW - 80, SH - LIST_Y - FOOTER_H - 12, {247, 251, 249, 235});
+
+            char hdr[96];
+            snprintf(hdr, sizeof(hdr), "SELF-TEST  —  %d passed, %d warnings, %d failed",
+                     pass, warn, fail);
+            drawText(fMd, hdr, fail ? C_ERR : warn ? C_WARN : C_OK, 64, LIST_Y + 22);
+
+            int y = LIST_Y + 58;
+            for (int i = scroll; i < (int)res.size() && i < scroll + VIS; i++) {
+                const TestResult& r = res[i];
+                    SDL_Color c = r.status == TestStatus::Pass ? C_OK
+                            : r.status == TestStatus::Warn ? C_WARN : C_ERR;
+                const char* tag = r.status == TestStatus::Pass ? "PASS"
+                                : r.status == TestStatus::Warn ? "WARN" : "FAIL";
+                drawText(fSm, tag,   c,                 64,  y);
+                drawText(fSm, r.name, C_WHITE,           128, y);
+                drawText(fSm, clamp(fSm, r.detail, SW - 220), C_GRAY, 128, y + 20);
+                y += 46;
+            }
+
+            if ((int)res.size() > VIS) {
+                char sc[48];
+                snprintf(sc, sizeof(sc), "%d-%d of %zu", scroll + 1,
+                         std::min((int)res.size(), scroll + VIS), res.size());
+                drawText(fSm, sc, C_DIM, SW - 200, SH - FOOTER_H - 34);
+            }
+
+            drawFooterBar({{"B", "Back"}, {"\u2191\u2193", "Scroll"}}, "Saved to selftest.txt");
+            SDL_RenderPresent(rdr);
+            SDL_Delay(16);
+        }
+    }
+
     void showAbout() {
         bool done = false;
         creditsScroll    = 0.0f;
@@ -1598,11 +1694,55 @@ int main(int, char**) {
     bool   handoff   = false;
     Uint32 lastStick = 0;
 
+    // Hold Y to open the self-test. A tap is still Rescan, so the two share a
+    // button without either getting in the way: the hold only fires once the
+    // threshold passes, and the tap only fires on release if it never did.
+    constexpr Uint32 SELFTEST_HOLD_MS = 5000;
+    Uint32 yHeldSince = 0;      // 0 = not held
+    bool   yConsumed  = false;  // the hold already fired; ignore the release
+
     while (!quit && !handoff) {
         SDL_Event ev;
 
+        // Checked outside the event loop: SDL sends no events while a button is
+        // simply held, so waiting for one would mean the timer never elapses.
+        if (yHeldSince && !yConsumed) {
+            Uint32 held = SDL_GetTicks() - yHeldSince;
+            if (held >= SELFTEST_HOLD_MS) {
+                yConsumed = true;
+                app.noticeText.clear();
+                app.showSelfTest();
+                app.render();
+                continue;
+            }
+            // Count down on screen from the first second, so the hold is
+            // discoverable and obviously deliberate rather than looking like a
+            // button that stopped working.
+            if (held > 700) {
+                char msg[64];
+                snprintf(msg, sizeof(msg), "Keep holding Y for the self-test... %u",
+                         (unsigned)((SELFTEST_HOLD_MS - held) / 1000) + 1);
+                app.noticeText  = msg;
+                app.noticeUntil = SDL_GetTicks() + 1000;
+                app.render();
+            }
+        }
+
         while (SDL_PollEvent(&ev)) {
             if (ev.type == SDL_QUIT) { quit = true; break; }
+
+            if (ev.type == SDL_JOYBUTTONDOWN && ev.jbutton.button == BTN_Y) {
+                yHeldSince = SDL_GetTicks();
+                yConsumed  = false;
+                continue;              // decide on release, or on the timer
+            }
+            if (ev.type == SDL_JOYBUTTONUP && ev.jbutton.button == BTN_Y) {
+                const bool wasHeld = yConsumed;
+                yHeldSince = 0; yConsumed = false;
+                if (wasHeld) continue; // the hold already did something
+                app.rescan();          // short press keeps its old meaning
+                continue;
+            }
 
             Act act = actionFor(ev);
 
@@ -1666,6 +1806,7 @@ int main(int, char**) {
                     break;
                 case Act::Manage:    if (haveApks) app.showManage(); break;
                 case Act::Rescan:    app.rescan(); break;
+                case Act::SelfTest:  app.showSelfTest(); break;
                 case Act::About:     app.showAbout(); break;
                 case Act::Quit:      quit = true; break;
                 // The app list is the root screen — there's nothing to go back
