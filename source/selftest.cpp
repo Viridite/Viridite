@@ -311,8 +311,13 @@ std::vector<TestResult> selfTestRun(const std::vector<ApkInfo>& apks,
             // Install — the marker alone is not proof; the loader needs the
             // extracted libraries, and a marker left behind by a failed extract
             // is exactly the state that looks fine and then does not launch.
-            std::string dir = std::string("sdmc:/Viridite/games/") + pkg;
-            std::string lib = dir + "/lib";
+            // Both library directories. A 32-bit-only game has an empty lib/
+            // and everything in lib32/, so checking lib/ alone reported Hill
+            // Climb Racing 2 as a broken install and told you to reinstall a
+            // game that had extracted perfectly.
+            std::string dir  = std::string("sdmc:/Viridite/games/") + pkg;
+            std::string lib  = dir + "/lib";
+            std::string lib32 = dir + "/lib32";
             if (!apkIsInstalled(pkg)) {
                 add(out, TestStatus::Warn, (label + " — install").c_str(),
                     "not installed yet (will extract on first launch)");
@@ -320,26 +325,32 @@ std::vector<TestResult> selfTestRun(const std::vector<ApkInfo>& apks,
                 int    nlibs = 0;
                 size_t total = 0, smallest = (size_t)-1;
                 std::string smallestName;
-                if (DIR* ld = opendir(lib.c_str())) {
-                    while (dirent* e = readdir(ld)) {
-                        std::string n = e->d_name;
-                        if (n.size() < 4 || n.substr(n.size() - 3) != ".so") continue;
-                        struct stat st;
-                        if (stat((lib + "/" + n).c_str(), &st) != 0) continue;
-                        nlibs++; total += (size_t)st.st_size;
-                        if ((size_t)st.st_size < smallest) { smallest = st.st_size; smallestName = n; }
+                int n64 = 0, n32 = 0;
+                for (const std::string* d : {&lib, &lib32}) {
+                    if (DIR* ld = opendir(d->c_str())) {
+                        while (dirent* e = readdir(ld)) {
+                            std::string n = e->d_name;
+                            if (n.size() < 4 || n.substr(n.size() - 3) != ".so") continue;
+                            struct stat st;
+                            if (stat((*d + "/" + n).c_str(), &st) != 0) continue;
+                            nlibs++; total += (size_t)st.st_size;
+                            (d == &lib ? n64 : n32)++;
+                            if ((size_t)st.st_size < smallest) { smallest = st.st_size; smallestName = n; }
+                        }
+                        closedir(ld);
                     }
-                    closedir(ld);
                 }
                 if (nlibs == 0)
                     add(out, TestStatus::Fail, (label + " — install").c_str(),
-                        "marked installed but %s has no .so files — reinstall with X", lib.c_str());
+                        "marked installed but neither lib/ nor lib32/ has any .so — "
+                        "reinstall with X");
                 else if (smallest == 0)
                     add(out, TestStatus::Fail, (label + " — install").c_str(),
                         "%s is 0 bytes — the extract was interrupted", smallestName.c_str());
                 else
                     add(out, TestStatus::Pass, (label + " — install").c_str(),
-                        "%d native lib(s), %.1f MB extracted", nlibs, total / 1048576.0);
+                        "%d lib(s) extracted, %.1f MB (%d arm64, %d arm32)",
+                        nlibs, total / 1048576.0, n64, n32);
             }
 
             // Last run — the log already records what happened; reading it back

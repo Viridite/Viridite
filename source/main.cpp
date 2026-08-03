@@ -110,10 +110,20 @@ static bool hasControllerSupport(const std::string& pkg) {
     return pkg == "com.fingersoft.hillclimb";
 }
 
+// Games confirmed to actually run. Not "we have looked at it" — run.
+//
+// Brain It On! was on this list because a lot of work had gone into it, which
+// is the wrong reason: it loads flawlessly and then 155 of libunity's static
+// initialisers fault, so launching it gives a frozen screen and no
+// explanation. Listing something that cannot run is worse than listing
+// nothing, because the failure looks like a bug in whatever the player tried
+// last rather than a game that was never going to start.
+//
+// It stays fully available to the deep test, which loads it without running
+// it — that is exactly the case the deep test exists for, and it is how we
+// know the loader side is sound.
 static bool isCompatibleGame(const std::string& pkg) {
-    return pkg == "com.fingersoft.hillclimb"   // Hill Climb Racing (cocos2d-x)
-        || pkg == "com.fingersoft.hcr2"        // Hill Climb Racing 2 (cocos2d-x, arm32)
-        || pkg == "com.orbital.brainiton";     // Brain It On! (Unity IL2CPP)
+    return pkg == "com.fingersoft.hillclimb";  // Hill Climb Racing (cocos2d-x)
 }
 
 // ---------------------------------------------------------------------------
@@ -1922,8 +1932,9 @@ struct App {
         const std::string& pkg =
             apk.packageName.empty() ? apk.filename : apk.packageName;
         if (!isCompatibleGame(pkg)) {
-            noticeText  = "This game isn't compatible yet — only Hill Climb Racing "
-                          "and Brain It On! are supported in this build.";
+            noticeText  = "Not supported yet — Hill Climb Racing is the only game "
+                          "confirmed to run. Hold Y then press X to deep-test this "
+                          "one anyway.";
             noticeUntil = SDL_GetTicks() + 7000;
             logMsg(("launch blocked (incompatible): " + pkg).c_str());
             return false;
