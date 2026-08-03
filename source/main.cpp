@@ -17,6 +17,7 @@
 
 #include <curl/curl.h>
 
+#include "m3_theme.h"
 #include "apk.h"
 #include "avatar.h"
 #include "build_number.h"
@@ -129,23 +130,63 @@ static const int ITEM_H   = 108;
 static const int ICON_SZ  = 84;
 static const int VISIBLE  = LIST_H / ITEM_H;
 
-// Viridite light theme — a white base with the logo's vivid green as the
-// accent (the logo is a green gem designed to sit on white). C_WHITE is the
-// primary TEXT colour here (dark on white), so the existing semantic call
-// sites — C_WHITE for headings, C_GRAY/C_DIM for sub-text — keep working.
-static const SDL_Color C_BG     = {248, 251, 249, 255};  // near-white background
-static const SDL_Color C_HEADER = {255, 255, 255, 255};  // white surface
-static const SDL_Color C_FOOTER = {242, 248, 245, 255};  // light footer
-static const SDL_Color C_SEL    = {205, 244, 224, 255};  // light mint selection
-static const SDL_Color C_DIV    = {224, 234, 228, 255};  // light divider/border
-static const SDL_Color C_WHITE  = {17,  32,  24,  255};  // primary text (dark)
-static const SDL_Color C_GRAY   = {92,  112, 102, 255};  // secondary text
-static const SDL_Color C_DIM    = {142, 160, 150, 255};  // tertiary text
-static const SDL_Color C_OK     = {0,   170, 80,  255};  // accent (vivid green)
-static const SDL_Color C_ERR    = {214, 48,  79,  255};  // danger
-static const SDL_Color C_WARN   = {176, 120, 0,   255};  // warn amber
-static const SDL_Color C_INST   = {0,   170, 80,  255};  // installed badge
-static const SDL_Color C_RIM    = {0,   190, 90,  255};  // accent rim
+// ─── Theme ──────────────────────────────────────────────────────────────────
+// These are Material 3 colour roles under their old names, not fixed colours.
+// Keeping the names means every existing call site keeps reading the way it
+// did — C_WHITE for headings, C_GRAY for sub-text — while what they resolve to
+// now comes from the active scheme, so switching theme re-colours the whole UI
+// without touching a single drawing call.
+//
+// The mapping follows the spec rather than taste: list selection is
+// secondaryContainer because that is what M3 uses for a selected list item,
+// dividers are outlineVariant, the app bar is surfaceContainerLow. Getting
+// these right is what makes it read as Android rather than as green paint on
+// the old design.
+static SDL_Color C_BG, C_HEADER, C_FOOTER, C_SEL, C_DIV, C_WHITE, C_GRAY,
+                 C_DIM, C_OK, C_ERR, C_WARN, C_INST, C_RIM,
+                 C_ON_PRIMARY, C_PRIMARY_CONTAINER, C_ON_PRIMARY_CONTAINER,
+                 C_SURF_HIGH, C_SURF_HIGHEST, C_ERR_CONTAINER, C_ON_ERR_CONTAINER;
+
+static int      g_themeIndex = 0;
+static const M3Scheme* g_theme = &M3_THEMES[0];
+
+static void themeApply(int idx) {
+    if (idx < 0 || idx >= M3_THEME_COUNT) idx = 0;
+    g_themeIndex = idx;
+    const M3Scheme& m = M3_THEMES[idx];
+    g_theme  = &m;
+    C_BG     = m.surface;
+    C_HEADER = m.surfaceContainerLow;
+    C_FOOTER = m.surfaceContainer;
+    C_SEL    = m.secondaryContainer;      // M3 selected list item
+    C_DIV    = m.outlineVariant;
+    C_WHITE  = m.onSurface;               // primary text
+    C_GRAY   = m.onSurfaceVariant;        // secondary text
+    C_DIM    = m.outline;                 // tertiary text
+    C_OK     = m.primary;
+    C_ERR    = m.error;
+    C_WARN   = m.tertiary;
+    C_INST   = m.primary;
+    C_RIM    = m.primary;
+    C_ON_PRIMARY           = m.onPrimary;
+    C_PRIMARY_CONTAINER    = m.primaryContainer;
+    C_ON_PRIMARY_CONTAINER = m.onPrimaryContainer;
+    C_SURF_HIGH            = m.surfaceContainerHigh;
+    C_SURF_HIGHEST         = m.surfaceContainerHighest;
+    C_ERR_CONTAINER        = m.errorContainer;
+    C_ON_ERR_CONTAINER     = m.onErrorContainer;
+}
+
+// Remembered between runs, next to the other settings on the card.
+static const char* THEME_PATH = "sdmc:/Viridite/theme.txt";
+static void themeLoad() {
+    int idx = 0;
+    if (FILE* f = fopen(THEME_PATH, "r")) { if (fscanf(f, "%d", &idx) != 1) idx = 0; fclose(f); }
+    themeApply(idx);
+}
+static void themeSave() {
+    if (FILE* f = fopen(THEME_PATH, "w")) { fprintf(f, "%d\n", g_themeIndex); fclose(f); }
+}
 
 // ---------------------------------------------------------------------------
 static FILE* g_log = nullptr;
@@ -190,7 +231,7 @@ static const int AXIS_DEADZONE = 16384;
 // every screen re-deriving that mapping.
 enum class Act {
     None, Up, Down, PageUp, PageDown, Home, End,
-    Confirm, Back, Manage, Reinstall, Rescan, About, SelfTest, Quit
+    Confirm, Back, Manage, Reinstall, Rescan, About, SelfTest, Theme, Quit
 };
 
 // Buttons and keys. Stick/hat motion is continuous and rate-limited, so it's
@@ -207,8 +248,8 @@ static Act actionFor(const SDL_Event& ev) {
             case BTN_PLUS:   return Act::Quit;
             case BTN_DUP:    return Act::Up;
             case BTN_DDOWN:  return Act::Down;
+            case BTN_ZL:     return Act::Theme;
             case BTN_L:
-            case BTN_ZL:
             case BTN_DLEFT:  return Act::PageUp;
             case BTN_R:
             case BTN_ZR:
@@ -230,6 +271,7 @@ static Act actionFor(const SDL_Event& ev) {
             case SDLK_BACKSPACE:                return Act::Manage;
             case SDLK_r:                        return Act::Rescan;
             case SDLK_t:                        return Act::SelfTest;
+            case SDLK_p:                        return Act::Theme;
             case SDLK_i:                        return Act::About;
             case SDLK_ESCAPE:   case SDLK_q:    return Act::Quit;
             default:                            return Act::None;
@@ -334,12 +376,22 @@ struct App {
     }
 
     TTF_Font* openFont(int ptsize) {
+        // Roboto first. The Switch's own font is a fine UI face but it is
+        // unmistakably Nintendo's, and this is supposed to read as Android —
+        // typography does more of that work than colour does. Roboto Flex is
+        // Google's, shipped under the OFL, and bundled rather than fetched.
+        romfsInit();
+        TTF_Font* f = TTF_OpenFont("romfs:/fonts/RobotoFlex.ttf", ptsize);
+        if (f) { logMsg("  font: Roboto Flex (Google Fonts)"); return f; }
+        logSDL("  Roboto open failed");
+
+        // Then the system font, which at least has the full CJK coverage that
+        // a bundled Latin face does not.
         plInitialize(PlServiceType_User);
-        TTF_Font* f = openSharedFont(PlSharedFontType_Standard, ptsize);
+        f = openSharedFont(PlSharedFontType_Standard, ptsize);
         if (f) { logMsg("  font: system BFTTF"); return f; }
         logSDL("  BFTTF open failed");
 
-        romfsInit();
         f = TTF_OpenFont("romfs:/fonts/DejaVuSans.ttf", ptsize);
         if (f) { logMsg("  font: romfs DejaVuSans"); return f; }
         logSDL("  romfs font open failed");
@@ -537,6 +589,81 @@ struct App {
         SDL_RenderFillRect(rdr, &r);
     }
 
+    // ── Material 3 shape ────────────────────────────────────────────────────
+    // Corner radius is the single most recognisable thing about the Material
+    // You look — the spec's scale is XS 4, S 8, M 12, L 16, XL 24, and M3_FULL
+    // for the pill shapes buttons and chips use. Everything the UI draws goes
+    // through here rather than SDL_RenderFillRect so nothing is left square by
+    // accident.
+    void fillRounded(int x, int y, int w, int h, int rad, SDL_Color c) {
+        if (w <= 0 || h <= 0) return;
+        if (rad == M3_FULL) rad = (w < h ? w : h) / 2;
+        if (rad * 2 > w) rad = w / 2;
+        if (rad * 2 > h) rad = h / 2;
+        if (rad <= 0) { fill(x, y, w, h, c); return; }
+        SDL_SetRenderDrawColor(rdr, c.r, c.g, c.b, c.a);
+        fill(x + rad, y, w - 2 * rad, h, c);
+        fill(x, y + rad, rad, h - 2 * rad, c);
+        fill(x + w - rad, y + rad, rad, h - 2 * rad, c);
+        for (int dy = 0; dy < rad; dy++) {
+            float fy = rad - dy - 0.5f;
+            int   dx = (int)(rad - sqrtf((float)rad * rad - fy * fy) + 0.5f);
+            int   run = w - dx * 2;
+            if (run <= 0) continue;
+            fill(x + dx, y + dy,           run, 1, c);
+            fill(x + dx, y + h - 1 - dy,   run, 1, c);
+        }
+    }
+
+    // Paint the surface colour back over an icon's corners. Clipping to a
+    // rounded shape would need a render target per icon per frame; painting
+    // four corners costs nothing and looks the same over a flat background,
+    // which is what a list row is.
+    void roundIconCorners(int x, int y, int sz, int rad) {
+        SDL_Color bg = C_BG;
+        for (int dy = 0; dy < rad; dy++) {
+            float fy = rad - dy - 0.5f;
+            int   dx = (int)(rad - sqrtf((float)rad * rad - fy * fy) + 0.5f);
+            if (dx <= 0) continue;
+            fill(x,            y + dy,          dx, 1, bg);
+            fill(x + sz - dx,  y + dy,          dx, 1, bg);
+            fill(x,            y + sz - 1 - dy, dx, 1, bg);
+            fill(x + sz - dx,  y + sz - 1 - dy, dx, 1, bg);
+        }
+    }
+
+    // 1dp outline in the same shape — M3 outlined cards and buttons.
+    void strokeRounded(int x, int y, int w, int h, int rad, SDL_Color c) {
+        fillRounded(x, y, w, h, rad, c);
+        SDL_Color inner = C_BG;
+        fillRounded(x + 1, y + 1, w - 2, h - 2, rad > 0 ? rad - 1 : 0, inner);
+    }
+
+    // ── Material Symbols ────────────────────────────────────────────────────
+    // Rendered from Google's icon font at build time and tinted here, which is
+    // how one white glyph serves an enabled row, a disabled one and an error
+    // state without three copies of it.
+    std::map<std::string, SDL_Texture*> iconCache;
+
+    SDL_Texture* icon(const char* name) {
+        auto it = iconCache.find(name);
+        if (it != iconCache.end()) return it->second;
+        std::string path = std::string("romfs:/icons/") + name + ".png";
+        SDL_Texture* t = IMG_LoadTexture(rdr, path.c_str());
+        if (t) SDL_SetTextureBlendMode(t, SDL_BLENDMODE_BLEND);
+        iconCache.emplace(name, t);
+        return t;
+    }
+
+    void drawIcon(const char* name, int x, int y, int size, SDL_Color tint) {
+        SDL_Texture* t = icon(name);
+        if (!t) return;
+        SDL_SetTextureColorMod(t, tint.r, tint.g, tint.b);
+        SDL_SetTextureAlphaMod(t, tint.a);
+        SDL_Rect d = {x, y, size, size};
+        SDL_RenderCopy(rdr, t, nullptr, &d);
+    }
+
     int drawText(TTF_Font* f, const std::string& s, SDL_Color col, int x, int y) {
         if (s.empty() || !f) return 0;
         SDL_Surface* surf = TTF_RenderUTF8_Blended(f, s.c_str(), col);
@@ -604,7 +731,8 @@ struct App {
 
     void drawHeaderBar(const std::string& rightText = "") {
         fill(0, 0, SW, HEADER_H, {255, 255, 255, 235});
-        fill(0, HEADER_H - 3, SW, 3, C_RIM);
+        // M3 top app bars sit on a container tone and separate by colour, not
+        // by a rule underneath.
         int w = drawText(fLg, "Virid", C_WHITE, 30, (HEADER_H - 28) / 2);
         w += drawText(fLg, "ite", C_OK, 30 + w, (HEADER_H - 28) / 2);
         drawText(fSm, BUILD_VERSION, C_DIM, 30 + w + 14, (HEADER_H + 4) / 2);
@@ -826,32 +954,29 @@ struct App {
             if (fabsf(selAnimY - targetY) < 0.5f) selAnimY = (float)targetY;
             {
                 int cy2 = (int)selAnimY;
-                float pulse = 0.5f + 0.5f * sinf(now / 1000.0f * 2.6f);
-                SDL_Rect card = {12, cy2 + 4, SW - 24, ITEM_H - 8};
-                fill(card.x, card.y, card.w, card.h, {205, 244, 224, 235});
-                for (int g = 1; g <= 5; g++) {
-                    Uint8 a = (Uint8)((60 - g * 10) * (0.55f + 0.45f * pulse));
-                    SDL_SetRenderDrawColor(rdr, 0, 200, 100, a);
-                    SDL_Rect gr = {card.x - g, card.y - g,
-                                   card.w + 2 * g, card.h + 2 * g};
-                    SDL_RenderDrawRect(rdr, &gr);
-                }
-                SDL_SetRenderDrawColor(rdr, 0, 200, 100,
-                                       (Uint8)(160 + 95 * pulse));
-                SDL_RenderDrawRect(rdr, &card);
-                fill(card.x, card.y, 5, card.h, C_RIM);
+                // M3 selected list item: a filled secondaryContainer shape with
+                // a large corner radius. The old treatment was a hard-edged box
+                // with an animated green glow around it, which is a games-console
+                // idiom — Android marks selection by filling the row, not by
+                // outlining and pulsing it.
+                fillRounded(12, cy2 + 4, SW - 24, ITEM_H - 8, M3_L, C_SEL);
             }
 
             int end = std::min((int)apks.size(), scroll + VISIBLE);
             for (int i = scroll; i < end; i++) {
                 int iy = LIST_Y + (i - scroll) * ITEM_H;
-                SDL_SetRenderDrawColor(rdr, C_DIV.r, C_DIV.g, C_DIV.b, 130);
-                SDL_RenderDrawLine(rdr, 24, iy + ITEM_H - 1, SW - 24, iy + ITEM_H - 1);
+                // A selected row is already a filled shape, so a divider under
+                // it would cut through the fill.
+                if (i != selected)
+                    fill(28, iy + ITEM_H - 1, SW - 56, 1, C_DIV);
 
                 int iconY = iy + (ITEM_H - ICON_SZ) / 2;
                 if (i < (int)icons.size() && icons[i]) {
+                    // Android clips launcher icons to a rounded shape rather
+                    // than showing the raw square the APK ships.
                     SDL_Rect dst = {28, iconY, ICON_SZ, ICON_SZ};
                     SDL_RenderCopy(rdr, icons[i], nullptr, &dst);
+                    roundIconCorners(28, iconY, ICON_SZ, M3_L);
                 } else {
                     drawMonogram(apks[i].appName, 28, iconY, ICON_SZ);
                 }
@@ -1175,6 +1300,62 @@ struct App {
         }
     }
 
+    // Theme picker. Every scheme is a full Material You palette generated from
+    // its own seed, so each row previews itself with its own colours rather
+    // than describing them.
+    void showThemes() {
+        int sel  = g_themeIndex;
+        int start = g_themeIndex;
+        bool done = false;
+        while (!done) {
+            SDL_Event ev;
+            while (SDL_PollEvent(&ev)) {
+                if (ev.type == SDL_QUIT) { done = true; break; }
+                switch (actionFor(ev)) {
+                    case Act::Up:   sel = (sel - 1 + M3_THEME_COUNT) % M3_THEME_COUNT; themeApply(sel); break;
+                    case Act::Down: sel = (sel + 1) % M3_THEME_COUNT;                  themeApply(sel); break;
+                    case Act::Confirm: themeSave(); done = true; break;
+                    case Act::Back:
+                    case Act::Manage:
+                    case Act::Quit: themeApply(start); done = true; break;   // revert
+                    default: break;
+                }
+            }
+
+            drawBackground();
+            drawHeaderBar();
+            int y = LIST_Y + 26;
+            drawIcon("palette", 30, y - 2, 30, C_OK);
+            drawText(fLg, "Theme", C_WHITE, 74, y);
+            y += 52;
+
+            const int ROW_H = 76;
+            for (int i = 0; i < M3_THEME_COUNT; i++) {
+                const M3Scheme& m = M3_THEMES[i];
+                bool on = (i == sel);
+                SDL_Rect card = {24, y, SW - 48, ROW_H - 10};
+                fillRounded(card.x, card.y, card.w, card.h, M3_L,
+                            on ? m.secondaryContainer : m.surfaceContainerHigh);
+
+                // Three swatches: the roles a scheme is actually judged by.
+                int sx = card.x + 18, sy = card.y + (card.h - 30) / 2;
+                fillRounded(sx,      sy, 30, 30, M3_FULL, m.primary);
+                fillRounded(sx + 38, sy, 30, 30, M3_FULL, m.tertiary);
+                fillRounded(sx + 76, sy, 30, 30, M3_FULL, m.surfaceContainerHighest);
+
+                drawText(fMd, m.name, on ? m.onSecondaryContainer : m.onSurface,
+                         sx + 126, card.y + (card.h - 22) / 2);
+                if (on) drawIcon("check_circle", card.x + card.w - 46,
+                                 card.y + (card.h - 26) / 2, 26, m.primary);
+                y += ROW_H;
+            }
+
+            drawFooterBar({{BG(GLYPH_B, "B"), "Cancel"}, {BG(GLYPH_A, "A"), "Use this theme"}});
+            SDL_RenderPresent(rdr);
+            SDL_Delay(16);
+        }
+    }
+
     void showAbout() {
         bool done = false;
         creditsScroll    = 0.0f;
@@ -1457,17 +1638,33 @@ struct App {
             const char* labels[ROW_COUNT] = { fpsLabel, cacheLabel.c_str(),
                                               dataLabel.c_str(), deleteLabel };
 
+            // Android labels these actions with icons, and they are the same
+            // icons Settings uses for the same jobs — a broom for cache, a bin
+            // for storage. Borrowing the vocabulary is most of what makes a
+            // screen read as Android rather than as a list of sentences.
+            static const char* rowIcons[ROW_COUNT] = {
+                "tune",                // framerate cap
+                "cleaning_services",   // clear cache
+                "storage",             // clear storage
+                "delete_forever",      // delete game
+            };
+
             for (int r = 0; r < ROW_COUNT; r++) {
                 SDL_Rect card = {24, y, SW - 48, ROW_H - 10};
                 rowRects[r] = card;
-                bool sel = (r == row);
-                SDL_Color bg = sel ? (r == ROW_DELETE && confirmDelete ? SDL_Color{253, 226, 226, 235}
-                                                                        : C_SEL)
-                                    : SDL_Color{237, 244, 240, 255};
-                fill(card.x, card.y, card.w, card.h, bg);
-                if (sel) fill(card.x, card.y, 5, card.h, r == ROW_DELETE ? C_ERR : C_RIM);
-                SDL_Color textCol = (r == ROW_DELETE) ? (confirmDelete ? C_ERR : C_WARN) : C_WHITE;
-                drawText(fMd, labels[r], textCol, card.x + 24, card.y + (card.h - 22) / 2);
+                bool sel  = (r == row);
+                bool dang = (r == ROW_DELETE && confirmDelete);
+                SDL_Color bg = dang ? C_ERR_CONTAINER
+                             : sel  ? C_SEL
+                                    : C_SURF_HIGH;
+                fillRounded(card.x, card.y, card.w, card.h, M3_L, bg);
+                SDL_Color textCol = dang ? C_ON_ERR_CONTAINER
+                                  : (r == ROW_DELETE) ? C_ERR
+                                  : sel ? C_ON_PRIMARY_CONTAINER : C_WHITE;
+                const int ICO = 26;
+                drawIcon(rowIcons[r], card.x + 20, card.y + (card.h - ICO) / 2, ICO, textCol);
+                drawText(fMd, clamp(fMd, labels[r], card.w - 84),
+                         textCol, card.x + 20 + ICO + 16, card.y + (card.h - 22) / 2);
                 y += ROW_H;
             }
 
@@ -1722,6 +1919,8 @@ struct App {
 
 // ---------------------------------------------------------------------------
 int main(int argc, char** argv) {
+    themeLoad();   // before anything draws
+
     App app;
 
     if (!app.init()) return 1;
@@ -1866,6 +2065,7 @@ int main(int argc, char** argv) {
                     break;
                 case Act::Manage:    if (haveApks) app.showManage(); break;
                 case Act::Rescan:    app.rescan(); break;
+                case Act::Theme:     app.showThemes(); break;
                 case Act::SelfTest:  app.showSelfTest();
                                      if (app.deepTestHandoff) handoff = true;
                                      break;

@@ -457,6 +457,31 @@ ApkInfo parseApk(const std::string& path) {
     if (!manifest.empty()) ax = parseAXML(manifest);
     info.screenOrient = ax.screenOrient;
 
+    // A bundled icon wins over the one in the APK.
+    //
+    // Store listings carry a clean, full-resolution icon; what ships inside the
+    // APK is whatever the build packed, which for a resource-obfuscated game
+    // like Hill Climb Racing is a small, arbitrarily-chosen bitmap among
+    // several. Where we have the real artwork, use it — this is the same
+    // artwork the boot animation uses, so the launcher and the loading screen
+    // finally show the same thing.
+    if (!ax.packageName.empty()) {
+        std::string bundled = "romfs:/gameicons/" + ax.packageName + ".png";
+        if (FILE* bf = fopen(bundled.c_str(), "rb")) {
+            fseek(bf, 0, SEEK_END);
+            long n = ftell(bf);
+            fseek(bf, 0, SEEK_SET);
+            if (n > 0) {
+                std::vector<uint8_t> buf((size_t)n);
+                if (fread(buf.data(), 1, (size_t)n, bf) == (size_t)n) {
+                    info.iconPng = std::move(buf);
+                    info.hasIcon = true;
+                }
+            }
+            fclose(bf);
+        }
+    }
+
     if (!ax.packageName.empty()) info.packageName = ax.packageName;
     if (!ax.versionName.empty()) info.versionName = ax.versionName;
     if (!ax.appLabel.empty())    info.appName     = ax.appLabel;
