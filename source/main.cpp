@@ -1059,6 +1059,15 @@ struct App {
         for (const TestResult& r : res)
             (r.status == TestStatus::Pass ? pass
              : r.status == TestStatus::Warn ? warn : fail)++;
+        // Every line goes to launcher_log.txt as well as selftest.txt. The
+        // logs that actually get sent over are the three standard ones, so a
+        // result that only exists in a fourth file is a result nobody reads.
+        for (const TestResult& r : res) {
+            const char* tag = r.status == TestStatus::Pass ? "PASS"
+                            : r.status == TestStatus::Warn ? "WARN" : "FAIL";
+            logMsg(("self-test [" + std::string(tag) + "] " + r.name +
+                    ": " + r.detail).c_str());
+        }
         logMsg(("self-test: " + std::to_string(pass) + " passed, " +
                 std::to_string(warn) + " warnings, " + std::to_string(fail) +
                 " failed").c_str());
