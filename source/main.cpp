@@ -204,15 +204,29 @@ static void themeSave() {
 // for anything that is not. Cheap enough to run on every scan because writing
 // only happens when a file is missing — the common case is a handful of stat
 // calls.
+void logMsg(const char* msg);   // defined with the rest of the logging, below
+
 static void syncForwarders(std::vector<ApkInfo>& list) {
+    int installed = 0, present = 0, wrote = 0, removed = 0, failed = 0;
     for (const ApkInfo& a : list) {
         if (a.packageName.empty()) continue;
         struct stat st;
         const std::string path = forwarderPath(a.packageName);
         const bool exists = stat(path.c_str(), &st) == 0;
-        if (a.installed && !exists)      forwarderWrite(a);
-        else if (!a.installed && exists) forwarderRemove(a.packageName);
+        if (a.installed) installed++;
+        if (exists)      present++;
+        if (a.installed && !exists) { if (forwarderWrite(a)) wrote++; else failed++; }
+        else if (!a.installed && exists) { if (forwarderRemove(a.packageName)) removed++; }
     }
+    // Always logged, including when there was nothing to do. A pass that says
+    // nothing cannot be told apart from a pass that never happened, which is
+    // the question you actually have when a forwarder fails to appear.
+    char msg[160];
+    snprintf(msg, sizeof msg,
+             "forwarders: %d installed game(s), %d already present, %d written, "
+             "%d removed, %d failed",
+             installed, present, wrote, removed, failed);
+    logMsg(msg);
 }
 
 // ---------------------------------------------------------------------------
@@ -521,6 +535,16 @@ struct App {
         mkdir("sdmc:/Viridite", 0777);
         logOpen();
         logMsg("Viridite launcher starting");
+        {
+            // Which build wrote this. The Core's log has always named itself;
+            // this one did not, so a launcher log on its own could not be
+            // placed against a release — and a log you cannot date is a log you
+            // have to re-capture.
+            char v[128];
+            snprintf(v, sizeof v, "env: Viridite (launcher) %s (build 0.1.%d)",
+                     VIRIDITE_VERSION, BUILD_NUMBER);
+            logMsg(v);
+        }
 
         // Networking, for the self-update check. curl on this toolchain runs
         // TLS through the Switch's own ssl sysmodule, so it needs the socket
