@@ -248,7 +248,16 @@ static void syncForwarders(std::vector<ApkInfo>& list) {
 
 // ---------------------------------------------------------------------------
 static FILE* g_log = nullptr;
-static void logOpen()  { g_log = fopen("sdmc:/Viridite/launcher_log.txt", "w"); }
+static void logOpen()  {
+    // Keep the previous run. The log is truncated on open, so when a run dies
+    // the next launch erases the only record of it — which is exactly what
+    // happened to the forwarder crash: the recovery boot overwrote the
+    // breadcrumbs that named the failing step. One generation back is enough,
+    // because the run you want is always the one immediately before this one.
+    remove("sdmc:/Viridite/launcher_log.prev.txt");
+    rename("sdmc:/Viridite/launcher_log.txt", "sdmc:/Viridite/launcher_log.prev.txt");
+    g_log = fopen("sdmc:/Viridite/launcher_log.txt", "w");
+}
 static void logClose() { if (g_log) { fclose(g_log); g_log = nullptr; } }
 void logMsg(const char* msg) {
     if (g_log) { fputs(msg, g_log); fputc('\n', g_log); fflush(g_log); }
