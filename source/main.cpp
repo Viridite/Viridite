@@ -207,6 +207,22 @@ static void themeSave() {
 void logMsg(const char* msg);   // defined with the rest of the logging, below
 
 static void syncForwarders(std::vector<ApkInfo>& list) {
+    // A crash in here would happen on the "Scanning for APKs..." screen, before
+    // the menu exists — so it would repeat on every launch and leave no way
+    // back in. The marker makes that self-correcting: it is written before the
+    // work and removed after, so finding one means the last attempt did not
+    // return, and this one skips it. Forwarders are a convenience; being able
+    // to open the launcher is not.
+    const char* kLock = "sdmc:/Viridite/.forwarder_sync";
+    struct stat lk;
+    if (stat(kLock, &lk) == 0) {
+        remove(kLock);
+        logMsg("forwarders: skipped — the last attempt did not finish. "
+               "Delete sdmc:/Viridite/.forwarder_sync to try again.");
+        return;
+    }
+    if (FILE* f = fopen(kLock, "w")) { fputs("1\n", f); fclose(f); }
+
     int installed = 0, present = 0, wrote = 0, removed = 0, failed = 0;
     for (const ApkInfo& a : list) {
         if (a.packageName.empty()) continue;
@@ -227,6 +243,7 @@ static void syncForwarders(std::vector<ApkInfo>& list) {
              "%d removed, %d failed",
              installed, present, wrote, removed, failed);
     logMsg(msg);
+    remove(kLock);                        // got to the end, so it is safe to retry
 }
 
 // ---------------------------------------------------------------------------

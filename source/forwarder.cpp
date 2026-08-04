@@ -81,13 +81,16 @@ bool buildIconJpeg(const ApkInfo& apk, Buf& out) {
     SDL_Surface* src = nullptr;
 
     std::string bundled = "romfs:/gameicons/" + apk.packageName + ".png";
+    logMsg(("forwarder:   icon: loading " + bundled).c_str());
     src = IMG_Load(bundled.c_str());
     if (!src && !apk.iconPng.empty()) {
+        logMsg("forwarder:   icon: no bundled icon, using the APK's");
         SDL_RWops* rw = SDL_RWFromConstMem(apk.iconPng.data(), (int)apk.iconPng.size());
         if (rw) src = IMG_Load_RW(rw, 1);
     }
-    if (!src) return false;
+    if (!src) { logMsg("forwarder:   icon: nothing loadable"); return false; }
 
+    logMsg("forwarder:   icon: scaling to 256x256");
     SDL_Surface* dst = SDL_CreateRGBSurfaceWithFormat(0, 256, 256, 24, SDL_PIXELFORMAT_RGB24);
     if (!dst) { SDL_FreeSurface(src); return false; }
     // JPEG has no alpha, so a transparent icon would otherwise come out over
@@ -103,11 +106,16 @@ bool buildIconJpeg(const ApkInfo& apk, Buf& out) {
     if (!out.alloc(256 * 1024)) { SDL_FreeSurface(dst); return false; }
     SDL_RWops* rw = SDL_RWFromMem(out.p, (int)out.n);
     if (!rw) { SDL_FreeSurface(dst); return false; }
+    logMsg("forwarder:   icon: encoding JPEG");
     const int rc = IMG_SaveJPG_RW(dst, rw, 0, 90);
     const Sint64 n = SDL_RWtell(rw);
     SDL_RWclose(rw);
     SDL_FreeSurface(dst);
-    if (rc != 0 || n <= 0) return false;
+    if (rc != 0 || n <= 0) {
+        logMsg(("forwarder:   icon: JPEG encode failed — " + std::string(SDL_GetError())).c_str());
+        return false;
+    }
+    logMsg("forwarder:   icon: encoded");
 
     out.n = (size_t)n;                    // keep the allocation, shrink the length
     return true;
@@ -136,6 +144,7 @@ std::string forwarderAuthor(const std::string& pkg_name) {
 
 bool forwarderWrite(const ApkInfo& apk) {
     if (apk.packageName.empty()) return false;
+    logMsg(("forwarder: building for " + apk.packageName).c_str());
 
     Buf stub;
     if (!readFile(kTemplate, stub) || stub.n < 0x20 ||
@@ -154,11 +163,12 @@ bool forwarderWrite(const ApkInfo& apk) {
         return false;
     }
     stub.n = nro_size;
+    logMsg("forwarder:   stub read");
 
     // ── NACP ──
     // Built through libnx's own struct so the field offsets are whatever the
     // running SDK says they are, not numbers copied out of a wiki page.
-    NacpStruct nacp;
+    static NacpStruct nacp;
     memset(&nacp, 0, sizeof nacp);
 
     const std::string title  = apk.appName.empty() ? apk.packageName : apk.appName;
@@ -172,6 +182,8 @@ bool forwarderWrite(const ApkInfo& apk) {
         snprintf(nacp.lang[i].author, sizeof nacp.lang[i].author, "%s", author.c_str());
     }
     snprintf(nacp.display_version, sizeof nacp.display_version, "%s", ver.c_str());
+
+    logMsg("forwarder:   nacp built");
 
     // ── icon ──
     Buf icon;
@@ -195,6 +207,7 @@ bool forwarderWrite(const ApkInfo& apk) {
     const std::string path = forwarderPath(apk.packageName);
     const std::string tmp  = path + ".tmp";
 
+    logMsg(("forwarder:   writing " + tmp).c_str());
     FILE* f = fopen(tmp.c_str(), "wb");
     if (!f) {
         logMsg(("forwarder: cannot write " + tmp).c_str());
