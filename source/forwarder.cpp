@@ -29,15 +29,36 @@ struct AssetHeader {
 };
 static_assert(sizeof(AssetHeader) == 0x38, "NRO asset header is 56 bytes");
 
-bool readFile(const char* path, std::vector<uint8_t>& out) {
+// A buffer that owns malloc'd memory and reports failure instead of dying.
+//
+// The launcher is built with -fno-exceptions, so a std::vector that cannot get
+// its memory does not throw something catchable — it calls std::terminate, and
+// the console shows "The software has closed because an error occurred" with
+// nothing written to the log. This runs at startup, before the menu exists, on
+// buffers of a couple of hundred kilobytes. It has to be allowed to fail.
+struct Buf {
+    uint8_t* p = nullptr;
+    size_t   n = 0;
+    ~Buf() { free(p); }
+    bool alloc(size_t bytes) {
+        free(p);
+        p = (uint8_t*)malloc(bytes);
+        n = p ? bytes : 0;
+        return p != nullptr;
+    }
+    Buf() = default;
+    Buf(const Buf&) = delete;
+    Buf& operator=(const Buf&) = delete;
+};
+
+bool readFile(const char* path, Buf& out) {
     FILE* f = fopen(path, "rb");
     if (!f) return false;
     fseek(f, 0, SEEK_END);
     long n = ftell(f);
     fseek(f, 0, SEEK_SET);
-    if (n <= 0) { fclose(f); return false; }
-    out.resize((size_t)n);
-    const bool ok = fread(out.data(), 1, (size_t)n, f) == (size_t)n;
+    if (n <= 0 || n > (8 << 20) || !out.alloc((size_t)n)) { fclose(f); return false; }
+    const bool ok = fread(out.p, 1, (size_t)n, f) == (size_t)n;
     fclose(f);
     return ok;
 }
@@ -56,7 +77,7 @@ std::string prettyComponent(const std::string& s) {
 // Store icons are authored at a single size with a consistent style; the ones
 // packed into an APK are whatever density the phone build happened to need,
 // and vary wildly in padding and shape between games.
-bool buildIconJpeg(const ApkInfo& apk, std::vector<uint8_t>& out) {
+bool buildIconJpeg(const ApkInfo& apk, Buf& out) {
     SDL_Surface* src = nullptr;
 
     std::string bundled = "romfs:/gameicons/" + apk.packageName + ".png";
@@ -67,7 +88,7 @@ bool buildIconJpeg(const ApkInfo& apk, std::vector<uint8_t>& out) {
     }
     if (!src) return false;
 
-    SDL_Surface* dst = SDL_CreateRGBSurfaceWithFormat(0, 256, 256, 32, SDL_PIXELFORMAT_RGB24);
+    SDL_Surface* dst = SDL_CreateRGBSurfaceWithFormat(0, 256, 256, 24, SDL_PIXELFORMAT_RGB24);
     if (!dst) { SDL_FreeSurface(src); return false; }
     // JPEG has no alpha, so a transparent icon would otherwise come out over
     // uninitialised memory. Fill with the Viridite green the rest of the UI
@@ -76,9 +97,11 @@ bool buildIconJpeg(const ApkInfo& apk, std::vector<uint8_t>& out) {
     SDL_BlitScaled(src, nullptr, dst, nullptr);
     SDL_FreeSurface(src);
 
-    // Into memory, not a file: the icon only exists to be concatenated.
-    std::vector<uint8_t> buf(256 * 1024);
-    SDL_RWops* rw = SDL_RWFromMem(buf.data(), (int)buf.size());
+    // Into memory, not a file: the icon only exists to be concatenated. The
+    // buffer is a fixed 256 KB, which a 256x256 JPEG cannot exceed; RWFromMem
+    // bounds the writes, so a surprise merely fails the save.
+    if (!out.alloc(256 * 1024)) { SDL_FreeSurface(dst); return false; }
+    SDL_RWops* rw = SDL_RWFromMem(out.p, (int)out.n);
     if (!rw) { SDL_FreeSurface(dst); return false; }
     const int rc = IMG_SaveJPG_RW(dst, rw, 0, 90);
     const Sint64 n = SDL_RWtell(rw);
@@ -86,7 +109,7 @@ bool buildIconJpeg(const ApkInfo& apk, std::vector<uint8_t>& out) {
     SDL_FreeSurface(dst);
     if (rc != 0 || n <= 0) return false;
 
-    out.assign(buf.begin(), buf.begin() + (size_t)n);
+    out.n = (size_t)n;                    // keep the allocation, shrink the length
     return true;
 }
 
@@ -114,9 +137,9 @@ std::string forwarderAuthor(const std::string& pkg_name) {
 bool forwarderWrite(const ApkInfo& apk) {
     if (apk.packageName.empty()) return false;
 
-    std::vector<uint8_t> stub;
-    if (!readFile(kTemplate, stub) || stub.size() < 0x20 ||
-        memcmp(stub.data() + 0x10, "NRO0", 4) != 0) {
+    Buf stub;
+    if (!readFile(kTemplate, stub) || stub.n < 0x20 ||
+        memcmp(stub.p + 0x10, "NRO0", 4) != 0) {
         logMsg("forwarder: romfs:/forwarder.nro missing or not an NRO");
         return false;
     }
@@ -125,12 +148,12 @@ bool forwarderWrite(const ApkInfo& apk) {
     // file. Trim anything past it regardless, so re-stamping an already
     // stamped binary can never append a second asset section.
     uint32_t nro_size = 0;
-    memcpy(&nro_size, stub.data() + 0x18, 4);
-    if (nro_size == 0 || nro_size > stub.size()) {
+    memcpy(&nro_size, stub.p + 0x18, 4);
+    if (nro_size == 0 || nro_size > stub.n) {
         logMsg("forwarder: template NRO has a bad size field");
         return false;
     }
-    stub.resize(nro_size);
+    stub.n = nro_size;
 
     // ── NACP ──
     // Built through libnx's own struct so the field offsets are whatever the
@@ -151,7 +174,7 @@ bool forwarderWrite(const ApkInfo& apk) {
     snprintf(nacp.display_version, sizeof nacp.display_version, "%s", ver.c_str());
 
     // ── icon ──
-    std::vector<uint8_t> icon;
+    Buf icon;
     const bool haveIcon = buildIconJpeg(apk, icon);
     if (!haveIcon) logMsg("forwarder: no icon available — writing without one");
 
@@ -162,7 +185,7 @@ bool forwarderWrite(const ApkInfo& apk) {
     hdr.version = 0;
 
     uint64_t off = sizeof hdr;
-    if (haveIcon) { hdr.icon.offset = off; hdr.icon.size = icon.size(); off += icon.size(); }
+    if (haveIcon) { hdr.icon.offset = off; hdr.icon.size = icon.n; off += icon.n; }
     hdr.nacp.offset = off; hdr.nacp.size = sizeof nacp; off += sizeof nacp;
     hdr.romfs.offset = off; hdr.romfs.size = 0;
 
@@ -177,9 +200,9 @@ bool forwarderWrite(const ApkInfo& apk) {
         logMsg(("forwarder: cannot write " + tmp).c_str());
         return false;
     }
-    bool ok = fwrite(stub.data(), 1, stub.size(), f) == stub.size();
+    bool ok = fwrite(stub.p, 1, stub.n, f) == stub.n;
     ok = ok && fwrite(&hdr, 1, sizeof hdr, f) == sizeof hdr;
-    if (haveIcon) ok = ok && fwrite(icon.data(), 1, icon.size(), f) == icon.size();
+    if (haveIcon) ok = ok && fwrite(icon.p, 1, icon.n, f) == icon.n;
     ok = ok && fwrite(&nacp, 1, sizeof nacp, f) == sizeof nacp;
     fclose(f);
 
