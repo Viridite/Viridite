@@ -19,6 +19,7 @@
 
 #include "m3_theme.h"
 #include "apk.h"
+#include "forwarder.h"
 #include "avatar.h"
 #include "build_number.h"
 #include "update.h"
@@ -198,11 +199,27 @@ static void themeSave() {
     if (FILE* f = fopen(THEME_PATH, "w")) { fprintf(f, "%d\n", g_themeIndex); fclose(f); }
 }
 
+
+// Make the forwarder folder match reality: one NRO per installed game, none
+// for anything that is not. Cheap enough to run on every scan because writing
+// only happens when a file is missing — the common case is a handful of stat
+// calls.
+static void syncForwarders(std::vector<ApkInfo>& list) {
+    for (const ApkInfo& a : list) {
+        if (a.packageName.empty()) continue;
+        struct stat st;
+        const std::string path = forwarderPath(a.packageName);
+        const bool exists = stat(path.c_str(), &st) == 0;
+        if (a.installed && !exists)      forwarderWrite(a);
+        else if (!a.installed && exists) forwarderRemove(a.packageName);
+    }
+}
+
 // ---------------------------------------------------------------------------
 static FILE* g_log = nullptr;
 static void logOpen()  { g_log = fopen("sdmc:/Viridite/launcher_log.txt", "w"); }
 static void logClose() { if (g_log) { fclose(g_log); g_log = nullptr; } }
-static void logMsg(const char* msg) {
+void logMsg(const char* msg) {
     if (g_log) { fputs(msg, g_log); fputc('\n', g_log); fflush(g_log); }
 }
 static void logSDL(const char* prefix) {
@@ -1124,6 +1141,7 @@ struct App {
         for (auto* t : icons) if (t) SDL_DestroyTexture(t);
         icons.clear();
         apks = ::scanApks(APK_DIR);
+        syncForwarders(apks);
         loadIcons();
         selected = 0; scroll = 0;
     }
@@ -1670,7 +1688,7 @@ struct App {
             };
             center(fLg, "Viridite", C_WHITE);
             center(fSm, BUILD_VERSION, C_DIM);
-            center(fSm, "by aaronworld.uk", C_GRAY);
+            center(fSm, "by Viridite Contributors", C_GRAY);
             y += 10;
             center(fSm, "Android NDK compatibility layer for Nintendo Switch (HorizonOS)", C_GRAY);
 
@@ -1738,6 +1756,10 @@ struct App {
             if (!confirmDelete) { confirmDelete = true; return; }
             apkDeleteInstalledData(pkg);
             apkDeleteFile(apk.path);
+            // The forwarder points at an install that no longer exists, so it
+            // goes at the same time. Leaving it would put a dead entry in
+            // hbmenu that looks exactly like a working one.
+            forwarderRemove(pkg);
             deleted = true;
             done    = true;
         };
@@ -2145,6 +2167,7 @@ int main(int argc, char** argv) {
     SDL_RenderPresent(app.rdr);
 
     app.apks = scanApks(APK_DIR);
+    syncForwarders(app.apks);
     app.loadIcons();
     app.render();
 

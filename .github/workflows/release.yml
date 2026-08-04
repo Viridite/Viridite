@@ -142,6 +142,14 @@ jobs:
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "Releasing as $TAG"
 
+      # Before the launcher, because the launcher embeds the result: every
+      # forwarder it writes is this stub with per-game metadata appended, so a
+      # stale copy in romfs would mean forwarders built from old code.
+      - name: Build forwarder stub
+        run: |
+          docker run --rm -v ${{ github.workspace }}/launcher/forwarder:/project -w /project devkitpro/devkita64:latest make
+          cp launcher/forwarder/forwarder.nro launcher/romfs/forwarder.nro
+
       - name: Build launcher
         run: docker run --rm -e VIRIDITE_VERSION="${{ steps.ver.outputs.tag }}" -v ${{ github.workspace }}/launcher:/project -w /project devkitpro/devkita64:latest make
 

@@ -23,8 +23,12 @@ INCLUDES	:=	include
 ROMFS		:=	romfs
 
 APP_TITLE	:= Viridite
-APP_AUTHOR	:= aaronworld.uk
-APP_VERSION	:= 0.1.$(shell cat $(TOPDIR)/build_number.txt 2>/dev/null || echo 0)
+APP_AUTHOR	:= Viridite Contributors
+# The HOME menu shows this, so it must name the release the file came from —
+# otherwise a card with three builds on it looks like three copies of the same
+# thing. CI sets VIRIDITE_VERSION to the release tag; a developer build with no
+# tag falls back to the local build number.
+APP_VERSION	:= $(if $(VIRIDITE_VERSION),$(patsubst v%,%,$(VIRIDITE_VERSION)),0.1.$(shell cat $(TOPDIR)/build_number.txt 2>/dev/null || echo 0))
 
 #---------------------------------------------------------------------------------
 ARCH	:=	-march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -fPIE

@@ -24,3 +24,12 @@ overlay/Viridite.nro
 overlay/Viridite.nacp
 overlay/Viridite.ovl
 overlay/*.map
+
+# Local test material and on-console output — not part of the project.
+tempViriditeDump/
+.overlays/
+selftest.txt
+selftest_core.txt
+theme.txt
+forwarder/build/
+HillClimb67/
