@@ -93,15 +93,13 @@ static void selfTestLastRun(const std::string& pkg, const std::string& label,
         "sdmc:/switch/Viridite/compat_log.txt",
     };
     FILE* f = nullptr;
-    const char* found = nullptr;
     for (const char* lp : kLogPaths)
-        if ((f = fopen(lp, "r")) != nullptr) { found = lp; break; }
+        if ((f = fopen(lp, "r")) != nullptr) break;
     if (!f) {
         add(out, TestStatus::Warn, (label + " — last run").c_str(),
             "no log at %s (has it been moved off the card?)", kLogPaths[0]);
         return;
     }
-    (void)found;
     char line[512];
     bool   thisGame = false, loaded = false, handedOff = false;
     int    faults = 0, wedged = 0;

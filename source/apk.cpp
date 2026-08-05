@@ -530,9 +530,10 @@ ApkInfo parseApk(const std::string& path) {
                 else {
                     // Nothing decoded — fall back to the old path-based pick.
                     std::string iconPath = bestIconPath(paths);
-                    if (!iconPath.empty())
+                    if (!iconPath.empty()) {
                         info.iconPng = readZipEntry(zf, iconPath.c_str());
                         info.hasIcon = !info.iconPng.empty();
+                    }
                 }
             }
         }

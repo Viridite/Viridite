@@ -217,8 +217,8 @@ static void syncForwarders(std::vector<ApkInfo>& list) {
     struct stat lk;
     if (stat(kLock, &lk) == 0) {
         remove(kLock);
-        logMsg("forwarders: skipped — the last attempt did not finish. "
-               "Delete sdmc:/Viridite/.forwarder_sync to try again.");
+        logMsg("forwarders: last attempt did not finish — this pass skipped. "
+               "The lock is now cleared, so the next scan will try again.");
         return;
     }
     if (FILE* f = fopen(kLock, "w")) { fputs("1\n", f); fclose(f); }
@@ -299,6 +299,18 @@ static const int AXIS_DEADZONE = 16384;
 enum class Act {
     None, Up, Down, PageUp, PageDown, Home, End,
     Confirm, Back, Manage, Reinstall, Rescan, About, SelfTest, Theme, Quit
+};
+
+// One footer hint, carrying the action a tap on it triggers. drawFooterBar()
+// records each hint's on-screen hitbox, and taps are matched back to the Act
+// — not to a position in the hints vector — so inserting a hint (e.g. the
+// "L/R Page" chip once the list outgrows a screen) can never shift every
+// touch target by one, as it used to: the footer's A/B/X/Y/+/− taps all did
+// the wrong thing the moment the list needed paging.
+struct FooterHint {
+    Act         act;     // what a tap does; Act::None = display only
+    std::string glyph;   // button glyph (NintendoExt) or ASCII fallback
+    std::string label;   // the word next to the glyph
 };
 
 // Buttons and keys. Stick/hat motion is continuous and rate-limited, so it's
@@ -467,12 +479,13 @@ struct App {
     UpdateInfo update;                // valid once updateSeen
 
     // ── Touch navigation ──────────────────────────────────────────────
-    // Footer button hitboxes, refreshed every drawFooterBar() call so a
-    // tap can be matched back to whichever hint (by index, same order the
-    // caller passed in) was drawn at that screen position — layout is
+    // Footer hint hitboxes, refreshed every drawFooterBar() call — layout is
     // computed dynamically (text-width dependent), so this is the only
     // reliable way to hit-test it rather than duplicating that math here.
     std::vector<SDL_Rect> footerHitboxes;
+    // The action each hitbox is bound to, filled in the same pass so a tap
+    // resolves to what the hint means rather than where it happens to sit.
+    std::vector<Act>      footerActs;
     // Drag state for swipe-to-scroll: only start scrolling once the finger
     // has moved past a small threshold, so a tap-to-launch/select doesn't
     // register as an accidental scroll from natural finger jitter.
@@ -975,22 +988,23 @@ struct App {
         }
     }
 
-    void drawFooterBar(const std::vector<std::pair<std::string, std::string>>& hints,
+    void drawFooterBar(const std::vector<FooterHint>& hints,
                        const std::string& leftText = "") {
         fill(0, SH - FOOTER_H, SW, FOOTER_H, C_FOOTER);
         int cy = SH - FOOTER_H / 2;
         if (!leftText.empty())
             drawText(fSm, leftText, C_WARN, 30, cy - 9);
         footerHitboxes.assign(hints.size(), SDL_Rect{0, 0, 0, 0});
+        footerActs.assign(hints.size(), Act::None);
         int x = SW - 30;
         size_t idx = hints.size();
         for (auto it = hints.rbegin(); it != hints.rend(); ++it) {
             --idx;
             int right = x;
             int lw = 0, lh = 0;
-            TTF_SizeUTF8(fSm, it->second.c_str(), &lw, &lh);
+            TTF_SizeUTF8(fSm, it->label.c_str(), &lw, &lh);
             x -= lw;
-            drawText(fSm, it->second, C_GRAY, x, cy - lh / 2);
+            drawText(fSm, it->label, C_GRAY, x, cy - lh / 2);
             x -= 8;
             // Is this a controller glyph, or a label like "ZL"?
             //
@@ -1000,28 +1014,29 @@ struct App {
             // those letters do not exist — and the fallback below printed a
             // literal "?". The lead byte answers the question properly, since
             // the glyphs live in the private-use area and ASCII never does.
-            const bool isGlyph = !it->first.empty() &&
-                                 (unsigned char)it->first[0] >= 0x80;
+            const bool isGlyph = !it->glyph.empty() &&
+                                 (unsigned char)it->glyph[0] >= 0x80;
             if (fBtn && isGlyph) {
                 int gw = 0, gh = 0;
-                TTF_SizeUTF8(fBtn, it->first.c_str(), &gw, &gh);
+                TTF_SizeUTF8(fBtn, it->glyph.c_str(), &gw, &gh);
                 x -= gw;
-                drawText(fBtn, it->first, C_WHITE, x, cy - gh / 2);
+                drawText(fBtn, it->glyph, C_WHITE, x, cy - gh / 2);
             } else {
                 // A pill sized to its text, so "ZL" and "L" both fit — Android
                 // renders key hints as labels rather than forcing them into a
                 // circle meant for one character.
                 int gw = 0, gh = 0;
-                TTF_SizeUTF8(fSm, it->first.c_str(), &gw, &gh);
+                TTF_SizeUTF8(fSm, it->glyph.c_str(), &gw, &gh);
                 int pw = (gw > 14 ? gw : 14) + 16;
                 x -= pw;
                 fillRounded(x, cy - 14, pw, 28, M3_FULL, C_SEL);
-                drawText(fSm, it->first, C_ON_PRIMARY_CONTAINER,
+                drawText(fSm, it->glyph, C_ON_PRIMARY_CONTAINER,
                          x + (pw - gw) / 2, cy - gh / 2);
             }
             // Hitbox covers the whole hint (glyph+label), padded a bit
             // vertically/horizontally so small touch inaccuracy still hits it.
             footerHitboxes[idx] = SDL_Rect{x - 10, SH - FOOTER_H, right - x + 20, FOOTER_H};
+            footerActs[idx]     = it->act;
             x -= 34;
         }
     }
@@ -1036,6 +1051,16 @@ struct App {
             if (px >= r.x && px < r.x + r.w && py >= r.y && py < r.y + r.h) return (int)i;
         }
         return -1;
+    }
+
+    // The action bound to the hint under (px,py): Act::None for a tap that
+    // lands outside every hint, or on a display-only one. The tap is matched
+    // by the hint's action, not its position, so adding a hint anywhere (the
+    // paging chip once the list is long) never re-routes existing taps.
+    Act footerAction(int px, int py) const {
+        int i = hitTestFooter(px, py);
+        if (i < 0 || i >= (int)footerActs.size()) return Act::None;
+        return footerActs[i];
     }
 
     // Renders the credits list (contributors, grouped by category/repo)
@@ -1328,14 +1353,19 @@ struct App {
 
         bool docked = appletGetOperationMode() == AppletOperationMode_Console;
         // L/R page through the list; only worth the footer space once there's
-        // more than one screenful to page through.
-        std::vector<std::pair<std::string, std::string>> hints = {
-            {BG(GLYPH_A, "A"), "Launch"}, {BG(GLYPH_B, "B"), "Manage"},
-            {BG(GLYPH_X, "X"), "Reinstall"}, {BG(GLYPH_Y, "Y"), "Rescan / hold: test"},
-                       {"L / ZL", "Theme"},
-            {BG(GLYPH_MINUS, "-"), "About"}, {BG(GLYPH_PLUS, "+"), "Quit"}};
+        // more than one screenful to page through. The hint carries its own
+        // action (see footerAction), so inserting it here can't shift the
+        // other hints' touch targets.
+        std::vector<FooterHint> hints = {
+            {Act::Confirm,   BG(GLYPH_A, "A"), "Launch"},
+            {Act::Manage,    BG(GLYPH_B, "B"), "Manage"},
+            {Act::Reinstall, BG(GLYPH_X, "X"), "Reinstall"},
+            {Act::Rescan,    BG(GLYPH_Y, "Y"), "Rescan / hold: test"},
+            {Act::Theme,     "L / ZL",          "Theme"},
+            {Act::About,     BG(GLYPH_MINUS, "-"), "About"},
+            {Act::Quit,      BG(GLYPH_PLUS, "+"), "Quit"}};
         if ((int)apks.size() > VISIBLE)
-            hints.insert(hints.begin() + 1, {"L/R", "Page"});
+            hints.insert(hints.begin() + 1, {Act::PageDown, "L/R", "Page"});
         drawFooterBar(hints,
                       docked ? "Docked — games need handheld (touch screen)" : "");
 
@@ -1373,7 +1403,8 @@ struct App {
             drawText(fSm, "Replaces the launcher and both Translation Core binaries", C_DIM, 30, y); y += 22;
             drawText(fSm, "on your SD card. Your APKs, saves and settings are untouched.", C_DIM, 30, y);
 
-            drawFooterBar({{BG(GLYPH_A, "A"), "Install"}, {BG(GLYPH_B, "B"), "Not now"}}, "");
+            drawFooterBar({{Act::Confirm, BG(GLYPH_A, "A"), "Install"},
+                           {Act::Back,    BG(GLYPH_B, "B"), "Not now"}}, "");
             SDL_RenderPresent(rdr);
             SDL_Delay(16);
         }
@@ -1435,7 +1466,7 @@ struct App {
                 drawText(fSm, "Nothing was replaced — your install is unchanged.", C_DIM, 30, y); y += 22;
                 drawText(fSm, "Details are in sdmc:/Viridite/launcher_log.txt", C_DIM, 30, y);
             }
-            drawFooterBar({{BG(GLYPH_A, "A"), ok ? "Quit" : "Back"}}, "");
+            drawFooterBar({{Act::Confirm, BG(GLYPH_A, "A"), ok ? "Quit" : "Back"}}, "");
             SDL_RenderPresent(rdr);
             SDL_Delay(16);
         }
@@ -1579,7 +1610,9 @@ struct App {
                 drawText(fSm, sc, C_DIM, SW - 200, SH - FOOTER_H - 34);
             }
 
-            drawFooterBar({{"B", "Back"}, {"X", "Deep test"}, {"\u2191\u2193", "Scroll"}},
+            drawFooterBar({{Act::Back,      "B", "Back"},
+                           {Act::Reinstall, "X", "Deep test"},
+                           {Act::None,      "\u2191\u2193", "Scroll"}},
                           "Saved to selftest.txt");
             SDL_RenderPresent(rdr);
             SDL_Delay(16);
@@ -1639,7 +1672,8 @@ struct App {
                 y += ROW_H;
             }
 
-            drawFooterBar({{BG(GLYPH_B, "B"), "Cancel"}, {BG(GLYPH_A, "A"), "Use this theme"}});
+            drawFooterBar({{Act::Back,    BG(GLYPH_B, "B"), "Cancel"},
+                           {Act::Confirm, BG(GLYPH_A, "A"), "Use this theme"}});
             SDL_RenderPresent(rdr);
             SDL_Delay(16);
         }
@@ -1744,7 +1778,7 @@ struct App {
 
             drawContributors(y + 20);
 
-            drawFooterBar({{BG(GLYPH_B, "B"), "Back to menu"}},
+            drawFooterBar({{Act::Back, BG(GLYPH_B, "B"), "Back to menu"}},
                           people.empty() ? "" : "Scroll credits: D-Pad / stick / touch drag");
 
             SDL_RenderPresent(rdr);
@@ -1876,22 +1910,25 @@ struct App {
                 if (ev.type == SDL_FINGERUP && !touchDragging) {
                     int px = (int)(ev.tfinger.x * SW);
                     int py = (int)(ev.tfinger.y * SH);
-                    int hit = hitTestFooter(px, py);
-                    if (hit == 0) {
-                        if (confirmDelete || confirmCache || confirmData) clearConfirms();
-                        else done = true;
-                    } else if (hit == 1) {
-                        activate(row);
-                    } else {
-                        for (int r = 0; r < ROW_COUNT; r++) {
-                            const SDL_Rect& rr = rowRects[r];
-                            if (rr.w > 0 && px >= rr.x && px < rr.x + rr.w &&
-                                py >= rr.y && py < rr.y + rr.h) {
-                                if (r == row) activate(r);
-                                else { row = r; clearConfirms(); }
-                                break;
+                    switch (footerAction(px, py)) {
+                        case Act::Back:
+                            if (confirmDelete || confirmCache || confirmData) clearConfirms();
+                            else done = true;
+                            break;
+                        case Act::Confirm:
+                            activate(row);
+                            break;
+                        default:
+                            for (int r = 0; r < ROW_COUNT; r++) {
+                                const SDL_Rect& rr = rowRects[r];
+                                if (rr.w > 0 && px >= rr.x && px < rr.x + rr.w &&
+                                    py >= rr.y && py < rr.y + rr.h) {
+                                    if (r == row) activate(r);
+                                    else { row = r; clearConfirms(); }
+                                    break;
+                                }
                             }
-                        }
+                            break;
                     }
                 }
             }
@@ -1950,9 +1987,10 @@ struct App {
                 y += ROW_H;
             }
 
-            drawFooterBar({{BG(GLYPH_B, "B"), confirmDelete ? "Cancel" : "Back"},
-                           {BG(GLYPH_A, "A"), row == ROW_DELETE ? (confirmDelete ? "Confirm delete" : "Delete")
-                                                                 : "Toggle"}});
+            drawFooterBar({{Act::Back,    BG(GLYPH_B, "B"), confirmDelete ? "Cancel" : "Back"},
+                           {Act::Confirm, BG(GLYPH_A, "A"), row == ROW_DELETE
+                               ? (confirmDelete ? "Confirm delete" : "Delete")
+                               : "Toggle"}});
 
             SDL_RenderPresent(rdr);
             SDL_Delay(16);
@@ -2082,7 +2120,8 @@ struct App {
                          tx + (tileW - nw) / 2, tileY + tileH - 34);
             }
 
-            drawFooterBar({{BG(GLYPH_A, "A"), "Play"}, {BG(GLYPH_B, "B"), "Back"}}, "");
+            drawFooterBar({{Act::Confirm, BG(GLYPH_A, "A"), "Play"},
+                           {Act::Back,    BG(GLYPH_B, "B"), "Back"}}, "");
             SDL_RenderPresent(rdr);
             SDL_Delay(16);
         }
@@ -2396,34 +2435,63 @@ int main(int argc, char** argv) {
             if (ev.type == SDL_FINGERUP && !app.touchDragging) {
                 int px = (int)(ev.tfinger.x * SW);
                 int py = (int)(ev.tfinger.y * SH);
-                int hit = app.hitTestFooter(px, py);
-                // Hitbox index matches the order hints were passed to
-                // drawFooterBar() in render(): A/Launch, B/Manage,
-                // X/Reinstall, Y/Rescan, -/About, +/Quit.
-                if (hit == 0) {
-                    if (!app.apks.empty()) app.launchGame(app.apks[app.selected], &handoff);
-                } else if (hit == 1) {
-                    if (!app.apks.empty()) app.showManage();
-                } else if (hit == 2) {
-                    if (!app.apks.empty()) app.launchGame(app.apks[app.selected], &handoff);
-                } else if (hit == 3) {
-                    app.rescan();
-                } else if (hit == 4) {
-                    app.showAbout();
-                } else if (hit == 5) {
-                    quit = true;
-                } else if (!app.apks.empty() && py >= LIST_Y && py < LIST_Y + LIST_H) {
-                    int row = app.scroll + (py - LIST_Y) / ITEM_H;
-                    if (row >= 0 && row < (int)app.apks.size()) {
-                        // First tap selects (so users can see what they're
-                        // about to launch); tapping the already-selected row
-                        // again launches it — mirrors physically pressing A
-                        // after moving the cursor there with the D-pad.
-                        if (row == app.selected)
-                            app.launchGame(app.apks[app.selected], &handoff);
-                        else
-                            app.selected = row;
-                    }
+                // The footer is hit-tested by the action each hint carries
+                // (see footerAction), so the tap always does what the hint
+                // says even when hints get inserted — the "L/R Page" chip,
+                // added once the list outgrows a screen, used to shift every
+                // other touch target by one and launch the wrong thing.
+                switch (app.footerAction(px, py)) {
+                    case Act::Confirm:
+                        if (!app.apks.empty()) app.launchGame(app.apks[app.selected], &handoff);
+                        break;
+                    case Act::Manage:
+                        if (!app.apks.empty()) app.showManage();
+                        break;
+                    case Act::Reinstall:
+                        // Tapping "X Reinstall" does what pressing X does:
+                        // drop the cached extract so the next launch is a
+                        // clean one, then go.
+                        if (!app.apks.empty()) {
+                            const ApkInfo& a = app.apks[app.selected];
+                            std::string pk = a.packageName.empty() ? a.filename : a.packageName;
+                            apkClearCache(pk);
+                            logMsg(("reinstall: cleared cached install for " + pk).c_str());
+                            app.launchGame(a, &handoff, true);
+                        }
+                        break;
+                    case Act::Rescan:
+                        app.rescan();
+                        break;
+                    case Act::About:
+                        app.showAbout();
+                        break;
+                    case Act::Quit:
+                        quit = true;
+                        break;
+                    case Act::Theme:
+                        app.showThemes();
+                        break;
+                    case Act::PageDown:
+                        if (!app.apks.empty()) {
+                            app.selected += VISIBLE;
+                            clampView();
+                        }
+                        break;
+                    default:
+                        if (!app.apks.empty() && py >= LIST_Y && py < LIST_Y + LIST_H) {
+                            int row = app.scroll + (py - LIST_Y) / ITEM_H;
+                            if (row >= 0 && row < (int)app.apks.size()) {
+                                // First tap selects (so users can see what they're
+                                // about to launch); tapping the already-selected row
+                                // again launches it — mirrors physically pressing A
+                                // after moving the cursor there with the D-pad.
+                                if (row == app.selected)
+                                    app.launchGame(app.apks[app.selected], &handoff);
+                                else
+                                    app.selected = row;
+                            }
+                        }
+                        break;
                 }
             }
         }

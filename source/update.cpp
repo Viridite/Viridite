@@ -137,8 +137,11 @@ struct FileSink {
 
 static size_t writeToFile(void* ptr, size_t sz, size_t nm, void* ud) {
     FileSink* s = (FileSink*)ud;
+    // Count what was actually written, not what curl asked for: a short
+    // fwrite (e.g. the SD card filling up) would otherwise over-report and
+    // push the progress percentage past 100.
     size_t n = fwrite(ptr, sz, nm, s->fp) * sz;
-    s->got += (long long)(sz * nm);
+    s->got += (long long)n;
     if (s->cb) {
         int pct = s->total > 0 ? (int)((s->got * 100) / s->total) : -1;
         (*s->cb)("Downloading update", pct);
