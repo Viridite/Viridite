@@ -1507,6 +1507,17 @@ struct App {
 
         logMsg(ok ? "update: installed OK" : ("update: FAILED — " + err).c_str());
 
+        // A failed install must not be retried unattended. Automatic updates
+        // are worth having when they work; an automatic update that cannot
+        // work is a countdown and a failure screen on every single launch,
+        // forever, for a release that is never going to install. Hand the
+        // decision back rather than repeat something already known to fail.
+        if (!ok && autoUpdateEnabled()) {
+            autoUpdateSave(false);
+            logMsg("update: automatic updates turned off after a failed install — "
+                   "Viridite will ask from now on");
+        }
+
         bool done = false;
         while (!done) {
             SDL_Event ev;
