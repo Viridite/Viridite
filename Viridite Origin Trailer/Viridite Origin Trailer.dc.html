@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/broadsheet-db8ad0c6-6250-4c3d-b994-85c5ede16a0e/styles.css">
+<script src="_ds/broadsheet-db8ad0c6-6250-4c3d-b994-85c5ede16a0e/_ds_bundle.js"></script>
+<style>
+  body { margin: 0; background: var(--color-bg); }
+  a { color: var(--color-accent-700); }
+  a:hover { color: var(--color-accent-800); }
+  #vt-scrub:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+</style>
+</helmet>
+
+<div style="min-height:100vh; background:var(--color-bg); color:var(--color-text); font-family:var(--font-body); padding:var(--space-7) var(--space-7) var(--space-8); box-sizing:border-box; display:flex; flex-direction:column; gap:var(--space-5)">
+
+  <div style="display:flex; align-items:baseline; gap:var(--space-5); flex-wrap:wrap">
+    <h1 style="font-family:var(--font-heading); font-weight:700; font-size:34px; line-height:1.05; margin:0; letter-spacing:-0.01em">Viridite — Origin Trailer</h1>
+    <p style="margin:0; font-size:15px; color:var(--color-neutral-700); font-style:italic">Pencil line, boiled on 2s, 1280×720, 30.000 s</p>
+  </div>
+
+  <div style="width:100%; max-width:1280px; aspect-ratio:16/9; background:#FAFDFB; position:relative; overflow:hidden">
+    <svg id="vt-stage" viewBox="0 0 1280 720" width="100%" height="100%" style="display:block">
+      <defs>
+        <pattern id="hShade" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+          <line x1="0" y1="0" x2="0" y2="6" stroke="#04140C" stroke-width="1.5"></line>
+        </pattern>
+        <pattern id="hCross" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+          <line x1="0" y1="0" x2="0" y2="5" stroke="#04140C" stroke-width="1.5"></line>
+          <line x1="0" y1="0" x2="5" y2="0" stroke="#04140C" stroke-width="1.1"></line>
+        </pattern>
+        <pattern id="hWood" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+          <rect width="9" height="9" fill="#B9F6CA"></rect>
+          <line x1="0" y1="0" x2="0" y2="9" stroke="#00A34D" stroke-width="1.8"></line>
+        </pattern>
+        <pattern id="hWoodD" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+          <rect width="6" height="6" fill="#69F0AE"></rect>
+          <line x1="0" y1="0" x2="0" y2="6" stroke="#00753F" stroke-width="2"></line>
+          <line x1="0" y1="0" x2="6" y2="0" stroke="#00753F" stroke-width="1.3"></line>
+        </pattern>
+        <pattern id="hDeep" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+          <rect width="5" height="5" fill="#00A34D"></rect>
+          <line x1="0" y1="0" x2="0" y2="5" stroke="#00753F" stroke-width="2.4"></line>
+          <line x1="0" y1="0" x2="5" y2="0" stroke="#00753F" stroke-width="1.8"></line>
+        </pattern>
+        <pattern id="hInk" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+          <rect width="5" height="5" fill="#00753F"></rect>
+          <line x1="0" y1="0" x2="0" y2="5" stroke="#04140C" stroke-width="2.4"></line>
+          <line x1="0" y1="0" x2="5" y2="0" stroke="#04140C" stroke-width="1.8"></line>
+        </pattern>
+        <pattern id="hGrey" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+          <rect width="8" height="8" fill="#FAFDFB"></rect>
+          <line x1="0" y1="0" x2="0" y2="8" stroke="#9AA3A0" stroke-width="2.2"></line>
+        </pattern>
+        <pattern id="hGreyD" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+          <rect width="5" height="5" fill="#9AA3A0"></rect>
+          <line x1="0" y1="0" x2="0" y2="5" stroke="#6E7674" stroke-width="2.2"></line>
+          <line x1="0" y1="0" x2="5" y2="0" stroke="#6E7674" stroke-width="1.5"></line>
+        </pattern>
+
+        <g id="eye">
+          <ellipse rx="12" ry="17" fill="#FAFDFB" stroke="#04140C" stroke-width="1.8"></ellipse>
+          <ellipse cx="0" cy="1.5" rx="5.8" ry="9.4" fill="#04140C" stroke="none"></ellipse>
+          <circle cx="-2.6" cy="-4.2" r="2.4" fill="#FAFDFB" stroke="none"></circle>
+        </g>
+
+        <g id="gem">
+          <g stroke="#04140C" stroke-width="1.5" stroke-linejoin="round">
+            <polygon class="bo" points="-1.5,-102 -50,-24 -1.5,-16" fill="#00A854"></polygon>
+            <polygon class="bo" points="-50,-24 -26,-56 -1.5,-16" fill="#69F0AE"></polygon>
+            <polygon class="bo" points="-1.5,-16 -50,-24 -33,28" fill="#00E676"></polygon>
+            <polygon class="bo" points="-1.5,-16 -33,28 -1.5,102" fill="#00C853"></polygon>
+            <polygon class="bo" points="-14,64 -33,28 -1.5,102" fill="#00A34D"></polygon>
+            <polygon class="bo" points="1.5,-102 50,-24 1.5,-16" fill="#B9F6CA"></polygon>
+            <polygon class="bo" points="1.5,-102 20,-64 1.5,-16" fill="#69F0AE"></polygon>
+            <polygon class="bo" points="1.5,-16 50,-24 33,28" fill="#00753F"></polygon>
+            <polygon class="bo" points="1.5,-16 33,28 1.5,102" fill="#00A34D"></polygon>
+            <polygon class="bo" points="14,64 33,28 1.5,102" fill="#00753F"></polygon>
+          </g>
+          <g stroke="none" opacity="0.4">
+            <polygon class="bo" points="1.5,-16 50,-24 33,28" fill="url(#hCross)"></polygon>
+            <polygon class="bo" points="14,64 33,28 1.5,102" fill="url(#hCross)"></polygon>
+            <polygon class="bo" points="-14,64 -33,28 -1.5,102" fill="url(#hShade)"></polygon>
+            <polygon class="bo" points="1.5,-16 33,28 1.5,102" fill="url(#hShade)"></polygon>
+          </g>
+          <g fill="none" stroke="#04140C" stroke-linejoin="round" stroke-linecap="round">
+            <polygon class="bo" points="-1.5,-102 -50,-24 -33,28 -1.5,102" stroke-width="3.6"></polygon>
+            <polygon class="bo" points="1.5,-102 50,-24 33,28 1.5,102" stroke-width="3.6"></polygon>
+            <g opacity="0.3" transform="translate(2,1.8)">
+              <polygon class="bo" points="-1.5,-102 -50,-24 -33,28 -1.5,102" stroke-width="2"></polygon>
+              <polygon class="bo" points="1.5,-102 50,-24 33,28 1.5,102" stroke-width="2"></polygon>
+            </g>
+          </g>
+        </g>
+
+        <g id="gemBack">
+          <g stroke="#04140C" stroke-width="1.5" stroke-linejoin="round">
+            <polygon class="bo" points="-1.5,-102 -50,-24 -1.5,-16" fill="#00753F"></polygon>
+            <polygon class="bo" points="-1.5,-16 -50,-24 -33,28" fill="#00A34D"></polygon>
+            <polygon class="bo" points="-1.5,-16 -33,28 -1.5,102" fill="#00753F"></polygon>
+            <polygon class="bo" points="1.5,-102 50,-24 1.5,-16" fill="#00A854"></polygon>
+            <polygon class="bo" points="1.5,-16 50,-24 33,28" fill="#00753F"></polygon>
+            <polygon class="bo" points="1.5,-16 33,28 1.5,102" fill="#00A34D"></polygon>
+          </g>
+          <g stroke="none" opacity="0.35">
+            <polygon class="bo" points="-1.5,-102 -50,-24 -1.5,-16" fill="url(#hShade)"></polygon>
+            <polygon class="bo" points="1.5,-16 50,-24 33,28" fill="url(#hCross)"></polygon>
+          </g>
+          <g fill="none" stroke="#04140C" stroke-linejoin="round" stroke-linecap="round">
+            <polygon class="bo" points="-1.5,-102 -50,-24 -33,28 -1.5,102" stroke-width="3.6"></polygon>
+            <polygon class="bo" points="1.5,-102 50,-24 33,28 1.5,102" stroke-width="3.6"></polygon>
+          </g>
+        </g>
+
+        <clipPath id="clipHalfL"><rect x="-70" y="-116" width="70" height="232"></rect></clipPath>
+        <clipPath id="clipHalfR"><rect x="0" y="-116" width="70" height="232"></rect></clipPath>
+        <clipPath id="clipScreen"><rect x="502" y="212" width="276" height="164"></rect></clipPath>
+      </defs>
+
+      <rect x="0" y="0" width="1280" height="720" fill="#FAFDFB"></rect>
+
+      <g id="cam">
+
+        <!-- VIEW A - high angle from the far side of the desk.
+             The lid's BACK faces us; the keyboard deck runs away behind it and is hidden. -->
+        <g id="viewA">
+          <g stroke="#04140C" stroke-linejoin="round" stroke-linecap="round">
+            <rect class="bo" x="570" y="92" width="140" height="100" rx="6" fill="url(#hWoodD)" stroke-width="2.6"></rect>
+            <g id="mascotA" transform="translate(640,200) scale(1.2)">
+              <use href="#gem"></use>
+              <g id="eyeAL" transform="translate(-19,-44)"><use href="#eye"></use></g>
+              <g id="eyeAR" transform="translate(19,-44)"><use href="#eye"></use></g>
+            </g>
+            <polygon class="bo" points="230,286 1050,286 1146,576 134,576" fill="url(#hWood)" stroke-width="3"></polygon>
+            <polygon class="bo" points="512,268 768,268 790,296 490,296" fill="url(#hWoodD)" stroke-width="2"></polygon>
+            <polygon class="bo" points="492,294 788,294 812,486 468,486" fill="url(#hInk)" stroke-width="2.8"></polygon>
+            <g transform="translate(640,390) scale(0.3)" stroke-width="7"><use href="#gem"></use></g>
+            <path id="armAL" d="M 604 178 L 546 250 L 502 306" fill="none" stroke="#00753F" stroke-width="11"></path>
+            <path id="armAR" d="M 676 178 L 734 250 L 778 306" fill="none" stroke="#00753F" stroke-width="11"></path>
+            <rect class="bo" x="900" y="452" width="132" height="58" rx="7" fill="url(#hInk)" stroke-width="2.4"></rect>
+            <rect class="bo" x="900" y="452" width="26" height="58" rx="7" fill="#00E676" stroke-width="2"></rect>
+            <rect class="bo" x="1006" y="452" width="26" height="58" rx="7" fill="#00A854" stroke-width="2"></rect>
+            <polygon class="bo" points="298,494 320,494 326,500 326,514 298,514" fill="#B9F6CA" stroke-width="2"></polygon>
+          </g>
+        </g>
+
+        <!-- VIEW B - over the mascot's shoulder.
+             Keyboard deck nearest camera at the bottom, hinge, then the screen standing at the back. -->
+        <g id="viewB" opacity="0">
+          <g id="propsB" stroke="#04140C" stroke-linejoin="round" stroke-linecap="round">
+            <polygon class="bo" points="170,368 1110,368 1164,470 116,470" fill="url(#hWood)" stroke-width="3"></polygon>
+            <rect class="bo" x="116" y="468" width="1048" height="26" fill="url(#hWoodD)" stroke-width="2.6"></rect>
+            <rect class="bo" x="196" y="492" width="26" height="202" fill="url(#hWoodD)" stroke-width="2.4"></rect>
+            <rect class="bo" x="1056" y="492" width="26" height="202" fill="url(#hWoodD)" stroke-width="2.4"></rect>
+
+            <polygon class="bo" points="496,192 784,192 792,392 488,392" fill="url(#hInk)" stroke-width="2.8"></polygon>
+            <rect class="bo" x="502" y="212" width="276" height="164" fill="#FAFDFB" stroke-width="2.2"></rect>
+            <g clip-path="url(#clipScreen)" stroke-width="1.6">
+              <rect x="502" y="212" width="276" height="21" fill="#B9F6CA"></rect>
+              <g transform="translate(516,222) scale(0.076)" stroke-width="15"><use href="#gem"></use></g>
+              <text x="530" y="223" dominant-baseline="central" font-family="var(--font-heading)" font-size="10.5" font-weight="700" letter-spacing="0.12em" fill="#00753F" stroke="none">VIRIDITE</text>
+              <text x="768" y="223" text-anchor="end" dominant-baseline="central" font-family="var(--font-heading)" font-size="8" fill="#00A34D" stroke="none">games · about</text>
+              <g transform="translate(562,302) scale(0.28)" stroke-width="6"><use href="#gem"></use></g>
+              <rect x="616" y="250" width="92" height="12" fill="#00753F" stroke="none"></rect>
+              <rect x="616" y="273" width="132" height="8" fill="#B9F6CA"></rect>
+              <rect x="616" y="289" width="110" height="8" fill="#B9F6CA"></rect>
+              <rect x="616" y="305" width="122" height="8" fill="#B9F6CA"></rect>
+              <rect class="bo" x="616" y="327" width="100" height="25" rx="3" fill="#00E676" stroke-width="1.8"></rect>
+              <text x="666" y="339" text-anchor="middle" dominant-baseline="central" font-family="var(--font-heading)" font-size="10.5" font-weight="700" letter-spacing="0.08em" fill="#04140C" stroke="none">DOWNLOAD</text>
+            </g>
+            <polygon class="bo" points="488,390 792,390 852,452 428,452" fill="url(#hDeep)" stroke-width="2.8"></polygon>
+            <polygon class="bo" points="504,398 776,398 818,432 462,432" fill="url(#hWoodD)" stroke-width="1.8"></polygon>
+            <line x1="516" y1="406" x2="806" y2="406" stroke-width="1.4"></line>
+            <line x1="510" y1="414" x2="812" y2="414" stroke-width="1.4"></line>
+            <line x1="504" y1="423" x2="818" y2="423" stroke-width="1.4"></line>
+            <polygon class="bo" points="602,436 700,436 712,448 590,448" fill="url(#hWood)" stroke-width="1.6"></polygon>
+            <rect class="bo" x="446" y="452" width="30" height="9" rx="2" fill="url(#hInk)" stroke-width="1.6"></rect>
+            <rect class="bo" x="488" y="452" width="24" height="9" rx="2" fill="url(#hInk)" stroke-width="1.6"></rect>
+          </g>
+
+          <g id="switch">
+            <g id="switchF" transform="translate(950,412)" stroke="#04140C" stroke-linejoin="round">
+              <rect class="bo" x="-70" y="-30" width="140" height="60" rx="7" fill="url(#hInk)" stroke-width="2.6"></rect>
+              <rect class="bo" x="-70" y="-30" width="27" height="60" rx="7" fill="#00E676" stroke-width="2.2"></rect>
+              <rect class="bo" x="43" y="-30" width="27" height="60" rx="7" fill="#00A854" stroke-width="2.2"></rect>
+              <rect class="bo" x="-38" y="-22" width="76" height="44" rx="3" fill="url(#hDeep)" stroke-width="2"></rect>
+            </g>
+            <g id="switchB" opacity="0" transform="translate(950,412)" stroke="#04140C" stroke-linejoin="round">
+              <rect class="bo" x="-70" y="-30" width="140" height="60" rx="7" fill="url(#hDeep)" stroke-width="2.6"></rect>
+              <rect class="bo" x="-28" y="-16" width="56" height="32" rx="3" fill="url(#hInk)" stroke-width="2"></rect>
+              <line x1="-52" y1="-16" x2="-52" y2="16" stroke-width="2.4"></line>
+              <line x1="52" y1="-16" x2="52" y2="16" stroke-width="2.4"></line>
+            </g>
+          </g>
+
+          <g fill="none" stroke="#04140C" stroke-linecap="round">
+            <path id="cableg" d="M 880 412 Q 740 486 596 448" stroke-width="3" opacity="0.3" transform="translate(2,2)"></path>
+            <path id="cable" d="M 880 412 Q 740 486 596 448" stroke-width="6"></path>
+          </g>
+
+          <g id="cardB" transform="translate(392,450)" stroke="#04140C" stroke-linejoin="round">
+            <polygon class="bo" points="-13,-9 8,-9 13,-4 13,9 -13,9" fill="#B9F6CA" stroke-width="2"></polygon>
+            <rect class="bo" x="-9" y="-5" width="8" height="7" fill="url(#hDeep)" stroke-width="1.2"></rect>
+          </g>
+
+          <g id="rig">
+            <g id="limbs">
+              <g fill="none" stroke="#00753F" stroke-linecap="round" stroke-linejoin="round">
+                <path id="legLg" d="M 280 470 L 250 540 L 250 618" stroke-width="6" opacity="0.32" transform="translate(2,2)"></path>
+                <path id="legL" d="M 280 470 L 250 540 L 250 618" stroke-width="11"></path>
+                <path id="legRg" d="M 320 470 L 350 540 L 350 618" stroke-width="6" opacity="0.32" transform="translate(2,2)"></path>
+                <path id="legR" d="M 320 470 L 350 540 L 350 618" stroke-width="11"></path>
+              </g>
+            </g>
+            <g id="mascot" transform="translate(300,368) scale(1.5)">
+              <g id="mBack"><use href="#gemBack"></use></g>
+              <g id="mFront" opacity="0">
+                <use href="#gem"></use>
+                <g id="face">
+                  <g id="eyeL" transform="translate(-19,-44)"><use href="#eye"></use></g>
+                  <g id="eyeR" transform="translate(19,-44)"><use href="#eye"></use></g>
+                  <g id="brows" opacity="0" stroke="#04140C" stroke-width="5.5" stroke-linecap="round">
+                    <line x1="-32" y1="-70" x2="-8" y2="-59"></line>
+                    <line x1="32" y1="-70" x2="8" y2="-59"></line>
+                  </g>
+                </g>
+              </g>
+            </g>
+            <g id="arms" fill="none" stroke="#00753F" stroke-linecap="round" stroke-linejoin="round">
+              <path id="armLg" d="M 255 338 L 300 410 L 360 446" stroke-width="6" opacity="0.32" transform="translate(2,2)"></path>
+              <path id="armL" d="M 255 338 L 300 410 L 360 446" stroke-width="11"></path>
+              <path id="armRg" d="M 345 338 L 400 410 L 460 446" stroke-width="6" opacity="0.32" transform="translate(2,2)"></path>
+              <path id="armR" d="M 345 338 L 400 410 L 460 446" stroke-width="11"></path>
+            </g>
+          </g>
+
+          <g id="chair" stroke="#04140C" stroke-linejoin="round" stroke-linecap="round">
+            <rect class="bo" x="228" y="392" width="146" height="176" rx="10" fill="url(#hWoodD)" stroke-width="3"></rect>
+            <rect class="bo" x="292" y="568" width="20" height="70" fill="url(#hWoodD)" stroke-width="2.4"></rect>
+            <path class="bo" d="M 238 646 L 366 646" stroke-width="6"></path>
+          </g>
+        </g>
+
+        <g id="tornado" opacity="0" fill="none" stroke-linecap="round">
+          <ellipse id="tor0" rx="10" ry="3" stroke="#00753F" stroke-width="3"></ellipse>
+          <ellipse id="tor1" rx="10" ry="3" stroke="#00A34D" stroke-width="3"></ellipse>
+          <ellipse id="tor2" rx="10" ry="3" stroke="#00A854" stroke-width="3.2"></ellipse>
+          <ellipse id="tor3" rx="10" ry="3" stroke="#00C853" stroke-width="2.8"></ellipse>
+          <ellipse id="tor4" rx="10" ry="3" stroke="#00E676" stroke-width="3.4"></ellipse>
+          <ellipse id="tor5" rx="10" ry="3" stroke="#00A854" stroke-width="2.6"></ellipse>
+          <ellipse id="tor6" rx="10" ry="3" stroke="#69F0AE" stroke-width="3.2"></ellipse>
+          <ellipse id="tor7" rx="10" ry="3" stroke="#00C853" stroke-width="2.8"></ellipse>
+          <ellipse id="tor8" rx="10" ry="3" stroke="#00E676" stroke-width="3.4"></ellipse>
+          <ellipse id="tor9" rx="10" ry="3" stroke="#69F0AE" stroke-width="2.6"></ellipse>
+          <ellipse id="tor10" rx="10" ry="3" stroke="#00A854" stroke-width="3.2"></ellipse>
+          <ellipse id="tor11" rx="10" ry="3" stroke="#B9F6CA" stroke-width="3"></ellipse>
+          <ellipse id="tor12" rx="10" ry="3" stroke="#69F0AE" stroke-width="3.4"></ellipse>
+          <ellipse id="tor13" rx="10" ry="3" stroke="#00E676" stroke-width="2.8"></ellipse>
+          <ellipse id="tor14" rx="10" ry="3" stroke="#B9F6CA" stroke-width="3.2"></ellipse>
+          <ellipse id="tor15" rx="10" ry="3" stroke="#69F0AE" stroke-width="2.6"></ellipse>
+        </g>
+
+        <g id="droid" opacity="0">
+          <g id="droidF" transform="translate(640,110) scale(0.4)" stroke="#04140C" stroke-linejoin="round" stroke-linecap="round">
+            <line x1="-15" y1="-46" x2="-25" y2="-70" stroke-width="5"></line>
+            <line x1="15" y1="-46" x2="25" y2="-70" stroke-width="5"></line>
+            <path class="bo" d="M -26 -22 A 26 26 0 0 1 26 -22 Z" fill="url(#hGrey)" stroke-width="2.6"></path>
+            <circle cx="-11" cy="-32" r="4.5" fill="#04140C" stroke="none"></circle>
+            <circle cx="11" cy="-32" r="4.5" fill="#04140C" stroke="none"></circle>
+            <rect class="bo" x="-26" y="-16" width="52" height="50" rx="9" fill="url(#hGrey)" stroke-width="2.6"></rect>
+            <rect class="bo" x="-38" y="-14" width="9" height="34" rx="4.5" fill="url(#hGreyD)" stroke-width="2"></rect>
+            <rect class="bo" x="29" y="-14" width="9" height="34" rx="4.5" fill="url(#hGreyD)" stroke-width="2"></rect>
+            <rect class="bo" x="-17" y="34" width="10" height="18" rx="5" fill="url(#hGreyD)" stroke-width="2"></rect>
+            <rect class="bo" x="7" y="34" width="10" height="18" rx="5" fill="url(#hGreyD)" stroke-width="2"></rect>
+          </g>
+          <g id="droidB" opacity="0" transform="translate(640,110) scale(0.4)" stroke="#04140C" stroke-linejoin="round" stroke-linecap="round">
+            <line x1="-15" y1="-46" x2="-25" y2="-70" stroke-width="5"></line>
+            <line x1="15" y1="-46" x2="25" y2="-70" stroke-width="5"></line>
+            <path class="bo" d="M -26 -22 A 26 26 0 0 1 26 -22 Z" fill="url(#hGreyD)" stroke-width="2.6"></path>
+            <rect class="bo" x="-26" y="-16" width="52" height="50" rx="9" fill="url(#hGreyD)" stroke-width="2.6"></rect>
+            <rect class="bo" x="-13" y="-6" width="26" height="30" rx="3" fill="url(#hGrey)" stroke-width="2"></rect>
+            <rect class="bo" x="-38" y="-14" width="9" height="34" rx="4.5" fill="url(#hGrey)" stroke-width="2"></rect>
+            <rect class="bo" x="29" y="-14" width="9" height="34" rx="4.5" fill="url(#hGrey)" stroke-width="2"></rect>
+            <rect class="bo" x="-17" y="34" width="10" height="18" rx="5" fill="url(#hGrey)" stroke-width="2"></rect>
+            <rect class="bo" x="7" y="34" width="10" height="18" rx="5" fill="url(#hGrey)" stroke-width="2"></rect>
+          </g>
+        </g>
+
+        <g id="fused" opacity="0">
+          <g id="fusedF" transform="translate(640,130) scale(1.35)"><use href="#gem"></use></g>
+          <g id="fusedB" opacity="0" transform="translate(640,130) scale(1.35)"><use href="#gemBack"></use></g>
+        </g>
+
+        <g id="gemL" opacity="0" transform="translate(640,300) scale(1.35)"><g clip-path="url(#clipHalfL)"><use href="#gem"></use></g></g>
+        <g id="gemR" opacity="0" transform="translate(640,300) scale(1.35)"><g clip-path="url(#clipHalfR)"><use href="#gem"></use></g></g>
+
+        <g id="shards" opacity="0" stroke="#04140C" stroke-width="1.8" stroke-linejoin="round">
+          <g id="sh0"><polygon points="0,0 36,-8 44,0 36,8" fill="#69F0AE"></polygon></g>
+          <g id="sh1"><polygon points="0,0 36,-8 44,0 36,8" fill="#B9F6CA"></polygon></g>
+          <g id="sh2"><polygon points="0,0 36,-8 44,0 36,8" fill="#00E676"></polygon></g>
+          <g id="sh3"><polygon points="0,0 36,-8 44,0 36,8" fill="#00A854"></polygon></g>
+          <g id="sh4"><polygon points="0,0 36,-8 44,0 36,8" fill="#69F0AE"></polygon></g>
+          <g id="sh5"><polygon points="0,0 36,-8 44,0 36,8" fill="#B9F6CA"></polygon></g>
+          <g id="sh6"><polygon points="0,0 36,-8 44,0 36,8" fill="#00E676"></polygon></g>
+          <g id="sh7"><polygon points="0,0 36,-8 44,0 36,8" fill="#00753F"></polygon></g>
+          <g id="sh8"><polygon points="0,0 36,-8 44,0 36,8" fill="#69F0AE"></polygon></g>
+          <g id="sh9"><polygon points="0,0 36,-8 44,0 36,8" fill="#B9F6CA"></polygon></g>
+          <g id="sh10"><polygon points="0,0 36,-8 44,0 36,8" fill="#00E676"></polygon></g>
+          <g id="sh11"><polygon points="0,0 36,-8 44,0 36,8" fill="#00A34D"></polygon></g>
+          <g id="sh12"><polygon points="0,0 36,-8 44,0 36,8" fill="#69F0AE"></polygon></g>
+          <g id="sh13"><polygon points="0,0 36,-8 44,0 36,8" fill="#00753F"></polygon></g>
+        </g>
+
+        <g id="gameIcon" opacity="0" transform="translate(640,300) scale(0.01)" stroke="#04140C" stroke-linejoin="round">
+          <rect class="bo" x="-70" y="-70" width="140" height="140" rx="26" fill="#00C853" stroke-width="3"></rect>
+          <polygon class="bo" points="-70,26 -14,-24 34,18 70,-10 70,70 -70,70" fill="#00753F" stroke-width="2.6"></polygon>
+          <circle class="bo" cx="-14" cy="34" r="24" fill="#04140C" stroke-width="2.6"></circle>
+          <circle cx="-14" cy="34" r="8" fill="#69F0AE" stroke-width="2"></circle>
+          <circle class="bo" cx="44" cy="42" r="14" fill="#04140C" stroke-width="2.4"></circle>
+          <text x="0" y="100" text-anchor="middle" font-family="var(--font-heading)" font-size="15" letter-spacing="0.18em" fill="#00A34D" stroke="none">GAME ICON</text>
+        </g>
+      </g>
+
+      <g id="lockText" opacity="0">
+        <text id="wordmark" x="470" y="360" dominant-baseline="central" font-family="var(--font-heading)" font-size="84" font-weight="700" letter-spacing="12" fill="#00753F">VIRIDITE</text>
+        <rect id="wmrule" x="470" y="422" width="0" height="7" fill="#00E676" stroke="#04140C" stroke-width="1.4"></rect>
+      </g>
+    </svg>
+  </div>
+
+  <div style="display:flex; align-items:center; gap:var(--space-5); flex-wrap:wrap; max-width:1280px">
+    <button class="btn btn-primary" onClick="{{ onPlay }}" style="min-width:132px">Replay</button>
+    <button class="btn btn-secondary" onClick="{{ onMute }}" id="vt-sound" style="min-width:132px">Sound on</button>
+    <div style="display:flex; align-items:baseline; gap:10px; font-family:var(--font-heading); font-variant-numeric:tabular-nums">
+      <span id="vt-time" style="font-size:32px; font-weight:700; letter-spacing:-0.01em">0.000</span>
+      <span style="font-size:15px; color:var(--color-neutral-700)">s</span>
+      <span id="vt-ms" style="font-size:15px; color:var(--color-neutral-600); margin-left:8px">0 ms</span>
+    </div>
+  </div>
+
+  <div id="vt-scrub" tabindex="0" onPointerDown="{{ onScrub }}" style="position:relative; max-width:1280px; height:52px; cursor:pointer; touch-action:none">
+    <div style="position:absolute; left:0; right:0; top:14px; height:6px; background:var(--color-neutral-300)"></div>
+    <div id="vt-fill" style="position:absolute; left:0; top:14px; height:6px; width:0%; background:var(--color-accent)"></div>
+    <div id="vt-head" style="position:absolute; left:0; top:8px; width:3px; height:18px; background:var(--color-text)"></div>
+    <div id="vt-ticks" style="position:absolute; left:0; right:0; top:0; bottom:0"></div>
+  </div>
+
+  <p style="margin:0; max-width:68ch; font-size:15px; line-height:1.55; color:var(--color-neutral-700); text-wrap:pretty">Beats: 0.0 high angle on the mascot · 3.5 pan around behind · 7.0 plug in the console, then the card · 10.0 mascot leaves · 11.6 the site and its download · 14.0 tornado and pull-back · 18.5 droid · 21.5 spiral and slam · 25.1 drop, split, shards · 26.6 the fake icon forms · 27.4 the mascot runs in, throws it out and takes its place as the mark — limbs and eyes drop away for the final lockup.</p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1400,&quot;height&quot;:980},&quot;wordmarkColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#00753F&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#00753F&quot;,&quot;#04140C&quot;,&quot;#00A34D&quot;,&quot;#00E676&quot;],&quot;section&quot;:&quot;Lockup&quot;},&quot;soundEnabled&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Playback&quot;},&quot;showBeatMarks&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Playback&quot;}}">
+const DUR = 30000;
+const BEATS = [0, 3.5, 7, 10, 14, 18.5, 21.5, 25.1, 27.4, 30];
+
+function bez(x1, y1, x2, y2) {
+  const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx;
+  const cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+  const fx = t => ((ax * t + bx) * t + cx) * t;
+  const dfx = t => (3 * ax * t + 2 * bx) * t + cx;
+  const fy = t => ((ay * t + by) * t + cy) * t;
+  return x => {
+    if (x <= 0) return 0; if (x >= 1) return 1;
+    let t = x;
+    for (let i = 0; i < 8; i++) {
+      const e = fx(t) - x; if (Math.abs(e) < 1e-6) break;
+      const d = dfx(t); if (Math.abs(d) < 1e-7) break;
+      t -= e / d;
+    }
+    return fy(t < 0 ? 0 : t > 1 ? 1 : t);
+  };
+}
+const E = bez(0.2, 0, 0, 1);
+const clamp01 = v => v < 0 ? 0 : v > 1 ? 1 : v;
+const seg = (s, a, b) => clamp01((s - a) / (b - a));
+const lerp = (a, b, u) => a + (b - a) * u;
+function hsh(i) {
+  const x = Math.sin(i * 127.1 + 311.7) * 43758.5453;
+  return (x - Math.floor(x)) * 2 - 1;
+}
+function track(kfs, s) {
+  if (s <= kfs[0][0]) return kfs[0].slice(1);
+  for (let i = 0; i < kfs.length - 1; i++) {
+    const a = kfs[i], b = kfs[i + 1];
+    if (s < b[0]) {
+      const u = E((s - a[0]) / (b[0] - a[0]));
+      const out = [];
+      for (let j = 1; j < a.length; j++) out.push(a[j] + (b[j] - a[j]) * u);
+      return out;
+    }
+  }
+  return kfs[kfs.length - 1].slice(1);
+}
+function ik(sx, sy, hx, hy, l1, l2, sign) {
+  let dx = hx - sx, dy = hy - sy;
+  let d = Math.hypot(dx, dy);
+  if (d < 1e-4) return [sx + l1, sy, sx + l1 + l2, sy];
+  const dm = Math.min(d, l1 + l2 - 0.01);
+  const k = dm / d;
+  dx *= k; dy *= k; d = dm;
+  const ex = sx + dx, ey = sy + dy;
+  const a = (l1 * l1 - l2 * l2 + d * d) / (2 * d);
+  const h = Math.sqrt(Math.max(0, l1 * l1 - a * a));
+  const mx = sx + dx * a / d, my = sy + dy * a / d;
+  return [mx + sign * h * (-dy / d), my + sign * h * (dx / d), ex, ey];
+}
+function pencil(pts, fr, seed, amp) {
+  let d = '';
+  for (let i = 0; i < pts.length; i += 2) {
+    d += (i === 0 ? 'M ' : 'L ') +
+      (pts[i] + hsh(fr * 7.3 + seed + i) * amp).toFixed(1) + ' ' +
+      (pts[i + 1] + hsh(fr * 5.1 + seed + i + 41) * amp).toFixed(1) + ' ';
+  }
+  return d;
+}
+
+const SCR_CX = 640, SCR_CY = 294, SCR_S = 4.3;
+const BLINKS = [1.3, 2.9, 4.6, 8.2, 9.3, 27.9, 29.3];
+const PATS = ['hShade', 'hCross', 'hWood', 'hWoodD', 'hDeep', 'hInk', 'hGrey', 'hGreyD'];
+
+const HAND_R = [
+  [7.0, 470, 434], [7.3, 500, 384], [7.9, 596, 448], [8.1, 596, 448],
+  [8.7, 470, 448], [8.95, 486, 424], [9.9, 470, 434], [10.0, 470, 434]
+];
+const HAND_L = [
+  [7.0, 366, 438], [8.5, 366, 438], [8.7, 348, 396], [9.05, 394, 452], [9.2, 394, 452],
+  [9.55, 462, 450], [9.68, 456, 448], [9.8, 396, 382], [10.0, 366, 438]
+];
+const LEAN = [
+  [7.0, 0, 0, 0], [7.3, -3, -6, -6], [7.9, 9, 54, 34], [8.1, 9, 54, 34], [8.7, 3, 18, 12],
+  [8.95, 0, 0, 0], [9.05, -4, -8, 22], [9.2, -4, -8, 24], [9.55, 3, 26, 14],
+  [9.7, 0, 0, 0], [9.82, 0, 0, -16], [10.0, 0, 0, 0]
+];
+const CABLE_END = [
+  [7.0, 596, 448], [7.9, 596, 448], [8.1, 596, 448], [8.7, 470, 456],
+  [21.6, 470, 456], [21.78, 700, 380], [22.1, 886, 404], [24.0, 886, 404]
+];
+
+class Component extends DCLogic {
+  componentDidMount() {
+    this.t = 0;
+    this.t0 = performance.now();
+    this.playing = true;
+    this.muted = this.props.soundEnabled === false;
+    this.audioArmed = false;
+    this.q = {};
+    this.lastBoil = -1;
+    this.lastPatS = -1;
+    const stage = document.getElementById('vt-stage');
+    this.boilEls = stage ? Array.prototype.slice.call(stage.querySelectorAll('.bo')) : [];
+    this.boilEls.forEach((el, i) => {
+      el.__seed = i * 13.7;
+      const p = el.getAttribute('points');
+      el.__base = p ? p.trim().split(/[\s,]+/).map(Number) : null;
+      el.__sw = parseFloat(el.getAttribute('stroke-width') || '2');
+    });
+    this.buildTicks();
+    const wm = this.g('wordmark');
+    if (wm) wm.setAttribute('fill', this.props.wordmarkColor || '#00753F');
+    this.syncSoundLabel();
+    this.loop = this.loop.bind(this);
+    this.raf = requestAnimationFrame(this.loop);
+    this.draw(0);
+  }
+  componentWillUnmount() { cancelAnimationFrame(this.raf); this.stopAudio(); }
+  g(id) { if (!this.q[id]) this.q[id] = document.getElementById(id); return this.q[id]; }
+
+  buildTicks() {
+    const host = document.getElementById('vt-ticks');
+    if (!host) return;
+    host.innerHTML = '';
+    BEATS.forEach(b => {
+      const x = (b / 30) * 100;
+      const m = document.createElement('div');
+      m.style.cssText = 'position:absolute;top:6px;width:1px;height:22px;background:var(--color-neutral-500);left:' + x + '%';
+      host.appendChild(m);
+      if (this.props.showBeatMarks !== false) {
+        const l = document.createElement('div');
+        l.textContent = b + 's';
+        l.style.cssText = 'position:absolute;top:32px;font-family:var(--font-heading);font-size:12px;color:var(--color-neutral-600);transform:translateX(' + (b === 0 ? '0' : b === 30 ? '-100%' : '-50%') + ');left:' + x + '%';
+        host.appendChild(l);
+      }
+    });
+  }
+
+  loop() {
+    const now = performance.now();
+    if (this.playing) {
+      this.t = now - this.t0;
+      if (this.t >= DUR) { this.t = DUR; this.playing = false; }
+    }
+    this.draw(this.t);
+    this.raf = requestAnimationFrame(this.loop);
+  }
+
+  seek(ms) {
+    this.t = Math.max(0, Math.min(DUR, ms));
+    this.t0 = performance.now() - this.t;
+    this.playing = this.t < DUR;
+    this.stopAudio();
+    if (this.audioArmed && !this.muted && this.playing) this.startAudio(this.t / 1000);
+  }
+
+  renderVals() {
+    return {
+      onPlay: () => { this.audioArmed = true; this.seek(0); },
+      onMute: () => {
+        this.muted = !this.muted;
+        this.audioArmed = true;
+        this.syncSoundLabel();
+        this.stopAudio();
+        if (!this.muted && this.playing) this.startAudio(this.t / 1000);
+      },
+      onScrub: e => {
+        const box = document.getElementById('vt-scrub');
+        if (!box) return;
+        const r = box.getBoundingClientRect();
+        const move = ev => this.seek(((ev.clientX - r.left) / r.width) * DUR);
+        move(e);
+        const up = () => { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); };
+        window.addEventListener('pointermove', move);
+        window.addEventListener('pointerup', up);
+      }
+    };
+  }
+
+  syncSoundLabel() {
+    const b = document.getElementById('vt-sound');
+    if (b) b.textContent = this.muted ? 'Sound off' : 'Sound on';
+  }
+
+  score() {
+    const N = [];
+    const add = (t, f, d, type, g) => N.push({ t, f, d, type, g });
+    const sc = [0, 3, 5, 7, 10];
+    const hz = n => 220 * Math.pow(2, n / 12);
+    add(0, 55, 1.4, 'sine', 0.26); add(0, 330, 0.6, 'triangle', 0.08);
+    for (let i = 0; i < 7; i++) add(i * 0.5, hz(sc[i % 5]) / 2, 0.32, 'triangle', 0.05);
+    add(3.5, 110, 1.0, 'sine', 0.2); add(3.5, 440, 0.7, 'triangle', 0.1);
+    for (let i = 0; i < 7; i++) add(3.7 + i * 0.5, hz(sc[(i + 1) % 5]), 0.3, 'sine', 0.05);
+    add(7, 147, 0.9, 'sine', 0.2); add(7, 587, 0.5, 'triangle', 0.09);
+    for (let i = 0; i < 6; i++) add(7.4 + i * 0.45, hz(sc[(i + 3) % 5]), 0.26, 'sine', 0.05);
+    add(10, 98, 1.2, 'sine', 0.22); add(10, 392, 0.5, 'square', 0.05);
+    add(11.6, 262, 0.9, 'triangle', 0.08);
+    add(14, 82.5, 1.5, 'sine', 0.24); add(14, 165, 1.0, 'sawtooth', 0.09);
+    for (let i = 0; i < 18; i++) add(14 + i * 0.25, hz(sc[i % 5] + (i > 8 ? 12 : 0)), 0.16, 'sawtooth', 0.045);
+    add(18.5, 147, 1.0, 'sine', 0.2); add(18.5, 587, 0.6, 'square', 0.07);
+    for (let i = 0; i < 8; i++) add(18.8 + i * 0.42, hz(sc[4 - i % 5] + 12), 0.2, 'square', 0.04);
+    add(21.5, 98, 1.0, 'sine', 0.24);
+    for (let i = 0; i < 16; i++) { const u = i / 15; add(21.5 + Math.pow(u, 1.6) * 2.9, hz(sc[i % 5] + 12), 0.12, 'triangle', 0.05 + u * 0.05); }
+    add(24.5, 49, 1.6, 'sine', 0.34); add(24.5, 196, 0.8, 'triangle', 0.12); add(24.5, 293, 0.8, 'sine', 0.08);
+    add(25.6, 41, 1.8, 'sine', 0.36); add(25.6, 262, 0.9, 'triangle', 0.11);
+    for (let i = 0; i < 6; i++) add(25.65 + i * 0.06, hz(sc[i % 5] + 24), 0.5, 'sine', 0.05);
+    add(26.6, 131, 1.2, 'triangle', 0.1); add(26.6, 196, 1.2, 'sine', 0.08);
+    for (let i = 0; i < 8; i++) add(27.4 + i * 0.11, hz(sc[i % 5]), 0.1, 'square', 0.05);
+    add(29.05, 73.4, 0.9, 'sine', 0.3); add(29.05, 147, 0.5, 'square', 0.1);
+    add(29.4, 65.4, 2.2, 'sine', 0.3); add(29.4, 131, 2.0, 'triangle', 0.16);
+    add(29.4, 196, 2.0, 'sine', 0.11); add(29.4, 392, 1.8, 'sine', 0.07); add(29.4, 523, 1.6, 'triangle', 0.05);
+    return N;
+  }
+
+  startAudio(from) {
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      if (!this.ctx) {
+        this.ctx = new AC();
+        this.music = this.ctx.createGain();
+        this.music.gain.value = 0.9;
+        this.music.connect(this.ctx.destination);
+        // Reserved, intentionally silent bus for a later human VO / foley pass.
+        this.vo = this.ctx.createGain();
+        this.vo.gain.value = 1;
+        this.vo.connect(this.ctx.destination);
+      }
+      if (this.ctx.state === 'suspended') this.ctx.resume();
+      const base = this.ctx.currentTime + 0.06 - from;
+      this.nodes = [];
+      this.score().forEach(n => {
+        if (n.t < from) return;
+        const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+        o.type = n.type; o.frequency.setValueAtTime(n.f, base + n.t);
+        if (n.f < 70) o.frequency.exponentialRampToValueAtTime(n.f * 0.55, base + n.t + n.d * 0.8);
+        g.gain.setValueAtTime(0.0001, base + n.t);
+        g.gain.linearRampToValueAtTime(n.g, base + n.t + 0.012);
+        g.gain.exponentialRampToValueAtTime(0.0001, base + n.t + n.d);
+        o.connect(g); g.connect(this.music);
+        o.start(base + n.t); o.stop(base + n.t + n.d + 0.05);
+        this.nodes.push(o);
+      });
+    } catch (e) { /* audio unavailable */ }
+  }
+  stopAudio() {
+    if (this.nodes) { this.nodes.forEach(o => { try { o.stop(); } catch (e) {} }); this.nodes = null; }
+  }
+
+  boil(fr) {
+    if (fr === this.lastBoil) return;
+    this.lastBoil = fr;
+    this.boilEls.forEach(el => {
+      if (el.__base) {
+        const b = el.__base;
+        let out = '';
+        for (let i = 0; i < b.length; i += 2) {
+          out += (b[i] + hsh(fr * 3.7 + el.__seed + i) * 1.1).toFixed(1) + ',' +
+                 (b[i + 1] + hsh(fr * 2.3 + el.__seed + i + 17) * 1.1).toFixed(1) + ' ';
+        }
+        el.setAttribute('points', out.trim());
+      }
+      el.setAttribute('stroke-width', (el.__sw * (1 + hsh(fr * 1.9 + el.__seed) * 0.14)).toFixed(2));
+    });
+  }
+
+  draw(ms) {
+    const s = ms / 1000;
+    const fr = Math.floor(s * 12);
+    const G = id => this.g(id);
+    const set = (id, a, v) => { const e = G(id); if (e) e.setAttribute(a, v); };
+    const T = (id, x, y, sc, rot) => set(id, 'transform',
+      'translate(' + x.toFixed(2) + ',' + y.toFixed(2) + ')' +
+      (rot ? ' rotate(' + rot.toFixed(2) + ')' : '') +
+      (sc !== undefined ? ' scale(' + sc.toFixed(4) + ')' : ''));
+    const flip = (fId, bId, x, y, sc, cosv, rot) => {
+      const sx = (cosv >= 0 ? 1 : -1) * Math.max(0.08, Math.abs(cosv));
+      const tf = 'translate(' + x.toFixed(2) + ',' + y.toFixed(2) + ') rotate(' + (rot || 0).toFixed(2) +
+        ') scale(' + (sc * sx).toFixed(4) + ',' + sc.toFixed(4) + ')';
+      set(fId, 'transform', tf); set(bId, 'transform', tf);
+      set(fId, 'opacity', cosv >= 0 ? 1 : 0);
+      set(bId, 'opacity', cosv < 0 ? 1 : 0);
+    };
+
+    this.boil(fr);
+    const bx = hsh(fr * 1.3) * 0.8, by = hsh(fr * 2.7 + 9) * 0.8, br = hsh(fr * 0.9 + 3) * 0.35;
+
+    const tEl = document.getElementById('vt-time'), mEl = document.getElementById('vt-ms');
+    if (tEl) tEl.textContent = (ms / 1000).toFixed(3);
+    if (mEl) mEl.textContent = Math.round(ms) + ' ms';
+    const ff = document.getElementById('vt-fill'); if (ff) ff.style.width = (ms / DUR * 100) + '%';
+    const hh = document.getElementById('vt-head'); if (hh) hh.style.left = 'calc(' + (ms / DUR * 100) + '% - 1px)';
+
+    // ---- camera ----
+    let camS = 1, camX = 640, camY = 360;
+    if (s < 3.5) { camS = lerp(1.06, 1.14, E(seg(s, 0, 3.5))); camY = 330; }
+    else if (s < 7) { const u = E(seg(s, 3.5, 7)); camS = lerp(1.14, 1, u); camY = lerp(330, 360, u); }
+    else if (s < 11.6) { camS = 1; }
+    else if (s < 14) { const u = E(seg(s, 11.6, 14)); camS = lerp(1, SCR_S, u); camX = lerp(640, SCR_CX, u); camY = lerp(360, SCR_CY, u); }
+    else if (s < 18.5) { const u = E(seg(s, 14, 18.5)); camS = lerp(SCR_S, 1, u); camX = lerp(SCR_CX, 640, u); camY = lerp(SCR_CY, 360, u); }
+    else if (s < 25.0) {
+      const u = s < 24.5 ? E(seg(s, 21.5, 24.5)) : 1 - E(seg(s, 24.5, 25.0));
+      camS = lerp(1, 1.1, u); camX = lerp(640, 700, u); camY = lerp(360, 320, u);
+    }
+    set('cam', 'transform', 'translate(640,360) scale(' + camS.toFixed(4) + ') translate(' + (-camX).toFixed(2) + ',' + (-camY).toFixed(2) + ')');
+
+    // pencil hatch holds a constant on-paper density
+    const pq = Math.round(camS * 20) / 20;
+    if (pq !== this.lastPatS) {
+      this.lastPatS = pq;
+      const pt = 'rotate(38) scale(' + (1 / pq).toFixed(4) + ')';
+      PATS.forEach(id => { const p = G(id); if (p) p.setAttribute('patternTransform', pt); });
+    }
+
+    // ---- the pan: view A swings out, view B swings in ----
+    const panU = E(seg(s, 3.5, 7));
+    set('viewA', 'opacity', (s < 3.5 ? 1 : 1 - clamp01((s - 4.1) / 1.9)).toFixed(3));
+    T('viewA', 300 * panU + bx, 70 * panU + by, 1 + 0.06 * panU);
+    set('viewB', 'opacity', s > 3.9 ? clamp01((s - 4.1) / 1.9).toFixed(3) : 0);
+    T('viewB', lerp(-320, 0, panU) + bx, lerp(40, 0, panU) + by, lerp(0.92, 1, panU));
+
+    T('mascotA', 640, 200 + Math.sin(s * 2.1) * 3, 1.2 * (1 + 0.008 * Math.sin(s * 2.1)), br);
+    let kA = 1;
+    for (const b of BLINKS) if (s > b && s < b + 0.22) { const u = (s - b) / 0.22; kA = Math.max(0.06, u < 0.5 ? 1 - u / 0.5 : (u - 0.5) / 0.5); }
+    set('eyeAL', 'transform', 'translate(-19,-44) scale(1,' + kA.toFixed(3) + ')');
+    set('eyeAR', 'transform', 'translate(19,-44) scale(1,' + kA.toFixed(3) + ')');
+    set('armAL', 'd', pencil([600, 210, 540, 292, 512, 352], fr, 11, 1.6));
+    set('armAR', 'd', pencil([680, 210, 744, 292, 772, 352], fr, 23, 1.6));
+
+    // ---- mascot rig (view B) ----
+    let mx = 300, my = 368, mSc = 1.5, mRot = 0, facing = 0, rigOp = 1;
+    let handL = null, handR = null, footL = 250, footR = 350, footLy = 618, footRy = 618, walking = false;
+    const bob = Math.sin(s * 2.1) * 3;
+
+    if (s < 10) {
+      const [rot, ldx, ldy] = track(LEAN, s);
+      mx = 300 + ldx; my = 368 + ldy + bob; mRot = rot;
+      handL = track(HAND_L, s); handR = track(HAND_R, s);
+    } else if (s < 11.9) {
+      const rise = E(seg(s, 10.0, 10.5));
+      const walk = E(seg(s, 10.6, 11.9));
+      mx = lerp(300, -220, walk); my = lerp(368, 320, rise) + bob;
+      facing = seg(s, 10.35, 10.75);
+      walking = s > 10.6;
+      const ph = (s - 10.6) * 8.2;
+      footL = mx - 46 + Math.sin(ph) * 54; footR = mx + 46 + Math.sin(ph + Math.PI) * 54;
+      footLy = 618 - Math.max(0, Math.sin(ph)) * 26; footRy = 618 - Math.max(0, Math.sin(ph + Math.PI)) * 26;
+      handL = [mx - 100 + Math.sin(ph + Math.PI) * 34, 460];
+      handR = [mx + 100 + Math.sin(ph) * 34, 460];
+      rigOp = 1 - seg(s, 11.5, 11.9);
+    } else if (s < 27.4) {
+      rigOp = 0;
+    } else {
+      facing = 1;
+      const runU = clamp01((s - 27.4) / 1.0);
+      mx = s < 28.4 ? lerp(-170, 470, runU) : 470;
+      if (s >= 28.4 && s < 28.6) mx = lerp(470, 486, E(seg(s, 28.4, 28.6)));
+      my = 430;
+      if (s < 28.4) {
+        walking = true;
+        const ph = (s - 27.4) * 15;
+        my = 430 - Math.abs(Math.sin(ph)) * 12;
+        mRot = -11;
+        footL = mx - 40 + Math.sin(ph) * 74; footR = mx + 40 + Math.sin(ph + Math.PI) * 74;
+        footLy = 638 - Math.max(0, Math.sin(ph)) * 40; footRy = 638 - Math.max(0, Math.sin(ph + Math.PI)) * 40;
+        handL = [mx - 96 + Math.sin(ph + Math.PI) * 56, 442];
+        handR = [mx + 96 + Math.sin(ph) * 56, 442];
+      } else if (s < 29.15) {
+        mRot = lerp(-11, 0, E(seg(s, 28.4, 28.6)));
+        footL = mx - 44; footR = mx + 44; footLy = 638; footRy = 638;
+        handL = [mx - 78, 460];
+        if (s < 28.62) handR = [640, 300];
+        else if (s < 28.9) { const u = E(seg(s, 28.62, 28.9)); handR = [lerp(640, mx - 30, u), lerp(300, 236, u)]; mRot = lerp(0, 14, u); }
+        else { const u = E(seg(s, 28.9, 29.05)); handR = [lerp(mx - 30, mx + 190, u), lerp(236, 290, u)]; mRot = lerp(14, -12, u); }
+        if (s >= 29.05) { const u = E(seg(s, 29.05, 29.15)); handR = [lerp(mx + 190, mx + 96, u), lerp(290, 420, u)]; mRot = lerp(-12, 0, u); }
+      } else {
+        const u = E(seg(s, 29.15, 29.7));
+        mx = lerp(486, 370, u); my = lerp(430, 360, u); mSc = lerp(1.5, 1.35, u); mRot = 0;
+        footL = mx - 30; footR = mx + 30;
+        footLy = lerp(638, 500, u); footRy = footLy;
+        handL = [mx - 92, lerp(460, 410, u)];
+        handR = [mx + 92, lerp(420, 410, u)];
+      }
+    }
+
+    set('rig', 'opacity', rigOp.toFixed(3));
+    T('mascot', mx + bx, my + by, mSc * (1 + 0.008 * Math.sin(s * 2.1)), mRot + br);
+    set('mBack', 'opacity', facing >= 0.5 ? 0 : 1);
+    set('mFront', 'opacity', facing >= 0.5 ? 1 : 0);
+    set('brows', 'opacity', (s > 27.4 && s < 29.3) ? 1 : 0);
+
+    // the mark sheds its limbs and eyes as it settles into the lockup
+    const shed = s < 29.2 ? 1 : 1 - E(seg(s, 29.2, 29.6));
+    set('limbs', 'opacity', shed.toFixed(3));
+    set('arms', 'opacity', shed.toFixed(3));
+    set('face', 'opacity', shed.toFixed(3));
+
+    let k = 1;
+    for (const b of BLINKS) if (s > b && s < b + 0.22) { const u = (s - b) / 0.22; k = Math.max(0.06, u < 0.5 ? 1 - u / 0.5 : (u - 0.5) / 0.5); }
+    set('eyeL', 'transform', 'translate(-19,-44) scale(1,' + k.toFixed(3) + ')');
+    set('eyeR', 'transform', 'translate(19,-44) scale(1,' + k.toFixed(3) + ')');
+
+    const rad = (mRot + br) * Math.PI / 180, cs = Math.cos(rad), sn = Math.sin(rad);
+    const xf = (px, py) => [mx + bx + mSc * (px * cs - py * sn), my + by + mSc * (px * sn + py * cs)];
+    const [shLx, shLy] = xf(-30, -20), [shRx, shRy] = xf(30, -20);
+    const [hipLx, hipLy] = xf(-18, 88), [hipRx, hipRy] = xf(18, 88);
+    if (!handL) handL = [shLx - 70, shLy + 130];
+    if (!handR) handR = [shRx + 70, shRy + 130];
+    const sway = walking ? 0 : Math.sin(s * 1.7) * 3;
+    const aL = ik(shLx, shLy, handL[0] + sway, handL[1], 100, 100, 1);
+    const aR = ik(shRx, shRy, handR[0] - sway, handR[1], 100, 100, -1);
+    const dL = pencil([shLx, shLy, aL[0], aL[1], aL[2], aL[3]], fr, 101, 1.6);
+    const dR = pencil([shRx, shRy, aR[0], aR[1], aR[2], aR[3]], fr, 211, 1.6);
+    set('armL', 'd', dL); set('armLg', 'd', dL);
+    set('armR', 'd', dR); set('armRg', 'd', dR);
+    const lL = ik(hipLx, hipLy, footL, footLy, 88, 88, 1);
+    const lR = ik(hipRx, hipRy, footR, footRy, 88, 88, -1);
+    const dLL = pencil([hipLx, hipLy, lL[0], lL[1], lL[2], lL[3]], fr, 307, 1.5);
+    const dRR = pencil([hipRx, hipRy, lR[0], lR[1], lR[2], lR[3]], fr, 409, 1.5);
+    set('legL', 'd', dLL); set('legLg', 'd', dLL);
+    set('legR', 'd', dRR); set('legRg', 'd', dRR);
+
+    // ---- cable ----
+    const [cex, cey] = track(CABLE_END, s);
+    const cd = 'M 880 412 Q ' + ((880 + cex) / 2 + hsh(fr + 5) * 2).toFixed(1) + ' ' + ((412 + cey) / 2 + 46).toFixed(1) + ' ' + cex.toFixed(1) + ' ' + cey.toFixed(1);
+    set('cable', 'd', cd); set('cableg', 'd', cd);
+    const cabOp = s > 22.2 ? 0 : 1;
+    set('cable', 'opacity', cabOp);
+    set('cableg', 'opacity', cabOp * 0.3);
+
+    // ---- microSD ----
+    let cX = 392, cY = 450, cOp = 1, cR = 0;
+    if (s >= 9.2 && s < 9.68) {
+      const u = E(seg(s, 9.2, 9.55));
+      cX = lerp(392, 462, u); cY = lerp(450, 450, u); cR = lerp(0, -14, u);
+      if (s > 9.55) { const v = seg(s, 9.55, 9.68); cX = lerp(462, 456, v); cR = -14; }
+    } else if (s >= 9.68) {
+      const v = clamp01((s - 9.68) / 0.16);
+      cX = lerp(456, 448, v); cY = 450; cR = -14; cOp = 1 - v;
+    }
+    T('cardB', cX, cY, 1, cR);
+    set('cardB', 'opacity', cOp);
+
+    const propOp = s < 28.9 ? 1 : 1 - E(seg(s, 28.9, 29.45));
+    set('propsB', 'opacity', propOp.toFixed(3));
+    set('chair', 'opacity', propOp.toFixed(3));
+
+    // ---- tornado ----
+    const tOn = s >= 14 && s < 20.2;
+    set('tornado', 'opacity', !tOn ? 0 : (s < 19.4 ? 1 : (1 - seg(s, 19.4, 20.2))).toFixed(3));
+    if (tOn) {
+      const grow = E(seg(s, 14, 17.2));
+      const spin = (s - 14) * 260;
+      for (let i = 0; i < 16; i++) {
+        const rx = (11 + i * 8.4) * grow;
+        const cy = SCR_CY + 70 - i * 30 * grow;
+        const cx = SCR_CX + Math.sin(spin * 0.0175 + i * 0.55) * i * 1.9 * grow + hsh(fr * 2 + i) * 1.6;
+        const e = G('tor' + i);
+        if (!e) continue;
+        e.setAttribute('rx', Math.max(0.5, rx).toFixed(2));
+        e.setAttribute('ry', Math.max(0.2, rx * 0.27).toFixed(2));
+        e.setAttribute('transform', 'translate(' + cx.toFixed(2) + ',' + cy.toFixed(2) + ') rotate(' + ((spin + i * 24) % 360).toFixed(2) + ')');
+      }
+    }
+
+    // ---- droid + switch ----
+    let swX = 950, swY = 412, swSc = 1, swRot = 0, swCos = 1;
+    let drX = SCR_CX, drY = 110, drSc = 0.4, drOp = 0, drRot = 0, drCos = 1;
+    if (s >= 18.5 && s < 21.5) {
+      const u = E(seg(s, 18.5, 21.0));
+      drX = lerp(SCR_CX, 950, u);
+      drY = lerp(110, 344, u);
+      drSc = lerp(0.4, 0.95, u);
+      drOp = Math.min(1, seg(s, 18.5, 19.0));
+      drCos = Math.cos(u * Math.PI * 4);
+      drRot = Math.sin(u * Math.PI * 2) * 12;
+      if (s >= 21.0) { const v = 1 - E(seg(s, 21.0, 21.3)); drY = 344 + 7 * v; drCos = 1; drRot = 0; }
+    } else if (s >= 21.5 && s < 24.5) {
+      drOp = 1;
+      const u = seg(s, 21.5, 24.5);
+      const th = 2 * Math.PI * 3.4 * Math.pow(u, 1.9);
+      const r = s < 24.25 ? lerp(140, 30, E(seg(s, 21.5, 24.25))) : 30 * (1 - Math.pow(seg(s, 24.25, 24.5), 2.5));
+      const ccx = lerp(900, 640, E(u)), ccy = lerp(400, 130, E(u));
+      drX = ccx + Math.cos(th) * r; drY = ccy + Math.sin(th) * r * 0.82;
+      swX = ccx - Math.cos(th) * r; swY = ccy - Math.sin(th) * r * 0.82;
+      drCos = Math.cos(th * 1.1); swCos = Math.cos(th * 0.9 + Math.PI);
+      drRot = th * 57.3 * 0.25; swRot = -th * 57.3 * 0.25;
+      drSc = lerp(0.95, 0.82, u); swSc = lerp(1, 0.85, u);
+    } else if (s >= 24.5) { drOp = 0; }
+    set('droid', 'opacity', drOp.toFixed(3));
+    flip('droidF', 'droidB', drX + bx, drY + by, drSc, drCos, drRot);
+    set('switch', 'opacity', s < 24.5 ? 1 : 0);
+    flip('switchF', 'switchB', swX + bx, swY + by, swSc, swCos, swRot);
+
+    // ---- fused gem ----
+    const fusedTurn = s >= 24.52 && s < 25.1;
+    if (fusedTurn) flip('fusedF', 'fusedB', 640 + bx, 130 + by, 1.35, Math.cos(E(seg(s, 24.52, 25.1)) * Math.PI * 2), br);
+    set('fused', 'opacity', fusedTurn ? 1 : 0);
+
+    let gy = 130, gap = 0;
+    if (s >= 25.1) gy = lerp(130, 300, Math.pow(clamp01((s - 25.1) / 0.5), 2.1));
+    if (s >= 25.6) gap = 32 * E(seg(s, 25.6, 26.35));
+    const halvesOn = s >= 25.1 && s < 28.1;
+    const gemOp = halvesOn ? (s < 27.4 ? 1 : 1 - E(seg(s, 27.4, 28.0))) : 0;
+    set('gemL', 'opacity', gemOp.toFixed(3));
+    set('gemR', 'opacity', gemOp.toFixed(3));
+    T('gemL', 640 - gap / 2 + bx, gy + by, 1.35);
+    T('gemR', 640 + gap / 2 + bx, gy + by, 1.35);
+
+    // ---- shards ----
+    const shOn = s >= 25.6 && s < 27.2;
+    set('shards', 'opacity', shOn ? 1 : 0);
+    if (shOn) {
+      const u = seg(s, 25.6, 26.7);
+      const fade = 1 - seg(s, 26.2, 27.1);
+      for (let i = 0; i < 14; i++) {
+        const ang = -170 + i * (340 / 13);
+        const dist = lerp(6, 130 + (i % 5) * 34, E(u));
+        const sc = lerp(0.4, 1.05, E(Math.min(1, u * 1.6)));
+        const e = G('sh' + i);
+        if (!e) continue;
+        e.setAttribute('transform', 'translate(' + (640 + Math.cos(ang * Math.PI / 180) * dist).toFixed(2) + ',' +
+          (300 + Math.sin(ang * Math.PI / 180) * dist * 0.85).toFixed(2) + ') rotate(' + (ang + hsh(fr + i) * 3).toFixed(2) +
+          ') scale(' + sc.toFixed(3) + ')');
+        e.setAttribute('opacity', fade.toFixed(3));
+      }
+    }
+
+    // ---- the fake icon ----
+    let icOp = 0, icX = 640, icY = 300, icSc = 0.01, icRot = 0;
+    if (s >= 26.6 && s < 29.3) {
+      icOp = 1;
+      icSc = lerp(0.05, 0.95, E(seg(s, 26.6, 27.5)));
+      if (s >= 28.62 && s < 29.05) {
+        icX = aR[2]; icY = aR[3];
+        icRot = lerp(0, -40, E(seg(s, 28.62, 29.05)));
+      } else if (s >= 29.05) {
+        const u = (s - 29.05) / 0.25;
+        icX = aR[2] + u * 1500; icY = aR[3] - u * 240 + u * u * 200;
+        icRot = -40 - u * 520;
+        icOp = 1 - clamp01((s - 29.2) / 0.1);
+      }
+    }
+    set('gameIcon', 'opacity', icOp.toFixed(3));
+    T('gameIcon', icX + bx, icY + by, icSc, icRot);
+
+    // ---- wordmark ----
+    set('lockText', 'opacity', (s >= 29.3 ? Math.min(1, seg(s, 29.3, 29.6)) : 0).toFixed(3));
+    const lkS = lerp(0.72, 1, E(seg(s, 29.3, 29.75)));
+    set('lockText', 'transform', 'translate(' + (760 * (1 - lkS)).toFixed(2) + ',' + (360 * (1 - lkS)).toFixed(2) + ') scale(' + lkS.toFixed(4) + ')');
+    set('wmrule', 'width', (516 * E(seg(s, 29.6, 29.95))).toFixed(1));
+  }
+}
+</script>
+</body>
+</html>

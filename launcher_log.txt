@@ -1,14 +1,17 @@
 Viridite launcher starting
-  BFTTF open failed: Couldn't load font file
-  font: romfs DejaVuSans
-  BFTTF open failed: Couldn't load font file
-  font: romfs DejaVuSans
-  BFTTF open failed: Couldn't load font file
-  font: romfs DejaVuSans
-  NintendoExt font unavailable — text hints
-contributors.txt loaded: 4 categories
+env: Viridite (launcher) v0.2.112-testing-alpha (build 0.1.2)
+update check: started (waiting for network, up to 10s)
+  font: Roboto Flex (Google Fonts)
+  font: Roboto Flex (Google Fonts)
+  font: Roboto Flex (Google Fonts)
+  font: NintendoExt glyphs
+contributors.txt loaded: 1 people
+groundwork.txt loaded: 20 entries
 init complete
+forwarders: skipped — the last attempt did not finish. Delete sdmc:/Viridite/.forwarder_sync to try again.
+update check: no internet connection — skipped the update check
 envHasNextLoad: true
-launchGame: chain-loading to sdmc:/switch/AndroidHorizonNX/AHNX-Translation-Core-x64.nro argv="sdmc:/switch/AndroidHorizonNX/AHNX-Translation-Core-x64.nro com.orbital.brainiton"
+launch input mode: pro (handheld) — detected 1 pad(s)
+launchGame: chain-loading to sdmc:/switch/Viridite/Viridite-Translation-Core-x64.nro argv="sdmc:/switch/Viridite/Viridite-Translation-Core-x64.nro com.fingersoft.hillclimb"
 envSetNextLoad OK — returning from main() to hand off
 cleanup done

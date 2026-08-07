@@ -1,11 +1,12 @@
 Viridite starting
-  BFTTF open failed: Couldn't load font file
-  font: romfs DejaVuSans
-  BFTTF open failed: Couldn't load font file
-  font: romfs DejaVuSans
-  BFTTF open failed: Couldn't load font file
-  font: romfs DejaVuSans
-  NintendoExt font unavailable — text hints
+  font: system BFTTF
+  font: system BFTTF
+  font: system BFTTF
+  font: NintendoExt glyphs
 init complete
-core-x64: argc=2 argv[0]=sdmc:/switch/AndroidHorizonNX/AHNX-Translation-Core-x64.nro argv[1]=com.orbital.brainiton
-sdmc:/AndroidHorizonNX/screenshots/ui_loading.png
+core-x64: argc=2 argv[0]=sdmc:/switch/Viridite/Viridite-Translation-Core-x64.nro argv[1]=com.fingersoft.hillclimb
+core-x64: launch target -> sdmc:/Viridite/apks/Hill+Climb+Racing_1.67.0_APKPure.apk
+  font: system BFTTF
+  font: system BFTTF
+  font: system BFTTF
+sdmc:/Viridite/screenshots/ui_loading.png

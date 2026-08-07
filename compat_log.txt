@@ -1,1346 +1,2344 @@
-[  0s] env: Viridite (Translation Core) build 0.1.128
+[  0s] monitor: watchpoint on av->top (0xf745f92b0) rc=0xe801
+[  0s] env: Viridite (Translation Core) v0.2.112-testing-alpha (build 0.1.128)
 [  0s] env: Switch firmware 22.1.0
 [  0s] env: Atmosphere 1.11.2
-[  0s] launchApk: sdmc:/AndroidHorizonNX/apks/com.orbital.brainiton_1.6.18-216_minAPI16(arm64-v8a)(nodpi)_apkmirror.com.apk  pkg=com.orbital.brainiton  installed=1
-[  0s] launchApk: apk sha256=8b2c6307dd5f31a6d335a4ff29a2334f6e55898fbce8d3975e2216dd07a72786
+[  0s] launchApk: sdmc:/Viridite/apks/Hill+Climb+Racing_1.67.0_APKPure.apk  pkg=com.fingersoft.hillclimb  installed=1
+[  0s] launchApk: apk sha256=542c25e56ac80768d4a9f74bd77ef463deb4517623df886ee0602315107b150a
 [  0s] launchApk: fps cap=none (default)
 [  0s] Already installed — skipping extraction
-[  0s] findAllSos: libmain.so (6144 bytes)
-[  0s] findAllSos: libgpg.so (3718560 bytes)
-[  0s] findAllSos: libunity.so (13585456 bytes)
-[  0s] findAllSos: libil2cpp.so (46554008 bytes)
-[  0s] engine: Unity IL2CPP detected (libunity.so/libil2cpp.so) — routing to AHNX-Unity-Runtime bringup
-[  0s] Setting up JNI environment...
-[  0s] Loading: libmain.so
-[  0s] ELF: loading sdmc:/AndroidHorizonNX/games/com.orbital.brainiton/lib/libmain.so
-[  0s] SplitMap: reserved code_va=0xefa73e000 data_va=0xefa74e000 write_va=0x646a8e000 csz=0x10000 dsz=0x1000
-[  0s] ELF: stage alloc OK
-[  0s] ELF: stage zeroed
-[  0s] ELF: seg[0] vaddr=0x0 filesz=0xd20 memsz=0xd20 flags=0x5
-[  0s] ELF: seg[1] vaddr=0x10d20 filesz=0x2b0 memsz=0x2b8 flags=0x6
-[  0s] ELF: segs copied to stage
-[  0s] ELF: stage[0]=0x464c457f after segs copy
-[  0s] ELF: dyn: strtab=0x488/223 symtab=0x290 syment=24 rela=0x5d8/168 jmprel=0x680/240 init_arr=0x10d20/8
-[  0s] ELF: so built sym_count=21 strsz=223
-[  0s] ELF: registered
-[  0s] ELF: rela 7 entries
-[  0s] RELA: all 7 entries processed
-[  0s] ELF: rela done
-[  0s] ELF: jmprel 10 entries
-[  0s] JMPREL: all 10 entries processed
-[  0s] ELF: jmprel done
-[  0s] ELF: strtab/symtab copied
-[  0s] GOT[0] @va+0xf48 = 0xfdcbc3390
-[  0s] GOT[1] @va+0xf50 = 0xfdd2c0c00
-[  0s] GOT[2] @va+0xf58 = 0xfdcbc33a0
-[  0s] GOT[3] @va+0xf60 = 0xfdcbc5bb0
-[  0s] GOT[4] @va+0xf68 = 0xfdcbc58e0
-[  0s] SplitMap: code_va=0xefa73e000 Rx data_va=0xefa74e000 Rw OK
-[  0s] ELF: JIT copy done, stage freed
-[  0s] ELF: 1 constructors deferred (arr=0xefa74ed20)
-[  0s] ELF: loaded OK code_exec=0xefa73e000 data_exec=0xefa74e000 sym_count=21 unresolved=0
-[  0s] Loading: libgpg.so
-[  0s] ELF: loading sdmc:/AndroidHorizonNX/games/com.orbital.brainiton/lib/libgpg.so
-[  0s] SplitMap: reserved code_va=0xeaaf01000 data_va=0xeab275000 write_va=0x1fbde1000 csz=0x374000 dsz=0x30000
-[  0s] ELF: stage alloc OK
-[  0s] ELF: stage zeroed
-[  0s] ELF: seg[0] vaddr=0x0 filesz=0x363b7c memsz=0x363b7c flags=0x5
-[  0s] ELF: seg[1] vaddr=0x3740c8 filesz=0x27430 memsz=0x2f888 flags=0x6
-[  0s] ELF: segs copied to stage
-[  0s] ELF: stage[0]=0x464c457f after segs copy
-[  0s] ELF: dyn: strtab=0x4b760/826798 symtab=0x11c50 syment=24 rela=0x11a240/348216 jmprel=0x16f278/73584 init_arr=0x3740c8/88
-[  0s] ELF: so built sym_count=9846 strsz=826798
-[  0s] ELF: registered
-[  0s] ELF: rela 14509 entries
-[  0s] RELA: all 14509 entries processed
-[  0s] ELF: rela done
-[  0s] ELF: jmprel 3066 entries
-[  0s] JMPREL: all 3066 entries processed
-[  0s] ELF: jmprel done
-[  0s] ELF: strtab/symtab copied
-[  0s] GOT[0] @va+0x1ed20 = 0xeab0f18cc
-[  0s] GOT[1] @va+0x1ed28 = 0xeab13973c
-[  0s] GOT[2] @va+0x1ed30 = 0xeab11c0bc
-[  0s] GOT[3] @va+0x1ed38 = 0xeab0d50a0
-[  0s] GOT[4] @va+0x1ed40 = 0xeab0b940c
-[  0s] SplitMap: code_va=0xeaaf01000 Rx data_va=0xeab275000 Rw OK
-[  0s] ELF: JIT copy done, stage freed
-[  0s] ELF: 11 constructors deferred (arr=0xeab2750c8)
-[  0s] ELF: loaded OK code_exec=0xeaaf01000 data_exec=0xeab275000 sym_count=9846 unresolved=0
-[  0s] Loading: libunity.so
-[  0s] ELF: loading sdmc:/AndroidHorizonNX/games/com.orbital.brainiton/lib/libunity.so
-[  0s] SplitMap: reserved code_va=0xca2503000 data_va=0xca31bc000 write_va=0xc4cab000 csz=0xcb9000 dsz=0x190000
-[  0s] ELF: stage alloc OK
-[  0s] ELF: stage zeroed
-[  0s] ELF: seg[0] vaddr=0x0 filesz=0xca90bc memsz=0xca90bc flags=0x5
-[  0s] ELF: seg[1] vaddr=0xcb90c0 filesz=0x4b230 memsz=0x18f678 flags=0x6
-[  0s] ELF: segs copied to stage
-[  0s] ELF: stage[0]=0x464c457f after segs copy
-[  0s] ELF: dyn: strtab=0x2620/3342 symtab=0xaa8 syment=24 rela=0x3610/566568 jmprel=0x8db38/6840 init_arr=0xcb90c0/3856
-[  0s] ELF: so built sym_count=293 strsz=3342
-[  0s] ELF: registered
-[  0s] ELF: rela 23607 entries
-[  0s] RELA: all 23607 entries processed
-[  0s] ELF: rela done
-[  0s] ELF: jmprel 285 entries
-[  0s] ELF: unresolved: inflateInit2_
-[  0s] ELF: unresolved: inflate
-[  0s] ELF: unresolved: inflateEnd
-[  0s] JMPREL: all 285 entries processed
-[  0s] ELF: jmprel done
-[  0s] ELF: strtab/symtab copied
-[  0s] GOT[0] @va+0x35870 = 0xfdcbc2330
-[  0s] GOT[1] @va+0x35878 = 0xfdd2b81e0
-[  0s] GOT[2] @va+0x35880 = 0xfdd2c3780
-[  0s] GOT[3] @va+0x35888 = 0xfdcbc5c60
-[  0s] GOT[4] @va+0x35890 = 0xfdd2a9be0
-[  0s] SplitMap: code_va=0xca2503000 Rx data_va=0xca31bc000 Rw OK
-[  0s] ELF: JIT copy done, stage freed
-[  0s] ELF: 482 constructors deferred (arr=0xca31bc0c0)
-[  0s] ELF: loaded OK code_exec=0xca2503000 data_exec=0xca31bc000 sym_count=293 unresolved=3
-[  0s] Loading: libil2cpp.so
-[  1s] ELF: loading sdmc:/AndroidHorizonNX/games/com.orbital.brainiton/lib/libil2cpp.so
-[  1s] SplitMap: reserved code_va=0x58c2f9000 data_va=0x58ebc0000 write_va=0xb4a6e1000 csz=0x28c7000 dsz=0x61c000
-[  1s] ELF: stage alloc OK
-[  1s] ELF: stage zeroed
-[  1s] ELF: seg[0] vaddr=0x0 filesz=0x28b6e24 memsz=0x28b6e24 flags=0x5
-[  1s] ELF: seg[1] vaddr=0x28c7000 filesz=0x3ae308 memsz=0x61bcc0 flags=0x6
-[  1s] ELF: segs copied to stage
-[  1s] ELF: stage[0]=0x464c457f after segs copy
-[  1s] ELF: dyn: strtab=0x56c8/18567 symtab=0x1510 syment=24 rela=0xa530/8858328 jmprel=0x87d008/8592 init_arr=0x28c7000/352
-[  1s] ELF: so built sym_count=701 strsz=18567
-[  1s] ELF: registered
-[  1s] ELF: rela 369097 entries
-[  1s] RELA: all 369097 entries processed
-[  1s] ELF: rela done
-[  1s] ELF: jmprel 358 entries
-[  1s] JMPREL: all 358 entries processed
-[  1s] ELF: jmprel done
-[  1s] ELF: strtab/symtab copied
-[  1s] GOT[0] @va+0x2aa9d0 = 0xfdd2b81e0
-[  1s] GOT[1] @va+0x2aa9d8 = 0xfdd2c3780
-[  1s] GOT[2] @va+0x2aa9e0 = 0x58ccbd4bc
-[  1s] GOT[3] @va+0x2aa9e8 = 0xfdcbc4ec0
-[  1s] GOT[4] @va+0x2aa9f0 = 0x58ccb7544
-[  1s] SplitMap: code_va=0x58c2f9000 Rx data_va=0x58ebc0000 Rw OK
-[  1s] ELF: JIT copy done, stage freed
-[  1s] ELF: 44 constructors deferred (arr=0x58ebc0000)
-[  1s] ELF: loaded OK code_exec=0x58c2f9000 data_exec=0x58ebc0000 sym_count=701 unresolved=3
-[  1s] ELF: 3 total unresolved symbols across all libs
-[  1s] AndroidTLS: old TPIDR_EL0=0x0 — installing fake TLS @0xfdd560760
-[  1s] CTORS: starting 538 constructors — this may take 30-120s, please wait
-[  1s] ELF: libmain.so: running 1 constructors
-[  1s] ELF: init_arr[0]=0x0
-[  1s] ELF: libmain.so: ctors done ok=0 failed=0 skipped=1
-[  1s] ELF: libgpg.so: running 11 constructors
-[  1s] ELF: init_arr[0]=0xeab08e1b0
-[  1s] ELF: init_arr[1]=0xeab08e1e4
-[  1s] ELF: init_arr[2]=0xeab08e22c
-[  1s] ELF: init_arr[3]=0xeab08f5e4
-[  1s] ELF: ctor[1/11] @0xeab08e1b0
-[  1s] ELF: ctor[1/11] OK
-[  1s] ELF: ctor[2/11] @0xeab08e1e4
-[  1s] ELF: ctor[2/11] OK
-[  1s] ELF: ctor[3/11] @0xeab08e22c
-[  1s] ELF: ctor[3/11] OK
-[  1s] ELF: ctor[4/11] @0xeab08f5e4
-[  1s] ELF: ctor[4/11] OK
-[  1s] ELF: ctor[5/11] @0xeab08f614
-[  1s] ELF: ctor[5/11] OK
-[  1s] ELF: ctor[6/11] @0xeab08f80c
-[  1s] ELF: ctor[6/11] OK
-[  1s] ELF: ctor[7/11] @0xeab08f830
-[  1s] ELF: ctor[7/11] OK
-[  1s] ELF: ctor[8/11] @0xeab08f870
-[  1s] ELF: ctor[8/11] OK
-[  1s] ELF: ctor[9/11] @0xeab08f894
-[  1s] ELF: ctor[9/11] OK
-[  1s] ELF: ctor[10/11] @0xeab08f964
-[  1s] ELF: ctor[10/11] OK
-[  1s] ELF: ctor[11/11] @0xeab08fa0c
-[  1s] ELF: ctor[11/11] OK
-[  1s] ELF: libgpg.so: ctors done ok=11 failed=0 skipped=0
-[  1s] ELF: libunity.so: running 482 constructors
-[  1s] ELF: init_arr[0]=0xca259382c
-[  1s] ELF: init_arr[1]=0xca2593954
-[  1s] ELF: init_arr[2]=0xca2593a18
-[  1s] ELF: init_arr[3]=0xca2593a8c
-[  1s] ELF: ctor[1/482] @0xca259382c
-[  1s] ELF: ctor[1/482] OK
-[  1s] ELF: ctor[2/482] @0xca2593954
-[  1s] ELF: ctor[2/482] OK
-[  1s] ELF: ctor[3/482] @0xca2593a18
-[  1s] pthread_key_create → key=0 dtor=0x0
-[  1s] ELF: ctor[3/482] OK
-[  1s] ELF: ctor[4/482] @0xca2593a8c
-[  1s] ELF: ctor[4/482] OK
-[  1s] ELF: ctor[5/482] @0xca2593ae8
-[  1s] ELF: ctor[5/482] OK
-[  1s] ELF: ctor[6/482] @0xca2593b48
-[  1s] ELF: ctor[6/482] OK
-[  1s] ELF: ctor[7/482] @0xca2593c64
-[  1s] ELF: ctor[7/482] OK
-[  1s] ELF: ctor[8/482] @0xca2593cdc
-[  1s] ELF: ctor[8/482] OK
-[  1s] ELF: ctor[9/482] @0xca2593d54
-[  1s] ELF: ctor[9/482] OK
-[  1s] ELF: ctor[10/482] @0xca2593d84
-[  1s] ELF: ctor[10/482] OK
-[  1s] ELF: ctor[11/482] @0xca2593dfc
-[  1s] ELF: ctor[11/482] OK
-[  1s] ELF: ctor[12/482] @0xca2593e5c
-[  1s] ELF: ctor[12/482] OK
-[  1s] ELF: ctor[13/482] @0xca2593f00
-[  1s] ELF: ctor[13/482] OK
-[  1s] ELF: ctor[14/482] @0xca259413c
-[  1s] ELF: ctor[14/482] OK
-[  1s] ELF: ctor[15/482] @0xca259419c
-[  1s] ELF: ctor[15/482] OK
-[  1s] ELF: ctor[16/482] @0xca25941fc
-[  1s] ELF: ctor[16/482] OK
-[  1s] ELF: ctor[17/482] @0xca2594270
-[  1s] ELF: ctor[17/482] OK
-[  1s] ELF: ctor[18/482] @0xca25942c8
-[  1s] pthread_key_create → key=1 dtor=0x0
-[  1s] ELF: ctor[18/482] OK
-[  1s] ELF: ctor[19/482] @0xca25944fc
-[  1s] ELF: ctor[19/482] OK
-[  1s] ELF: ctor[20/482] @0xca2594904
-[  1s] ELF: ctor[20/482] OK
-[  1s] ELF: ctor[21/482] @0xca2594968
-[  1s] ELF: ctor[21/482] OK
-[  1s] ELF: ctor[22/482] @0xca2594b98
-[  1s] ELF: ctor[22/482] OK
-[  1s] ELF: ctor[23/482] @0xca2594c7c
-[  1s] ELF: ctor[23/482] OK
-[  1s] ELF: ctor[24/482] @0xca2594d78
-[  1s] ELF: ctor[24/482] OK
-[  1s] ELF: ctor[25/482] @0xca2594f14
-[  1s] ELF: ctor[25/482] OK
-[  1s] ELF: ctor[26/482] @0xca2595008
-[  1s] pthread_key_create → key=2 dtor=0x0
-[  1s] ELF: ctor[26/482] OK
-[  1s] ELF: ctor[27/482] @0xca2595190
-[  1s] ELF: ctor[27/482] OK
-[  1s] ELF: ctor[28/482] @0xca2595314
-[  1s] ELF: ctor[28/482] OK
-[  1s] ELF: ctor[29/482] @0xca2595484
-[  1s] ELF: ctor[29/482] OK
-[  1s] ELF: ctor[30/482] @0xca2595788
-[  1s] ELF: ctor[30/482] OK
-[  1s] ELF: ctor[31/482] @0xca25959cc
-[  1s] ELF: ctor[31/482] OK
-[  1s] ELF: ctor[32/482] @0xca2595ad8
-[  1s] ELF: ctor[32/482] OK
-[  1s] ELF: ctor[33/482] @0xca2595dc8
-[  2s] ELF: ctor[33/482] OK
-[  2s] ELF: ctor[34/482] @0xca2595fb4
-[  2s] ELF: ctor[34/482] OK
-[  2s] ELF: ctor[35/482] @0xca2596418
-[  2s] ELF: ctor[35/482] OK
-[  2s] ELF: ctor[36/482] @0xca2596534
-[  2s] ELF: ctor[36/482] OK
-[  2s] ELF: ctor[37/482] @0xca25965b0
-[  2s] ELF: ctor[37/482] OK
-[  2s] ELF: ctor[38/482] @0xca259689c
-[  2s] ELF: ctor[38/482] OK
-[  2s] ELF: ctor[39/482] @0xca2597d58
-[  2s] ELF: ctor[39/482] OK
-[  2s] ELF: ctor[40/482] @0xca2597f50
-[  2s] ELF: ctor[40/482] OK
-[  2s] ELF: ctor[41/482] @0xca2597fc0
-[  2s] ELF: ctor[41/482] OK
-[  2s] ELF: ctor[42/482] @0xca25981b4
-[  2s] ELF: ctor[42/482] OK
-[  2s] ELF: ctor[43/482] @0xca2598220
-[  2s] ELF: ctor[43/482] OK
-[  2s] ELF: ctor[44/482] @0xca2598264
-[  2s] ELF: ctor[44/482] OK
-[  2s] ELF: ctor[45/482] @0xca25982e4
-[  2s] ELF: ctor[45/482] OK
-[  2s] ELF: ctor[46/482] @0xca259833c
-[  2s] ELF: ctor[46/482] OK
-[  2s] ELF: ctor[47/482] @0xca2598394
-[  2s] ELF: ctor[47/482] OK
-[  2s] ELF: ctor[48/482] @0xca25983ec
-[  2s] ELF: ctor[48/482] OK
-[  2s] ELF: ctor[49/482] @0xca2598444
-[  2s] ELF: ctor[49/482] OK
-[  2s] ELF: ctor[50/482] @0xca259849c
-[  2s] ELF: ctor[50/482] OK
-[  2s] ELF: ctor[51/482] @0xca25984f4
-[  2s] ELF: ctor[51/482] OK
-[  2s] ELF: ctor[52/482] @0xca259854c
-[  2s] ELF: ctor[52/482] OK
-[  2s] ELF: ctor[53/482] @0xca25985a4
-[  2s] ELF: ctor[53/482] OK
-[  2s] ELF: ctor[54/482] @0xca2598604
-[  2s] ELF: ctor[54/482] OK
-[  2s] ELF: ctor[55/482] @0xca25987d8
-[  2s] ELF: ctor[55/482] OK
-[  2s] ELF: ctor[56/482] @0xca2598874
-[  2s] ELF: ctor[56/482] OK
-[  2s] ELF: ctor[57/482] @0xca2598928
-[  2s] ELF: ctor[57/482] OK
-[  2s] ELF: ctor[58/482] @0xca25989f4
-[  2s] pthread_key_create → key=3 dtor=0x0
-[  2s] ELF: ctor[58/482] OK
-[  2s] ELF: ctor[59/482] @0xca259927c
-[  2s] ELF: ctor[59/482] OK
-[  2s] ELF: ctor[60/482] @0xca2599658
-[  2s] ELF: ctor[60/482] OK
-[  2s] ELF: ctor[61/482] @0xca2599850
-[  2s] ELF: ctor[61/482] OK
-[  2s] ELF: ctor[62/482] @0xca2599d24
-[  2s] ELF: ctor[62/482] OK
-[  2s] ELF: ctor[63/482] @0xca2599fb4
-[  2s] ELF: ctor[63/482] OK
-[  2s] ELF: ctor[64/482] @0xca2599ffc
-[  2s] ELF: ctor[64/482] OK
-[  2s] ELF: ctor[65/482] @0xca259a074
-[  2s] ELF: ctor[65/482] OK
-[  2s] ELF: ctor[66/482] @0xca259a104
-[  2s] ELF: ctor[66/482] OK
-[  2s] ELF: ctor[67/482] @0xca259a1a8
-[  2s] ELF: ctor[67/482] OK
-[  2s] ELF: ctor[68/482] @0xca259a27c
-[  2s] ELF: ctor[68/482] OK
-[  2s] ELF: ctor[69/482] @0xca259a324
-[  2s] pthread_key_create → key=4 dtor=0x0
-[  2s] pthread_key_create → key=5 dtor=0x0
-[  2s] ELF: ctor[69/482] OK
-[  2s] ELF: ctor[70/482] @0xca259a4d0
-[  2s] ELF: ctor[70/482] OK
-[  2s] ELF: ctor[71/482] @0xca259a578
-[  2s] ELF: ctor[71/482] OK
-[  2s] ELF: ctor[72/482] @0xca259a7a4
-[  2s] ELF: ctor[72/482] OK
-[  2s] ELF: ctor[73/482] @0xca259a820
-[  2s] ELF: ctor[73/482] OK
-[  2s] ELF: ctor[74/482] @0xca259a8ac
-[  2s] ELF: ctor[74/482] OK
-[  2s] ELF: ctor[75/482] @0xca259a91c
-[  2s] ELF: ctor[75/482] OK
-[  2s] ELF: ctor[76/482] @0xca259ab20
-[  2s] pthread_key_create → key=6 dtor=0x0
-[  2s] ELF: ctor[76/482] OK
-[  2s] ELF: ctor[77/482] @0xca259abec
-[  2s] ELF: ctor[77/482] OK
-[  2s] ELF: ctor[78/482] @0xca259ade0
-[  2s] pthread_key_create → key=7 dtor=0x0
-[  2s] ELF: ctor[78/482] OK
-[  2s] ELF: ctor[79/482] @0xca259aeb4
-[  2s] ELF: ctor[79/482] OK
-[  2s] ELF: ctor[80/482] @0xca259afa8
-[  2s] ELF: ctor[80/482] OK
-[  2s] ELF: ctor[81/482] @0xca259b020
-[  2s] ELF: ctor[81/482] OK
-[  2s] ELF: ctor[82/482] @0xca259b080
-[  2s] ELF: ctor[82/482] OK
-[  2s] ELF: ctor[83/482] @0xca259b178
-[  2s] ELF: ctor[83/482] OK
-[  2s] ELF: ctor[84/482] @0xca259b198
-[  2s] ELF: ctor[84/482] OK
-[  2s] ELF: ctor[85/482] @0xca259b1e0
-[  2s] ELF: ctor[85/482] OK
-[  2s] ELF: ctor[86/482] @0xca259b224
-[  2s] ELF: ctor[86/482] OK
-[  2s] ELF: ctor[87/482] @0xca259b234
-[  2s] ELF: ctor[87/482] OK
-[  2s] ELF: ctor[88/482] @0xca259b400
-[  2s] ELF: ctor[88/482] OK
-[  2s] ELF: ctor[89/482] @0xca259b534
-[  2s] ELF: ctor[89/482] OK
-[  2s] ELF: ctor[90/482] @0xca259b54c
-[  2s] ELF: ctor[90/482] OK
-[  2s] ELF: ctor[91/482] @0xca259b570
-[  2s] ELF: ctor[91/482] OK
-[  2s] ELF: ctor[92/482] @0xca259b6f8
-[  2s] ELF: ctor[92/482] OK
-[  2s] ELF: ctor[93/482] @0xca259b748
-[  2s] ELF: ctor[93/482] OK
-[  2s] ELF: ctor[94/482] @0xca259b788
-[  2s] ELF: ctor[94/482] OK
-[  2s] ELF: ctor[95/482] @0xca259b8b4
-[  2s] ELF: ctor[95/482] OK
-[  2s] ELF: ctor[96/482] @0xca259b90c
-[  2s] ELF: ctor[96/482] OK
-[  2s] ELF: ctor[97/482] @0xca259b994
-[  2s] ELF: ctor[97/482] OK
-[  2s] ELF: ctor[98/482] @0xca259ba08
-[  2s] ELF: ctor[98/482] OK
-[  2s] ELF: ctor[99/482] @0xca259ba90
-[  2s] ELF: ctor[99/482] OK
-[  2s] ELF: ctor[100/482] @0xca259bc74
-[  2s] ELF: ctor[100/482] OK
-[  2s] ELF: ctor[101/482] @0xca259bf58
-[  2s] ELF: ctor[101/482] OK
-[  2s] ELF: ctor[102/482] @0xca259be34
-[  2s] ELF: ctor[102/482] OK
-[  2s] ELF: ctor[103/482] @0xca259bfb4
-[  2s] ELF: ctor[103/482] OK
-[  2s] ELF: ctor[104/482] @0xca259c038
-[  2s] ELF: ctor[104/482] OK
-[  2s] ELF: ctor[105/482] @0xca259c0a0
-[  2s] ELF: ctor[105/482] OK
-[  2s] ELF: ctor[106/482] @0xca259c100
-[  2s] ELF: ctor[106/482] OK
-[  2s] ELF: ctor[107/482] @0xca259c1a4
-[  2s] pthread_key_create → key=8 dtor=0x0
-[  2s] ELF: ctor[107/482] OK
-[  2s] ELF: ctor[108/482] @0xca259c228
-[  2s] ELF: ctor[108/482] OK
-[  2s] ELF: ctor[109/482] @0xca259c2a8
-[  2s] ELF: ctor[109/482] OK
-[  2s] ELF: ctor[110/482] @0xca259c3c8
-[  2s] ELF: ctor[110/482] OK
-[  2s] ELF: ctor[111/482] @0xca259c48c
-[  2s] ELF: ctor[111/482] OK
-[  2s] ELF: ctor[112/482] @0xca259c66c
-[  2s] ELF: ctor[112/482] OK
-[  2s] ELF: ctor[113/482] @0xca259c6ec
-[  2s] ELF: ctor[113/482] OK
-[  2s] ELF: ctor[114/482] @0xca259c840
-[  2s] ELF: ctor[114/482] OK
-[  2s] ELF: ctor[115/482] @0xca259c970
-[  2s] ELF: ctor[115/482] OK
-[  2s] ELF: ctor[116/482] @0xca259c994
-[  2s] ELF: ctor[116/482] OK
-[  2s] ELF: ctor[117/482] @0xca259cad0
-[  2s] ELF: ctor[117/482] OK
-[  2s] ELF: ctor[118/482] @0xca259cca0
-[  2s] ELF: ctor[118/482] OK
-[  2s] ELF: ctor[119/482] @0xca259cf14
-[  2s] ELF: ctor[119/482] OK
-[  2s] ELF: ctor[120/482] @0xca259f7f4
-[  2s] ELF: ctor[120/482] OK
-[  2s] ELF: ctor[121/482] @0xca259f908
-[  2s] ELF: ctor[121/482] OK
-[  2s] ELF: ctor[122/482] @0xca259fba4
-[  2s] ELF: ctor[122/482] OK
-[  2s] ELF: ctor[123/482] @0xca259fbc0
-[  2s] ELF: ctor[123/482] OK
-[  2s] ELF: ctor[124/482] @0xca259fcc0
-[  2s] ELF: ctor[124/482] OK
-[  2s] ELF: ctor[125/482] @0xca259fd28
-[  2s] ELF: ctor[125/482] OK
-[  2s] ELF: ctor[126/482] @0xca259fdc0
-[  2s] ELF: ctor[126/482] OK
-[  2s] ELF: ctor[127/482] @0xca259fe18
-[  2s] ELF: ctor[127/482] OK
-[  2s] ELF: ctor[128/482] @0xca25a0058
-[  2s] ELF: ctor[128/482] OK
-[  2s] ELF: ctor[129/482] @0xca25a016c
-[  2s] ELF: ctor[129/482] OK
-[  2s] ELF: ctor[130/482] @0xca25a0778
-[  2s] ELF: ctor[130/482] OK
-[  2s] ELF: ctor[131/482] @0xca25a078c
-[  2s] ELF: ctor[131/482] OK
-[  2s] ELF: ctor[132/482] @0xca25a0834
-[  2s] ELF: ctor[132/482] OK
-[  2s] ELF: ctor[133/482] @0xca25a0894
-[  2s] ELF: ctor[133/482] OK
-[  2s] ELF: ctor[134/482] @0xca25a08f4
-[  2s] ELF: ctor[134/482] OK
-[  2s] ELF: ctor[135/482] @0xca25a0958
-[  2s] ELF: ctor[135/482] OK
-[  2s] ELF: ctor[136/482] @0xca25a09b0
-[  2s] ELF: ctor[136/482] OK
-[  2s] ELF: ctor[137/482] @0xca25a09d8
-[  2s] ELF: ctor[137/482] OK
-[  2s] ELF: ctor[138/482] @0xca25a0a20
-[  2s] ELF: ctor[138/482] OK
-[  2s] ELF: ctor[139/482] @0xca25a0a8c
-[  2s] ELF: ctor[139/482] OK
-[  2s] ELF: ctor[140/482] @0xca25a0b64
-[  2s] ELF: ctor[140/482] OK
-[  2s] ELF: ctor[141/482] @0xca25a0c2c
-[  2s] ELF: ctor[141/482] OK
-[  2s] ELF: ctor[142/482] @0xca25a0d24
-[  2s] ELF: ctor[142/482] OK
-[  2s] ELF: ctor[143/482] @0xca25a0d44
-[  2s] ELF: ctor[143/482] OK
-[  2s] ELF: ctor[144/482] @0xca25a0e6c
-[  2s] ELF: ctor[144/482] OK
-[  2s] ELF: ctor[145/482] @0xca25a0ee4
-[  2s] ELF: ctor[145/482] OK
-[  2s] ELF: ctor[146/482] @0xca25a1004
-[  2s] ELF: ctor[146/482] OK
-[  2s] ELF: ctor[147/482] @0xca25a1060
-[  2s] ELF: ctor[147/482] OK
-[  2s] ELF: ctor[148/482] @0xca25a1178
-[  2s] ELF: ctor[148/482] OK
-[  2s] ELF: ctor[149/482] @0xca25a11a8
-[  2s] pthread_key_create → key=9 dtor=0x0
-[  2s] ELF: ctor[149/482] OK
-[  2s] ELF: ctor[150/482] @0xca25a121c
-[  2s] ELF: ctor[150/482] OK
-[  2s] ELF: ctor[151/482] @0xca25a124c
-[  2s] ELF: ctor[151/482] OK
-[  2s] ELF: ctor[152/482] @0xca25a12c8
-[  2s] ELF: ctor[152/482] OK
-[  2s] ELF: ctor[153/482] @0xca25a1380
-[  2s] ELF: ctor[153/482] OK
-[  2s] ELF: ctor[154/482] @0xca25a13bc
-[  2s] ELF: ctor[154/482] OK
-[  2s] ELF: ctor[155/482] @0xca25a141c
-[  2s] ELF: ctor[155/482] OK
-[  2s] ELF: ctor[156/482] @0xca25a1464
-[  2s] ELF: ctor[156/482] OK
-[  2s] ELF: ctor[157/482] @0xca25a1558
-[  2s] ELF: ctor[157/482] OK
-[  2s] ELF: ctor[158/482] @0xca25a1818
-[  2s] ELF: ctor[158/482] OK
-[  2s] ELF: ctor[159/482] @0xca25a1a28
-[  2s] ELF: ctor[159/482] OK
-[  2s] ELF: ctor[160/482] @0xca25a1acc
-[  2s] ELF: ctor[160/482] OK
-[  2s] ELF: ctor[161/482] @0xca25a1cd4
-[  2s] ELF: ctor[161/482] OK
-[  2s] ELF: ctor[162/482] @0xca25a1dd0
-[  2s] ELF: ctor[162/482] OK
-[  2s] ELF: ctor[163/482] @0xca25a1e50
-[  2s] ELF: ctor[163/482] OK
-[  2s] ELF: ctor[164/482] @0xca25a1ee8
-[  2s] ELF: ctor[164/482] OK
-[  3s] ELF: ctor[165/482] @0xca25a1f6c
-[  3s] ELF: ctor[165/482] OK
-[  3s] ELF: ctor[166/482] @0xca25a2060
-[  3s] ELF: ctor[166/482] OK
-[  3s] ELF: ctor[167/482] @0xca25a2090
-[  3s] ELF: ctor[167/482] OK
-[  3s] ELF: ctor[168/482] @0xca25a22dc
-[  3s] ELF: ctor[168/482] OK
-[  3s] ELF: ctor[169/482] @0xca25a2354
-[  3s] ELF: ctor[169/482] OK
-[  3s] ELF: ctor[170/482] @0xca25a23b4
-[  3s] ELF: ctor[170/482] OK
-[  3s] ELF: ctor[171/482] @0xca25a2484
-[  3s] ELF: ctor[171/482] OK
-[  3s] ELF: ctor[172/482] @0xca25a341c
-[  3s] ELF: ctor[172/482] OK
-[  3s] ELF: ctor[173/482] @0xca25a3494
-[  3s] ELF: ctor[173/482] OK
-[  3s] ELF: ctor[174/482] @0xca25a350c
-[  3s] ELF: ctor[174/482] OK
-[  3s] ELF: ctor[175/482] @0xca25a3664
-[  3s] ELF: ctor[175/482] OK
-[  3s] ELF: ctor[176/482] @0xca25a36c4
-[  3s] ELF: ctor[176/482] OK
-[  3s] ELF: ctor[177/482] @0xca25a3734
-[  3s] ELF: ctor[177/482] OK
-[  3s] ELF: ctor[178/482] @0xca25a3794
-[  3s] ELF: ctor[178/482] OK
-[  3s] ELF: ctor[179/482] @0xca25a38bc
-[  3s] ELF: ctor[179/482] OK
-[  3s] ELF: ctor[180/482] @0xca25a3ab4
-[  3s] ELF: ctor[180/482] OK
-[  3s] ELF: ctor[181/482] @0xca25a3b14
-[  3s] ELF: ctor[181/482] OK
-[  3s] ELF: ctor[182/482] @0xca25a3b8c
-[  3s] ELF: ctor[182/482] OK
-[  3s] ELF: ctor[183/482] @0xca25a3bf8
-[  3s] ELF: ctor[183/482] OK
-[  3s] ELF: ctor[184/482] @0xca25a3ca8
-[  3s] ELF: ctor[184/482] OK
-[  3s] ELF: ctor[185/482] @0xca25a3d60
-[  3s] ELF: ctor[185/482] OK
-[  3s] ELF: ctor[186/482] @0xca25a3ddc
-[  3s] ELF: ctor[186/482] OK
-[  3s] ELF: ctor[187/482] @0xca25a3eb4
-[  3s] ELF: ctor[187/482] OK
-[  3s] ELF: ctor[188/482] @0xca25a3ef8
-[  3s] ELF: ctor[188/482] OK
-[  3s] ELF: ctor[189/482] @0xca25a3fd4
-[  3s] ELF: ctor[189/482] OK
-[  3s] ELF: ctor[190/482] @0xca25a4024
-[  3s] ELF: ctor[190/482] OK
-[  3s] ELF: ctor[191/482] @0xca25a4084
-[  3s] ELF: ctor[191/482] OK
-[  3s] ELF: ctor[192/482] @0xca25a4104
-[  3s] ELF: ctor[192/482] OK
-[  3s] ELF: ctor[193/482] @0xca25a4164
-[  3s] ELF: ctor[193/482] OK
-[  3s] ELF: ctor[194/482] @0xca25a41c4
-[  3s] ELF: ctor[194/482] OK
-[  3s] ELF: ctor[195/482] @0xca25a4224
-[  3s] ELF: ctor[195/482] OK
-[  3s] ELF: ctor[196/482] @0xca25a4284
-[  3s] ELF: ctor[196/482] OK
-[  3s] ELF: ctor[197/482] @0xca25a42e4
-[  3s] ELF: ctor[197/482] OK
-[  3s] ELF: ctor[198/482] @0xca25a4344
-[  3s] ELF: ctor[198/482] OK
-[  3s] ELF: ctor[199/482] @0xca25a43a4
-[  3s] ELF: ctor[199/482] OK
-[  3s] ELF: ctor[200/482] @0xca25a4404
-[  3s] ELF: ctor[200/482] OK
-[  3s] ELF: ctor[201/482] @0xca25a4464
-[  3s] ELF: ctor[201/482] OK
-[  3s] ELF: ctor[202/482] @0xca25a44c4
-[  3s] ELF: ctor[202/482] OK
-[  3s] ELF: ctor[203/482] @0xca25a45a8
-[  3s] ELF: ctor[203/482] OK
-[  3s] ELF: ctor[204/482] @0xca25a46f4
-[  3s] ELF: ctor[204/482] OK
-[  3s] ELF: ctor[205/482] @0xca25a4754
-[  3s] ELF: ctor[205/482] OK
-[  3s] ELF: ctor[206/482] @0xca25a47b4
-[  3s] ELF: ctor[206/482] OK
-[  3s] ELF: ctor[207/482] @0xca25a4858
-[  3s] ELF: ctor[207/482] OK
-[  3s] ELF: ctor[208/482] @0xca25a48b8
-[  3s] ELF: ctor[208/482] OK
-[  3s] ELF: ctor[209/482] @0xca25a6174
-[  3s] ELF: ctor[209/482] OK
-[  3s] ELF: ctor[210/482] @0xca25a6824
-[  3s] ELF: ctor[210/482] OK
-[  3s] ELF: ctor[211/482] @0xca25a6b8c
-[  3s] ELF: ctor[211/482] OK
-[  3s] ELF: ctor[212/482] @0xca25ad0d8
-[  3s] ELF: ctor[212/482] OK
-[  3s] ELF: ctor[213/482] @0xca25ad494
-[  3s] ELF: ctor[213/482] OK
-[  3s] ELF: ctor[214/482] @0xca25ae028
-[  3s] ELF: ctor[214/482] OK
-[  3s] ELF: ctor[215/482] @0xca25ae924
-[  3s] ELF: ctor[215/482] OK
-[  3s] ELF: ctor[216/482] @0xca25aea00
-[  3s] ELF: ctor[216/482] OK
-[  3s] ELF: ctor[217/482] @0xca25aea2c
-[  3s] ELF: ctor[217/482] OK
-[  3s] ELF: ctor[218/482] @0xca25aeac0
-[  3s] ELF: ctor[218/482] OK
-[  3s] ELF: ctor[219/482] @0xca25aeadc
-[  3s] ELF: ctor[219/482] OK
-[  3s] ELF: ctor[220/482] @0xca25aeb48
-[  3s] ELF: ctor[220/482] OK
-[  3s] ELF: ctor[221/482] @0xca25aeba8
-[  3s] ELF: ctor[221/482] OK
-[  3s] ELF: ctor[222/482] @0xca25aec08
-[  3s] ELF: ctor[222/482] OK
-[  3s] ELF: ctor[223/482] @0xca25aec68
-[  3s] ELF: ctor[223/482] OK
-[  3s] ELF: ctor[224/482] @0xca25aecf0
-[  3s] ELF: ctor[224/482] OK
-[  3s] ELF: ctor[225/482] @0xca25aedc4
-[  3s] ELF: ctor[225/482] OK
-[  3s] ELF: ctor[226/482] @0xca25aee24
-[  3s] ELF: ctor[226/482] OK
-[  3s] ELF: ctor[227/482] @0xca25aeec4
-[  3s] ELF: ctor[227/482] OK
-[  3s] ELF: ctor[228/482] @0xca25aef24
-[  3s] ELF: ctor[228/482] OK
-[  3s] ELF: ctor[229/482] @0xca25aefbc
-[  3s] ELF: ctor[229/482] OK
-[  3s] ELF: ctor[230/482] @0xca25af058
-[  3s] ELF: ctor[230/482] OK
-[  3s] ELF: ctor[231/482] @0xca25af0d4
-[  3s] ELF: ctor[231/482] OK
-[  3s] ELF: ctor[232/482] @0xca25af190
-[  3s] ELF: ctor[232/482] OK
-[  3s] ELF: ctor[233/482] @0xca25af1f0
-[  3s] ELF: ctor[233/482] OK
-[  3s] ELF: ctor[234/482] @0xca25af2ec
-[  3s] ELF: ctor[234/482] OK
-[  3s] ELF: ctor[235/482] @0xca25af3f4
-[  3s] ELF: ctor[235/482] OK
-[  3s] ELF: ctor[236/482] @0xca25af48c
-[  3s] ELF: ctor[236/482] OK
-[  3s] ELF: ctor[237/482] @0xca25af4a8
-[  3s] ELF: ctor[237/482] OK
-[  3s] ELF: ctor[238/482] @0xca25af4ec
-[  3s] pthread_key_create → key=10 dtor=0x0
-[  3s] ELF: ctor[238/482] OK
-[  3s] ELF: ctor[239/482] @0xca25af560
-[  3s] pthread_key_create → key=11 dtor=0x0
-[  3s] ELF: ctor[239/482] OK
-[  3s] ELF: ctor[240/482] @0xca25af5b4
-[  3s] ELF: ctor[240/482] OK
-[  3s] ELF: ctor[241/482] @0xca25af62c
-[  3s] ELF: ctor[241/482] OK
-[  3s] ELF: ctor[242/482] @0xca25af6e8
-[  3s] ELF: ctor[242/482] OK
-[  3s] ELF: ctor[243/482] @0xca25af730
-[  3s] ELF: ctor[243/482] OK
-[  3s] ELF: ctor[244/482] @0xca25af790
-[  3s] ELF: ctor[244/482] OK
-[  3s] ELF: ctor[245/482] @0xca25af7f0
-[  3s] ELF: ctor[245/482] OK
-[  3s] ELF: ctor[246/482] @0xca25af850
-[  3s] ELF: ctor[246/482] OK
-[  3s] ELF: ctor[247/482] @0xca25af928
-[  3s] ELF: ctor[247/482] OK
-[  3s] ELF: ctor[248/482] @0xca25af9d0
-[  3s] ELF: ctor[248/482] OK
-[  3s] ELF: ctor[249/482] @0xca25afa30
-[  3s] ELF: ctor[249/482] OK
-[  3s] ELF: ctor[250/482] @0xca25afa90
-[  3s] ELF: ctor[250/482] OK
-[  3s] ELF: ctor[251/482] @0xca25afc80
-[  3s] ELF: ctor[251/482] OK
-[  3s] ELF: ctor[252/482] @0xca25afcec
-[  3s] ELF: ctor[252/482] OK
-[  3s] ELF: ctor[253/482] @0xca25b0010
-[  3s] ELF: ctor[253/482] OK
-[  3s] ELF: ctor[254/482] @0xca25b0070
-[  3s] ELF: ctor[254/482] OK
-[  3s] ELF: ctor[255/482] @0xca25b0178
-[  3s] ELF: ctor[255/482] OK
-[  3s] ELF: ctor[256/482] @0xca25b01d8
-[  3s] ELF: ctor[256/482] OK
-[  3s] ELF: ctor[257/482] @0xca25b0238
-[  3s] ELF: ctor[257/482] OK
-[  3s] ELF: ctor[258/482] @0xca25b02d0
-[  3s] ELF: ctor[258/482] OK
-[  3s] ELF: ctor[259/482] @0xca25b0304
-[  3s] ELF: ctor[259/482] OK
-[  3s] ELF: ctor[260/482] @0xca25b0500
-[  3s] ELF: ctor[260/482] OK
-[  3s] ELF: ctor[261/482] @0xca25b0560
-[  3s] ELF: ctor[261/482] OK
-[  3s] ELF: ctor[262/482] @0xca25b05c8
-[  3s] ELF: ctor[262/482] OK
-[  3s] ELF: ctor[263/482] @0xca25b05f8
-[  3s] ELF: ctor[263/482] OK
-[  3s] ELF: ctor[264/482] @0xca25b0658
-[  3s] ELF: ctor[264/482] OK
-[  3s] ELF: ctor[265/482] @0xca25b06b8
-[  3s] ELF: ctor[265/482] OK
-[  3s] ELF: ctor[266/482] @0xca25b078c
-[  3s] ELF: ctor[266/482] OK
-[  3s] ELF: ctor[267/482] @0xca25b07ec
-[  3s] ELF: ctor[267/482] OK
-[  3s] ELF: ctor[268/482] @0xca25b08f0
-[  3s] ELF: ctor[268/482] OK
-[  3s] ELF: ctor[269/482] @0xca25b0974
-[  3s] ELF: ctor[269/482] OK
-[  3s] ELF: ctor[270/482] @0xca25b09d4
-[  3s] ELF: ctor[270/482] OK
-[  3s] ELF: ctor[271/482] @0xca25b0a34
-[  3s] ELF: ctor[271/482] OK
-[  3s] ELF: ctor[272/482] @0xca25b0a94
-[  3s] ELF: ctor[272/482] OK
-[  3s] ELF: ctor[273/482] @0xca25b0dfc
-[  3s] ELF: ctor[273/482] OK
-[  3s] ELF: ctor[274/482] @0xca25b0ea8
-[  3s] ELF: ctor[274/482] OK
-[  3s] ELF: ctor[275/482] @0xca25b0fe0
-[  3s] ELF: ctor[275/482] OK
-[  3s] ELF: ctor[276/482] @0xca25b10e8
-[  3s] ELF: ctor[276/482] OK
-[  3s] ELF: ctor[277/482] @0xca25b11dc
-[  3s] ELF: ctor[277/482] OK
-[  3s] ELF: ctor[278/482] @0xca25b1254
-[  3s] ELF: ctor[278/482] OK
-[  3s] ELF: ctor[279/482] @0xca25b12b4
-[  3s] ELF: ctor[279/482] OK
-[  3s] ELF: ctor[280/482] @0xca25b1358
-[  3s] ELF: ctor[280/482] OK
-[  3s] ELF: ctor[281/482] @0xca25b1430
-[  3s] pthread_key_create → key=12 dtor=0x0
-[  3s] ELF: ctor[281/482] OK
-[  3s] ELF: ctor[282/482] @0xca25b15c0
-[  3s] ELF: ctor[282/482] OK
-[  3s] ELF: ctor[283/482] @0xca25b1754
-[  3s] ELF: ctor[283/482] OK
-[  3s] ELF: ctor[284/482] @0xca25b17b4
-[  3s] ELF: ctor[284/482] OK
-[  3s] ELF: ctor[285/482] @0xca25b1828
-[  3s] ELF: ctor[285/482] OK
-[  3s] ELF: ctor[286/482] @0xca25b18d4
-[  3s] ELF: ctor[286/482] OK
-[  3s] ELF: ctor[287/482] @0xca25b1984
-[  3s] ELF: ctor[287/482] OK
-[  3s] ELF: ctor[288/482] @0xca25b1c7c
-[  3s] ELF: ctor[288/482] OK
-[  3s] ELF: ctor[289/482] @0xca25b1cf4
-[  3s] ELF: ctor[289/482] OK
-[  3s] ELF: ctor[290/482] @0xca25b1e30
-[  3s] ELF: ctor[290/482] OK
-[  3s] ELF: ctor[291/482] @0xca25b1ecc
-[  3s] ELF: ctor[291/482] OK
-[  3s] ELF: ctor[292/482] @0xca25b1fc0
-[  3s] ELF: ctor[292/482] OK
-[  3s] ELF: ctor[293/482] @0xca25b3020
-[  3s] ELF: ctor[293/482] OK
-[  3s] ELF: ctor[294/482] @0xca25b30d0
-[  3s] ELF: ctor[294/482] OK
-[  3s] ELF: ctor[295/482] @0xca25b3240
-[  3s] ELF: ctor[295/482] OK
-[  3s] ELF: ctor[296/482] @0xca25b33a0
-[  3s] ELF: ctor[296/482] OK
-[  3s] ELF: ctor[297/482] @0xca25b3484
-[  3s] ELF: ctor[297/482] OK
-[  3s] ELF: ctor[298/482] @0xca25b34d0
-[  3s] ELF: ctor[298/482] OK
-[  4s] ELF: ctor[299/482] @0xca25b34fc
-[  4s] ELF: ctor[299/482] OK
-[  4s] ELF: ctor[300/482] @0xca25b3768
-[  4s] ELF: ctor[300/482] OK
-[  4s] ELF: ctor[301/482] @0xca25b3794
-[  4s] ELF: ctor[301/482] OK
-[  4s] ELF: ctor[302/482] @0xca25b3898
-[  4s] ELF: ctor[302/482] OK
-[  4s] ELF: ctor[303/482] @0xca25b38c4
-[  4s] ELF: ctor[303/482] OK
-[  4s] ELF: ctor[304/482] @0xca25b3900
-[  4s] ELF: ctor[304/482] OK
-[  4s] ELF: ctor[305/482] @0xca25b3a78
-[  4s] ELF: ctor[305/482] OK
-[  4s] ELF: ctor[306/482] @0xca25b3bf0
-[  4s] ELF: ctor[306/482] OK
-[  4s] ELF: ctor[307/482] @0xca25b3d68
-[  4s] ELF: ctor[307/482] OK
-[  4s] ELF: ctor[308/482] @0xca25b3d94
-[  4s] ELF: ctor[308/482] OK
-[  4s] ELF: ctor[309/482] @0xca25b3f0c
-[  4s] ELF: ctor[309/482] OK
-[  4s] ELF: ctor[310/482] @0xca25b4084
-[  4s] ELF: ctor[310/482] OK
-[  4s] ELF: ctor[311/482] @0xca25b41a0
-[  4s] ELF: ctor[311/482] OK
-[  4s] ELF: ctor[312/482] @0xca25b42bc
-[  4s] ELF: ctor[312/482] OK
-[  4s] ELF: ctor[313/482] @0xca25b42e8
-[  4s] ELF: ctor[313/482] OK
-[  4s] ELF: ctor[314/482] @0xca25b4414
-[  4s] ELF: ctor[314/482] OK
-[  4s] ELF: ctor[315/482] @0xca25b4540
-[  4s] ELF: ctor[315/482] OK
-[  4s] ELF: ctor[316/482] @0xca25b46bc
-[  4s] ELF: ctor[316/482] OK
-[  4s] ELF: ctor[317/482] @0xca25b47f8
-[  4s] ELF: ctor[317/482] OK
-[  4s] ELF: ctor[318/482] @0xca25b4980
-[  4s] ELF: ctor[318/482] OK
-[  4s] ELF: ctor[319/482] @0xca25b4adc
-[  4s] ELF: ctor[319/482] OK
-[  4s] ELF: ctor[320/482] @0xca25b4c14
-[  4s] ELF: ctor[320/482] OK
-[  4s] ELF: ctor[321/482] @0xca25b4c68
-[  4s] ELF: ctor[321/482] OK
-[  4s] ELF: ctor[322/482] @0xca25b4cac
-[  4s] ELF: ctor[322/482] OK
-[  4s] ELF: ctor[323/482] @0xca25b4d68
-[  4s] ELF: ctor[323/482] OK
-[  4s] ELF: ctor[324/482] @0xca25b4db0
-[  4s] ELF: ctor[324/482] OK
-[  4s] ELF: ctor[325/482] @0xca25b4df8
-[  4s] ELF: ctor[325/482] OK
-[  4s] ELF: ctor[326/482] @0xca25b4e40
-[  4s] ELF: ctor[326/482] OK
-[  4s] ELF: ctor[327/482] @0xca25b4e88
-[  4s] ELF: ctor[327/482] OK
-[  4s] ELF: ctor[328/482] @0xca25b4ed0
-[  4s] ELF: ctor[328/482] OK
-[  4s] ELF: ctor[329/482] @0xca25b4f18
-[  4s] ELF: ctor[329/482] OK
-[  4s] ELF: ctor[330/482] @0xca25b4f60
-[  4s] ELF: ctor[330/482] OK
-[  4s] ELF: ctor[331/482] @0xca25b4fa8
-[  4s] ELF: ctor[331/482] OK
-[  4s] ELF: ctor[332/482] @0xca25b4ff0
-[  4s] ELF: ctor[332/482] OK
-[  4s] ELF: ctor[333/482] @0xca25b5038
-[  4s] ELF: ctor[333/482] OK
-[  4s] ELF: ctor[334/482] @0xca25b5080
-[  4s] ELF: ctor[334/482] OK
-[  4s] ELF: ctor[335/482] @0xca25b50c8
-[  4s] ELF: ctor[335/482] OK
-[  4s] ELF: ctor[336/482] @0xca25b5110
-[  4s] ELF: ctor[336/482] OK
-[  4s] ELF: ctor[337/482] @0xca25b5158
-[  4s] ELF: ctor[337/482] OK
-[  4s] ELF: ctor[338/482] @0xca25b51a0
-[  4s] ELF: ctor[338/482] OK
-[  4s] ELF: ctor[339/482] @0xca25b51e8
-[  4s] ELF: ctor[339/482] OK
-[  4s] ELF: ctor[340/482] @0xca25b5230
-[  4s] ELF: ctor[340/482] OK
-[  4s] ELF: ctor[341/482] @0xca25b5278
-[  4s] ELF: ctor[341/482] OK
-[  4s] ELF: ctor[342/482] @0xca25b52c0
-[  4s] ELF: ctor[342/482] OK
-[  4s] ELF: ctor[343/482] @0xca25b5308
-[  4s] ELF: ctor[343/482] OK
-[  4s] ELF: ctor[344/482] @0xca25b5350
-[  4s] ELF: ctor[344/482] OK
-[  4s] ELF: ctor[345/482] @0xca25b5398
-[  4s] ELF: ctor[345/482] OK
-[  4s] ELF: ctor[346/482] @0xca25b53e0
-[  4s] ELF: ctor[346/482] OK
-[  4s] ELF: ctor[347/482] @0xca25b5428
-[  4s] ELF: ctor[347/482] OK
-[  4s] ELF: ctor[348/482] @0xca25b5470
-[  4s] ELF: ctor[348/482] OK
-[  4s] ELF: ctor[349/482] @0xca25b54b8
-[  4s] ELF: ctor[349/482] OK
-[  4s] ELF: ctor[350/482] @0xca25b5500
-[  4s] ELF: ctor[350/482] OK
-[  4s] ELF: ctor[351/482] @0xca25b5548
-[  4s] ELF: ctor[351/482] OK
-[  4s] ELF: ctor[352/482] @0xca25b5590
-[  4s] ELF: ctor[352/482] OK
-[  4s] ELF: ctor[353/482] @0xca25b55d8
-[  4s] ELF: ctor[353/482] OK
-[  4s] ELF: ctor[354/482] @0xca25b5620
-[  4s] ELF: ctor[354/482] OK
-[  4s] ELF: ctor[355/482] @0xca25b5668
-[  4s] ELF: ctor[355/482] OK
-[  4s] ELF: ctor[356/482] @0xca25b56b0
-[  4s] ELF: ctor[356/482] OK
-[  4s] ELF: ctor[357/482] @0xca25b56f8
-[  4s] ELF: ctor[357/482] OK
-[  4s] ELF: ctor[358/482] @0xca25b5740
-[  4s] ELF: ctor[358/482] OK
-[  4s] ELF: ctor[359/482] @0xca25b5788
-[  4s] ELF: ctor[359/482] OK
-[  4s] ELF: ctor[360/482] @0xca25b57d0
-[  4s] ELF: ctor[360/482] OK
-[  4s] ELF: ctor[361/482] @0xca25b5818
-[  4s] ELF: ctor[361/482] OK
-[  4s] ELF: ctor[362/482] @0xca25b5860
-[  4s] ELF: ctor[362/482] OK
-[  4s] ELF: ctor[363/482] @0xca25b58a8
-[  4s] ELF: ctor[363/482] OK
-[  4s] ELF: ctor[364/482] @0xca25b58f0
-[  4s] ELF: ctor[364/482] OK
-[  4s] ELF: ctor[365/482] @0xca25b5938
-[  4s] ELF: ctor[365/482] OK
-[  4s] ELF: ctor[366/482] @0xca25b5980
-[  4s] ELF: ctor[366/482] OK
-[  4s] ELF: ctor[367/482] @0xca25b59c8
-[  4s] ELF: ctor[367/482] OK
-[  4s] ELF: ctor[368/482] @0xca25b5a10
-[  4s] ELF: ctor[368/482] OK
-[  4s] ELF: ctor[369/482] @0xca25b5a58
-[  4s] ELF: ctor[369/482] OK
-[  4s] ELF: ctor[370/482] @0xca25b5aa0
-[  4s] ELF: ctor[370/482] OK
-[  4s] ELF: ctor[371/482] @0xca25b5ae8
-[  4s] ELF: ctor[371/482] OK
-[  4s] ELF: ctor[372/482] @0xca25b5b30
-[  4s] ELF: ctor[372/482] OK
-[  4s] ELF: ctor[373/482] @0xca25b5b78
-[  4s] ELF: ctor[373/482] OK
-[  4s] ELF: ctor[374/482] @0xca25b5bc0
-[  4s] ELF: ctor[374/482] OK
-[  4s] ELF: ctor[375/482] @0xca25b5c08
-[  4s] ELF: ctor[375/482] OK
-[  4s] ELF: ctor[376/482] @0xca25b5c50
-[  4s] ELF: ctor[376/482] OK
-[  4s] ELF: ctor[377/482] @0xca25b5c98
-[  4s] ELF: ctor[377/482] OK
-[  4s] ELF: ctor[378/482] @0xca25b5ce0
-[  4s] ELF: ctor[378/482] OK
-[  4s] ELF: ctor[379/482] @0xca25b5d28
-[  4s] ELF: ctor[379/482] OK
-[  4s] ELF: ctor[380/482] @0xca25b5d70
-[  4s] ELF: ctor[380/482] OK
-[  4s] ELF: ctor[381/482] @0xca25b5db8
-[  4s] ELF: ctor[381/482] OK
-[  4s] ELF: ctor[382/482] @0xca25b5e00
-[  4s] ELF: ctor[382/482] OK
-[  4s] ELF: ctor[383/482] @0xca25b5e48
-[  4s] ELF: ctor[383/482] OK
-[  4s] ELF: ctor[384/482] @0xca25b5e90
-[  4s] ELF: ctor[384/482] OK
-[  4s] ELF: ctor[385/482] @0xca25b5ed8
-[  4s] ELF: ctor[385/482] OK
-[  4s] ELF: ctor[386/482] @0xca25b5f20
-[  4s] ELF: ctor[386/482] OK
-[  4s] ELF: ctor[387/482] @0xca25b5f68
-[  4s] ELF: ctor[387/482] OK
-[  4s] ELF: ctor[388/482] @0xca25b5fb0
-[  4s] ELF: ctor[388/482] OK
-[  4s] ELF: ctor[389/482] @0xca25b5ff8
-[  4s] ELF: ctor[389/482] OK
-[  4s] ELF: ctor[390/482] @0xca25b6040
-[  4s] ELF: ctor[390/482] OK
-[  4s] ELF: ctor[391/482] @0xca25b6088
-[  4s] ELF: ctor[391/482] OK
-[  4s] ELF: ctor[392/482] @0xca25b60d0
-[  4s] ELF: ctor[392/482] OK
-[  4s] ELF: ctor[393/482] @0xca25b6118
-[  4s] ELF: ctor[393/482] OK
-[  4s] ELF: ctor[394/482] @0xca25b6160
-[  4s] ELF: ctor[394/482] OK
-[  4s] ELF: ctor[395/482] @0xca25b61a8
-[  4s] ELF: ctor[395/482] OK
-[  4s] ELF: ctor[396/482] @0xca25b61f0
-[  4s] ELF: ctor[396/482] OK
-[  4s] ELF: ctor[397/482] @0xca25b6238
-[  4s] ELF: ctor[397/482] OK
-[  4s] ELF: ctor[398/482] @0xca25b6280
-[  4s] ELF: ctor[398/482] OK
-[  4s] ELF: ctor[399/482] @0xca25b62c8
-[  4s] ELF: ctor[399/482] OK
-[  4s] ELF: ctor[400/482] @0xca25b6310
-[  4s] ELF: ctor[400/482] OK
-[  4s] ELF: ctor[401/482] @0xca25b6358
-[  4s] ELF: ctor[401/482] OK
-[  4s] ELF: ctor[402/482] @0xca25b63a0
-[  4s] ELF: ctor[402/482] OK
-[  4s] ELF: ctor[403/482] @0xca25b63e8
-[  4s] ELF: ctor[403/482] OK
-[  4s] ELF: ctor[404/482] @0xca25b6430
-[  4s] ELF: ctor[404/482] OK
-[  4s] ELF: ctor[405/482] @0xca25b6478
-[  4s] ELF: ctor[405/482] OK
-[  4s] ELF: ctor[406/482] @0xca25b64c0
-[  4s] ELF: ctor[406/482] OK
-[  4s] ELF: ctor[407/482] @0xca25b6508
-[  4s] ELF: ctor[407/482] OK
-[  4s] ELF: ctor[408/482] @0xca25b6550
-[  4s] ELF: ctor[408/482] OK
-[  4s] ELF: ctor[409/482] @0xca25b6598
-[  4s] ELF: ctor[409/482] OK
-[  4s] ELF: ctor[410/482] @0xca25b65e0
-[  4s] ELF: ctor[410/482] OK
-[  4s] ELF: ctor[411/482] @0xca25b6628
-[  4s] ELF: ctor[411/482] OK
-[  4s] ELF: ctor[412/482] @0xca25b6670
-[  4s] ELF: ctor[412/482] OK
-[  4s] ELF: ctor[413/482] @0xca25b66b8
-[  4s] ELF: ctor[413/482] OK
-[  4s] ELF: ctor[414/482] @0xca25b6700
-[  4s] ELF: ctor[414/482] OK
-[  4s] ELF: ctor[415/482] @0xca25b6748
-[  4s] ELF: ctor[415/482] OK
-[  4s] ELF: ctor[416/482] @0xca25b6790
-[  4s] ELF: ctor[416/482] OK
-[  4s] ELF: ctor[417/482] @0xca25b67d8
-[  4s] ELF: ctor[417/482] OK
-[  4s] ELF: ctor[418/482] @0xca25b6820
-[  4s] ELF: ctor[418/482] OK
-[  4s] ELF: ctor[419/482] @0xca25b6868
-[  4s] ELF: ctor[419/482] OK
-[  4s] ELF: ctor[420/482] @0xca25b68b0
-[  4s] ELF: ctor[420/482] OK
-[  4s] ELF: ctor[421/482] @0xca25b68f8
-[  4s] ELF: ctor[421/482] OK
-[  4s] ELF: ctor[422/482] @0xca25b6940
-[  4s] ELF: ctor[422/482] OK
-[  4s] ELF: ctor[423/482] @0xca25b6988
-[  4s] ELF: ctor[423/482] OK
-[  4s] ELF: ctor[424/482] @0xca25b69d0
-[  4s] ELF: ctor[424/482] OK
-[  4s] ELF: ctor[425/482] @0xca25b6a18
-[  4s] ELF: ctor[425/482] OK
-[  4s] ELF: ctor[426/482] @0xca25b6a60
-[  4s] ELF: ctor[426/482] OK
-[  4s] ELF: ctor[427/482] @0xca25b6aa8
-[  4s] ELF: ctor[427/482] OK
-[  4s] ELF: ctor[428/482] @0xca25b6af0
-[  4s] ELF: ctor[428/482] OK
-[  4s] ELF: ctor[429/482] @0xca25b6b38
-[  4s] ELF: ctor[429/482] OK
-[  4s] ELF: ctor[430/482] @0xca25b6b80
-[  4s] ELF: ctor[430/482] OK
-[  4s] ELF: ctor[431/482] @0xca25b6bc8
-[  4s] ELF: ctor[431/482] OK
-[  4s] ELF: ctor[432/482] @0xca25b6c10
-[  4s] ELF: ctor[432/482] OK
-[  4s] ELF: ctor[433/482] @0xca25b6c58
-[  4s] ELF: ctor[433/482] OK
-[  4s] ELF: ctor[434/482] @0xca25b6ca0
-[  4s] ELF: ctor[434/482] OK
-[  4s] ELF: ctor[435/482] @0xca25b6ce8
-[  5s] ELF: ctor[435/482] OK
-[  5s] ELF: ctor[436/482] @0xca25b6d30
-[  5s] ELF: ctor[436/482] OK
-[  5s] ELF: ctor[437/482] @0xca25b6d78
-[  5s] ELF: ctor[437/482] OK
-[  5s] ELF: ctor[438/482] @0xca25b6dc0
-[  5s] ELF: ctor[438/482] OK
-[  5s] ELF: ctor[439/482] @0xca25b6e08
-[  5s] ELF: ctor[439/482] OK
-[  5s] ELF: ctor[440/482] @0xca25b6e50
-[  5s] ELF: ctor[440/482] OK
-[  5s] ELF: ctor[441/482] @0xca25b6e98
-[  5s] ELF: ctor[441/482] OK
-[  5s] ELF: ctor[442/482] @0xca25b6ee0
-[  5s] ELF: ctor[442/482] OK
-[  5s] ELF: ctor[443/482] @0xca25b6f28
-[  5s] ELF: ctor[443/482] OK
-[  5s] ELF: ctor[444/482] @0xca25b6f70
-[  5s] ELF: ctor[444/482] OK
-[  5s] ELF: ctor[445/482] @0xca25b6fb8
-[  5s] ELF: ctor[445/482] OK
-[  5s] ELF: ctor[446/482] @0xca25b7000
-[  5s] ELF: ctor[446/482] OK
-[  5s] ELF: ctor[447/482] @0xca25b7048
-[  5s] ELF: ctor[447/482] OK
-[  5s] ELF: ctor[448/482] @0xca25b7090
-[  5s] ELF: ctor[448/482] OK
-[  5s] ELF: ctor[449/482] @0xca25b70d8
-[  5s] ELF: ctor[449/482] OK
-[  5s] ELF: ctor[450/482] @0xca25b7120
-[  5s] ELF: ctor[450/482] OK
-[  5s] ELF: ctor[451/482] @0xca25b7168
-[  5s] ELF: ctor[451/482] OK
-[  5s] ELF: ctor[452/482] @0xca25b71b0
-[  5s] ELF: ctor[452/482] OK
-[  5s] ELF: ctor[453/482] @0xca25b71f8
-[  5s] ELF: ctor[453/482] OK
-[  5s] ELF: ctor[454/482] @0xca25b7240
-[  5s] ELF: ctor[454/482] OK
-[  5s] ELF: ctor[455/482] @0xca25b7288
-[  5s] ELF: ctor[455/482] OK
-[  5s] ELF: ctor[456/482] @0xca25b72d0
-[  5s] ELF: ctor[456/482] OK
-[  5s] ELF: ctor[457/482] @0xca25b7318
-[  5s] ELF: ctor[457/482] OK
-[  5s] ELF: ctor[458/482] @0xca25b7360
-[  5s] ELF: ctor[458/482] OK
-[  5s] ELF: ctor[459/482] @0xca25b73a8
-[  5s] ELF: ctor[459/482] OK
-[  5s] ELF: ctor[460/482] @0xca25b73f0
-[  5s] pthread_key_create → key=13 dtor=0xfdcbc5810
-[  5s] ELF: ctor[460/482] OK
-[  5s] ELF: ctor[461/482] @0xca25b7434
-[  5s] ELF: ctor[461/482] OK
-[  5s] ELF: ctor[462/482] @0xca25b7470
-[  5s] ELF: ctor[462/482] OK
-[  5s] ELF: ctor[463/482] @0xca25b7484
-[  5s] ELF: ctor[463/482] OK
-[  5s] ELF: ctor[464/482] @0xca25b74bc
-[  5s] ELF: ctor[464/482] OK
-[  5s] ELF: ctor[465/482] @0xca25b74cc
-[  5s] ELF: ctor[465/482] OK
-[  5s] ELF: ctor[466/482] @0xca25b757c
-[  5s] ELF: ctor[466/482] OK
-[  5s] ELF: ctor[467/482] @0xca25b7768
-[  5s] ELF: ctor[467/482] OK
-[  5s] ELF: ctor[468/482] @0xca25b77b0
-[  5s] ELF: ctor[468/482] OK
-[  5s] ELF: ctor[469/482] @0xca25b77f8
-[  5s] ELF: ctor[469/482] OK
-[  5s] ELF: ctor[470/482] @0xca25b7840
-[  5s] ELF: ctor[470/482] OK
-[  5s] ELF: ctor[471/482] @0xca25b796c
-[  5s] ELF: ctor[471/482] OK
-[  5s] ELF: ctor[472/482] @0xca25b7b08
-[  5s] ELF: ctor[472/482] OK
-[  5s] ELF: ctor[473/482] @0xca25b7c44
-[  5s] ELF: ctor[473/482] OK
-[  5s] ELF: ctor[474/482] @0xca25b7dac
-[  5s] ELF: ctor[474/482] OK
-[  5s] ELF: ctor[475/482] @0xca25b7ed8
-[  5s] ELF: ctor[475/482] OK
-[  5s] ELF: ctor[476/482] @0xca25b7f04
-[  5s] ELF: ctor[476/482] OK
-[  5s] ELF: ctor[477/482] @0xca25b80d8
-[  5s] ELF: ctor[477/482] OK
-[  5s] ELF: ctor[478/482] @0xca25b81cc
-[  5s] ELF: ctor[478/482] OK
-[  5s] ELF: ctor[479/482] @0xca25b82c0
-[  5s] ELF: ctor[479/482] OK
-[  5s] ELF: ctor[480/482] @0xca25b830c
-[  5s] ELF: ctor[480/482] OK
-[  5s] ELF: ctor[481/482] @0xca25b8324
-[  5s] pthread_key_create → key=14 dtor=0xca2f07340
-[  5s] ELF: ctor[481/482] OK
-[  5s] ELF: libunity.so: ctors done ok=481 failed=0 skipped=1
-[  5s] ELF: libil2cpp.so: running 44 constructors
-[  5s] ELF: init_arr[0]=0x58cb7986c
-[  5s] ELF: init_arr[1]=0x58cb798e4
-[  5s] ELF: init_arr[2]=0x58cb79ad8
-[  5s] ELF: init_arr[3]=0x58cb79b6c
-[  5s] ELF: ctor[1/44] @0x58cb7986c
-[  5s] ELF: ctor[1/44] OK
-[  5s] ELF: ctor[2/44] @0x58cb798e4
-[  5s] ELF: ctor[2/44] OK
-[  5s] ELF: ctor[3/44] @0x58cb79ad8
-[  5s] ELF: ctor[3/44] OK
-[  5s] ELF: ctor[4/44] @0x58cb79b6c
-[  5s] ELF: ctor[4/44] OK
-[  5s] ELF: ctor[5/44] @0x58cb79bac
-[  5s] ELF: ctor[5/44] OK
-[  5s] ELF: ctor[6/44] @0x58cb79be8
-[  5s] ELF: ctor[6/44] OK
-[  5s] ELF: ctor[7/44] @0x58cb79c24
-[  5s] pthread_key_create → key=15 dtor=0x0
-[  5s] ELF: ctor[7/44] OK
-[  5s] ELF: ctor[8/44] @0x58cb79ca8
-[  5s] ELF: ctor[8/44] OK
-[  5s] ELF: ctor[9/44] @0x58cb79d0c
-[  5s] ELF: ctor[9/44] OK
-[  5s] ELF: ctor[10/44] @0x58cb79db4
-[  5s] ELF: ctor[10/44] OK
-[  5s] ELF: ctor[11/44] @0x58cb79df4
-[  5s] ELF: ctor[11/44] OK
-[  5s] ELF: ctor[12/44] @0x58cb79e34
-[  5s] ELF: ctor[12/44] OK
-[  5s] ELF: ctor[13/44] @0x58cb79eb0
-[  5s] ELF: ctor[13/44] OK
-[  5s] ELF: ctor[14/44] @0x58cb79f6c
-[  5s] ELF: ctor[14/44] OK
-[  5s] ELF: ctor[15/44] @0x58cb79fe8
-[  5s] ELF: ctor[15/44] OK
-[  5s] ELF: ctor[16/44] @0x58cb7a024
-[  5s] ELF: ctor[16/44] OK
-[  5s] ELF: ctor[17/44] @0x58cb7a094
-[  5s] ELF: ctor[17/44] OK
-[  5s] ELF: ctor[18/44] @0x58cb7a19c
-[  5s] pthread_key_create → key=16 dtor=0x0
-[  5s] ELF: ctor[18/44] OK
-[  5s] ELF: ctor[19/44] @0x58cb7a1d8
-[  5s] ELF: ctor[19/44] OK
-[  5s] ELF: ctor[20/44] @0x58cb7a22c
-[  5s] pthread_key_create → key=17 dtor=0x0
-[  5s] pthread_key_create → key=18 dtor=0x0
-[  5s] ELF: ctor[20/44] OK
-[  5s] ELF: ctor[21/44] @0x58cb7a2dc
-[  5s] ELF: ctor[21/44] OK
-[  5s] ELF: ctor[22/44] @0x58cb7a318
-[  5s] ELF: ctor[22/44] OK
-[  5s] ELF: ctor[23/44] @0x58cb7a35c
-[  5s] ELF: ctor[23/44] OK
-[  5s] ELF: ctor[24/44] @0x58cb7a474
-[  5s] ELF: ctor[24/44] OK
-[  5s] ELF: ctor[25/44] @0x58cb7a638
-[  5s] ELF: ctor[25/44] OK
-[  5s] ELF: ctor[26/44] @0x58cb7a65c
-[  5s] ELF: ctor[26/44] OK
-[  5s] ELF: ctor[27/44] @0x58cb7a6b0
-[  5s] ELF: ctor[27/44] OK
-[  5s] ELF: ctor[28/44] @0x58cb7a6d4
-[  5s] ELF: ctor[28/44] OK
-[  5s] ELF: ctor[29/44] @0x58cb7a734
-[  5s] ELF: ctor[29/44] OK
-[  5s] ELF: ctor[30/44] @0x58cb7a770
-[  5s] ELF: ctor[30/44] OK
-[  5s] ELF: ctor[31/44] @0x58cb7a794
-[  5s] ELF: ctor[31/44] OK
-[  5s] ELF: ctor[32/44] @0x58cb7a834
-[  5s] ELF: ctor[32/44] OK
-[  5s] ELF: ctor[33/44] @0x58cb7a89c
-[  5s] ELF: ctor[33/44] OK
-[  5s] ELF: ctor[34/44] @0x58cb7a8b8
-[  5s] ELF: ctor[34/44] OK
-[  5s] ELF: ctor[35/44] @0x58cb7a8f0
-[  5s] ELF: ctor[35/44] OK
-[  5s] ELF: ctor[36/44] @0x58cb7a914
-[  5s] ELF: ctor[36/44] OK
-[  5s] ELF: ctor[37/44] @0x58cb7a984
-[  5s] pthread_key_create → key=19 dtor=0x0
-[  5s] ELF: ctor[37/44] OK
-[  5s] ELF: ctor[38/44] @0x58cb7a9c0
-[  5s] ELF: ctor[38/44] OK
-[  5s] ELF: ctor[39/44] @0x58cb7a9ec
-[  5s] ELF: ctor[39/44] OK
-[  5s] ELF: ctor[40/44] @0x58cb7aa04
-[  5s] pthread_key_create → key=20 dtor=0x58ccbde8c
-[  5s] ELF: ctor[40/44] OK
-[  5s] ELF: ctor[41/44] @0x58cb7aa64
-[  5s] ELF: ctor[41/44] OK
-[  5s] ELF: ctor[42/44] @0x58cb7aab0
-[  5s] ELF: ctor[42/44] OK
-[  5s] ELF: ctor[43/44] @0x58cb7aba4
-[  5s] ELF: ctor[43/44] OK
-[  5s] ELF: libil2cpp.so: ctors done ok=43 failed=0 skipped=1
-[  5s] Scanning for Java_ native methods in main .so...
-[  5s] JAVA_METHOD: 0 total Java_ symbols found
-[  5s] ELF: loading complete — game execution on main thread
-[  5s] perf: CPU boost mode -> FastLoad (game startup/loading, GPU throttled)
-[  5s] AndroidTLS: old TPIDR_EL0=0x0 — installing fake TLS @0xfdd560760
-[  5s] audio: assets dir = sdmc:/AndroidHorizonNX/games/com.orbital.brainiton/assets
-[  5s] audio: SDL_mixer ready (codecs=0x18)
-[  5s] UserDefaults: no save file (fresh run)
-[  5s] EGL: using SDL2 context on main thread
-[  5s] main/render thread tid=0xfdd6555d0
-[  5s] ═══ AHNX Unity Runtime: bringup start ═══
-[  5s] unity: pkg=sdmc:/AndroidHorizonNX/games/com.orbital.brainiton lib_dir=sdmc:/AndroidHorizonNX/games/com.orbital.brainiton/lib
-[  5s] dlopen: libmain.so already loaded → 0x78c774560
-[  5s] dlopen: libunity.so already loaded → 0x78d0f7040
-[  5s] dlopen: libil2cpp.so already loaded → 0x78d11eaa0
-[  5s] dlopen: libgpg.so already loaded → 0x78c4d5fa0
-[  5s] unity: libs — main=0x78c774560 unity=0x78d0f7040 il2cpp=0x78d11eaa0
-[  5s] unity: calling libmain.so JNI_OnLoad @0xefa73e83c ...
-[  5s] JNI FindClass: com/unity3d/player/NativeLoader
-[  5s] JNI RegisterNative: load
-[  5s] JNI RegisterNative: unload
-[  5s] unity: libmain.so JNI_OnLoad returned 0x10006
-[  5s] unity: calling libunity.so JNI_OnLoad @0xca2778ccc ...
-[  5s] JNI FindClass: com/unity3d/player/UnityPlayer
-[  5s] JNI RegisterNative: initJni
-[  5s] JNI RegisterNative: nativeDone
-[  5s] JNI RegisterNative: nativePause
-[  5s] JNI RegisterNative: nativeRecreateGfxState
-[  5s] JNI RegisterNative: nativeSendSurfaceChangedEvent
-[  5s] JNI RegisterNative: nativeRender
-[  5s] JNI RegisterNative: nativeResume
-[  5s] JNI RegisterNative: nativeLowMemory
-[  5s] JNI RegisterNative: nativeFocusChanged
-[  5s] JNI RegisterNative: nativeSetInputString
-[  5s] JNI RegisterNative: nativeSetInputSelection
-[  5s] JNI RegisterNative: nativeSoftInputClosed
-[  5s] JNI RegisterNative: nativeSoftInputCanceled
-[  5s] JNI RegisterNative: nativeSoftInputLostFocus
-[  5s] JNI RegisterNative: nativeInitWebRequest
-[  5s] JNI RegisterNative: nativeInjectEvent
-[  5s] JNI RegisterNative: nativeUnitySendMessage
-[  5s] JNI RegisterNative: nativeIsAutorotationOn
-[  5s] JNI RegisterNative: nativeMuteMasterAudio
-[  5s] JNI RegisterNative: nativeRestartActivityIndicator
-[  5s] JNI FindClass: com/unity3d/player/ReflectionHelper
-[  5s] JNI RegisterNative: nativeProxyInvoke
-[  5s] JNI RegisterNative: nativeProxyFinalize
-[  5s] JNI RegisterNative: nativeProxyLogJNIInvokeException
-[  5s] JNI FindClass: com/unity3d/player/GoogleARCoreApi
-[  5s] JNI RegisterNative: initializeARCore
-[  5s] JNI RegisterNative: pauseARCore
-[  5s] JNI RegisterNative: resumeARCore
-[  5s] JNI FindClass: com/unity3d/player/GoogleVrProxy
-[  5s] JNI RegisterNative: initVrJni
-[  6s] JNI RegisterNative: setVrVideoTransform
-[  6s] JNI RegisterNative: isQuiting
-[  6s] JNI FindClass: com/unity3d/player/Camera2Wrapper
-[  6s] JNI RegisterNative: initCamera2Jni
-[  6s] JNI RegisterNative: nativeFrameReady
-[  6s] JNI RegisterNative: nativeSurfaceTextureReady
-[  6s] unity: libunity.so JNI_OnLoad returned 0x10006
-[  6s] unity: entry points — initJni=0xca27782b4 nativeRender=0xca277854c recreateGfx=0xca277849c surfaceChanged=0xca2778500 il2cpp_init=0x58cc79fd4
-[  6s] unity: calling initJni(env, activity, context) — Unity init begins
-[  6s] JNI FindClass: bitter/jnibridge/JNIBridge
-[  6s] JNI RegisterNative: invoke
-[  6s] JNI RegisterNative: delete
-[  6s] pthread_getspecific(key=13) → scratch buf (first use)
-[  6s] JNI FindClass: java/lang/StringBuilder
-[  6s] JNI GetMethodID: <init> ()V
-[  6s] JNI FindClass: android/app/Activity
-[  6s] JNI GetMethodID: getIntent ()Landroid/content/Intent;
-[  6s] JNI FindClass: android/content/Intent
-[  6s] JNI GetMethodID: getExtras ()Landroid/os/Bundle;
-[  6s] JNI FindClass: android/os/Bundle
-[  6s] JNI GetMethodID: containsKey (Ljava/lang/String;)Z
-[  6s] JNI GetMethodID: getBoolean (Ljava/lang/String;)Z
-[  6s] JNI GetMethodID: toString ()Ljava/lang/String;
-[  6s] JNI FindClass: android/content/Context
-[  6s] JNI GetMethodID: getAssets ()Landroid/content/res/AssetManager;
-[  6s] JNI FindClass: android/content/res/AssetManager
-[  6s] JNI GetMethodID: open (Ljava/lang/String;)Ljava/io/InputStream;
-[  6s] JNI AssetManager.open(bin/Data/boot.config) → 181 bytes
-[  6s] JNI FindClass: java/io/IOException
-[  6s] JNI FindClass: java/util/Scanner
-[  6s] JNI GetMethodID: <init> (Ljava/io/InputStream;Ljava/lang/String;)V
-[  6s] JNI GetMethodID: useDelimiter (Ljava/lang/String;)Ljava/util/Scanner;
-[  6s] JNI GetMethodID: next ()Ljava/lang/String;
-[  6s] JNI FindClass: java/util/NoSuchElementException
-[  6s] unity: initJni returned (did not fault)
-[  6s] unity: released Core SDL2 EGL surface — nwindow free for Unity's own context
-[  6s] unity: nativeRecreateGfxState(id=0, surface) — Unity builds its GL context
-[  6s] pthread_getspecific(key=3) → scratch buf (first use)
-[  6s] unity: nativeRecreateGfxState returned
-[  6s] unity: nativeSendSurfaceChangedEvent returned
-[  6s] unity: entering nativeRender loop
-[  6s] JNI FindClass: android/content/pm/PackageManager
-[  6s] JNI GetStaticFieldID: GET_META_DATA I
-[  6s] JNI GetMethodID: getPackageManager ()Landroid/content/pm/PackageManager;
-[  6s] JNI GetMethodID: getPackageName ()Ljava/lang/String;
-[  6s] JNI GetMethodID: getApplicationInfo (Ljava/lang/String;I)Landroid/content/pm/ApplicationInfo;
-[  6s] JNI FindClass: android/content/pm/PackageItemInfo
-[  6s] JNI GetFieldID: metaData Landroid/os/Bundle;
-[  6s] JNI GetMethodID: getString (Ljava/lang/String;)Ljava/lang/String;
+[  2s] patch: controller guide -> romfs:/patches/controllers/ctrl_pro.png
+[  2s] patch: candidate asset sdmc:/Viridite/games/com.fingersoft.hillclimb/assets/Moga_Pocket_Guide.png
+[  2s] patch: candidate asset sdmc:/Viridite/games/com.fingersoft.hillclimb/assets/Moga_Pro_Guide.png
+[  5s] patch: candidate asset sdmc:/Viridite/games/com.fingersoft.hillclimb/assets/icon-moreapps-controller.png
+[  5s] guide: annotated 4 control(s) on the controller diagram
+[  8s] patch: replaced sdmc:/Viridite/games/com.fingersoft.hillclimb/assets/Moga_Pro_Guide.png (480x331, Switch controller layout)
+[  8s] guide: annotated 4 control(s) on the controller diagram
+[  8s] patch: replaced sdmc:/Viridite/games/com.fingersoft.hillclimb/assets/Moga_Pocket_Guide.png (480x314, Switch controller layout)
+[  8s] findAllSos: libapplovin-native-crash-reporter.so (867928 bytes)
+[  8s] findAllSos: libquack.so (1300792 bytes)
+[  8s] findAllSos: libgame.so (8060976 bytes)
+[  8s] engine: cocos2d-x / generic NDK path
+[  8s] Setting up JNI environment...
+[  8s] Loading: libapplovin-native-crash-reporter.so
+[  8s] ELF: loading sdmc:/Viridite/games/com.fingersoft.hillclimb/lib/libapplovin-native-crash-reporter.so
+[  8s] ELF: WARN 3 PT_LOAD segments (1 exec, 2 writable) — single-split-point assumption may mis-map permissions
+[  8s] SplitMap: reserved code_va=0x3bdf6a000 data_va=0x3be039000 write_va=0x9d1454000 csz=0xcf000 dsz=0xf000
+[  8s] ELF: stage alloc OK
+[  8s] ELF: stage zeroed
+[  8s] ELF: seg[1] vaddr=0x0 filesz=0xcbac0 memsz=0xcbac0 flags=0x5
+[  8s] ELF: seg[2] vaddr=0xcfac0 filesz=0x79b8 memsz=0x79b8 flags=0x6
+[  8s] ELF: seg[3] vaddr=0xdb478 filesz=0xf0 memsz=0x1e78 flags=0x6
+[  8s] ELF: segs copied to stage
+[  8s] ELF: stage[0]=0x464c457f after segs copy
+[  8s] ELF: dyn: strtab=0x15770/104437 symtab=0x2f8 syment=24 rela=0x2ef68/73440 jmprel=0x40e48/9672 init_arr=0xd60f0/8
+[  8s] ELF: so built sym_count=3631 strsz=104437
+[  8s] ELF: registered
+[  8s] ELF: rela 3060 entries
+[  8s] bind: free -> shim 0xf73c4bb90
+[  8s] RELA: all 3060 entries processed
+[  8s] ELF: rela done
+[  8s] ELF: jmprel 403 entries
+[  8s] bind: calloc -> shim 0xf73c4ba20
+[  8s] bind: free -> shim 0xf73c4bb90
+[  8s] bind: malloc -> shim 0xf73c4bba0
+[  8s] bind: realloc -> shim 0xf73c4b990
+[  8s] JMPREL: all 403 entries processed
+[  8s] ELF: jmprel done
+[  8s] ELF: strtab/symtab copied
+[  8s] GOT[0] @va+0x77e0 = 0xf73c47720
+[  8s] GOT[1] @va+0x77e8 = 0xf73c47430
+[  8s] GOT[2] @va+0x77f0 = 0x3bdfcb4fc
+[  8s] GOT[3] @va+0x77f8 = 0xf73c4ba20
+[  8s] GOT[4] @va+0x7800 = 0xf73c46e40
+[  8s] SplitMap: code_va=0x3bdf6a000 Rx data_va=0x3be039000 Rw OK
+[  8s] ELF: JIT copy done (staging buffer retained for the next module)
+[  8s] ELF: 1 constructors deferred (arr=0x3be0400f0)
+[  8s] ELF: loaded OK code_exec=0x3bdf6a000 data_exec=0x3be039000 sym_count=3631 unresolved=0
+[  8s] Loading: libquack.so
+[  8s] ELF: loading sdmc:/Viridite/games/com.fingersoft.hillclimb/lib/libquack.so
+[  8s] SplitMap: reserved code_va=0x79c7ad000 data_va=0x79c8e0000 write_va=0x78e83000 csz=0x133000 dsz=0xc000
+[  8s] ELF: stage alloc OK
+[  8s] ELF: stage zeroed
+[  8s] ELF: seg[0] vaddr=0x0 filesz=0x132090 memsz=0x132090 flags=0x5
+[  8s] ELF: seg[1] vaddr=0x1336b0 filesz=0xaa78 memsz=0xaf78 flags=0x6
+[  8s] ELF: segs copied to stage
+[  8s] ELF: stage[0]=0x464c457f after segs copy
+[  8s] ELF: dyn: strtab=0x7bc8/14558 symtab=0x2c48 syment=24 rela=0xbba8/85944 jmprel=0x20b60/8184 init_arr=0x0/0
+[  8s] ELF: so built sym_count=848 strsz=14558
+[  8s] ELF: registered
+[  8s] ELF: rela 3581 entries
+[  8s] RELA: all 3581 entries processed
+[  8s] ELF: rela done
+[  8s] ELF: jmprel 341 entries
+[  8s] bind: realloc -> shim 0xf73c4b990
+[  8s] bind: calloc -> shim 0xf73c4ba20
+[  8s] bind: malloc -> shim 0xf73c4bba0
+[  8s] bind: free -> shim 0xf73c4bb90
+[  8s] JMPREL: all 341 entries processed
+[  8s] ELF: jmprel done
+[  8s] ELF: strtab/symtab copied
+[  8s] GOT[0] @va+0xa3d0 = 0xf73c4af80
+[  8s] GOT[1] @va+0xa3d8 = 0xf73c46e90
+[  8s] GOT[2] @va+0xa3e0 = 0x79c8667f0
+[  8s] GOT[3] @va+0xa3e8 = 0x79c866910
+[  8s] GOT[4] @va+0xa3f0 = 0x79c85ae84
+[  8s] SplitMap: code_va=0x79c7ad000 Rx data_va=0x79c8e0000 Rw OK
+[  8s] ELF: JIT copy done (staging buffer retained for the next module)
+[  8s] ELF: loaded OK code_exec=0x79c7ad000 data_exec=0x79c8e0000 sym_count=848 unresolved=0
+[  8s] Loading: libgame.so
+[  8s] ELF: loading sdmc:/Viridite/games/com.fingersoft.hillclimb/lib/libgame.so
+[  8s] SplitMap: reserved code_va=0xaf5f87000 data_va=0xaf66cf000 write_va=0x161607000 csz=0x748000 dsz=0xcf000
+[  8s] ELF: stage alloc OK
+[  8s] ELF: stage zeroed
+[  8s] ELF: seg[0] vaddr=0x0 filesz=0x746780 memsz=0x746780 flags=0x5
+[  8s] ELF: seg[1] vaddr=0x748658 filesz=0x68158 memsz=0xce308 flags=0x6
+[  8s] ELF: segs copied to stage
+[  8s] ELF: stage[0]=0x464c457f after segs copy
+[  8s] ELF: dyn: strtab=0x1b5d0/114457 symtab=0xa1d0 syment=24 rela=0x38c50/1188792 jmprel=0x15b008/21888 init_arr=0x748658/3336
+[  8s] ELF: so built sym_count=2944 strsz=114457
+[  8s] ELF: registered
+[  8s] ELF: rela 49533 entries
+[  8s] bind: free -> shim 0xf73c4bb90  x2
+[  8s] bind: realloc -> shim 0xf73c4b990
+[  8s] bind: malloc -> shim 0xf73c4bba0  x2
+[  8s] RELA: all 49533 entries processed
+[  8s] ELF: rela done
+[  8s] ELF: jmprel 912 entries
+[  8s] bind: realloc -> shim 0xf73c4b990
+[  8s] bind: malloc -> shim 0xf73c4bba0
+[  8s] bind: calloc -> shim 0xf73c4ba20
+[  8s] bind: free -> shim 0xf73c4bb90
+[  8s] JMPREL: all 912 entries processed
+[  8s] ELF: jmprel done
+[  8s] ELF: strtab/symtab copied
+[  8s] quirk[HCR]: NOP'd Shop product-list populate at +0x22bbc8 (empty-vector crash; shop opens empty, no billing backend)
+[  8s] quirk[HCR]: guarded null SkinProvider::find at +0x31354c (cbz x0 → +0x31358c; racing no longer crashes on a missing skin)
+[  8s] quirk[HCR]: skipped empty-shop virtual call at +0x22c024 (null vtable deref; branches over the call from every path)
+[  8s] quirk[HCR]: controller name "MOGA PRO" -> "PRO CTRL"
+[  8s] quirk[HCR]: controller name "MOGA POCKET" -> "JOY-CON"
+[  8s] GOT[0] @va+0x63d48 = 0xaf656617c
+[  8s] GOT[1] @va+0x63d50 = 0xaf649628c
+[  8s] GOT[2] @va+0x63d58 = 0xaf647cb0c
+[  8s] GOT[3] @va+0x63d60 = 0xaf6472348
+[  8s] GOT[4] @va+0x63d68 = 0xf74363020
+[  8s] SplitMap: code_va=0xaf5f87000 Rx data_va=0xaf66cf000 Rw OK
+[  8s] ELF: JIT copy done (staging buffer retained for the next module)
+[  8s] ELF: 417 constructors deferred (arr=0xaf66cf658)
+[  8s] ELF: loaded OK code_exec=0xaf5f87000 data_exec=0xaf66cf000 sym_count=2944 unresolved=0
+[  8s] AndroidTLS: old TPIDR_EL0=0x0 — installing fake TLS @0xf745fd860
+[  8s] CTORS: starting 418 constructors — this may take 30-120s, please wait
+[  8s] ELF: libapplovin-native-crash-reporter.so: SKIP constructors (crash-reporter, not needed)
+[  8s] ELF: libgame.so: running 417 constructors
+[  8s] ELF: init_arr[0]=0xaf60eb358
+[  9s] ELF: init_arr[1]=0xaf60eb408
+[  9s] ELF: init_arr[2]=0xaf60eb4b8
+[  9s] ELF: init_arr[3]=0xaf60eb568
+[  9s] ELF: ctor[1/417] @0xaf60eb358
+[  9s] ELF: ctor[1/417] OK
+[  9s] ELF: ctor[2/417] @0xaf60eb408
+[  9s] ELF: ctor[2/417] OK
+[  9s] ELF: ctor[3/417] @0xaf60eb4b8
+[  9s] ELF: ctor[3/417] OK
+[  9s] ELF: ctor[4/417] @0xaf60eb568
+[  9s] ELF: ctor[4/417] OK
+[  9s] ELF: ctor[5/417] @0xaf60eb618
+[  9s] ELF: ctor[5/417] OK
+[  9s] ELF: ctor[6/417] @0xaf60eb6c8
+[  9s] ELF: ctor[6/417] OK
+[  9s] ELF: ctor[7/417] @0xaf60eb7dc
+[  9s] ELF: ctor[7/417] OK
+[  9s] ELF: ctor[8/417] @0xaf60eb88c
+[  9s] ELF: ctor[8/417] OK
+[  9s] ELF: ctor[9/417] @0xaf60eb93c
+[  9s] ELF: ctor[9/417] OK
+[  9s] ELF: ctor[10/417] @0xaf60eb9ec
+[  9s] ELF: ctor[10/417] OK
+[  9s] ELF: ctor[11/417] @0xaf60eba9c
+[  9s] ELF: ctor[11/417] OK
+[  9s] ELF: ctor[12/417] @0xaf60ebb4c
+[  9s] ELF: ctor[12/417] OK
+[  9s] ELF: ctor[13/417] @0xaf60ebc8c
+[  9s] ELF: ctor[13/417] OK
+[  9s] ELF: ctor[14/417] @0xaf60ebda0
+[  9s] ELF: ctor[14/417] OK
+[  9s] ELF: ctor[15/417] @0xaf60ebe50
+[  9s] ELF: ctor[15/417] OK
+[  9s] ELF: ctor[16/417] @0xaf60ebf00
+[  9s] ELF: ctor[16/417] OK
+[  9s] ELF: ctor[17/417] @0xaf60ebfb0
+[  9s] ELF: ctor[17/417] OK
+[  9s] ELF: ctor[18/417] @0xaf60ec060
+[  9s] ELF: ctor[18/417] OK
+[  9s] ELF: ctor[19/417] @0xaf60ec150
+[  9s] ELF: ctor[19/417] OK
+[  9s] ELF: ctor[20/417] @0xaf60ec200
+[  9s] ELF: ctor[20/417] OK
+[  9s] ELF: ctor[21/417] @0xaf60ec2b0
+[  9s] ELF: ctor[21/417] OK
+[  9s] ELF: ctor[22/417] @0xaf60ec360
+[  9s] ELF: ctor[22/417] OK
+[  9s] ELF: ctor[23/417] @0xaf60ec410
+[  9s] ELF: ctor[23/417] OK
+[  9s] ELF: ctor[24/417] @0xaf60ec4c0
+[  9s] ELF: ctor[24/417] OK
+[  9s] ELF: ctor[25/417] @0xaf60ec570
+[  9s] ELF: ctor[25/417] OK
+[  9s] ELF: ctor[26/417] @0xaf60ec620
+[  9s] ELF: ctor[26/417] OK
+[  9s] ELF: ctor[27/417] @0xaf60ec6d0
+[  9s] ELF: ctor[27/417] OK
+[  9s] ELF: ctor[28/417] @0xaf60ec780
+[  9s] ELF: ctor[28/417] OK
+[  9s] ELF: ctor[29/417] @0xaf60ec894
+[  9s] ELF: ctor[29/417] OK
+[  9s] ELF: ctor[30/417] @0xaf60ec9c8
+[  9s] ELF: ctor[30/417] OK
+[  9s] ELF: ctor[31/417] @0xaf60ecab8
+[  9s] ELF: ctor[31/417] OK
+[  9s] ELF: ctor[32/417] @0xaf60ecb68
+[  9s] ELF: ctor[32/417] OK
+[  9s] ELF: ctor[33/417] @0xaf60ecc18
+[  9s] ELF: ctor[33/417] OK
+[  9s] ELF: ctor[34/417] @0xaf60eccc8
+[  9s] ELF: ctor[34/417] OK
+[  9s] ELF: ctor[35/417] @0xaf60ecddc
+[  9s] ELF: ctor[35/417] OK
+[  9s] ELF: ctor[36/417] @0xaf60ece8c
+[  9s] ELF: ctor[36/417] OK
+[  9s] ELF: ctor[37/417] @0xaf60ecf3c
+[  9s] ELF: ctor[37/417] OK
+[  9s] ELF: ctor[38/417] @0xaf60ecfec
+[  9s] ELF: ctor[38/417] OK
+[  9s] ELF: ctor[39/417] @0xaf60ed09c
+[  9s] ELF: ctor[39/417] OK
+[  9s] ELF: ctor[40/417] @0xaf60ed14c
+[  9s] ELF: ctor[40/417] OK
+[  9s] ELF: ctor[41/417] @0xaf60ed260
+[  9s] ELF: ctor[41/417] OK
+[  9s] ELF: ctor[42/417] @0xaf60ed310
+[  9s] ELF: ctor[42/417] OK
+[  9s] ELF: ctor[43/417] @0xaf60ed3c0
+[  9s] ELF: ctor[43/417] OK
+[  9s] ELF: ctor[44/417] @0xaf60ed470
+[  9s] ELF: ctor[44/417] OK
+[  9s] ELF: ctor[45/417] @0xaf60ed584
+[  9s] ELF: ctor[45/417] OK
+[  9s] ELF: ctor[46/417] @0xaf60ed634
+[  9s] ELF: ctor[46/417] OK
+[  9s] ELF: ctor[47/417] @0xaf60ed6e4
+[  9s] ELF: ctor[47/417] OK
+[  9s] ELF: ctor[48/417] @0xaf60ed794
+[  9s] ELF: ctor[48/417] OK
+[  9s] ELF: ctor[49/417] @0xaf60ed86c
+[  9s] ELF: ctor[49/417] OK
+[  9s] ELF: ctor[50/417] @0xaf60ed91c
+[  9s] ELF: ctor[50/417] OK
+[  9s] ELF: ctor[51/417] @0xaf60eda30
+[  9s] ELF: ctor[51/417] OK
+[  9s] ELF: ctor[52/417] @0xaf60edae0
+[  9s] ELF: ctor[52/417] OK
+[  9s] ELF: ctor[53/417] @0xaf60edb90
+[  9s] ELF: ctor[53/417] OK
+[  9s] ELF: ctor[54/417] @0xaf60edc40
+[  9s] ELF: ctor[54/417] OK
+[  9s] ELF: ctor[55/417] @0xaf60edcf0
+[  9s] ELF: ctor[55/417] OK
+[  9s] ELF: ctor[56/417] @0xaf60edda0
+[  9s] ELF: ctor[56/417] OK
+[  9s] ELF: ctor[57/417] @0xaf60edeb4
+[  9s] ELF: ctor[57/417] OK
+[  9s] ELF: ctor[58/417] @0xaf60edf64
+[  9s] ELF: ctor[58/417] OK
+[  9s] ELF: ctor[59/417] @0xaf60ee014
+[  9s] ELF: ctor[59/417] OK
+[  9s] ELF: ctor[60/417] @0xaf60ee0c4
+[  9s] ELF: ctor[60/417] OK
+[  9s] ELF: ctor[61/417] @0xaf60ee174
+[  9s] ELF: ctor[61/417] OK
+[  9s] ELF: ctor[62/417] @0xaf60ee224
+[  9s] ELF: ctor[62/417] OK
+[  9s] ELF: ctor[63/417] @0xaf60ee338
+[  9s] ELF: ctor[63/417] OK
+[  9s] ELF: ctor[64/417] @0xaf60ee3e8
+[  9s] ELF: ctor[64/417] OK
+[  9s] ELF: ctor[65/417] @0xaf60ee4fc
+[  9s] ELF: ctor[65/417] OK
+[  9s] ELF: ctor[66/417] @0xaf60ee5ac
+[  9s] ELF: ctor[66/417] OK
+[  9s] ELF: ctor[67/417] @0xaf60ee620
+[  9s] ELF: ctor[67/417] OK
+[  9s] ELF: ctor[68/417] @0xaf60ee6d0
+[  9s] ELF: ctor[68/417] OK
+[  9s] ELF: ctor[69/417] @0xaf60ee780
+[  9s] ELF: ctor[69/417] OK
+[  9s] ELF: ctor[70/417] @0xaf60ee830
+[  9s] ELF: ctor[70/417] OK
+[  9s] ELF: ctor[71/417] @0xaf60ee8e0
+[  9s] ELF: ctor[71/417] OK
+[  9s] ELF: ctor[72/417] @0xaf60ee990
+[  9s] ELF: ctor[72/417] OK
+[  9s] ELF: ctor[73/417] @0xaf60eea40
+[  9s] ELF: ctor[73/417] OK
+[  9s] ELF: ctor[74/417] @0xaf60eeaf0
+[ 10s] ELF: ctor[74/417] OK
+[ 10s] ELF: ctor[75/417] @0xaf60eeba0
+[ 10s] ELF: ctor[75/417] OK
+[ 10s] ELF: ctor[76/417] @0xaf60eec50
+[ 10s] ELF: ctor[76/417] OK
+[ 10s] ELF: ctor[77/417] @0xaf60eed00
+[ 10s] ELF: ctor[77/417] OK
+[ 10s] ELF: ctor[78/417] @0xaf60eedb0
+[ 10s] ELF: ctor[78/417] OK
+[ 10s] ELF: ctor[79/417] @0xaf60eee60
+[ 10s] ELF: ctor[79/417] OK
+[ 10s] ELF: ctor[80/417] @0xaf60eef24
+[ 10s] ELF: ctor[80/417] OK
+[ 10s] ELF: ctor[81/417] @0xaf60eefd4
+[ 10s] ELF: ctor[81/417] OK
+[ 10s] ELF: ctor[82/417] @0xaf60ef084
+[ 10s] ELF: ctor[82/417] OK
+[ 10s] ELF: ctor[83/417] @0xaf60ef134
+[ 10s] ELF: ctor[83/417] OK
+[ 10s] ELF: ctor[84/417] @0xaf60ef1e4
+[ 10s] ELF: ctor[84/417] OK
+[ 10s] ELF: ctor[85/417] @0xaf60ef294
+[ 10s] ELF: ctor[85/417] OK
+[ 10s] ELF: ctor[86/417] @0xaf60ef344
+[ 10s] ELF: ctor[86/417] OK
+[ 10s] ELF: ctor[87/417] @0xaf60ef3f4
+[ 10s] ELF: ctor[87/417] OK
+[ 10s] ELF: ctor[88/417] @0xaf60ef4a4
+[ 10s] ELF: ctor[88/417] OK
+[ 10s] ELF: ctor[89/417] @0xaf60ef554
+[ 10s] ELF: ctor[89/417] OK
+[ 10s] ELF: ctor[90/417] @0xaf60ef684
+[ 10s] ELF: ctor[90/417] OK
+[ 10s] ELF: ctor[91/417] @0xaf60ef734
+[ 10s] ELF: ctor[91/417] OK
+[ 10s] ELF: ctor[92/417] @0xaf60ef7e4
+[ 10s] ELF: ctor[92/417] OK
+[ 10s] ELF: ctor[93/417] @0xaf60ef894
+[ 10s] ELF: ctor[93/417] OK
+[ 10s] ELF: ctor[94/417] @0xaf60ef944
+[ 10s] ELF: ctor[94/417] OK
+[ 10s] ELF: ctor[95/417] @0xaf60ef9f4
+[ 10s] ELF: ctor[95/417] OK
+[ 10s] ELF: ctor[96/417] @0xaf60efaa4
+[ 10s] ELF: ctor[96/417] OK
+[ 10s] ELF: ctor[97/417] @0xaf60efb54
+[ 10s] ELF: ctor[97/417] OK
+[ 10s] ELF: ctor[98/417] @0xaf60efc04
+[ 10s] ELF: ctor[98/417] OK
+[ 10s] ELF: ctor[99/417] @0xaf60efcb4
+[ 10s] ELF: ctor[99/417] OK
+[ 10s] ELF: ctor[100/417] @0xaf60efd64
+[ 10s] ELF: ctor[100/417] OK
+[ 10s] ELF: ctor[101/417] @0xaf60efe14
+[ 10s] ELF: ctor[101/417] OK
+[ 10s] ELF: ctor[102/417] @0xaf60efec4
+[ 10s] ELF: ctor[102/417] OK
+[ 10s] ELF: ctor[103/417] @0xaf60eff74
+[ 10s] ELF: ctor[103/417] OK
+[ 10s] ELF: ctor[104/417] @0xaf60f0088
+[ 10s] ELF: ctor[104/417] OK
+[ 10s] ELF: ctor[105/417] @0xaf60f0138
+[ 10s] ELF: ctor[105/417] OK
+[ 10s] ELF: ctor[106/417] @0xaf60f01e8
+[ 10s] ELF: ctor[106/417] OK
+[ 10s] ELF: ctor[107/417] @0xaf60f0298
+[ 10s] ELF: ctor[107/417] OK
+[ 10s] ELF: ctor[108/417] @0xaf60f0348
+[ 10s] ELF: ctor[108/417] OK
+[ 10s] ELF: ctor[109/417] @0xaf60f03f8
+[ 10s] ELF: ctor[109/417] OK
+[ 10s] ELF: ctor[110/417] @0xaf60f04a8
+[ 10s] ELF: ctor[110/417] OK
+[ 10s] ELF: ctor[111/417] @0xaf60f0558
+[ 10s] ELF: ctor[111/417] OK
+[ 10s] ELF: ctor[112/417] @0xaf60f0608
+[ 10s] ELF: ctor[112/417] OK
+[ 10s] ELF: ctor[113/417] @0xaf60f0740
+[ 10s] ELF: ctor[113/417] OK
+[ 10s] ELF: ctor[114/417] @0xaf60f07f0
+[ 10s] ELF: ctor[114/417] OK
+[ 10s] ELF: ctor[115/417] @0xaf60f08a0
+[ 10s] ELF: ctor[115/417] OK
+[ 10s] ELF: ctor[116/417] @0xaf60f0950
+[ 10s] ELF: ctor[116/417] OK
+[ 10s] ELF: ctor[117/417] @0xaf60f0a00
+[ 10s] ELF: ctor[117/417] OK
+[ 10s] ELF: ctor[118/417] @0xaf60f0ab0
+[ 10s] ELF: ctor[118/417] OK
+[ 10s] ELF: ctor[119/417] @0xaf60f0b60
+[ 10s] ELF: ctor[119/417] OK
+[ 10s] ELF: ctor[120/417] @0xaf60f0c10
+[ 10s] ELF: ctor[120/417] OK
+[ 10s] ELF: ctor[121/417] @0xaf60f0cc0
+[ 10s] ELF: ctor[121/417] OK
+[ 10s] ELF: ctor[122/417] @0xaf60f0e00
+[ 10s] ELF: ctor[122/417] OK
+[ 10s] ELF: ctor[123/417] @0xaf60f0eb0
+[ 10s] ELF: ctor[123/417] OK
+[ 10s] ELF: ctor[124/417] @0xaf60f0f60
+[ 10s] ELF: ctor[124/417] OK
+[ 10s] ELF: ctor[125/417] @0xaf60f1010
+[ 10s] ELF: ctor[125/417] OK
+[ 10s] ELF: ctor[126/417] @0xaf60f10c0
+[ 10s] ELF: ctor[126/417] OK
+[ 10s] ELF: ctor[127/417] @0xaf60f1170
+[ 10s] ELF: ctor[127/417] OK
+[ 10s] ELF: ctor[128/417] @0xaf60f13cc
+[ 10s] ELF: ctor[128/417] OK
+[ 10s] ELF: ctor[129/417] @0xaf60f147c
+[ 10s] ELF: ctor[129/417] OK
+[ 10s] ELF: ctor[130/417] @0xaf60f152c
+[ 10s] ELF: ctor[130/417] OK
+[ 10s] ELF: ctor[131/417] @0xaf60f15dc
+[ 10s] ELF: ctor[131/417] OK
+[ 10s] ELF: ctor[132/417] @0xaf60f168c
+[ 10s] ELF: ctor[132/417] OK
+[ 10s] ELF: ctor[133/417] @0xaf60f173c
+[ 10s] ELF: ctor[133/417] OK
+[ 10s] ELF: ctor[134/417] @0xaf60f17ec
+[ 10s] ELF: ctor[134/417] OK
+[ 10s] ELF: ctor[135/417] @0xaf60f189c
+[ 10s] ELF: ctor[135/417] OK
+[ 10s] ELF: ctor[136/417] @0xaf60f194c
+[ 10s] ELF: ctor[136/417] OK
+[ 10s] ELF: ctor[137/417] @0xaf60f19fc
+[ 10s] ELF: ctor[137/417] OK
+[ 10s] ELF: ctor[138/417] @0xaf60f1aac
+[ 10s] ELF: ctor[138/417] OK
+[ 10s] ELF: ctor[139/417] @0xaf60f1b5c
+[ 10s] ELF: ctor[139/417] OK
+[ 10s] ELF: ctor[140/417] @0xaf60f1c0c
+[ 10s] ELF: ctor[140/417] OK
+[ 10s] ELF: ctor[141/417] @0xaf60f1d20
+[ 10s] ELF: ctor[141/417] OK
+[ 10s] ELF: ctor[142/417] @0xaf60f1dd0
+[ 10s] ELF: ctor[142/417] OK
+[ 10s] ELF: ctor[143/417] @0xaf60f1e80
+[ 10s] ELF: ctor[143/417] OK
+[ 10s] ELF: ctor[144/417] @0xaf60f1f30
+[ 10s] ELF: ctor[144/417] OK
+[ 10s] ELF: ctor[145/417] @0xaf60f1fe0
+[ 10s] ELF: ctor[145/417] OK
+[ 10s] ELF: ctor[146/417] @0xaf60f2090
+[ 10s] ELF: ctor[146/417] OK
+[ 10s] ELF: ctor[147/417] @0xaf60f2140
+[ 11s] ELF: ctor[147/417] OK
+[ 11s] ELF: ctor[148/417] @0xaf60f2230
+[ 11s] ELF: ctor[148/417] OK
+[ 11s] ELF: ctor[149/417] @0xaf60f22e0
+[ 11s] ELF: ctor[149/417] OK
+[ 11s] ELF: ctor[150/417] @0xaf60f2390
+[ 11s] ELF: ctor[150/417] OK
+[ 11s] ELF: ctor[151/417] @0xaf60f2440
+[ 11s] ELF: ctor[151/417] OK
+[ 11s] ELF: ctor[152/417] @0xaf60f2554
+[ 11s] ELF: ctor[152/417] OK
+[ 11s] ELF: ctor[153/417] @0xaf60f2604
+[ 11s] ELF: ctor[153/417] OK
+[ 11s] ELF: ctor[154/417] @0xaf60f26b4
+[ 11s] ELF: ctor[154/417] OK
+[ 11s] ELF: ctor[155/417] @0xaf60f2764
+[ 11s] ELF: ctor[155/417] OK
+[ 11s] ELF: ctor[156/417] @0xaf60f2814
+[ 11s] ELF: ctor[156/417] OK
+[ 11s] ELF: ctor[157/417] @0xaf60f28c4
+[ 11s] ELF: ctor[157/417] OK
+[ 11s] ELF: ctor[158/417] @0xaf60f2974
+[ 11s] ELF: ctor[158/417] OK
+[ 11s] ELF: ctor[159/417] @0xaf60f2a24
+[ 11s] ELF: ctor[159/417] OK
+[ 11s] ELF: ctor[160/417] @0xaf60f2ad4
+[ 11s] ELF: ctor[160/417] OK
+[ 11s] ELF: ctor[161/417] @0xaf60f2b84
+[ 11s] ELF: ctor[161/417] OK
+[ 11s] ELF: ctor[162/417] @0xaf60f2c34
+[ 11s] ELF: ctor[162/417] OK
+[ 11s] ELF: ctor[163/417] @0xaf60f2d0c
+[ 11s] ELF: ctor[163/417] OK
+[ 11s] ELF: ctor[164/417] @0xaf60f2dbc
+[ 11s] ELF: ctor[164/417] OK
+[ 11s] ELF: ctor[165/417] @0xaf60f2e6c
+[ 11s] ELF: ctor[165/417] OK
+[ 11s] ELF: ctor[166/417] @0xaf60f2f1c
+[ 11s] ELF: ctor[166/417] OK
+[ 11s] ELF: ctor[167/417] @0xaf60f2fcc
+[ 11s] ELF: ctor[167/417] OK
+[ 11s] ELF: ctor[168/417] @0xaf60f30a4
+[ 11s] ELF: ctor[168/417] OK
+[ 11s] ELF: ctor[169/417] @0xaf60f3154
+[ 11s] ELF: ctor[169/417] OK
+[ 11s] ELF: ctor[170/417] @0xaf60f3204
+[ 11s] ELF: ctor[170/417] OK
+[ 11s] ELF: ctor[171/417] @0xaf60f32b4
+[ 11s] ELF: ctor[171/417] OK
+[ 11s] ELF: ctor[172/417] @0xaf60f3364
+[ 11s] ELF: ctor[172/417] OK
+[ 11s] ELF: ctor[173/417] @0xaf60f3414
+[ 11s] ELF: ctor[173/417] OK
+[ 11s] ELF: ctor[174/417] @0xaf60f34c4
+[ 11s] ELF: ctor[174/417] OK
+[ 11s] ELF: ctor[175/417] @0xaf60f3574
+[ 11s] ELF: ctor[175/417] OK
+[ 11s] ELF: ctor[176/417] @0xaf60f3624
+[ 11s] ELF: ctor[176/417] OK
+[ 11s] ELF: ctor[177/417] @0xaf60f3738
+[ 11s] ELF: ctor[177/417] OK
+[ 11s] ELF: ctor[178/417] @0xaf60f37e8
+[ 11s] ELF: ctor[178/417] OK
+[ 11s] ELF: ctor[179/417] @0xaf60f3898
+[ 11s] ELF: ctor[179/417] OK
+[ 11s] ELF: ctor[180/417] @0xaf60f3948
+[ 11s] ELF: ctor[180/417] OK
+[ 11s] ELF: ctor[181/417] @0xaf60f39f8
+[ 11s] ELF: ctor[181/417] OK
+[ 11s] ELF: ctor[182/417] @0xaf60f3aa8
+[ 11s] ELF: ctor[182/417] OK
+[ 11s] ELF: ctor[183/417] @0xaf60f3b58
+[ 11s] ELF: ctor[183/417] OK
+[ 11s] ELF: ctor[184/417] @0xaf60f3c08
+[ 11s] ELF: ctor[184/417] OK
+[ 11s] ELF: ctor[185/417] @0xaf60f3cb8
+[ 11s] ELF: ctor[185/417] OK
+[ 11s] ELF: ctor[186/417] @0xaf60f3d68
+[ 11s] ELF: ctor[186/417] OK
+[ 11s] ELF: ctor[187/417] @0xaf60f3e7c
+[ 11s] ELF: ctor[187/417] OK
+[ 11s] ELF: ctor[188/417] @0xaf60f3f2c
+[ 11s] ELF: ctor[188/417] OK
+[ 11s] ELF: ctor[189/417] @0xaf60f3fdc
+[ 11s] ELF: ctor[189/417] OK
+[ 11s] ELF: ctor[190/417] @0xaf60f408c
+[ 11s] ELF: ctor[190/417] OK
+[ 11s] ELF: ctor[191/417] @0xaf60f413c
+[ 11s] ELF: ctor[191/417] OK
+[ 11s] ELF: ctor[192/417] @0xaf60f41ec
+[ 11s] ELF: ctor[192/417] OK
+[ 11s] ELF: ctor[193/417] @0xaf60f4390
+[ 11s] ELF: ctor[193/417] OK
+[ 11s] ELF: ctor[194/417] @0xaf60f4440
+[ 11s] ELF: ctor[194/417] OK
+[ 11s] ELF: ctor[195/417] @0xaf60f44f0
+[ 11s] ELF: ctor[195/417] OK
+[ 11s] ELF: ctor[196/417] @0xaf60f45a0
+[ 11s] ELF: ctor[196/417] OK
+[ 11s] ELF: ctor[197/417] @0xaf60f4650
+[ 11s] ELF: ctor[197/417] OK
+[ 11s] ELF: ctor[198/417] @0xaf60f4700
+[ 11s] ELF: ctor[198/417] OK
+[ 11s] ELF: ctor[199/417] @0xaf60f47b0
+[ 11s] ELF: ctor[199/417] OK
+[ 11s] ELF: ctor[200/417] @0xaf60f48c4
+[ 11s] ELF: ctor[200/417] OK
+[ 11s] ELF: ctor[201/417] @0xaf60f4974
+[ 11s] ELF: ctor[201/417] OK
+[ 11s] ELF: ctor[202/417] @0xaf60f4a24
+[ 11s] ELF: ctor[202/417] OK
+[ 11s] ELF: ctor[203/417] @0xaf60f4ad4
+[ 11s] ELF: ctor[203/417] OK
+[ 11s] ELF: ctor[204/417] @0xaf60f4b84
+[ 11s] ELF: ctor[204/417] OK
+[ 11s] ELF: ctor[205/417] @0xaf60f4c34
+[ 11s] ELF: ctor[205/417] OK
+[ 11s] ELF: ctor[206/417] @0xaf60f4d48
+[ 11s] ELF: ctor[206/417] OK
+[ 11s] ELF: ctor[207/417] @0xaf60f4df8
+[ 11s] ELF: ctor[207/417] OK
+[ 11s] ELF: ctor[208/417] @0xaf60f4ea8
+[ 11s] ELF: ctor[208/417] OK
+[ 11s] ELF: ctor[209/417] @0xaf60f4f58
+[ 11s] ELF: ctor[209/417] OK
+[ 11s] ELF: ctor[210/417] @0xaf60f5080
+[ 11s] ELF: ctor[210/417] OK
+[ 11s] ELF: ctor[211/417] @0xaf60f5130
+[ 11s] ELF: ctor[211/417] OK
+[ 11s] ELF: ctor[212/417] @0xaf60f51e0
+[ 11s] ELF: ctor[212/417] OK
+[ 11s] ELF: ctor[213/417] @0xaf60f5290
+[ 11s] ELF: ctor[213/417] OK
+[ 11s] ELF: ctor[214/417] @0xaf60f5340
+[ 11s] ELF: ctor[214/417] OK
+[ 11s] ELF: ctor[215/417] @0xaf60f5418
+[ 11s] ELF: ctor[215/417] OK
+[ 11s] ELF: ctor[216/417] @0xaf60f54c8
+[ 11s] ELF: ctor[216/417] OK
+[ 11s] ELF: ctor[217/417] @0xaf60f5608
+[ 11s] ELF: ctor[217/417] OK
+[ 11s] ELF: ctor[218/417] @0xaf60f56b8
+[ 11s] ELF: ctor[218/417] OK
+[ 11s] ELF: ctor[219/417] @0xaf60f5768
+[ 11s] ELF: ctor[219/417] OK
+[ 11s] ELF: ctor[220/417] @0xaf60f5818
+[ 12s] ELF: ctor[220/417] OK
+[ 12s] ELF: ctor[221/417] @0xaf60f58c8
+[ 12s] ELF: ctor[221/417] OK
+[ 12s] ELF: ctor[222/417] @0xaf60f5978
+[ 12s] ELF: ctor[222/417] OK
+[ 12s] ELF: ctor[223/417] @0xaf60f5a28
+[ 12s] ELF: ctor[223/417] OK
+[ 12s] ELF: ctor[224/417] @0xaf60f5ad8
+[ 12s] ELF: ctor[224/417] OK
+[ 12s] ELF: ctor[225/417] @0xaf60f5b88
+[ 12s] ELF: ctor[225/417] OK
+[ 12s] ELF: ctor[226/417] @0xaf60f5c38
+[ 12s] ELF: ctor[226/417] OK
+[ 12s] ELF: ctor[227/417] @0xaf60f5ce8
+[ 12s] ELF: ctor[227/417] OK
+[ 12s] ELF: ctor[228/417] @0xaf60f5d98
+[ 12s] ELF: ctor[228/417] OK
+[ 12s] ELF: ctor[229/417] @0xaf60f5e48
+[ 12s] ELF: ctor[229/417] OK
+[ 12s] ELF: ctor[230/417] @0xaf60f5ef8
+[ 12s] ELF: ctor[230/417] OK
+[ 12s] ELF: ctor[231/417] @0xaf60f5fa8
+[ 12s] ELF: ctor[231/417] OK
+[ 12s] ELF: ctor[232/417] @0xaf60f6058
+[ 12s] ELF: ctor[232/417] OK
+[ 12s] ELF: ctor[233/417] @0xaf60f6108
+[ 12s] ELF: ctor[233/417] OK
+[ 12s] ELF: ctor[234/417] @0xaf60f61b8
+[ 12s] ELF: ctor[234/417] OK
+[ 12s] ELF: ctor[235/417] @0xaf60f6268
+[ 12s] ELF: ctor[235/417] OK
+[ 12s] ELF: ctor[236/417] @0xaf60f6318
+[ 12s] ELF: ctor[236/417] OK
+[ 12s] ELF: ctor[237/417] @0xaf60f642c
+[ 12s] ELF: ctor[237/417] OK
+[ 12s] ELF: ctor[238/417] @0xaf60f64dc
+[ 12s] ELF: ctor[238/417] OK
+[ 12s] ELF: ctor[239/417] @0xaf60f658c
+[ 12s] ELF: ctor[239/417] OK
+[ 12s] ELF: ctor[240/417] @0xaf60f6664
+[ 12s] ELF: ctor[240/417] OK
+[ 12s] ELF: ctor[241/417] @0xaf60f6714
+[ 12s] ELF: ctor[241/417] OK
+[ 12s] ELF: ctor[242/417] @0xaf60f67c4
+[ 12s] ELF: ctor[242/417] OK
+[ 12s] ELF: ctor[243/417] @0xaf60f6874
+[ 12s] ELF: ctor[243/417] OK
+[ 12s] ELF: ctor[244/417] @0xaf60f6924
+[ 12s] ELF: ctor[244/417] OK
+[ 12s] ELF: ctor[245/417] @0xaf60f69d4
+[ 12s] ELF: ctor[245/417] OK
+[ 12s] ELF: ctor[246/417] @0xaf60f6a84
+[ 12s] ELF: ctor[246/417] OK
+[ 12s] ELF: ctor[247/417] @0xaf60f6b34
+[ 12s] ELF: ctor[247/417] OK
+[ 12s] ELF: ctor[248/417] @0xaf60f6be4
+[ 12s] ELF: ctor[248/417] OK
+[ 12s] ELF: ctor[249/417] @0xaf60f6cf8
+[ 12s] ELF: ctor[249/417] OK
+[ 12s] ELF: ctor[250/417] @0xaf60f6da8
+[ 12s] ELF: ctor[250/417] OK
+[ 12s] ELF: ctor[251/417] @0xaf60f6e58
+[ 12s] ELF: ctor[251/417] OK
+[ 12s] ELF: ctor[252/417] @0xaf60f6f08
+[ 12s] ELF: ctor[252/417] OK
+[ 12s] ELF: ctor[253/417] @0xaf60f6fb8
+[ 12s] ELF: ctor[253/417] OK
+[ 12s] ELF: ctor[254/417] @0xaf60f7068
+[ 12s] ELF: ctor[254/417] OK
+[ 12s] ELF: ctor[255/417] @0xaf60f7118
+[ 12s] ELF: ctor[255/417] OK
+[ 12s] ELF: ctor[256/417] @0xaf60f71c8
+[ 12s] ELF: ctor[256/417] OK
+[ 12s] ELF: ctor[257/417] @0xaf60f7278
+[ 12s] ELF: ctor[257/417] OK
+[ 12s] ELF: ctor[258/417] @0xaf60f7328
+[ 12s] ELF: ctor[258/417] OK
+[ 12s] ELF: ctor[259/417] @0xaf60f744c
+[ 12s] ELF: ctor[259/417] OK
+[ 12s] ELF: ctor[260/417] @0xaf60f74fc
+[ 12s] ELF: ctor[260/417] OK
+[ 12s] ELF: ctor[261/417] @0xaf60f75ac
+[ 12s] ELF: ctor[261/417] OK
+[ 12s] ELF: ctor[262/417] @0xaf60f765c
+[ 12s] ELF: ctor[262/417] OK
+[ 12s] ELF: ctor[263/417] @0xaf60f770c
+[ 12s] ELF: ctor[263/417] OK
+[ 12s] ELF: ctor[264/417] @0xaf60f77bc
+[ 12s] ELF: ctor[264/417] OK
+[ 12s] ELF: ctor[265/417] @0xaf60f788c
+[ 12s] ELF: ctor[265/417] OK
+[ 12s] ELF: ctor[266/417] @0xaf60f793c
+[ 12s] ELF: ctor[266/417] OK
+[ 12s] ELF: ctor[267/417] @0xaf60f79ec
+[ 12s] ELF: ctor[267/417] OK
+[ 12s] ELF: ctor[268/417] @0xaf60f7a9c
+[ 12s] ELF: ctor[268/417] OK
+[ 12s] ELF: ctor[269/417] @0xaf60f7b4c
+[ 12s] ELF: ctor[269/417] OK
+[ 12s] ELF: ctor[270/417] @0xaf60f7c60
+[ 12s] ELF: ctor[270/417] OK
+[ 12s] ELF: ctor[271/417] @0xaf60f7d10
+[ 12s] ELF: ctor[271/417] OK
+[ 12s] ELF: ctor[272/417] @0xaf60f7dc0
+[ 12s] ELF: ctor[272/417] OK
+[ 12s] ELF: ctor[273/417] @0xaf60f7e70
+[ 12s] ELF: ctor[273/417] OK
+[ 12s] ELF: ctor[274/417] @0xaf60f7f20
+[ 12s] ELF: ctor[274/417] OK
+[ 12s] ELF: ctor[275/417] @0xaf60f7fd0
+[ 12s] ELF: ctor[275/417] OK
+[ 12s] ELF: ctor[276/417] @0xaf60f8080
+[ 12s] ELF: ctor[276/417] OK
+[ 12s] ELF: ctor[277/417] @0xaf60f8194
+[ 12s] ELF: ctor[277/417] OK
+[ 12s] ELF: ctor[278/417] @0xaf60f8244
+[ 12s] ELF: ctor[278/417] OK
+[ 12s] ELF: ctor[279/417] @0xaf60f82f4
+[ 12s] ELF: ctor[279/417] OK
+[ 12s] ELF: ctor[280/417] @0xaf60f83a4
+[ 12s] ELF: ctor[280/417] OK
+[ 12s] ELF: ctor[281/417] @0xaf60f8454
+[ 12s] ELF: ctor[281/417] OK
+[ 12s] ELF: ctor[282/417] @0xaf60f8504
+[ 12s] ELF: ctor[282/417] OK
+[ 12s] ELF: ctor[283/417] @0xaf60f85b4
+[ 12s] ELF: ctor[283/417] OK
+[ 12s] ELF: ctor[284/417] @0xaf60f8664
+[ 12s] ELF: ctor[284/417] OK
+[ 12s] ELF: ctor[285/417] @0xaf60f8714
+[ 12s] ELF: ctor[285/417] OK
+[ 12s] ELF: ctor[286/417] @0xaf60f87c4
+[ 12s] ELF: ctor[286/417] OK
+[ 12s] ELF: ctor[287/417] @0xaf60f8874
+[ 12s] ELF: ctor[287/417] OK
+[ 12s] ELF: ctor[288/417] @0xaf60f8924
+[ 12s] ELF: ctor[288/417] OK
+[ 12s] ELF: ctor[289/417] @0xaf60f89d4
+[ 12s] ELF: ctor[289/417] OK
+[ 12s] ELF: ctor[290/417] @0xaf60f8a84
+[ 12s] ELF: ctor[290/417] OK
+[ 12s] ELF: ctor[291/417] @0xaf60f8b34
+[ 12s] ELF: ctor[291/417] OK
+[ 12s] ELF: ctor[292/417] @0xaf60f8be4
+[ 12s] ELF: ctor[292/417] OK
+[ 12s] ELF: ctor[293/417] @0xaf60f8c94
+[ 12s] ELF: ctor[293/417] OK
+[ 13s] ELF: ctor[294/417] @0xaf60f8d44
+[ 13s] ELF: ctor[294/417] OK
+[ 13s] ELF: ctor[295/417] @0xaf60f8df4
+[ 13s] ELF: ctor[295/417] OK
+[ 13s] ELF: ctor[296/417] @0xaf60f8ea4
+[ 13s] ELF: ctor[296/417] OK
+[ 13s] ELF: ctor[297/417] @0xaf60f8f54
+[ 13s] ELF: ctor[297/417] OK
+[ 13s] ELF: ctor[298/417] @0xaf60f9004
+[ 13s] ELF: ctor[298/417] OK
+[ 13s] ELF: ctor[299/417] @0xaf60f90b4
+[ 13s] ELF: ctor[299/417] OK
+[ 13s] ELF: ctor[300/417] @0xaf60f9164
+[ 13s] ELF: ctor[300/417] OK
+[ 13s] ELF: ctor[301/417] @0xaf60f9214
+[ 13s] ELF: ctor[301/417] OK
+[ 13s] ELF: ctor[302/417] @0xaf60f92c4
+[ 13s] ELF: ctor[302/417] OK
+[ 13s] ELF: ctor[303/417] @0xaf60f9374
+[ 13s] ELF: ctor[303/417] OK
+[ 13s] ELF: ctor[304/417] @0xaf60f9424
+[ 13s] ELF: ctor[304/417] OK
+[ 13s] ELF: ctor[305/417] @0xaf60f94d4
+[ 13s] ELF: ctor[305/417] OK
+[ 13s] ELF: ctor[306/417] @0xaf60f9584
+[ 13s] ELF: ctor[306/417] OK
+[ 13s] ELF: ctor[307/417] @0xaf60f9634
+[ 13s] ELF: ctor[307/417] OK
+[ 13s] ELF: ctor[308/417] @0xaf60f96e4
+[ 13s] ELF: ctor[308/417] OK
+[ 13s] ELF: ctor[309/417] @0xaf60f9794
+[ 13s] ELF: ctor[309/417] OK
+[ 13s] ELF: ctor[310/417] @0xaf60f9844
+[ 13s] ELF: ctor[310/417] OK
+[ 13s] ELF: ctor[311/417] @0xaf60f98f4
+[ 13s] ELF: ctor[311/417] OK
+[ 13s] ELF: ctor[312/417] @0xaf60f99a4
+[ 13s] ELF: ctor[312/417] OK
+[ 13s] ELF: ctor[313/417] @0xaf60f9a54
+[ 13s] ELF: ctor[313/417] OK
+[ 13s] ELF: ctor[314/417] @0xaf60f9b04
+[ 13s] ELF: ctor[314/417] OK
+[ 13s] ELF: ctor[315/417] @0xaf60f9bb4
+[ 13s] ELF: ctor[315/417] OK
+[ 13s] ELF: ctor[316/417] @0xaf60f9c64
+[ 13s] ELF: ctor[316/417] OK
+[ 13s] ELF: ctor[317/417] @0xaf60f9d30
+[ 13s] ELF: ctor[317/417] OK
+[ 13s] ELF: ctor[318/417] @0xaf60f9dfc
+[ 13s] ELF: ctor[318/417] OK
+[ 13s] ELF: ctor[319/417] @0xaf60f9eac
+[ 13s] ELF: ctor[319/417] OK
+[ 13s] ELF: ctor[320/417] @0xaf60f9f5c
+[ 13s] ELF: ctor[320/417] OK
+[ 13s] ELF: ctor[321/417] @0xaf60fa00c
+[ 13s] ELF: ctor[321/417] OK
+[ 13s] ELF: ctor[322/417] @0xaf60fa0bc
+[ 13s] ELF: ctor[322/417] OK
+[ 13s] ELF: ctor[323/417] @0xaf60fa1a0
+[ 13s] ELF: ctor[323/417] OK
+[ 13s] ELF: ctor[324/417] @0xaf60fa250
+[ 13s] ELF: ctor[324/417] OK
+[ 13s] ELF: ctor[325/417] @0xaf60fa300
+[ 13s] ELF: ctor[325/417] OK
+[ 13s] ELF: ctor[326/417] @0xaf60fa3b0
+[ 13s] ELF: ctor[326/417] OK
+[ 13s] ELF: ctor[327/417] @0xaf60fa460
+[ 13s] ELF: ctor[327/417] OK
+[ 13s] ELF: ctor[328/417] @0xaf60fa510
+[ 13s] ELF: ctor[328/417] OK
+[ 13s] ELF: ctor[329/417] @0xaf60fa5c0
+[ 13s] ELF: ctor[329/417] OK
+[ 13s] ELF: ctor[330/417] @0xaf60fa670
+[ 13s] ELF: ctor[330/417] OK
+[ 13s] ELF: ctor[331/417] @0xaf60fa720
+[ 13s] ELF: ctor[331/417] OK
+[ 13s] ELF: ctor[332/417] @0xaf60fa7d0
+[ 13s] ELF: ctor[332/417] OK
+[ 13s] ELF: ctor[333/417] @0xaf60fa880
+[ 13s] ELF: ctor[333/417] OK
+[ 13s] ELF: ctor[334/417] @0xaf60fa930
+[ 13s] ELF: ctor[334/417] OK
+[ 13s] ELF: ctor[335/417] @0xaf60fa9e0
+[ 13s] ELF: ctor[335/417] OK
+[ 13s] ELF: ctor[336/417] @0xaf60faa90
+[ 13s] ELF: ctor[336/417] OK
+[ 13s] ELF: ctor[337/417] @0xaf60fab40
+[ 13s] ELF: ctor[337/417] OK
+[ 13s] ELF: ctor[338/417] @0xaf60fabf0
+[ 13s] ELF: ctor[338/417] OK
+[ 13s] ELF: ctor[339/417] @0xaf60faca0
+[ 13s] ELF: ctor[339/417] OK
+[ 13s] ELF: ctor[340/417] @0xaf60fad50
+[ 13s] ELF: ctor[340/417] OK
+[ 13s] ELF: ctor[341/417] @0xaf60fae00
+[ 13s] ELF: ctor[341/417] OK
+[ 13s] ELF: ctor[342/417] @0xaf60faeb0
+[ 13s] ELF: ctor[342/417] OK
+[ 13s] ELF: ctor[343/417] @0xaf60faf60
+[ 13s] ELF: ctor[343/417] OK
+[ 13s] ELF: ctor[344/417] @0xaf60fb010
+[ 13s] ELF: ctor[344/417] OK
+[ 13s] ELF: ctor[345/417] @0xaf60fb0c0
+[ 13s] ELF: ctor[345/417] OK
+[ 13s] ELF: ctor[346/417] @0xaf60fb170
+[ 13s] ELF: ctor[346/417] OK
+[ 13s] ELF: ctor[347/417] @0xaf60fb220
+[ 13s] ELF: ctor[347/417] OK
+[ 13s] ELF: ctor[348/417] @0xaf60fb2d0
+[ 13s] ELF: ctor[348/417] OK
+[ 13s] ELF: ctor[349/417] @0xaf60fb380
+[ 13s] ELF: ctor[349/417] OK
+[ 13s] ELF: ctor[350/417] @0xaf60fb430
+[ 13s] ELF: ctor[350/417] OK
+[ 13s] ELF: ctor[351/417] @0xaf60fb4e0
+[ 13s] ELF: ctor[351/417] OK
+[ 13s] ELF: ctor[352/417] @0xaf60fb590
+[ 13s] ELF: ctor[352/417] OK
+[ 13s] ELF: ctor[353/417] @0xaf60fb640
+[ 13s] ELF: ctor[353/417] OK
+[ 13s] ELF: ctor[354/417] @0xaf60fb6f0
+[ 13s] ELF: ctor[354/417] OK
+[ 13s] ELF: ctor[355/417] @0xaf60fb7a0
+[ 13s] ELF: ctor[355/417] OK
+[ 13s] ELF: ctor[356/417] @0xaf60fb850
+[ 13s] ELF: ctor[356/417] OK
+[ 13s] ELF: ctor[357/417] @0xaf60fb900
+[ 13s] ELF: ctor[357/417] OK
+[ 13s] ELF: ctor[358/417] @0xaf60fb9b0
+[ 13s] ELF: ctor[358/417] OK
+[ 13s] ELF: ctor[359/417] @0xaf60fba60
+[ 13s] ELF: ctor[359/417] OK
+[ 13s] ELF: ctor[360/417] @0xaf60fbb10
+[ 13s] ELF: ctor[360/417] OK
+[ 13s] ELF: ctor[361/417] @0xaf60fbbc0
+[ 13s] ELF: ctor[361/417] OK
+[ 13s] ELF: ctor[362/417] @0xaf60fbc70
+[ 13s] ELF: ctor[362/417] OK
+[ 13s] ELF: ctor[363/417] @0xaf60fbd20
+[ 13s] ELF: ctor[363/417] OK
+[ 13s] ELF: ctor[364/417] @0xaf60fbdd0
+[ 13s] ELF: ctor[364/417] OK
+[ 13s] ELF: ctor[365/417] @0xaf60fbe80
+[ 14s] ELF: ctor[365/417] OK
+[ 14s] ELF: ctor[366/417] @0xaf60fbf30
+[ 14s] ELF: ctor[366/417] OK
+[ 14s] ELF: ctor[367/417] @0xaf60fc028
+[ 14s] ELF: ctor[367/417] OK
+[ 14s] ELF: ctor[368/417] @0xaf60fc0d8
+[ 14s] ELF: ctor[368/417] OK
+[ 14s] ELF: ctor[369/417] @0xaf60fc188
+[ 14s] ELF: ctor[369/417] OK
+[ 14s] ELF: ctor[370/417] @0xaf60fc238
+[ 14s] ELF: ctor[370/417] OK
+[ 14s] ELF: ctor[371/417] @0xaf60fc2e8
+[ 14s] ELF: ctor[371/417] OK
+[ 14s] ELF: ctor[372/417] @0xaf60fc398
+[ 14s] ELF: ctor[372/417] OK
+[ 14s] ELF: ctor[373/417] @0xaf60fc448
+[ 14s] ELF: ctor[373/417] OK
+[ 14s] ELF: ctor[374/417] @0xaf60fc4f8
+[ 14s] ELF: ctor[374/417] OK
+[ 14s] ELF: ctor[375/417] @0xaf60fc5a8
+[ 14s] ELF: ctor[375/417] OK
+[ 14s] ELF: ctor[376/417] @0xaf60fc658
+[ 14s] ELF: ctor[376/417] OK
+[ 14s] ELF: ctor[377/417] @0xaf60fc708
+[ 14s] ELF: ctor[377/417] OK
+[ 14s] ELF: ctor[378/417] @0xaf60fc7dc
+[ 14s] ELF: ctor[378/417] OK
+[ 14s] ELF: ctor[379/417] @0xaf60fc88c
+[ 14s] ELF: ctor[379/417] OK
+[ 14s] ELF: ctor[380/417] @0xaf60fc93c
+[ 14s] ELF: ctor[380/417] OK
+[ 14s] ELF: ctor[381/417] @0xaf60fca18
+[ 14s] ELF: ctor[381/417] OK
+[ 14s] ELF: ctor[382/417] @0xaf60fcac8
+[ 14s] ELF: ctor[382/417] OK
+[ 14s] ELF: ctor[383/417] @0xaf60fcb78
+[ 14s] ELF: ctor[383/417] OK
+[ 14s] ELF: ctor[384/417] @0xaf60fcc28
+[ 14s] ELF: ctor[384/417] OK
+[ 14s] ELF: ctor[385/417] @0xaf60fccd8
+[ 14s] ELF: ctor[385/417] OK
+[ 14s] ELF: ctor[386/417] @0xaf60fcd88
+[ 14s] ELF: ctor[386/417] OK
+[ 14s] ELF: ctor[387/417] @0xaf60fce38
+[ 14s] ELF: ctor[387/417] OK
+[ 14s] ELF: ctor[388/417] @0xaf60fcee8
+[ 14s] ELF: ctor[388/417] OK
+[ 14s] ELF: ctor[389/417] @0xaf60fcf98
+[ 14s] ELF: ctor[389/417] OK
+[ 14s] ELF: ctor[390/417] @0xaf60fd048
+[ 14s] ELF: ctor[390/417] OK
+[ 14s] ELF: ctor[391/417] @0xaf60fd0f8
+[ 14s] ELF: ctor[391/417] OK
+[ 14s] ELF: ctor[392/417] @0xaf60fd1a8
+[ 14s] ELF: ctor[392/417] OK
+[ 14s] ELF: ctor[393/417] @0xaf60fd258
+[ 14s] ELF: ctor[393/417] OK
+[ 14s] ELF: ctor[394/417] @0xaf60fd308
+[ 14s] ELF: ctor[394/417] OK
+[ 14s] ELF: ctor[395/417] @0xaf60fd3b8
+[ 14s] ELF: ctor[395/417] OK
+[ 14s] ELF: ctor[396/417] @0xaf60fd468
+[ 14s] ELF: ctor[396/417] OK
+[ 14s] ELF: ctor[397/417] @0xaf60fd518
+[ 14s] ELF: ctor[397/417] OK
+[ 14s] ELF: ctor[398/417] @0xaf60fd5f4
+[ 14s] ELF: ctor[398/417] OK
+[ 14s] ELF: ctor[399/417] @0xaf60fd6a4
+[ 14s] ELF: ctor[399/417] OK
+[ 14s] ELF: ctor[400/417] @0xaf60fd754
+[ 14s] ELF: ctor[400/417] OK
+[ 14s] ELF: ctor[401/417] @0xaf60fd804
+[ 14s] ELF: ctor[401/417] OK
+[ 14s] ELF: ctor[402/417] @0xaf60fd8b4
+[ 14s] ELF: ctor[402/417] OK
+[ 14s] ELF: ctor[403/417] @0xaf60fd964
+[ 14s] ELF: ctor[403/417] OK
+[ 14s] ELF: ctor[404/417] @0xaf60fda14
+[ 14s] ELF: ctor[404/417] OK
+[ 14s] ELF: ctor[405/417] @0xaf60fdac4
+[ 14s] ELF: ctor[405/417] OK
+[ 14s] ELF: ctor[406/417] @0xaf60fdb74
+[ 14s] ELF: ctor[406/417] OK
+[ 14s] ELF: ctor[407/417] @0xaf60fdc48
+[ 14s] ELF: ctor[407/417] OK
+[ 14s] ELF: ctor[408/417] @0xaf60fdcf8
+[ 14s] ELF: ctor[408/417] OK
+[ 14s] ELF: ctor[409/417] @0xaf60fdda8
+[ 14s] ELF: ctor[409/417] OK
+[ 14s] ELF: ctor[410/417] @0xaf60fde58
+[ 14s] ELF: ctor[410/417] OK
+[ 14s] ELF: ctor[411/417] @0xaf60fdf08
+[ 14s] ELF: ctor[411/417] OK
+[ 14s] ELF: ctor[412/417] @0xaf60fdfb8
+[ 14s] ELF: ctor[412/417] OK
+[ 14s] ELF: ctor[413/417] @0xaf60fe068
+[ 14s] ELF: ctor[413/417] OK
+[ 14s] ELF: ctor[414/417] @0xaf60fe118
+[ 14s] ELF: ctor[414/417] OK
+[ 14s] ELF: ctor[415/417] @0xaf60fe1c8
+[ 14s] ELF: ctor[415/417] OK
+[ 14s] ELF: ctor[416/417] @0xaf60fe224
+[ 14s] ELF: ctor[416/417] OK
+[ 14s] ELF: ctor[417/417] @0xaf60fe8ec
+[ 14s] ELF: ctor[417/417] OK
+[ 14s] ELF: libgame.so: heap walk covered 69993 chunks, stopped: reached the break (no corruption seen)
+[ 14s] ELF: libgame.so: ctors done ok=417 failed=0 skipped=0
+[ 14s] orientation: sensor handles (handheld x2) rc=0x1759
+[ 14s] orientation: sensor acquired (handheld x1)
+[ 14s] orientation: game wants sensorLandscape; console sensor available
+[ 14s] Scanning for Java_ native methods in main .so...
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_closeWithEulaDecline @0xaf63e3214
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onPaymentWallAdsUpdated @0xaf62ed00c
+[ 14s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesMove @0xaf6429200
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_userHasGivenConsentForTargetedAds @0xaf62ece94
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getPlayerInfoAdFreeStatus @0xaf62edf10
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoStartedFail @0xaf62edf6c
+[ 14s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSignInCompleted @0xaf6372778
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItemEnabled @0xaf62ecd8c
+[ 14s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeKeyDown @0xaf6429478
+[ 14s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeOnResume @0xaf6428a18
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getPlayerInfoGDPRValue @0xaf62edecc
+[ 14s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDataLoadedGarage @0xaf63728d8
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_passGDPRConsentValueToNativeSide @0xaf62ecec0
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_consentFormHasBeenShown @0xaf62edf54
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_updateRingerStateAndVolumeLevel @0xaf63e2dd4
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setPromoClosed @0xaf63e3210
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItemPrice @0xaf62eca84
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_eulaHasBeenAccepted @0xaf63e3230
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoStartedSuccess @0xaf62edf84
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_createRewardedInterstitialFrequencyCap @0xaf63e31a8
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_userHasNotGivenConsentForTargetedAds @0xaf62eceac
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_crossPromoShowing @0xaf63e2dcc
+[ 14s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxBitmap_nativeInitBitmapDC @0xaf6428320
+[ 14s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit @0xaf60fefb8
+[ 14s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeDeleteBackward @0xaf6428908
+[ 14s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInsertText @0xaf6428894
+[ 14s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeResize @0xaf60fef6c
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getPlayerConsentLocation @0xaf62edff0
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_interstialClosed @0xaf63e2d38
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_createInterstitialFrequencyCap @0xaf63e3158
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setNativePlayerGDPRStatus @0xaf62ee450
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_getContentVersionFromGlobalH @0xaf6372770
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnCountryCode @0xaf62edff4
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoCompletedSuccess @0xaf62edfb4
+[ 14s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesBegin @0xaf6429128
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnFileDownloadResult @0xaf62eddf4
+[ 14s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeGetContentText @0xaf642891c
+[ 14s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxActivity_nativeSetPaths @0xaf6428e48
+[ 14s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDataLoaded @0xaf63727f0
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onControllerKeyEvent @0xaf619a6ac
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItem @0xaf62ecbc4
+[ 14s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDeviceLimitReached @0xaf63727a0
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnMissionJson @0xaf62edc58
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_isTestingMode @0xaf6372768
+[ 14s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeOnPause @0xaf64289cc
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setServerTime @0xaf62ecdec
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onVideoCompletedFail @0xaf62edf9c
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_startPopupOfferHandler @0xaf62edeb4
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_clearStoreItems @0xaf62ecf3c
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onRewardedInterstitialCompleted @0xaf62edfcc
+[ 14s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesEnd @0xaf6429194
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_onControllerConnectionEvent @0xaf619a9ec
+[ 14s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesCancel @0xaf642933c
+[ 14s] JAVA_METHOD: Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeRender @0xaf64289b0
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_returnPopupOfferJson @0xaf62edd30
+[ 14s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onSyncDataLoadedSkins @0xaf63729c0
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setCustomRewardVideoAdCompleted @0xaf62ece80
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_crossPromoClosed @0xaf63e2dd0
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_reportConsentDialogDismissed @0xaf62edf68
+[ 14s] JAVA_METHOD: Java_com_fingersoft_utils_CloudHelperNew_onAchievementProgressLoaded @0xaf6372aa8
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_setInAppItemCurrencyCode @0xaf62ecb24
+[ 14s] JAVA_METHOD: Java_com_fingersoft_game_MainActivity_UpdateLevelBattles @0xaf62eca70
+[ 14s] JAVA_METHOD: 62 total Java_ symbols found
+[ 14s] ELF: loading complete — game execution on main thread
+[ 14s] loader: launchApk returned — signalling the main thread
+[ 14s] loader: wait loop exited — rendering final frame
+[ 14s] loader: final frame rendered
+[ 14s] loader: work finished, joining loader thread
+[ 14s] loader: thread joined
+[ 15s] boot: rendering jingle
+[ 15s] jingle: 17 notes, 4.12s
+[ 15s] boot: reveal starting (4.12s)
+[ 20s] boot: reveal done — handing the screen to the game
+[ 20s] loader: handing off to the game on the main thread
+[ 20s] perf: CPU boost mode -> FastLoad (game startup/loading, GPU throttled)
+[ 20s] AndroidTLS: old TPIDR_EL0=0x0 — installing fake TLS @0xf745fd860
+[ 20s] audio: assets dir = sdmc:/Viridite/games/com.fingersoft.hillclimb/assets
+[ 20s] audio: SDL_mixer ready (codecs=0x18)
+[ 20s] UserDefaults: loaded 5305 ints, 2 floats, 49 strings
+[ 20s] EGL: using SDL2 context on main thread
+[ 20s] main/render thread tid=0xf746fc210
+[ 20s] Calling JNI_OnLoad @0xaf60fed78 ...
+[ 20s] [main] JNI_OnLoad: Init
+[ 20s] JNI FindClass: org/cocos2dx/lib/Cocos2dxActivity
+[ 20s] JNI_OnLoad returned: 0x10004
+[ 20s] No NativeActivity — Cocos2d-x direct Java_ path
+[ 20s] Cocos2d-x: nativeSetPaths @0xaf6428e48
+[ 20s] Cocos2d-x: nativeSetPaths OK
+[ 20s] Cocos2d-x: nativeInit @0xaf60fefb8 1280x720
+[ 20s] JNI FindClass: org/cocos2dx/lib/Cocos2dxRenderer
+[ 20s] JNI GetStaticMethodID: setAnimationInterval (D)V
+[ 20s] JNI CallStaticVoidMethodV: setAnimationInterval (D)V
+[ 20s] fopen FAIL:  (mode=r)
+[ 20s] game stdio[tid=0xf746fc210]: I/O 
+[ 20s] game stdio[tid=0xf746fc210]: error : 
+[ 20s] game stdio[tid=0xf746fc210]: No such file or directory
+
+[ 20s] fopen FAIL:  (mode=r)
+[ 20s] game stdio[tid=0xf746fc210]: I/O 
+[ 20s] game stdio[tid=0xf746fc210]: error : 
+[ 20s] game stdio[tid=0xf746fc210]: No such file or directory
+
+[ 20s] game stdio[tid=0xf746fc210]: I/O 
+[ 20s] game stdio[tid=0xf746fc210]: warning : 
+[ 20s] game stdio[tid=0xf746fc210]: failed to load external entity ""
+
+[ 20s] JNI FindClass: org/cocos2dx/lib/Cocos2dxUserDefault
+[ 20s] JNI GetStaticMethodID: getIntegerForKey (Ljava/lang/String;I)I
+[ 20s] JNI GetStaticMethodID: getStringForKey (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+[ 20s] JNI FindClass: com/fingersoft/game/MainActivity
+[ 20s] JNI GetStaticMethodID: getMarketVariation ()I
+[ 20s] JNI getMarketVariation() → 1
+[ 20s] JNI GetStaticMethodID: isTv ()Z
+[ 20s] JNI CallStaticBooleanMethodV: isTv → false
+[ 20s] JNI getMarketVariation() → 1
+[ 20s] JNI GetStaticMethodID: hasValue (Ljava/lang/String;)Z
+[ 20s] JNI CallStaticBooleanMethodV: hasValue → false
+[ 20s] JNI GetStaticMethodID: getDeviceLanguage ()Ljava/lang/String;
+[ 20s] JNI getMarketVariation() → 1
+[ 20s] JNI GetStaticMethodID: getFloatForKey (Ljava/lang/String;F)F
+[ 20s] JNI getMarketVariation() → 1  x88
+[ 20s] JNI getIntegerForKey: 2000 reads
+[ 20s] JNI getIntegerForKey: 4000 reads
+[ 20s] JNI getMarketVariation() → 1  x46
+[ 20s] JNI GetStaticMethodID: getSettingInt (Ljava/lang/String;I)I
+[ 20s] JNI getSettingInt(nitro_price) → caller default 30
+[ 20s] JNI GetStaticMethodID: getFirebaseRemoteConfigInt (Ljava/lang/String;I)I
+[ 20s] JNI getFirebaseRemoteConfigInt(ch_enable) → caller default 0
+[ 20s] JNI getMarketVariation() → 1
+[ 20s] JNI getSettingInt(kv_value) → caller default 0
+[ 20s] JNI getMarketVariation() → 1
+[ 20s] JNI GetStaticMethodID: getFirebaseRemoteConfigString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+[ 20s] JNI getFirebaseRemoteConfigString(juicyBannerConfigHCR2Promo) → caller default ""
+[ 20s] JNI GetStaticMethodID: startAdView ()V
+[ 20s] JNI CallStaticVoidMethodV: startAdView ()V
+[ 20s] JNI getMarketVariation() → 1  x5
+[ 20s] Cocos2d-x: nativeInit OK
+[ 20s] touch: begin=0xaf6429128 end=0xaf6429194 move=0xaf6429200 keyDown=0xaf6429478
+[ 20s] controller: conn=0xaf619a9ec key=0xaf619a6ac
+[ 20s] controller: launcher requested controller input
+[ 20s] controller: announced connected (type 3) — pad input enabled
+[ 20s] Cocos2d-x: nativeRender @0xaf64289b0 — game loop
+[ 20s] JNI getMarketVariation() → 1  x5
+[ 20s] [libSimpleAudioEngine] Get Env
+[ 20s] JNI GetStaticMethodID: getAndroidVersion ()Ljava/lang/String;
+[ 21s] JNI GetStaticMethodID: preloadEffect (Ljava/lang/String;)V
+[ 21s] STALL(severe): frame 2 stalled for 288ms
+[ 23s] JNI GetStaticMethodID: playEffect (Ljava/lang/String;ZFF)I
+[ 23s] JNI GetStaticMethodID: splashScreenHasCompleted ()V
+[ 23s] JNI splashScreenHasCompleted — hiding branding overlay
+[ 23s] [libSimpleAudioEngine] Get Env
+[ 23s] stall: frame 152 stalled for 58ms
+[ 23s] JNI GetStaticMethodID: stopBackgroundMusic ()V
+[ 23s] JNI GetStaticMethodID: playBackgroundMusic (Ljava/lang/String;Z)V
+[ 23s] audio: music sdmc:/Viridite/games/com.fingersoft.hillclimb/assets/audio/bgmusic00.ogg loop=1
+[ 23s] JNI GetStaticMethodID: setBackgroundMusicVolume (F)V
+[ 23s] JNI setBackgroundMusicVolume(0.500000)
+[ 23s] stall: frame 153 stalled for 39ms
+[ 23s] stall: frame 170 stalled for 38ms
+[ 23s] stall: frame 171 stalled for 37ms
+[ 23s] stall: frame 172 stalled for 38ms
+[ 23s] JNI getMarketVariation() → 1
+[ 23s] stall: frame 173 stalled for 71ms
+[ 24s] JNI getMarketVariation() → 1
+[ 24s] stall: frame 174 stalled for 48ms
+[ 24s] JNI getMarketVariation() → 1
+[ 24s] stall: frame 175 stalled for 49ms
+[ 24s] JNI getMarketVariation() → 1
+[ 24s] stall: frame 176 stalled for 50ms
+[ 24s] JNI getMarketVariation() → 1
+[ 24s] stall: frame 177 stalled for 51ms
+[ 24s] JNI getMarketVariation() → 1
+[ 24s] stall: frame 178 stalled for 88ms
+[ 24s] JNI getMarketVariation() → 1
+[ 24s] stall: frame 179 stalled for 90ms
+[ 24s] JNI getMarketVariation() → 1
+[ 24s] STALL(severe): frame 180 stalled for 103ms
+[ 24s] JNI getMarketVariation() → 1
+[ 24s] STALL(severe): frame 181 stalled for 131ms
+[ 25s] JNI getMarketVariation() → 1
+[ 25s] STALL(severe): frame 182 stalled for 412ms
+[ 25s] JNI getMarketVariation() → 1
+[ 25s] STALL(severe): frame 183 stalled for 252ms
+[ 25s] JNI getMarketVariation() → 1
+[ 25s] STALL(severe): frame 184 stalled for 112ms
+[ 25s] JNI getMarketVariation() → 1
+[ 25s] STALL(severe): frame 185 stalled for 261ms
+[ 25s] JNI getMarketVariation() → 1
+[ 25s] STALL(severe): frame 186 stalled for 256ms
+[ 26s] JNI getMarketVariation() → 1
+[ 26s] STALL(severe): frame 187 stalled for 218ms
+[ 26s] JNI getMarketVariation() → 1
+[ 26s] STALL(severe): frame 188 stalled for 199ms
+[ 26s] JNI getMarketVariation() → 1
+[ 26s] STALL(severe): frame 189 stalled for 111ms
+[ 26s] JNI getMarketVariation() → 1
+[ 26s] STALL(severe): frame 190 stalled for 112ms
+[ 26s] JNI getMarketVariation() → 1
+[ 26s] stall: frame 191 stalled for 44ms
+[ 26s] JNI getMarketVariation() → 1
+[ 26s] stall: frame 192 stalled for 48ms
+[ 26s] JNI getMarketVariation() → 1
+[ 26s] stall: frame 193 stalled for 48ms
+[ 26s] JNI getMarketVariation() → 1
+[ 26s] stall: frame 194 stalled for 58ms
+[ 26s] JNI getMarketVariation() → 1
+[ 26s] stall: frame 195 stalled for 58ms
+[ 26s] JNI getMarketVariation() → 1
+[ 26s] stall: frame 196 stalled for 58ms
+[ 26s] JNI getMarketVariation() → 1
+[ 26s] stall: frame 197 stalled for 59ms
+[ 26s] JNI getMarketVariation() → 1
+[ 26s] stall: frame 198 stalled for 52ms
+[ 27s] JNI getMarketVariation() → 1
+[ 27s] stall: frame 199 stalled for 53ms
+[ 27s] JNI getMarketVariation() → 1
+[ 27s] stall: frame 200 stalled for 51ms
+[ 27s] JNI getMarketVariation() → 1
+[ 27s] stall: frame 201 stalled for 56ms
+[ 27s] JNI getMarketVariation() → 1
+[ 27s] stall: frame 202 stalled for 48ms
+[ 27s] JNI getMarketVariation() → 1
+[ 27s] stall: frame 203 stalled for 52ms
+[ 27s] JNI getMarketVariation() → 1
+[ 27s] stall: frame 204 stalled for 48ms
+[ 27s] JNI getMarketVariation() → 1
+[ 27s] stall: frame 205 stalled for 50ms
+[ 27s] JNI getMarketVariation() → 1
+[ 27s] stall: frame 206 stalled for 49ms
+[ 27s] JNI getMarketVariation() → 1
+[ 27s] stall: frame 207 stalled for 50ms
+[ 27s] JNI getMarketVariation() → 1
+[ 27s] stall: frame 208 stalled for 50ms
+[ 27s] JNI getMarketVariation() → 1
+[ 27s] stall: frame 209 stalled for 53ms
+[ 27s] JNI getMarketVariation() → 1
+[ 27s] stall: frame 210 stalled for 57ms
+[ 27s] JNI getMarketVariation() → 1  x2
+[ 27s] stall: frame 211 stalled for 51ms
+[ 27s] JNI getMarketVariation() → 1
+[ 27s] stall: frame 212 stalled for 46ms
+[ 27s] JNI getMarketVariation() → 1
+[ 27s] stall: frame 213 stalled for 46ms
+[ 27s] JNI getMarketVariation() → 1
+[ 27s] stall: frame 214 stalled for 48ms
+[ 27s] JNI getMarketVariation() → 1
+[ 27s] stall: frame 215 stalled for 46ms
+[ 27s] JNI getMarketVariation() → 1
+[ 27s] stall: frame 216 stalled for 45ms
+[ 27s] JNI getMarketVariation() → 1
+[ 27s] stall: frame 217 stalled for 46ms
+[ 27s] JNI getMarketVariation() → 1
+[ 27s] stall: frame 218 stalled for 46ms
+[ 28s] JNI getMarketVariation() → 1
+[ 28s] stall: frame 219 stalled for 45ms
+[ 28s] JNI getMarketVariation() → 1
+[ 28s] stall: frame 220 stalled for 45ms
+[ 28s] JNI getMarketVariation() → 1
+[ 28s] stall: frame 221 stalled for 47ms
+[ 28s] JNI getMarketVariation() → 1
+[ 28s] stall: frame 222 stalled for 48ms
+[ 28s] JNI getMarketVariation() → 1
+[ 28s] stall: frame 223 stalled for 45ms
+[ 28s] JNI getMarketVariation() → 1
+[ 28s] stall: frame 224 stalled for 46ms
+[ 28s] JNI getMarketVariation() → 1
+[ 28s] stall: frame 225 stalled for 46ms
+[ 28s] JNI getMarketVariation() → 1
+[ 28s] stall: frame 226 stalled for 46ms
+[ 28s] JNI getMarketVariation() → 1
+[ 28s] stall: frame 227 stalled for 46ms
+[ 28s] JNI getMarketVariation() → 1
+[ 28s] stall: frame 228 stalled for 44ms
+[ 28s] JNI getMarketVariation() → 1
+[ 28s] stall: frame 229 stalled for 45ms
+[ 28s] JNI getMarketVariation() → 1
+[ 28s] stall: frame 230 stalled for 45ms
+[ 28s] JNI getMarketVariation() → 1
+[ 28s] stall: frame 231 stalled for 46ms
+[ 28s] JNI getMarketVariation() → 1
+[ 28s] stall: frame 232 stalled for 48ms
+[ 28s] JNI getMarketVariation() → 1
+[ 28s] stall: frame 233 stalled for 46ms
+[ 28s] JNI getMarketVariation() → 1
+[ 28s] stall: frame 234 stalled for 45ms
+[ 28s] JNI getMarketVariation() → 1
+[ 28s] stall: frame 235 stalled for 51ms
+[ 28s] JNI getMarketVariation() → 1
+[ 28s] stall: frame 236 stalled for 44ms
+[ 28s] JNI getMarketVariation() → 1
+[ 28s] stall: frame 237 stalled for 46ms
+[ 28s] JNI getMarketVariation() → 1
+[ 28s] stall: frame 238 stalled for 46ms
+[ 28s] JNI getMarketVariation() → 1
+[ 28s] stall: frame 239 stalled for 47ms
+[ 29s] JNI getMarketVariation() → 1
+[ 29s] stall: frame 240 stalled for 46ms
+[ 29s] JNI getMarketVariation() → 1
+[ 29s] stall: frame 241 stalled for 46ms
+[ 29s] JNI getMarketVariation() → 1
+[ 29s] stall: frame 242 stalled for 48ms
+[ 29s] JNI getMarketVariation() → 1
+[ 29s] stall: frame 243 stalled for 46ms
+[ 29s] JNI getMarketVariation() → 1
+[ 29s] stall: frame 244 stalled for 49ms
+[ 29s] JNI getMarketVariation() → 1
+[ 29s] stall: frame 245 stalled for 51ms
+[ 29s] JNI getMarketVariation() → 1
+[ 29s] stall: frame 246 stalled for 48ms
+[ 29s] JNI getMarketVariation() → 1
+[ 29s] stall: frame 247 stalled for 46ms
+[ 29s] JNI getMarketVariation() → 1
+[ 29s] stall: frame 248 stalled for 50ms
+[ 29s] JNI getMarketVariation() → 1
+[ 29s] stall: frame 249 stalled for 47ms
+[ 29s] JNI getMarketVariation() → 1
+[ 29s] stall: frame 250 stalled for 48ms
+[ 29s] JNI getMarketVariation() → 1
+[ 29s] stall: frame 251 stalled for 49ms
+[ 29s] JNI getMarketVariation() → 1
+[ 29s] stall: frame 252 stalled for 51ms
+[ 29s] JNI getMarketVariation() → 1
+[ 29s] stall: frame 253 stalled for 54ms
+[ 29s] JNI getMarketVariation() → 1
+[ 29s] stall: frame 254 stalled for 54ms
+[ 29s] JNI getMarketVariation() → 1
+[ 29s] stall: frame 255 stalled for 51ms
+[ 29s] JNI getMarketVariation() → 1
+[ 29s] stall: frame 256 stalled for 52ms
+[ 29s] JNI getMarketVariation() → 1  x2
+[ 29s] stall: frame 257 stalled for 44ms
+[ 29s] JNI getMarketVariation() → 1  x2
+[ 29s] stall: frame 258 stalled for 55ms
+[ 29s] JNI getMarketVariation() → 1
+[ 29s] stall: frame 259 stalled for 59ms
+[ 30s] JNI getMarketVariation() → 1
+[ 30s] stall: frame 260 stalled for 61ms
+[ 30s] JNI getMarketVariation() → 1
+[ 30s] stall: frame 261 stalled for 58ms
+[ 30s] JNI getMarketVariation() → 1
+[ 30s] stall: frame 262 stalled for 59ms
+[ 30s] JNI getMarketVariation() → 1
+[ 30s] stall: frame 263 stalled for 60ms
+[ 30s] JNI getMarketVariation() → 1
+[ 30s] stall: frame 264 stalled for 60ms
+[ 30s] JNI getMarketVariation() → 1
+[ 30s] stall: frame 265 stalled for 56ms
+[ 30s] JNI getMarketVariation() → 1
+[ 30s] stall: frame 266 stalled for 57ms
+[ 30s] JNI getMarketVariation() → 1
+[ 30s] stall: frame 267 stalled for 59ms
+[ 30s] JNI getMarketVariation() → 1
+[ 30s] stall: frame 268 stalled for 60ms
+[ 30s] JNI getMarketVariation() → 1
+[ 30s] stall: frame 269 stalled for 61ms
+[ 30s] JNI getMarketVariation() → 1
+[ 30s] stall: frame 270 stalled for 62ms
+[ 30s] JNI getMarketVariation() → 1
+[ 30s] stall: frame 271 stalled for 59ms
+[ 30s] JNI getMarketVariation() → 1
+[ 30s] stall: frame 272 stalled for 57ms
+[ 30s] JNI getMarketVariation() → 1  x2
+[ 30s] stall: frame 273 stalled for 57ms
+[ 30s] JNI getMarketVariation() → 1  x2
+[ 30s] stall: frame 274 stalled for 54ms
+[ 30s] JNI getMarketVariation() → 1
+[ 30s] stall: frame 275 stalled for 55ms
+[ 30s] JNI getMarketVariation() → 1
+[ 30s] stall: frame 276 stalled for 50ms
+[ 31s] JNI getMarketVariation() → 1
+[ 31s] stall: frame 277 stalled for 48ms
+[ 31s] JNI getMarketVariation() → 1
+[ 31s] stall: frame 278 stalled for 49ms
+[ 31s] JNI getMarketVariation() → 1
+[ 31s] stall: frame 279 stalled for 47ms
+[ 31s] JNI getMarketVariation() → 1  x2
+[ 31s] game stdio[tid=0xf746fc210]: libpng warning: iCCP: known incorrect sRGB profile
+[ 31s] stall: frame 280 stalled for 51ms
+[ 31s] JNI getMarketVariation() → 1  x2
+[ 31s] stall: frame 281 stalled for 49ms
+[ 31s] JNI getMarketVariation() → 1
+[ 31s] stall: frame 282 stalled for 49ms
+[ 31s] JNI getMarketVariation() → 1
+[ 31s] stall: frame 283 stalled for 48ms
+[ 31s] JNI getMarketVariation() → 1
+[ 31s] stall: frame 284 stalled for 53ms
+[ 31s] JNI getMarketVariation() → 1
+[ 31s] stall: frame 285 stalled for 51ms
+[ 31s] JNI getMarketVariation() → 1
+[ 31s] stall: frame 286 stalled for 52ms
+[ 31s] JNI getMarketVariation() → 1
+[ 31s] stall: frame 287 stalled for 53ms
+[ 31s] JNI getMarketVariation() → 1
+[ 31s] stall: frame 288 stalled for 52ms
+[ 31s] stall: frame 289 stalled for 97ms
+[ 31s] stall: frame 290 stalled for 99ms
+[ 31s] STALL(severe): frame 291 stalled for 104ms
+[ 32s] STALL(severe): frame 292 stalled for 100ms
+[ 32s] stall: frame 293 stalled for 99ms
+[ 32s] STALL(severe): frame 294 stalled for 101ms
+[ 32s] stall: frame 295 stalled for 99ms
+[ 32s] STALL(severe): frame 296 stalled for 101ms
+[ 32s] STALL(severe): frame 297 stalled for 101ms
+[ 32s] stall: frame 298 stalled for 99ms
+[ 32s] STALL(severe): frame 299 stalled for 102ms
+[ 32s] STALL(severe): frame 300 stalled for 101ms
+[ 32s] stall: frame 301 stalled for 98ms
+[ 33s] STALL(severe): frame 302 stalled for 100ms
+[ 33s] STALL(severe): frame 303 stalled for 100ms
+[ 33s] stall: frame 304 stalled for 98ms
+[ 33s] stall: frame 305 stalled for 99ms
+[ 33s] STALL(severe): frame 306 stalled for 103ms
+[ 33s] STALL(severe): frame 307 stalled for 104ms
+[ 33s] STALL(severe): frame 308 stalled for 103ms
+[ 33s] STALL(severe): frame 309 stalled for 107ms
+[ 33s] STALL(severe): frame 310 stalled for 100ms
+[ 33s] STALL(severe): frame 311 stalled for 101ms
+[ 34s] STALL(severe): frame 312 stalled for 101ms
+[ 34s] STALL(severe): frame 313 stalled for 103ms
+[ 34s] stall: frame 314 stalled for 99ms
+[ 34s] STALL(severe): frame 315 stalled for 100ms
+[ 34s] STALL(severe): frame 316 stalled for 102ms
+[ 34s] STALL(severe): frame 317 stalled for 101ms
+[ 34s] STALL(severe): frame 318 stalled for 100ms
+[ 35s] STALL(severe): frame 319 stalled for 100ms
+[ 35s] JNI getMarketVariation() → 1
+[ 35s] JNI GetStaticMethodID: getFilesDirectory ()Ljava/lang/String;
+[ 35s] JNI getFilesDirectory() → sdmc:/Viridite/games/com.fingersoft.hillclimb
+[ 35s] JNI getMarketVariation() → 1  x3
+[ 35s] JNI GetStaticMethodID: setIntegerForKey (Ljava/lang/String;I)V
+[ 35s] JNI setIntegerForKey(maxSkippableMissions, 2)
+[ 35s] JNI setIntegerForKey(gemCompensationForExcessiveNitros, 2000)
+[ 35s] JNI GetStaticMethodID: flush ()V
+[ 35s] UserDefaults: saved 5305 ints, 2 floats, 49 strings (203327 bytes, one write)
+[ 35s] JNI getMarketVariation() → 1  x4
+[ 35s] JNI getFirebaseRemoteConfigString(timedLevelConfigProduction) → caller default ""
+[ 35s] [fsgame] Event start time 1785713513
+[ 35s] JNI setIntegerForKey(last_saved_timestamp, 1785811873)
+[ 35s] JNI setIntegerForKey(stage, 0)
+[ 35s] JNI setIntegerForKey(coins, 3250)
+[ 35s] JNI setIntegerForKey(highscore, 0)
+[ 35s] JNI setIntegerForKey(level_engine, 1)
+[ 35s] JNI setIntegerForKey(level_suspension, 1)
+[ 35s] JNI setIntegerForKey(level_awd, 1)
+[ 35s] JNI setIntegerForKey(level_traction, 1)
+[ 35s] JNI setIntegerForKey(level_body, 1)
+[ 35s] JNI setIntegerForKey(stage_selection, 6)
+[ 35s] JNI setIntegerForKey(stage_selection_carousel, 5)
+[ 35s] JNI setIntegerForKey(car_selection, 1)
+[ 35s] JNI setIntegerForKey(car_selection_carousel, -1)
+[ 35s] JNI setIntegerForKey(adfree, 0)
+[ 35s] JNI setIntegerForKey(adFreeIAPPurchased, 0)
+[ 35s] JNI setIntegerForKey(gems, 108)
+[ 35s] JNI setIntegerForKey(daily_missions_streak, 0)
+[ 35s] JNI setIntegerForKey(chestg, 0)
+[ 35s] JNI setIntegerForKey(chests, 0)
+[ 35s] JNI setIntegerForKey(chestr, 0)
+[ 35s] JNI setIntegerForKey(unlockg, 0)
+[ 35s] JNI setIntegerForKey(brew, 0)
+[ 35s] JNI setIntegerForKey(garagecar_selection, 0)
+[ 35s] JNI setIntegerForKey(auto_sign_in, 0)
+[ 35s] JNI setIntegerForKey(render_dirt, 1)
+[ 35s] JNI setIntegerForKey(halloween_content, 1)
+[ 35s] JNI setIntegerForKey(music, 1)
+[ 35s] JNI setIntegerForKey(sound, 1)
+[ 35s] JNI setIntegerForKey(moga_pro_guide, 0)
+[ 35s] JNI setIntegerForKey(moga_pocket_guide, 1)
+[ 35s] JNI setIntegerForKey(display_mode, 0)
+[ 35s] JNI setIntegerForKey(facebook_like_rewarded, 0)
+[ 35s] JNI setIntegerForKey(video_ads_enabled, 1)
+[ 35s] JNI GetStaticMethodID: setStringForKey (Ljava/lang/String;Ljava/lang/String;)V
+[ 35s] JNI setStringForKey(language, "translations/english.po")
+[ 35s] JNI setIntegerForKey(daily_double_used, 0)
+[ 35s] JNI setIntegerForKey(new_day, 0)
+[ 35s] JNI setIntegerForKey(previous_day_in_month, 4)
+[ 35s] JNI setIntegerForKey(show_eula_counter, 0)
+[ 35s] JNI setIntegerForKey(eula_has_been_accepted, 1)
+[ 35s] JNI setIntegerForKey(eula_accepted_version, 1)
+[ 35s] JNI setIntegerForKey(bundlea, 12)
+[ 35s] JNI setIntegerForKey(bundlerefsh, 0)
+[ 35s] JNI setIntegerForKey(chal, 0)
+[ 35s] JNI setIntegerForKey(chalc, 5)
+[ 35s] JNI setIntegerForKey(chalfa, 5)
+[ 35s] JNI setIntegerForKey(chalrc, 0)
+[ 35s] JNI setIntegerForKey(chalrew, 110)
+[ 35s] JNI setIntegerForKey(chalgoal, 4600)
+[ 35s] JNI setIntegerForKey(chalv, 1)
+[ 35s] JNI setIntegerForKey(chalprev, 215)
+[ 35s] JNI setIntegerForKey(maalitynnyrit, 305419896)
+[ 35s] JNI setIntegerForKey(mustontulluurheiluhullu, 305419890)
+[ 35s] JNI setIntegerForKey(erikoisfiat, 305419896)
+[ 35s] JNI setStringForKey(hippikaara, "1785713513")
+[ 35s] JNI setIntegerForKey(tasohoula, 305419896)
+[ 35s] JNI setIntegerForKey(sahanpuru, 305419896)
+[ 35s] JNI setIntegerForKey(is_gdpr_country, 1)
+[ 35s] JNI setIntegerForKey(CPPA_consent, 0)
+[ 35s] JNI setIntegerForKey(CCPA_EULA_updated, 0)
+[ 35s] JNI setIntegerForKey(show_GDPR_V3_dialog, 0)
+[ 35s] JNI setIntegerForKey(GDPR_consent, 1)
+[ 35s] JNI setIntegerForKey(determinedGdprLocation, 0)
+[ 35s] JNI setIntegerForKey(gdprLocation, 2)
+[ 35s] JNI setIntegerForKey(lowrider_hop, 0)
+[ 35s] JNI setIntegerForKey(lowrider_jump, 0)
+[ 35s] JNI GetStaticMethodID: setFloatForKey (Ljava/lang/String;F)V
+[ 35s] JNI setFloatForKey(space_best_time, 0.000000)
+[ 35s] JNI setIntegerForKey(bogland_berries, 0)
+[ 35s] JNI setIntegerForKey(retro_hiscore, 0)
+[ 35s] JNI setIntegerForKey(retro_coins, 0)
+[ 35s] JNI setIntegerForKey(retro_upgrades, 8191)
+[ 35s] JNI setIntegerForKey(retro_hiscoretable_0, 4999490)
+[ 35s] JNI setIntegerForKey(retro_hiscoretable_1, 900)
+[ 35s] JNI setIntegerForKey(retro_hiscoretable_2, 2304)
+[ 35s] JNI setIntegerForKey(retro_hiscoretable_3, 0)
+[ 35s] JNI setIntegerForKey(retro_hiscoretable_4, 5719374)
+[ 35s] JNI setIntegerForKey(retro_hiscoretable_5, 700)
+[ 35s] JNI setIntegerForKey(retro_hiscoretable_6, 1792)
+[ 35s] JNI setIntegerForKey(retro_hiscoretable_7, 0)
+[ 35s] JNI setIntegerForKey(retro_hiscoretable_8, 5132116)
+[ 35s] JNI setIntegerForKey(retro_hiscoretable_9, 500)
+[ 35s] JNI setIntegerForKey(retro_hiscoretable_10, 1280)
+[ 35s] JNI setIntegerForKey(retro_hiscoretable_11, 0)
+[ 35s] JNI setIntegerForKey(retro_hiscoretable_12, 5130566)
+[ 35s] JNI setIntegerForKey(retro_hiscoretable_13, 200)
+[ 35s] JNI setIntegerForKey(retro_hiscoretable_14, 512)
+[ 35s] JNI setIntegerForKey(retro_hiscoretable_15, 0)
+[ 35s] JNI setIntegerForKey(retro_hiscoretable_16, 5391687)
+[ 35s] JNI setIntegerForKey(retro_hiscoretable_17, 100)
+[ 35s] JNI setIntegerForKey(retro_hiscoretable_18, 256)
+[ 35s] JNI setIntegerForKey(retro_hiscoretable_19, 0)
+[ 35s] JNI setIntegerForKey(retro_hiscoretable_20, 5523027)
+[ 35s] JNI setIntegerForKey(retro_hiscoretable_21, 50)
+[ 35s] JNI setIntegerForKey(retro_hiscoretable_22, 80)
+[ 35s] JNI setIntegerForKey(retro_hiscoretable_23, 0)
+[ 35s] JNI setIntegerForKey(adsWatchedToday, 0)
+[ 35s] JNI setFloatForKey(time_left_for_video_double, 0.000000)
+[ 35s] JNI setIntegerForKey(double_money_video_watched, 0)
+[ 35s] JNI setIntegerForKey(is_double_money_active, 0)
+[ 35s] JNI setIntegerForKey(custom1_unlocked, 0)
+[ 35s] JNI setIntegerForKey(custom1_chestconsumed, 0)
+[ 35s] JNI setIntegerForKey(custom1_powerupsel, 0)
+[ 35s] JNI setStringForKey(custom1_attachments, "")
+[ 35s] JNI setIntegerForKey(jeep_engine, 5)
+[ 35s] JNI setIntegerForKey(jeep_engineH, 5)
+[ 35s] JNI setIntegerForKey(jeep_suspension, 4)
+[ 35s] JNI setIntegerForKey(jeep_suspensionH, 4)
+[ 35s] JNI setIntegerForKey(jeep_tires, 3)
+[ 35s] JNI setIntegerForKey(jeep_tiresH, 3)
+[ 35s] JNI setIntegerForKey(jeep_awd, 4)
+[ 35s] JNI setIntegerForKey(jeep_awdH, 4)
+[ 35s] JNI setIntegerForKey(jeep_unlocked, 1)
+[ 35s] JNI setIntegerForKey(jeep_chestconsumed, 1)
+[ 35s] JNI setIntegerForKey(jeep_powerupsel, 0)
+[ 35s] JNI setStringForKey(jeep_attachments, "")
+[ 35s] JNI setIntegerForKey(bike_engine, 3)
+[ 35s] JNI setIntegerForKey(bike_engineH, 3)
+[ 35s] JNI setIntegerForKey(bike_suspension, 1)
+[ 35s] JNI setIntegerForKey(bike_suspensionH, 1)
+[ 35s] JNI setIntegerForKey(bike_tires, 2)
+[ 35s] JNI setIntegerForKey(bike_tiresH, 2)
+[ 35s] JNI setIntegerForKey(bike_rotation, 1)
+[ 35s] JNI setIntegerForKey(bike_rotationH, 1)
+[ 35s] JNI setIntegerForKey(bike_unlocked, 1)
+[ 35s] JNI setIntegerForKey(bike_chestconsumed, 0)
+[ 35s] JNI setIntegerForKey(bike_powerupsel, 0)
+[ 35s] JNI setStringForKey(bike_attachments, "")
+[ 35s] JNI setIntegerForKey(monster_engine, 1)
+[ 35s] JNI setIntegerForKey(monster_engineH, 1)
+[ 35s] JNI setIntegerForKey(monster_suspension, 1)
+[ 35s] JNI setIntegerForKey(monster_suspensionH, 1)
+[ 35s] JNI setIntegerForKey(monster_tires, 1)
+[ 35s] JNI setIntegerForKey(monster_tiresH, 1)
+[ 35s] JNI setIntegerForKey(monster_awd, 1)
+[ 35s] JNI setIntegerForKey(monster_awdH, 1)
+[ 35s] JNI setIntegerForKey(monster_unlocked, 0)
+[ 35s] JNI setIntegerForKey(monster_chestconsumed, 0)
+[ 35s] JNI setIntegerForKey(monster_powerupsel, 0)
+[ 35s] JNI setStringForKey(monster_attachments, "")
+[ 35s] JNI setIntegerForKey(tractor_engine, 1)
+[ 35s] JNI setIntegerForKey(tractor_engineH, 1)
+[ 35s] JNI setIntegerForKey(tractor_tires, 1)
+[ 35s] JNI setIntegerForKey(tractor_tiresH, 1)
+[ 35s] JNI setIntegerForKey(tractor_fuel, 1)
+[ 35s] JNI setIntegerForKey(tractor_fuelH, 1)
+[ 35s] JNI setIntegerForKey(tractor_stability, 1)
+[ 35s] JNI setIntegerForKey(tractor_stabilityH, 1)
+[ 35s] JNI setIntegerForKey(tractor_unlocked, 0)
+[ 35s] JNI setIntegerForKey(tractor_chestconsumed, 0)
+[ 35s] JNI setIntegerForKey(tractor_powerupsel, 0)
+[ 35s] JNI setStringForKey(tractor_attachments, "")
+[ 35s] JNI setIntegerForKey(hippievan_engine, 1)
+[ 35s] JNI setIntegerForKey(hippievan_engineH, 1)
+[ 35s] JNI setIntegerForKey(hippievan_suspension, 1)
+[ 35s] JNI setIntegerForKey(hippievan_suspensionH, 1)
+[ 35s] JNI setIntegerForKey(hippievan_boost, 1)
+[ 35s] JNI setIntegerForKey(hippievan_boostH, 1)
+[ 35s] JNI setIntegerForKey(hippievan_fuel, 1)
+[ 35s] JNI setIntegerForKey(hippievan_fuelH, 1)
+[ 35s] JNI setIntegerForKey(hippievan_unlocked, 0)
+[ 35s] JNI setIntegerForKey(hippievan_chestconsumed, 0)
+[ 35s] JNI setIntegerForKey(hippievan_powerupsel, 0)
+[ 35s] JNI setStringForKey(hippievan_attachments, "")
+[ 35s] JNI setIntegerForKey(onewheeler_engine, 1)
+[ 35s] JNI setIntegerForKey(onewheeler_engineH, 1)
+[ 35s] JNI setIntegerForKey(onewheeler_suspension, 1)
+[ 35s] JNI setIntegerForKey(onewheeler_suspensionH, 1)
+[ 35s] JNI setIntegerForKey(onewheeler_tires, 1)
+[ 35s] JNI setIntegerForKey(onewheeler_tiresH, 1)
+[ 35s] JNI setIntegerForKey(onewheeler_battery, 1)
+[ 35s] JNI setIntegerForKey(onewheeler_batteryH, 1)
+[ 35s] JNI setIntegerForKey(onewheeler_unlocked, 0)
+[ 35s] JNI setIntegerForKey(onewheeler_chestconsumed, 0)
+[ 35s] JNI setIntegerForKey(onewheeler_powerupsel, 0)
+[ 35s] JNI setStringForKey(onewheeler_attachments, "")
+[ 35s] JNI setIntegerForKey(quadbike_engine, 1)
+[ 35s] JNI setIntegerForKey(quadbike_engineH, 1)
+[ 35s] JNI setIntegerForKey(quadbike_suspension, 1)
+[ 35s] JNI setIntegerForKey(quadbike_suspensionH, 1)
+[ 35s] JNI setIntegerForKey(quadbike_tires, 1)
+[ 35s] JNI setIntegerForKey(quadbike_tiresH, 1)
+[ 35s] JNI setIntegerForKey(quadbike_awd, 1)
+[ 35s] JNI setIntegerForKey(quadbike_awdH, 1)
+[ 35s] JNI setIntegerForKey(quadbike_unlocked, 0)
+[ 35s] JNI setIntegerForKey(quadbike_chestconsumed, 0)
+[ 35s] JNI setIntegerForKey(quadbike_powerupsel, 0)
+[ 35s] JNI setStringForKey(quadbike_attachments, "")
+[ 35s] JNI setIntegerForKey(trophytruck_engine, 1)
+[ 35s] JNI setIntegerForKey(trophytruck_engineH, 1)
+[ 35s] JNI setIntegerForKey(trophytruck_suspension, 1)
+[ 35s] JNI setIntegerForKey(trophytruck_suspensionH, 1)
+[ 35s] JNI setIntegerForKey(trophytruck_tires, 1)
+[ 35s] JNI setIntegerForKey(trophytruck_tiresH, 1)
+[ 35s] JNI setIntegerForKey(trophytruck_fuel, 1)
+[ 35s] JNI setIntegerForKey(trophytruck_fuelH, 1)
+[ 35s] JNI setIntegerForKey(trophytruck_unlocked, 0)
+[ 35s] JNI setIntegerForKey(trophytruck_chestconsumed, 0)
+[ 35s] JNI setIntegerForKey(trophytruck_powerupsel, 0)
+[ 35s] JNI setStringForKey(trophytruck_attachments, "")
+[ 35s] JNI setIntegerForKey(touristbus_engine, 1)
+[ 35s] JNI setIntegerForKey(touristbus_engineH, 1)
+[ 35s] JNI setIntegerForKey(touristbus_suspension, 1)
+[ 35s] JNI setIntegerForKey(touristbus_suspensionH, 1)
+[ 35s] JNI setIntegerForKey(touristbus_tires, 1)
+[ 35s] JNI setIntegerForKey(touristbus_tiresH, 1)
+[ 35s] JNI setIntegerForKey(touristbus_fuel, 1)
+[ 36s] JNI setIntegerForKey(touristbus_fuelH, 1)
+[ 36s] JNI setIntegerForKey(touristbus_unlocked, 0)
+[ 36s] JNI setIntegerForKey(touristbus_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(touristbus_powerupsel, 0)
+[ 36s] JNI setStringForKey(touristbus_attachments, "")
+[ 36s] JNI setIntegerForKey(racecar_engine, 1)
+[ 36s] JNI setIntegerForKey(racecar_engineH, 1)
+[ 36s] JNI setIntegerForKey(racecar_suspension, 1)
+[ 36s] JNI setIntegerForKey(racecar_suspensionH, 1)
+[ 36s] JNI setIntegerForKey(racecar_tires, 1)
+[ 36s] JNI setIntegerForKey(racecar_tiresH, 1)
+[ 36s] JNI setIntegerForKey(racecar_downforce, 1)
+[ 36s] JNI setIntegerForKey(racecar_downforceH, 1)
+[ 36s] JNI setIntegerForKey(racecar_unlocked, 0)
+[ 36s] JNI setIntegerForKey(racecar_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(racecar_powerupsel, 0)
+[ 36s] JNI setStringForKey(racecar_attachments, "")
+[ 36s] JNI setIntegerForKey(screw_finger_engine, 1)
+[ 36s] JNI setIntegerForKey(screw_finger_engineH, 1)
+[ 36s] JNI setIntegerForKey(screw_finger_stability, 1)
+[ 36s] JNI setIntegerForKey(screw_finger_stabilityH, 1)
+[ 36s] JNI setIntegerForKey(screw_finger_tires, 1)
+[ 36s] JNI setIntegerForKey(screw_finger_tiresH, 1)
+[ 36s] JNI setIntegerForKey(screw_finger_fuel, 1)
+[ 36s] JNI setIntegerForKey(screw_finger_fuelH, 1)
+[ 36s] JNI setIntegerForKey(screwfinger_unlocked, 0)
+[ 36s] JNI setIntegerForKey(screwfinger_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(screwfinger_powerupsel, 0)
+[ 36s] JNI setStringForKey(screwfinger_attachments, "")
+[ 36s] JNI setIntegerForKey(policecar_engine, 1)
+[ 36s] JNI setIntegerForKey(policecar_engineH, 1)
+[ 36s] JNI setIntegerForKey(policecar_suspension, 1)
+[ 36s] JNI setIntegerForKey(policecar_suspensionH, 1)
+[ 36s] JNI setIntegerForKey(policecar_tires, 1)
+[ 36s] JNI setIntegerForKey(policecar_tiresH, 1)
+[ 36s] JNI setIntegerForKey(policecar_fuel, 1)
+[ 36s] JNI setIntegerForKey(policecar_fuelH, 1)
+[ 36s] JNI setIntegerForKey(policecar_unlocked, 0)
+[ 36s] JNI setIntegerForKey(policecar_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(policecar_powerupsel, 0)
+[ 36s] JNI setStringForKey(policecar_attachments, "")
+[ 36s] JNI setIntegerForKey(ambulance_engine, 1)
+[ 36s] JNI setIntegerForKey(ambulance_engineH, 1)
+[ 36s] JNI setIntegerForKey(ambulance_suspension, 1)
+[ 36s] JNI setIntegerForKey(ambulance_suspensionH, 1)
+[ 36s] JNI setIntegerForKey(ambulance_tires, 1)
+[ 36s] JNI setIntegerForKey(ambulance_tiresH, 1)
+[ 36s] JNI setIntegerForKey(ambulance_fuel, 1)
+[ 36s] JNI setIntegerForKey(ambulance_fuelH, 1)
+[ 36s] JNI setIntegerForKey(ambulance_unlocked, 0)
+[ 36s] JNI setIntegerForKey(ambulance_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(ambulance_powerupsel, 0)
+[ 36s] JNI setStringForKey(ambulance_attachments, "")
+[ 36s] JNI setIntegerForKey(electric_engine_rear, 1)
+[ 36s] JNI setIntegerForKey(electric_engine_rearH, 1)
+[ 36s] JNI setIntegerForKey(electric_battery, 1)
+[ 36s] JNI setIntegerForKey(electric_batteryH, 1)
+[ 36s] JNI setIntegerForKey(electric_tires, 1)
+[ 36s] JNI setIntegerForKey(electric_tiresH, 1)
+[ 36s] JNI setIntegerForKey(electric_engine_front, 1)
+[ 36s] JNI setIntegerForKey(electric_engine_frontH, 1)
+[ 36s] JNI setIntegerForKey(electric_unlocked, 0)
+[ 36s] JNI setIntegerForKey(electric_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(electric_powerupsel, 0)
+[ 36s] JNI setStringForKey(electric_attachments, "")
+[ 36s] JNI setIntegerForKey(dieseltruck_engine, 1)
+[ 36s] JNI setIntegerForKey(dieseltruck_engineH, 1)
+[ 36s] JNI setIntegerForKey(dieseltruck_suspension, 1)
+[ 36s] JNI setIntegerForKey(dieseltruck_suspensionH, 1)
+[ 36s] JNI setIntegerForKey(dieseltruck_tires, 1)
+[ 36s] JNI setIntegerForKey(dieseltruck_tiresH, 1)
+[ 36s] JNI setIntegerForKey(dieseltruck_fuel, 1)
+[ 36s] JNI setIntegerForKey(dieseltruck_fuelH, 1)
+[ 36s] JNI setIntegerForKey(dieseltruck_unlocked, 0)
+[ 36s] JNI setIntegerForKey(dieseltruck_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(dieseltruck_powerupsel, 0)
+[ 36s] JNI setStringForKey(dieseltruck_attachments, "")
+[ 36s] JNI setIntegerForKey(rallycar_engine, 1)
+[ 36s] JNI setIntegerForKey(rallycar_engineH, 1)
+[ 36s] JNI setIntegerForKey(rallycar_suspension, 1)
+[ 36s] JNI setIntegerForKey(rallycar_suspensionH, 1)
+[ 36s] JNI setIntegerForKey(rallycar_tires, 1)
+[ 36s] JNI setIntegerForKey(rallycar_tiresH, 1)
+[ 36s] JNI setIntegerForKey(rallycar_downforce, 1)
+[ 36s] JNI setIntegerForKey(rallycar_downforceH, 1)
+[ 36s] JNI setIntegerForKey(rallycar_unlocked, 0)
+[ 36s] JNI setIntegerForKey(rallycar_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(rallycar_powerupsel, 0)
+[ 36s] JNI setStringForKey(rallycar_attachments, "")
+[ 36s] JNI setIntegerForKey(dragster_engine, 1)
+[ 36s] JNI setIntegerForKey(dragster_engineH, 1)
+[ 36s] JNI setIntegerForKey(dragster_tires, 1)
+[ 36s] JNI setIntegerForKey(dragster_tiresH, 1)
+[ 36s] JNI setIntegerForKey(dragster_fuel, 1)
+[ 36s] JNI setIntegerForKey(dragster_fuelH, 1)
+[ 36s] JNI setIntegerForKey(dragster_stability, 1)
+[ 36s] JNI setIntegerForKey(dragster_stabilityH, 1)
+[ 36s] JNI setIntegerForKey(dragster_unlocked, 0)
+[ 36s] JNI setIntegerForKey(dragster_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(dragster_powerupsel, 0)
+[ 36s] JNI setStringForKey(dragster_attachments, "")
+[ 36s] JNI setIntegerForKey(firetruck_engine, 1)
+[ 36s] JNI setIntegerForKey(firetruck_engineH, 1)
+[ 36s] JNI setIntegerForKey(firetruck_brakes, 1)
+[ 36s] JNI setIntegerForKey(firetruck_brakesH, 1)
+[ 36s] JNI setIntegerForKey(firetruck_tire, 1)
+[ 36s] JNI setIntegerForKey(firetruck_tireH, 1)
+[ 36s] JNI setIntegerForKey(firetruck_fuel, 1)
+[ 36s] JNI setIntegerForKey(firetruck_fuelH, 1)
+[ 36s] JNI setIntegerForKey(firetruck_unlocked, 0)
+[ 36s] JNI setIntegerForKey(firetruck_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(firetruck_powerupsel, 0)
+[ 36s] JNI setStringForKey(firetruck_attachments, "")
+[ 36s] JNI setIntegerForKey(chopper_engine, 1)
+[ 36s] JNI setIntegerForKey(chopper_engineH, 1)
+[ 36s] JNI setIntegerForKey(chopper_suspension, 1)
+[ 36s] JNI setIntegerForKey(chopper_suspensionH, 1)
+[ 36s] JNI setIntegerForKey(bike_sissybar, 1)
+[ 36s] JNI setIntegerForKey(bike_sissybarH, 1)
+[ 36s] JNI setIntegerForKey(bike_fork, 1)
+[ 36s] JNI setIntegerForKey(bike_forkH, 1)
+[ 36s] JNI setIntegerForKey(chopperbike_unlocked, 0)
+[ 36s] JNI setIntegerForKey(chopperbike_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(chopperbike_powerupsel, 0)
+[ 36s] JNI setStringForKey(chopperbike_attachments, "")
+[ 36s] JNI setIntegerForKey(lowrider_engine, 1)
+[ 36s] JNI setIntegerForKey(lowrider_engineH, 1)
+[ 36s] JNI setIntegerForKey(lowrider_tires, 1)
+[ 36s] JNI setIntegerForKey(lowrider_tiresH, 1)
+[ 36s] JNI setIntegerForKey(lowrider_suspension_rear, 1)
+[ 36s] JNI setIntegerForKey(lowrider_suspension_rearH, 1)
+[ 36s] JNI setIntegerForKey(lowrider_suspension_front, 1)
+[ 36s] JNI setIntegerForKey(lowrider_suspension_frontH, 1)
+[ 36s] JNI setIntegerForKey(lowrider_unlocked, 0)
+[ 36s] JNI setIntegerForKey(lowrider_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(lowrider_powerupsel, 0)
+[ 36s] JNI setStringForKey(lowrider_attachments, "")
+[ 36s] JNI setIntegerForKey(tank_engine, 1)
+[ 36s] JNI setIntegerForKey(tank_engineH, 1)
+[ 36s] JNI setIntegerForKey(tank_suspension, 1)
+[ 36s] JNI setIntegerForKey(tank_suspensionH, 1)
+[ 36s] JNI setIntegerForKey(tank_tires, 1)
+[ 36s] JNI setIntegerForKey(tank_tiresH, 1)
+[ 36s] JNI setIntegerForKey(tank_fuel, 1)
+[ 36s] JNI setIntegerForKey(tank_fuelH, 1)
+[ 36s] JNI setIntegerForKey(tank_unlocked, 0)
+[ 36s] JNI setIntegerForKey(tank_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(tank_powerupsel, 0)
+[ 36s] JNI setStringForKey(tank_attachments, "")
+[ 36s] JNI setIntegerForKey(snowmobile_engine, 1)
+[ 36s] JNI setIntegerForKey(snowmobile_engineH, 1)
+[ 36s] JNI setIntegerForKey(snowmobile_suspension, 1)
+[ 36s] JNI setIntegerForKey(snowmobile_suspensionH, 1)
+[ 36s] JNI setIntegerForKey(snowmobile_tires, 1)
+[ 36s] JNI setIntegerForKey(snowmobile_tiresH, 1)
+[ 36s] JNI setIntegerForKey(snowmobile_fuel, 1)
+[ 36s] JNI setIntegerForKey(snowmobile_fuelH, 1)
+[ 36s] JNI setIntegerForKey(snowmobile_unlocked, 0)
+[ 36s] JNI setIntegerForKey(snowmobile_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(snowmobile_powerupsel, 0)
+[ 36s] JNI setStringForKey(snowmobile_attachments, "")
+[ 36s] JNI setIntegerForKey(superoffroad_engine, 1)
+[ 36s] JNI setIntegerForKey(superoffroad_engineH, 1)
+[ 36s] JNI setIntegerForKey(superoffroad_tires, 1)
+[ 36s] JNI setIntegerForKey(superoffroad_tiresH, 1)
+[ 36s] JNI setIntegerForKey(superoffroad_downforce, 1)
+[ 36s] JNI setIntegerForKey(superoffroad_downforceH, 1)
+[ 36s] JNI setIntegerForKey(superoffroad_fuel, 1)
+[ 36s] JNI setIntegerForKey(superoffroad_fuelH, 1)
+[ 36s] JNI setIntegerForKey(superoffroad_unlocked, 0)
+[ 36s] JNI setIntegerForKey(superoffroad_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(superoffroad_powerupsel, 0)
+[ 36s] JNI setStringForKey(superoffroad_attachments, "")
+[ 36s] JNI setIntegerForKey(truck_engine, 1)
+[ 36s] JNI setIntegerForKey(truck_engineH, 1)
+[ 36s] JNI setIntegerForKey(truck_suspension, 1)
+[ 36s] JNI setIntegerForKey(truck_suspensionH, 1)
+[ 36s] JNI setIntegerForKey(truck_tires, 1)
+[ 36s] JNI setIntegerForKey(truck_tiresH, 1)
+[ 36s] JNI setIntegerForKey(truck_fuel, 1)
+[ 36s] JNI setIntegerForKey(truck_fuelH, 1)
+[ 36s] JNI setIntegerForKey(truck_unlocked, 0)
+[ 36s] JNI setIntegerForKey(truck_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(truck_powerupsel, 0)
+[ 36s] JNI setStringForKey(truck_attachments, "")
+[ 36s] JNI setIntegerForKey(dunebuggy_engine, 1)
+[ 36s] JNI setIntegerForKey(dunebuggy_engineH, 1)
+[ 36s] JNI setIntegerForKey(dunebuggy_suspension, 1)
+[ 36s] JNI setIntegerForKey(dunebuggy_suspensionH, 1)
+[ 36s] JNI setIntegerForKey(dunebuggy_tires, 1)
+[ 36s] JNI setIntegerForKey(dunebuggy_tiresH, 1)
+[ 36s] JNI setIntegerForKey(dunebuggy_fuel, 1)
+[ 36s] JNI setIntegerForKey(dunebuggy_fuelH, 1)
+[ 36s] JNI setIntegerForKey(dunebuggy_unlocked, 0)
+[ 36s] JNI setIntegerForKey(dunebuggy_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(dunebuggy_powerupsel, 0)
+[ 36s] JNI setStringForKey(dunebuggy_attachments, "")
+[ 36s] JNI setIntegerForKey(hovercraft_engine, 1)
+[ 36s] JNI setIntegerForKey(hovercraft_engineH, 1)
+[ 36s] JNI setIntegerForKey(hovercraft_stability, 1)
+[ 36s] JNI setIntegerForKey(hovercraft_stabilityH, 1)
+[ 36s] JNI setIntegerForKey(hovercraft_friction, 1)
+[ 36s] JNI setIntegerForKey(hovercraft_frictionH, 1)
+[ 36s] JNI setIntegerForKey(hovercraft_aerodynamics, 1)
+[ 36s] JNI setIntegerForKey(hovercraft_aerodynamicsH, 1)
+[ 36s] JNI setIntegerForKey(hovercraft_unlocked, 0)
+[ 36s] JNI setIntegerForKey(hovercraft_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(hovercraft_powerupsel, 0)
+[ 36s] JNI setStringForKey(hovercraft_attachments, "")
+[ 36s] JNI setIntegerForKey(minibike_engine, 1)
+[ 36s] JNI setIntegerForKey(minibike_engineH, 1)
+[ 36s] JNI setIntegerForKey(minibike_suspension, 1)
+[ 36s] JNI setIntegerForKey(minibike_suspensionH, 1)
+[ 36s] JNI setIntegerForKey(minibike_tires, 1)
+[ 36s] JNI setIntegerForKey(minibike_tiresH, 1)
+[ 36s] JNI setIntegerForKey(minibike_fuel, 1)
+[ 36s] JNI setIntegerForKey(minibike_fuelH, 1)
+[ 36s] JNI setIntegerForKey(minibike_unlocked, 0)
+[ 36s] JNI setIntegerForKey(minibike_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(minibike_powerupsel, 0)
+[ 36s] JNI setStringForKey(minibike_attachments, "")
+[ 36s] JNI setIntegerForKey(bigfinger_engine, 1)
+[ 36s] JNI setIntegerForKey(bigfinger_engineH, 1)
+[ 36s] JNI setIntegerForKey(bigfinger_stability, 1)
+[ 36s] JNI setIntegerForKey(bigfinger_stabilityH, 1)
+[ 36s] JNI setIntegerForKey(bigfinger_rollcage, 1)
+[ 36s] JNI setIntegerForKey(bigfinger_rollcageH, 1)
+[ 36s] JNI setIntegerForKey(bigfinger_fuel, 1)
+[ 36s] JNI setIntegerForKey(bigfinger_fuelH, 1)
+[ 36s] JNI setIntegerForKey(bigfinger_unlocked, 0)
+[ 36s] JNI setIntegerForKey(bigfinger_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(bigfinger_powerupsel, 0)
+[ 36s] JNI setStringForKey(bigfinger_attachments, "")
+[ 36s] JNI setIntegerForKey(train_engine, 1)
+[ 36s] JNI setIntegerForKey(train_engineH, 1)
+[ 36s] JNI setIntegerForKey(train_suspension, 1)
+[ 36s] JNI setIntegerForKey(train_suspensionH, 1)
+[ 36s] JNI setIntegerForKey(train_tires, 1)
+[ 36s] JNI setIntegerForKey(train_tiresH, 1)
+[ 36s] JNI setIntegerForKey(train_fuel, 1)
+[ 36s] JNI setIntegerForKey(train_fuelH, 1)
+[ 36s] JNI setIntegerForKey(train_unlocked, 0)
+[ 36s] JNI setIntegerForKey(train_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(train_powerupsel, 0)
+[ 36s] JNI setStringForKey(train_attachments, "")
+[ 36s] JNI setIntegerForKey(moonlander_engine, 1)
+[ 36s] JNI setIntegerForKey(moonlander_engineH, 1)
+[ 36s] JNI setIntegerForKey(moonlander_suspension, 1)
+[ 36s] JNI setIntegerForKey(moonlander_suspensionH, 1)
+[ 36s] JNI setIntegerForKey(moonlander_thruster, 1)
+[ 36s] JNI setIntegerForKey(moonlander_thrusterH, 1)
+[ 36s] JNI setIntegerForKey(moonlander_fuel, 1)
+[ 36s] JNI setIntegerForKey(moonlander_fuelH, 1)
+[ 36s] JNI setIntegerForKey(moonlander_unlocked, 0)
+[ 36s] JNI setIntegerForKey(moonlander_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(moonlander_powerupsel, 0)
+[ 36s] JNI setStringForKey(moonlander_attachments, "")
+[ 36s] JNI setIntegerForKey(hotrod_rear_tire, 1)
+[ 36s] JNI setIntegerForKey(hotrod_rear_tireH, 1)
+[ 36s] JNI setIntegerForKey(hotrod_drive, 1)
+[ 36s] JNI setIntegerForKey(hotrod_driveH, 1)
+[ 36s] JNI setIntegerForKey(hotrod_engine, 1)
+[ 36s] JNI setIntegerForKey(hotrod_engineH, 1)
+[ 36s] JNI setIntegerForKey(hotrod_front_tire, 1)
+[ 36s] JNI setIntegerForKey(hotrod_front_tireH, 1)
+[ 36s] JNI setIntegerForKey(hotrod_unlocked, 0)
+[ 36s] JNI setIntegerForKey(hotrod_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(hotrod_powerupsel, 0)
+[ 36s] JNI setStringForKey(hotrod_attachments, "")
+[ 36s] JNI setIntegerForKey(bubblecar_engine, 1)
+[ 36s] JNI setIntegerForKey(bubblecar_engineH, 1)
+[ 36s] JNI setIntegerForKey(bubblecar_tires, 1)
+[ 36s] JNI setIntegerForKey(bubblecar_tiresH, 1)
+[ 36s] JNI setIntegerForKey(bubblecar_suspension, 1)
+[ 36s] JNI setIntegerForKey(bubblecar_suspensionH, 1)
+[ 36s] JNI setIntegerForKey(bubblecar_rocket, 1)
+[ 36s] JNI setIntegerForKey(bubblecar_rocketH, 1)
+[ 36s] JNI setIntegerForKey(bubblecar_unlocked, 0)
+[ 36s] JNI setIntegerForKey(bubblecar_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(bubblecar_powerupsel, 0)
+[ 36s] JNI setStringForKey(bubblecar_attachments, "")
+[ 36s] JNI setIntegerForKey(shapeshifter_engine, 1)
+[ 36s] JNI setIntegerForKey(shapeshifter_engineH, 1)
+[ 36s] JNI setIntegerForKey(shapeshifter_suspension, 1)
+[ 36s] JNI setIntegerForKey(shapeshifter_suspensionH, 1)
+[ 36s] JNI setIntegerForKey(shapeshifter_tires, 1)
+[ 36s] JNI setIntegerForKey(shapeshifter_tiresH, 1)
+[ 36s] JNI setIntegerForKey(shapeshifter_downforce, 1)
+[ 36s] JNI setIntegerForKey(shapeshifter_downforceH, 1)
+[ 36s] JNI setIntegerForKey(shapeshifter_unlocked, 0)
+[ 36s] JNI setIntegerForKey(shapeshifter_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(shapeshifter_powerupsel, 0)
+[ 36s] JNI setStringForKey(shapeshifter_attachments, "")
+[ 36s] JNI setIntegerForKey(luxury_engine, 1)
+[ 36s] JNI setIntegerForKey(luxury_engineH, 1)
+[ 36s] JNI setIntegerForKey(luxury_suspension, 1)
+[ 36s] JNI setIntegerForKey(luxury_suspensionH, 1)
+[ 36s] JNI setIntegerForKey(luxury_tires, 1)
+[ 36s] JNI setIntegerForKey(luxury_tiresH, 1)
+[ 36s] JNI setIntegerForKey(luxury_wealth, 1)
+[ 36s] JNI setIntegerForKey(luxury_wealthH, 1)
+[ 36s] JNI setIntegerForKey(luxury_unlocked, 0)
+[ 36s] JNI setIntegerForKey(luxury_chestconsumed, 0)
+[ 36s] JNI setIntegerForKey(luxury_powerupsel, 0)
+[ 37s] JNI setStringForKey(luxury_attachments, "")
+[ 37s] JNI setIntegerForKey(spider_engine, 1)
+[ 37s] JNI setIntegerForKey(spider_engineH, 1)
+[ 37s] JNI setIntegerForKey(spider_torque, 1)
+[ 37s] JNI setIntegerForKey(spider_torqueH, 1)
+[ 37s] JNI setIntegerForKey(spider_grip, 1)
+[ 37s] JNI setIntegerForKey(spider_gripH, 1)
+[ 37s] JNI setIntegerForKey(spider_fuel, 1)
+[ 37s] JNI setIntegerForKey(spider_fuelH, 1)
+[ 37s] JNI setIntegerForKey(spider_unlocked, 0)
+[ 37s] JNI setIntegerForKey(spider_chestconsumed, 0)
+[ 37s] JNI setIntegerForKey(spider_powerupsel, 0)
+[ 37s] JNI setStringForKey(spider_attachments, "")
+[ 37s] JNI setIntegerForKey(hachiroku_engine, 1)
+[ 37s] JNI setIntegerForKey(hachiroku_engineH, 1)
+[ 37s] JNI setIntegerForKey(hachiroku_suspension, 1)
+[ 37s] JNI setIntegerForKey(hachiroku_suspensionH, 1)
+[ 37s] JNI setIntegerForKey(hachiroku_tires, 1)
+[ 37s] JNI setIntegerForKey(hachiroku_tiresH, 1)
+[ 37s] JNI setIntegerForKey(hachiroku_stiffness, 1)
+[ 37s] JNI setIntegerForKey(hachiroku_stiffnessH, 1)
+[ 37s] JNI setIntegerForKey(hachiroku_unlocked, 0)
+[ 37s] JNI setIntegerForKey(hachiroku_chestconsumed, 0)
+[ 37s] JNI setIntegerForKey(hachiroku_powerupsel, 0)
+[ 37s] JNI setStringForKey(hachiroku_attachments, "")
+[ 37s] JNI setIntegerForKey(superhillclimber_engine, 1)
+[ 37s] JNI setIntegerForKey(superhillclimber_engineH, 1)
+[ 37s] JNI setIntegerForKey(superhillclimber_suspension, 1)
+[ 37s] JNI setIntegerForKey(superhillclimber_suspensionH, 1)
+[ 37s] JNI setIntegerForKey(superhillclimber_tires, 1)
+[ 37s] JNI setIntegerForKey(superhillclimber_tiresH, 1)
+[ 37s] JNI setIntegerForKey(superhillclimber_awd, 1)
+[ 37s] JNI setIntegerForKey(superhillclimber_awdH, 1)
+[ 37s] JNI setIntegerForKey(superhillclimber_unlocked, 0)
+[ 37s] JNI setIntegerForKey(superhillclimber_chestconsumed, 0)
+[ 37s] JNI setIntegerForKey(superhillclimber_powerupsel, 0)
+[ 37s] JNI setStringForKey(superhillclimber_attachments, "")
+[ 37s] JNI setIntegerForKey(carcar_engine, 1)
+[ 37s] JNI setIntegerForKey(carcar_engineH, 1)
+[ 37s] JNI setIntegerForKey(carcar_suspension, 1)
+[ 37s] JNI setIntegerForKey(carcar_suspensionH, 1)
+[ 37s] JNI setIntegerForKey(carcar_tires, 1)
+[ 37s] JNI setIntegerForKey(carcar_tiresH, 1)
+[ 37s] JNI setIntegerForKey(carcar_carness, 1)
+[ 37s] JNI setIntegerForKey(carcar_carnessH, 1)
+[ 37s] JNI setIntegerForKey(carcar_unlocked, 0)
+[ 37s] JNI setIntegerForKey(carcar_chestconsumed, 0)
+[ 37s] JNI setIntegerForKey(carcar_powerupsel, 0)
+[ 37s] JNI setStringForKey(carcar_attachments, "")
+[ 37s] JNI setIntegerForKey(aircar_engine, 1)
+[ 37s] JNI setIntegerForKey(aircar_engineH, 1)
+[ 37s] JNI setIntegerForKey(aircar_suspension, 1)
+[ 37s] JNI setIntegerForKey(aircar_suspensionH, 1)
+[ 37s] JNI setIntegerForKey(aircar_tires, 1)
+[ 37s] JNI setIntegerForKey(aircar_tiresH, 1)
+[ 37s] JNI setIntegerForKey(aircar_fuel, 1)
+[ 37s] JNI setIntegerForKey(aircar_fuelH, 1)
+[ 37s] JNI setIntegerForKey(aircar_unlocked, 0)
+[ 37s] JNI setIntegerForKey(aircar_chestconsumed, 0)
+[ 37s] JNI setIntegerForKey(aircar_powerupsel, 0)
+[ 37s] JNI setStringForKey(aircar_attachments, "")
+[ 37s] JNI setIntegerForKey(fastbike_engine, 1)
+[ 37s] JNI setIntegerForKey(fastbike_engineH, 1)
+[ 37s] JNI setIntegerForKey(fastbike_suspension, 1)
+[ 37s] JNI setIntegerForKey(fastbike_suspensionH, 1)
+[ 37s] JNI setIntegerForKey(fastbike_tires, 1)
+[ 37s] JNI setIntegerForKey(fastbike_tiresH, 1)
+[ 37s] JNI setIntegerForKey(fastbike_turbo, 1)
+[ 37s] JNI setIntegerForKey(fastbike_turboH, 1)
+[ 37s] JNI setIntegerForKey(fastbike_unlocked, 0)
+[ 37s] JNI setIntegerForKey(fastbike_chestconsumed, 0)
+[ 37s] JNI setIntegerForKey(fastbike_powerupsel, 0)
+[ 37s] JNI setStringForKey(fastbike_attachments, "")
+[ 37s] JNI setIntegerForKey(ufo_engine, 1)
+[ 37s] JNI setIntegerForKey(ufo_engineH, 1)
+[ 37s] JNI setIntegerForKey(ufo_rotation, 1)
+[ 37s] JNI setIntegerForKey(ufo_rotationH, 1)
+[ 37s] JNI setIntegerForKey(ufo_thruster, 1)
+[ 37s] JNI setIntegerForKey(ufo_thrusterH, 1)
+[ 37s] JNI setIntegerForKey(ufo_fuel, 1)
+[ 37s] JNI setIntegerForKey(ufo_fuelH, 1)
+[ 37s] JNI setIntegerForKey(ufo_unlocked, 0)
+[ 37s] JNI setIntegerForKey(ufo_chestconsumed, 0)
+[ 37s] JNI setIntegerForKey(ufo_powerupsel, 0)
+[ 37s] JNI setStringForKey(ufo_attachments, "")
+[ 37s] JNI setIntegerForKey(boringcar_engine, 1)
+[ 37s] JNI setIntegerForKey(boringcar_engineH, 1)
+[ 37s] JNI setIntegerForKey(boringcar_suspension, 1)
+[ 37s] JNI setIntegerForKey(boringcar_suspensionH, 1)
+[ 37s] JNI setIntegerForKey(boringcar_tires, 1)
+[ 37s] JNI setIntegerForKey(boringcar_tiresH, 1)
+[ 37s] JNI setIntegerForKey(boringcar_mileage, 1)
+[ 37s] JNI setIntegerForKey(boringcar_mileageH, 1)
+[ 37s] JNI setIntegerForKey(boringcar_unlocked, 0)
+[ 37s] JNI setIntegerForKey(boringcar_chestconsumed, 0)
+[ 37s] JNI setIntegerForKey(boringcar_powerupsel, 0)
+[ 37s] JNI setStringForKey(boringcar_attachments, "")
+[ 37s] JNI setIntegerForKey(badcar_engine, 1)
+[ 37s] JNI setIntegerForKey(badcar_engineH, 1)
+[ 37s] JNI setIntegerForKey(badcar_suspension, 1)
+[ 37s] JNI setIntegerForKey(badcar_suspensionH, 1)
+[ 37s] JNI setIntegerForKey(badcar_tires, 1)
+[ 37s] JNI setIntegerForKey(badcar_tiresH, 1)
+[ 37s] JNI setIntegerForKey(badcar_mileage, 1)
+[ 37s] JNI setIntegerForKey(badcar_mileageH, 1)
+[ 37s] JNI setIntegerForKey(badcar_unlocked, 0)
+[ 37s] JNI setIntegerForKey(badcar_chestconsumed, 0)
+[ 37s] JNI setIntegerForKey(badcar_powerupsel, 0)
+[ 37s] JNI setStringForKey(badcar_attachments, "")
+[ 37s] JNI setIntegerForKey(reindeers, 1)
+[ 37s] JNI setIntegerForKey(reindeersH, 1)
+[ 37s] JNI setIntegerForKey(sleigh_suspension, 1)
+[ 37s] JNI setIntegerForKey(sleigh_suspensionH, 1)
+[ 37s] JNI setIntegerForKey(reindeer_shoes, 1)
+[ 37s] JNI setIntegerForKey(reindeer_shoesH, 1)
+[ 37s] JNI setIntegerForKey(reindeer_food, 1)
+[ 37s] JNI setIntegerForKey(reindeer_foodH, 1)
+[ 37s] JNI setIntegerForKey(sleigh_unlocked, 0)
+[ 37s] JNI setIntegerForKey(sleigh_chestconsumed, 0)
+[ 37s] JNI setIntegerForKey(sleigh_powerupsel, 0)
+[ 37s] JNI setStringForKey(sleigh_attachments, "")
+[ 37s] JNI setIntegerForKey(TOTAL_DISTANCE_1_000_unlocked, 1)
+[ 37s] JNI setIntegerForKey(TOTAL_DISTANCE_1_000_steps, 1000)
+[ 37s] JNI setIntegerForKey(TOTAL_DISTANCE_10_000_unlocked, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_DISTANCE_10_000_steps, 9522)
+[ 37s] JNI setIntegerForKey(TOTAL_DISTANCE_100_000_unlocked, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_DISTANCE_100_000_steps, 9522)
+[ 37s] JNI setIntegerForKey(TOTAL_DISTANCE_1_000_000_unlocked, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_DISTANCE_1_000_000_steps, 9522)
+[ 37s] JNI setIntegerForKey(STAGES_UNLOCKED_2_unlocked, 1)
+[ 37s] JNI setIntegerForKey(STAGES_UNLOCKED_2_steps, 0)
+[ 37s] JNI setIntegerForKey(STAGES_UNLOCKED_5_unlocked, 1)
+[ 37s] JNI setIntegerForKey(STAGES_UNLOCKED_5_steps, 0)
+[ 37s] JNI setIntegerForKey(STAGES_UNLOCKED_10_unlocked, 0)
+[ 37s] JNI setIntegerForKey(STAGES_UNLOCKED_10_steps, 0)
+[ 37s] JNI setIntegerForKey(STAGES_UNLOCKED_ALL_unlocked, 0)
+[ 37s] JNI setIntegerForKey(STAGES_UNLOCKED_ALL_steps, 0)
+[ 37s] JNI setIntegerForKey(VEHICLES_UNLOCKED_2_unlocked, 1)
+[ 37s] JNI setIntegerForKey(VEHICLES_UNLOCKED_2_steps, 0)
+[ 37s] JNI setIntegerForKey(VEHICLES_UNLOCKED_5_unlocked, 0)
+[ 37s] JNI setIntegerForKey(VEHICLES_UNLOCKED_5_steps, 0)
+[ 37s] JNI setIntegerForKey(VEHICLES_UNLOCKED_10_unlocked, 0)
+[ 37s] JNI setIntegerForKey(VEHICLES_UNLOCKED_10_steps, 0)
+[ 37s] JNI setIntegerForKey(VEHICLES_UNLOCKED_ALL_unlocked, 0)
+[ 37s] JNI setIntegerForKey(VEHICLES_UNLOCKED_ALL_steps, 0)
+[ 37s] JNI setIntegerForKey(VEHICLES_UPGRADED_1_unlocked, 0)
+[ 37s] JNI setIntegerForKey(VEHICLES_UPGRADED_1_steps, 0)
+[ 37s] JNI setIntegerForKey(VEHICLES_UPGRADED_5_unlocked, 0)
+[ 37s] JNI setIntegerForKey(VEHICLES_UPGRADED_5_steps, 0)
+[ 37s] JNI setIntegerForKey(VEHICLES_UPGRADED_10_unlocked, 0)
+[ 37s] JNI setIntegerForKey(VEHICLES_UPGRADED_10_steps, 0)
+[ 37s] JNI setIntegerForKey(VEHICLES_UPGRADED_ALL_unlocked, 0)
+[ 37s] JNI setIntegerForKey(VEHICLES_UPGRADED_ALL_steps, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_FLIPS_10_unlocked, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_FLIPS_10_steps, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_FLIPS_100_unlocked, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_FLIPS_100_steps, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_FLIPS_1_000_unlocked, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_FLIPS_1_000_steps, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_BACKFLIPS_10_unlocked, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_BACKFLIPS_10_steps, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_BACKFLIPS_100_unlocked, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_BACKFLIPS_100_steps, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_BACKFLIPS_1_000_unlocked, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_BACKFLIPS_1_000_steps, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_NECKFLIPS_5_unlocked, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_NECKFLIPS_5_steps, 3)
+[ 37s] JNI setIntegerForKey(TOTAL_NECKFLIPS_10_unlocked, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_NECKFLIPS_10_steps, 3)
+[ 37s] JNI setIntegerForKey(TOTAL_NECKFLIPS_50_unlocked, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_NECKFLIPS_50_steps, 3)
+[ 37s] JNI setIntegerForKey(SINGLE_RUN_100_000_unlocked, 0)
+[ 37s] JNI setIntegerForKey(SINGLE_RUN_100_000_steps, 0)
+[ 37s] JNI setIntegerForKey(SINGLE_RUN_1_000_000_unlocked, 0)
+[ 37s] JNI setIntegerForKey(SINGLE_RUN_1_000_000_steps, 0)
+[ 37s] JNI setIntegerForKey(SHARE_RESULT_unlocked, 0)
+[ 37s] JNI setIntegerForKey(SHARE_RESULT_steps, 0)
+[ 37s] JNI setIntegerForKey(jeep_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(jeep_mastery_steps, 8508)
+[ 37s] JNI setIntegerForKey(bike_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(bike_mastery_steps, 1014)
+[ 37s] JNI setIntegerForKey(monster_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(monster_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(tractor_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(tractor_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(hippievan_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(hippievan_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(onewheeler_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(onewheeler_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(quadbike_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(quadbike_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(touristbus_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(touristbus_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(racecar_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(racecar_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(policecar_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(policecar_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(ambulance_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(ambulance_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(dieseltruck_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(dieseltruck_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(rallycar_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(rallycar_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(dragster_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(dragster_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(firetruck_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(firetruck_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(tank_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(tank_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(snowmobile_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(snowmobile_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(superoffroad_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(superoffroad_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(truck_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(truck_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(dunebuggy_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(dunebuggy_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(hovercraft_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(hovercraft_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(minibike_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(minibike_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(bigfinger_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(bigfinger_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(train_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(train_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(moonlander_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(moonlander_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(sleigh_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(sleigh_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(hotrod_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(hotrod_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(electric_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(electric_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(PICKUP_FUEL_WITH_EMPTY_TANK_unlocked, 0)
+[ 37s] JNI setIntegerForKey(PICKUP_FUEL_WITH_EMPTY_TANK_steps, 0)
+[ 37s] JNI setIntegerForKey(NECKFLIP_WITHIN_5S_unlocked, 0)
+[ 37s] JNI setIntegerForKey(NECKFLIP_WITHIN_5S_steps, 0)
+[ 37s] JNI setIntegerForKey(FLIPS_IN_ONE_RUN_10_unlocked, 0)
+[ 37s] JNI setIntegerForKey(FLIPS_IN_ONE_RUN_10_steps, 0)
+[ 37s] JNI setIntegerForKey(BACKFLIPS_IN_ONE_RUN_10_unlocked, 0)
+[ 37s] JNI setIntegerForKey(BACKFLIPS_IN_ONE_RUN_10_steps, 0)
+[ 37s] JNI setIntegerForKey(WATCH_CREDITS_unlocked, 0)
+[ 37s] JNI setIntegerForKey(WATCH_CREDITS_steps, 0)
+[ 37s] JNI setIntegerForKey(DETACH_ALL_CARRIAGES_unlocked, 0)
+[ 37s] JNI setIntegerForKey(DETACH_ALL_CARRIAGES_steps, 0)
+[ 37s] JNI setIntegerForKey(NUCLEAR_SECRET_unlocked, 0)
+[ 37s] JNI setIntegerForKey(NUCLEAR_SECRET_steps, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_PUMPKINS_unlocked, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_PUMPKINS_steps, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_PRESENTS_unlocked, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_PRESENTS_steps, 0)
+[ 37s] JNI setIntegerForKey(TROLL_MASTER_unlocked, 0)
+[ 37s] JNI setIntegerForKey(TROLL_MASTER_steps, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_PACKAGES_unlocked, 0)
+[ 37s] JNI setIntegerForKey(TOTAL_PACKAGES_steps, 0)
+[ 37s] JNI setIntegerForKey(SEASONS_YEARS_COMPLETED_unlocked, 0)
+[ 37s] JNI setIntegerForKey(SEASONS_YEARS_COMPLETED_steps, 0)
+[ 37s] JNI setIntegerForKey(screwfinger_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(screwfinger_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(SKIJUMP_JUMPS_COMPLETED_unlocked, 0)
+[ 37s] JNI setIntegerForKey(SKIJUMP_JUMPS_COMPLETED_steps, 0)
+[ 37s] JNI setIntegerForKey(trophytruck_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(trophytruck_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(CHALLENGE_DISTANCE_COMPLETED_unlocked, 0)
+[ 37s] JNI setIntegerForKey(CHALLENGE_DISTANCE_COMPLETED_steps, 0)
+[ 37s] JNI setIntegerForKey(chopperbike_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(chopperbike_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(JUNGLE_KING_unlocked, 0)
+[ 37s] JNI setIntegerForKey(JUNGLE_KING_steps, 0)
+[ 37s] JNI setIntegerForKey(TREASURE_HUNTER_unlocked, 0)
+[ 37s] JNI setIntegerForKey(TREASURE_HUNTER_steps, 0)
+[ 37s] JNI setIntegerForKey(HIP_HOPPER_unlocked, 0)
+[ 37s] JNI setIntegerForKey(HIP_HOPPER_steps, 0)
+[ 37s] JNI setIntegerForKey(GRASSHOPPER_unlocked, 0)
+[ 37s] JNI setIntegerForKey(GRASSHOPPER_steps, 0)
+[ 37s] JNI setIntegerForKey(lowrider_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(lowrider_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(NEON_KING_unlocked, 0)
+[ 37s] JNI setIntegerForKey(NEON_KING_steps, 0)
+[ 37s] JNI setIntegerForKey(LIFTOFF_unlocked, 0)
+[ 37s] JNI setIntegerForKey(LIFTOFF_steps, 0)
+[ 37s] JNI setIntegerForKey(bubblecar_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(bubblecar_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(shapeshifter_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(shapeshifter_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(CHAUFFEUR_unlocked, 0)
+[ 37s] JNI setIntegerForKey(CHAUFFEUR_steps, 0)
+[ 37s] JNI setIntegerForKey(luxury_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(luxury_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(BERRY_PICKER_unlocked, 0)
+[ 37s] JNI setIntegerForKey(BERRY_PICKER_steps, 0)
+[ 37s] JNI setIntegerForKey(BOG_DIGGER_unlocked, 0)
+[ 37s] JNI setIntegerForKey(BOG_DIGGER_steps, 0)
+[ 37s] JNI setIntegerForKey(SPIDER_WALKER_unlocked, 0)
+[ 37s] JNI setIntegerForKey(SPIDER_WALKER_steps, 0)
+[ 37s] JNI setIntegerForKey(spider_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(spider_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(GARBAGE_COLLECTOR_unlocked, 0)
+[ 37s] JNI setIntegerForKey(GARBAGE_COLLECTOR_steps, 0)
+[ 37s] JNI setIntegerForKey(hachiroku_mastery_unlocked, 0)
+[ 37s] JNI setIntegerForKey(hachiroku_mastery_steps, 0)
+[ 37s] JNI setIntegerForKey(POTATO_PICKER_unlocked, 0)
+[ 37s] JNI setIntegerForKey(POTATO_PICKER_steps, 0)
+[ 37s] JNI setIntegerForKey(POTATO_MAN_unlocked, 0)
+[ 37s] JNI setIntegerForKey(POTATO_MAN_steps, 0)
+[ 37s] JNI setIntegerForKey(LOYAL_CUSTOMER_unlocked, 0)
+[ 38s] JNI setIntegerForKey(LOYAL_CUSTOMER_steps, 0)
+[ 38s] JNI setIntegerForKey(RETRO_RACER_unlocked, 0)
+[ 38s] JNI setIntegerForKey(RETRO_RACER_steps, 0)
+[ 38s] JNI setIntegerForKey(MOTHER_GOOSE_unlocked, 0)
+[ 38s] JNI setIntegerForKey(MOTHER_GOOSE_steps, 0)
+[ 38s] JNI setIntegerForKey(aircar_mastery_unlocked, 0)
+[ 38s] JNI setIntegerForKey(aircar_mastery_steps, 0)
+[ 38s] JNI setIntegerForKey(FUEL_SWOOPER_unlocked, 0)
+[ 38s] JNI setIntegerForKey(FUEL_SWOOPER_steps, 0)
+[ 38s] UserDefaults: saved 5305 ints, 2 floats, 49 strings (203327 bytes, one write)
+[ 38s] JNI getMarketVariation() → 1  x2
+[ 38s] [fsgame] Prize pool loaded from file
+[ 38s] JNI getMarketVariation() → 1  x2
+[ 38s] JNI setFloatForKey(space_best_time, 0.000000)
+[ 38s] JNI setFloatForKey(time_left_for_video_double, 0.000000)
+[ 38s] pthread_create: real thread fn=0xaf643918c handle=0x43d3ec700 core=1
+[ 38s] JNI getFirebaseRemoteConfigInt(endVideoRandomChance) → caller default 50
+[ 38s] JNI getMarketVariation() → 1
+[ 38s] JNI getSettingInt(gdpr_country) → caller default 1
+[ 38s] JNI GetStaticMethodID: onFinishedAssetLoader ()V
+[ 38s] JNI CallStaticVoidMethodV: onFinishedAssetLoader ()V
+[ 38s] JNI getMarketVariation() → 1  x3
+[ 38s] JNI getSettingInt(enable_racepromo) → caller default 0
+[ 38s] JNI GetStaticMethodID: getSettingString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+[ 38s] JNI getSettingString(racepromo_link) → caller default ""
+[ 38s] JNI getMarketVariation() → 1  x5
+[ 38s] JNI getFirebaseRemoteConfigString(giftCurrencyV2) → caller default "{
+   "currencyType" : "coins-egg",
+   "endTime" : 1682802000,
+   "eventName" : "easter",
+   "eventTarget" : 500,
+   "eventType" : 1,
+   "gameStatsScale" : 0.2800000011920929,
+   "gracePeriod" : 1682802000,
+   "menuScale" : 1.100000023841858,
+   "pickupScaleX" : 1.40,
+   "pickupScaleY" : 1.40,
+   "prizeId" : "easter",
+   "stages" : [
+      {
+         "frequency" : 100,
+         "stageName" : "countryside",
+         "startDistance" : 500
+ 
+[ 38s] fopen FAIL: sdmc:/Viridite/games/com.fingersoft.hillclimbgcEventDetails (mode=r)
+[ 38s] JNI getMarketVariation() → 1  x2
+[ 38s] JNI getSettingInt(merchandise_button_mode) → caller default 1
+[ 38s] JNI getMarketVariation() → 1  x4
+[ 38s] JNI getSettingInt(enable_mailbox) → caller default 0
+[ 38s] JNI getMarketVariation() → 1
+[ 38s] game stdio[tid=0xf746fc210]: libpng warning: iCCP: known incorrect sRGB profile
+[ 38s] JNI getMarketVariation() → 1  x2
+[ 38s] game stdio[tid=0xf746fc210]: libpng warning: iCCP: known incorrect sRGB profile
+[ 38s] JNI getMarketVariation() → 1
+[ 38s] JNI getSettingInt(reward.videoplay) → caller default 15000
+[ 39s] JNI getMarketVariation() → 1  x18
+[ 39s] JNI getFirebaseRemoteConfigString(previousBattlePrizesv1) → caller default ""
+[ 39s] JNI getFirebaseRemoteConfigString(vehicleLevelBattleProduction) → caller default ""
+[ 40s] JNI getMarketVariation() → 1  x9
+[ 40s] JNI getSettingInt(special_offer) → caller default 0
+[ 40s] JNI getSettingInt(special_offer_gem) → caller default 0
+[ 40s] JNI getSettingInt(iap_unlock_all_discounted) → caller default 0
+[ 40s] JNI getMarketVariation() → 1  x8
+[ 40s] [fsgame] Invalid skin id: selected
+[ 40s] JNI getMarketVariation() → 1  x10
+[ 40s] JNI GetStaticMethodID: hasVideoCampaigns (I)I
+[ 40s] JNI getIntegerForKey: 6000 reads
+[ 40s] JNI getIntegerForKey: 8000 reads
+[ 40s] JNI getMarketVariation() → 1
+[ 41s] game stdio[tid=0x43d3ec700]: libpng warning: iCCP: known incorrect sRGB profile
+[ 42s] JNI getMarketVariation() → 1  x257
+[ 42s] [fsgame] Invalid skin id: selected
+[ 42s] JNI getMarketVariation() → 1  x136
+[ 42s] JNI getFirebaseRemoteConfigInt(qstock) → caller default 0
+[ 42s] JNI getMarketVariation() → 1  x111
+[ 42s] [fsgame] Invalid skin id: selected
+[ 42s] JNI getMarketVariation() → 1  x9
+[ 42s] JNI getSettingInt(current_version) → caller default -1
+[ 42s] JNI getMarketVariation() → 1
+[ 42s] JNI GetStaticMethodID: startAdvertisements ()V
+[ 42s] JNI CallStaticVoidMethodV: startAdvertisements ()V
+[ 43s] STALL(severe): frame 349 stalled for 7820ms
+[ 43s] [fsgame] Event textures asset loaded (31/31)
+[ 43s] JNI GetStaticMethodID: getIAPCoins ()I
+[ 43s] JNI GetStaticMethodID: getIAPGems ()I
+[ 43s] JNI GetStaticMethodID: getIAPPaints ()I
+[ 43s] JNI GetStaticMethodID: getIAPAdFree ()I
+[ 43s] JNI GetStaticMethodID: getIAPBundle ()I
+[ 44s] JNI GetStaticMethodID: getIAPError ()I
+[ 44s] JNI getMarketVariation() → 1
+[ 44s] [fsgame] Invalid skin id: selected
+[ 44s] stall: frame 411 stalled for 34ms
+[ 47s] [fsgame] Invalid skin id: selected  x7
+[ 48s] JNI getMarketVariation() → 1
+[ 52s] [fsgame] Invalid skin id: selected  x8
+[ 52s] game: frame 900
+[ 52s] [fsgame] Invalid skin id: selected  x2
+[ 53s] JNI getMarketVariation() → 1
+[ 56s] [fsgame] Invalid skin id: selected  x8
+[ 56s] JNI GetStaticMethodID: stopAdView ()V
+[ 56s] JNI CallStaticVoidMethodV: stopAdView ()V
+[ 57s] JNI getMarketVariation() → 1  x11
+[ 57s] [fsgame] Invalid skin id: selected
+[ 58s] STALL(severe): frame 1190 stalled for 573ms
+[ 58s] [fsgame] Invalid skin id: selected
+[ 58s] JNI getMarketVariation() → 1  x9
+[ 58s] FAULT caller: lr=0xaf61ce9fc (0xaf61ce9fc) x0=0x443072c40 x8=0xffffffffffffffff
+[ 58s] Cocos2d-x: game loop FAULT sig=258 esr=0x8a000000 pc=0xffffffffffffffff far=0xffffffffffffffff sym=0xfffffff50a078fff frame=1241 — stop
+[ 58s] FAULT pc 0xffffffffffffffff: region=0x1000000000 size=0xfffffff000000000 type=0x10 perm=---
+[ 58s] FAULT far 0xffffffffffffffff: region=0x1000000000 size=0xfffffff000000000 type=0x10 perm=---
+[ 58s] UNRECOVERED FAULT desc=0x101 esr=0x92000004 pc=0xf73c2c8b0 far=0xfffffffffffffffb lr=0xf73c2c8ac sp=0x525d50f0
+[ 58s] UNRECOVERED FAULT at host+0x108b0
+[ 58s] UNRECOVERED FAULT lr in host+0x108ac
+[ 58s] UNRECOVERED FAULT pc 0xf73c2c8b0: region=0xf73c1c000 size=0x761000 type=0x8 perm=r-x
+[ 58s] UNRECOVERED FAULT far 0xfffffffffffffffb: region=0x1000000000 size=0xfffffff000000000 type=0x10 perm=---
