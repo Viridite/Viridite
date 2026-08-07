@@ -1,6 +1,7 @@
 Viridite launcher starting
-env: Viridite (launcher) v0.2.117-testing-alpha (build 0.1.2)
+env: Viridite (launcher) v0.2.118-testing-alpha (build 0.1.2)
 update check: started (waiting for network, up to 10s)
+IMG_Init: png=1 jpg=1 webp=1
   font: Roboto Flex (Google Fonts)
   font: Roboto Flex (Google Fonts)
   font: Roboto Flex (Google Fonts)
@@ -8,18 +9,12 @@ update check: started (waiting for network, up to 10s)
 contributors.txt loaded: 1 people
 groundwork.txt loaded: 20 entries
 init complete
-forwarder: icon disabled for com.fingersoft.hillclimb — encoding it did not return last time
-forwarder: building for com.fingersoft.hillclimb
-forwarder:   stub read
-forwarder:   nacp built
-forwarder:   icon: skipped — encoding it crashed a previous run
-forwarder: no icon available — writing without one
-forwarder:   writing sdmc:/switch/Viridite Games/com.fingersoft.hillclimb.nro.tmp
-forwarder: wrote sdmc:/switch/Viridite Games/com.fingersoft.hillclimb.nro (Fingersoft | Viridite Contributors, v1.67.0)
-forwarder: building for com.fingersoft.hcr2
-forwarder:   stub read
-forwarder:   nacp built
-forwarder:   icon: loading romfs:/gameicons/com.fingersoft.hcr2.png
-forwarder:   icon: no bundled icon, using the APK's
-forwarder:   icon: scaling to 256x256
-forwarder:   icon: encoding JPEG
+forwarders: 4 installed game(s), 4 already present, 0 written, 0 removed, 0 failed
+update check: up to date (v0.2.118-testing-alpha)
+reinstall: cleared cached install for com.fingersoft.hillclimb
+envHasNextLoad: true
+achievements: no catalogue (Couldn't resolve host name)
+launch input mode: pro (docked) — detected 1 pad(s)
+launchGame: chain-loading to sdmc:/switch/Viridite/Viridite-Translation-Core-x64.nro argv="sdmc:/switch/Viridite/Viridite-Translation-Core-x64.nro com.fingersoft.hillclimb"
+envSetNextLoad OK — returning from main() to hand off
+cleanup done

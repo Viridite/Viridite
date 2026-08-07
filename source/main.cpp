@@ -252,16 +252,11 @@ static void syncForwarders(std::vector<ApkInfo>& list) {
             fclose(f);
         }
         remove(kLock);
-        if (!culprit.empty() && culprit != "1") {
-            // The icon is the only part of building a forwarder that runs
-            // third-party image data through a decoder, so it is the part that
-            // can take the process with it. Give up on that one picture and
-            // carry on — the entry still appears, named and launchable.
-            forwarderBlockIcon(culprit);
-        } else {
-            logMsg("forwarders: last attempt did not finish, but did not say where. "
-                   "The lock is cleared, so this pass runs normally.");
-        }
+        logMsg(culprit.empty()
+               ? "forwarders: last attempt did not finish. The lock is cleared, "
+                 "so this pass runs normally."
+               : ("forwarders: last attempt did not finish while writing " + culprit +
+                  ". The lock is cleared, so this pass runs normally.").c_str());
     }
 
     int installed = 0, present = 0, wrote = 0, removed = 0, failed = 0;
@@ -663,15 +658,12 @@ struct App {
             const int want = IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_WEBP;
             const int got  = IMG_Init(want);
             if (got == 0) logSDL("IMG_Init warning");
-            g_jpegReady = (got & IMG_INIT_JPG) != 0;
+
             char m[128];
             snprintf(m, sizeof m, "IMG_Init: png=%d jpg=%d webp=%d",
-                     (got & IMG_INIT_PNG) ? 1 : 0, g_jpegReady ? 1 : 0,
+                     (got & IMG_INIT_PNG) ? 1 : 0, (got & IMG_INIT_JPG) ? 1 : 0,
                      (got & IMG_INIT_WEBP) ? 1 : 0);
             logMsg(m);
-            if (!g_jpegReady)
-                logMsg("IMG_Init: no JPEG support — forwarders will be written without icons "
-                       "rather than encoding one");
         }
         if (TTF_Init() != 0) {
             logSDL("TTF_Init failed"); logClose(); return false;

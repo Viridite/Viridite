@@ -30,21 +30,14 @@ bool forwarderRemove(const std::string& pkg_name);
 // Where it lives, for callers that want to check or show the path.
 std::string forwarderPath(const std::string& pkg_name);
 
-// Whether SDL_image actually brought JPEG up. False means no forwarder gets an
-// icon this run — a missing picture is a great deal better than the launcher
-// dying on the scanning screen.
-extern bool g_jpegReady;
-
-// Never try to build this game's icon again.
+// Rebuild the forwarders an older build wrote without a picture.
 //
-// Encoding one killed the process once — a hardware log ends mid-sentence
-// inside IMG_SaveJPG_RW, with neither its success nor its failure line ever
-// written. A crash there happens on the "Scanning for APKs..." screen, so the
-// whole-pass lock was skipping every forwarder on alternate launches forever.
-// Blaming the one icon instead turns a permanent crash into a game whose
-// forwarder has no picture, which is what "a forwarder is a convenience"
-// should have meant all along.
-void forwarderBlockIcon(const std::string& pkg_name);
+// Encoding an icon used to kill the process — three hardware logs end
+// mid-sentence inside IMG_SaveJPG_RW — so those games were given icon-less
+// forwarders to keep the launcher openable. They encode locally now, but a
+// forwarder is only written when one is missing, so the old ones have to go
+// for the new ones to appear. Call once at startup.
+void forwarderRetryBlockedIcons(void);
 
 // "Fingersoft | Viridite Contributors" — the developer, credited first,
 // followed by the people who made it run here. Exposed for the UI.

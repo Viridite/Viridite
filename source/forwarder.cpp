@@ -1,4 +1,5 @@
 #include "forwarder.h"
+#include "jpegenc.h"
 #include "apk.h"
 
 #include <SDL2/SDL.h>
@@ -15,7 +16,6 @@
 // The launcher's log, so a forwarder that fails to write says why.
 void logMsg(const char* msg);
 
-bool g_jpegReady = false;
 
 namespace {
 
@@ -82,29 +82,7 @@ std::string prettyComponent(const std::string& s) {
 // Packages whose icon encode has already taken the process down once.
 const char* kNoIcon = "sdmc:/Viridite/.forwarder_noicon";
 
-bool iconBlocked(const std::string& pkg) {
-    FILE* f = fopen(kNoIcon, "r");
-    if (!f) return false;
-    char line[256];
-    bool hit = false;
-    while (fgets(line, sizeof line, f)) {
-        char* e = line + strlen(line);
-        while (e > line && (e[-1] == '\n' || e[-1] == '\r')) *--e = '\0';
-        if (pkg == line) { hit = true; break; }
-    }
-    fclose(f);
-    return hit;
-}
-
 bool buildIconJpeg(const ApkInfo& apk, Buf& out) {
-    if (!g_jpegReady) {
-        logMsg("forwarder:   icon: skipped — SDL_image has no JPEG encoder this run");
-        return false;
-    }
-    if (iconBlocked(apk.packageName)) {
-        logMsg("forwarder:   icon: skipped — encoding it crashed a previous run");
-        return false;
-    }
     SDL_Surface* src = nullptr;
 
     std::string bundled = "romfs:/gameicons/" + apk.packageName + ".png";
@@ -134,8 +112,14 @@ bool buildIconJpeg(const ApkInfo& apk, Buf& out) {
     SDL_RWops* rw = SDL_RWFromMem(out.p, (int)out.n);
     if (!rw) { SDL_FreeSurface(dst); return false; }
     logMsg("forwarder:   icon: encoding JPEG");
-    const int rc = IMG_SaveJPG_RW(dst, rw, 0, 90);
-    const Sint64 n = SDL_RWtell(rw);
+    // Our own encoder, not IMG_SaveJPG_RW. Three hardware logs ended inside
+    // that call, on three unrelated games, and the run that finally reported
+    // IMG_Init said jpg=1 — so JPEG was up and the fault is inside libjpeg,
+    // not in initialisation and not in the images. There is nothing to
+    // configure our way out of, so the dependency is gone instead.
+    const size_t n = jpegEncodeRGB((const uint8_t*)dst->pixels, dst->w, dst->h,
+                                   dst->pitch, 90, out.p, out.n);
+    const int rc = n > 0 ? 0 : -1;
     SDL_RWclose(rw);
     SDL_FreeSurface(dst);
     if (rc != 0 || n <= 0) {
@@ -268,14 +252,30 @@ bool forwarderWrite(const ApkInfo& apk) {
     return true;
 }
 
-void forwarderBlockIcon(const std::string& pkg_name) {
-    if (pkg_name.empty() || iconBlocked(pkg_name)) return;
-    if (FILE* f = fopen(kNoIcon, "a")) {
-        fprintf(f, "%s\n", pkg_name.c_str());
-        fclose(f);
+void forwarderRetryBlockedIcons(void) {
+    // Everything the old blocklist named was written without a picture,
+    // because encoding one used to take the process down. It cannot any more,
+    // so delete those forwarders and let the next pass build them properly —
+    // otherwise they keep their missing icons forever, since a forwarder is
+    // only written when one is absent.
+    FILE* f = fopen(kNoIcon, "r");
+    if (!f) return;
+    char line[256];
+    int n = 0;
+    while (fgets(line, sizeof line, f)) {
+        char* e = line + strlen(line);
+        while (e > line && (e[-1] == '\n' || e[-1] == '\r')) *--e = '\0';
+        if (!line[0]) continue;
+        if (remove(forwarderPath(line).c_str()) == 0) n++;
     }
-    logMsg(("forwarder: icon disabled for " + pkg_name +
-            " — encoding it did not return last time").c_str());
+    fclose(f);
+    remove(kNoIcon);
+    if (n > 0) {
+        char m[128];
+        snprintf(m, sizeof m, "forwarders: %d written without an icon by an older "
+                              "build — rebuilding them", n);
+        logMsg(m);
+    }
 }
 
 bool forwarderRemove(const std::string& pkg_name) {
