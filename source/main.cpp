@@ -24,6 +24,7 @@
 #include "build_number.h"
 #include "update.h"
 #include "selftest.h"
+#include "achievements_sync.h"
 
 static const char* APK_DIR = "sdmc:/Viridite/apks";
 
@@ -199,6 +200,25 @@ static void themeSave() {
     if (FILE* f = fopen(THEME_PATH, "w")) { fprintf(f, "%d\n", g_themeIndex); fclose(f); }
 }
 
+// Install updates without being asked, which is the sensible default for a
+// project shipping this often — a launcher and a Core from different releases
+// is not a combination anyone has tested, and the prompt was one more thing
+// standing between someone and their game.
+//
+// Not silent, though. A 13MB download starting unbidden, on a connection we
+// know nothing about, with no way out, would be the wrong reading of
+// "automatic" — so it counts down first and B still stops it. Writing 0 to
+// this file turns it off for good.
+static const char* AUTOUPDATE_PATH = "sdmc:/Viridite/autoupdate.txt";
+static bool autoUpdateEnabled() {
+    int on = 1;
+    if (FILE* f = fopen(AUTOUPDATE_PATH, "r")) { if (fscanf(f, "%d", &on) != 1) on = 1; fclose(f); }
+    return on != 0;
+}
+static void autoUpdateSave(bool on) {
+    if (FILE* f = fopen(AUTOUPDATE_PATH, "w")) { fprintf(f, "%d\n", on ? 1 : 0); fclose(f); }
+}
+
 
 // Make the forwarder folder match reality: one NRO per installed game, none
 // for anything that is not. Cheap enough to run on every scan because writing
@@ -298,7 +318,8 @@ static const int AXIS_DEADZONE = 16384;
 // every screen re-deriving that mapping.
 enum class Act {
     None, Up, Down, PageUp, PageDown, Home, End,
-    Confirm, Back, Manage, Reinstall, Rescan, About, SelfTest, Theme, Quit
+    Confirm, Back, Manage, Reinstall, Rescan, About, SelfTest, Theme, Quit,
+    AlwaysAsk            // stop installing updates without asking
 };
 
 // One footer hint, carrying the action a tap on it triggers. drawFooterBar()
@@ -1381,15 +1402,43 @@ struct App {
         if (!update.available) return;
         bool done = false, install = false;
 
+        // Automatic: install once the countdown runs out, unless stopped. A
+        // is still "now", so nobody who wants it has to sit and wait.
+        const bool  autoNow  = autoUpdateEnabled();
+        const Uint32 deadline = SDL_GetTicks() + 8000;
+
         while (!done) {
+            // Stopping it by hand says something about wanting to be asked,
+            // so remember that rather than counting down at them again on the
+            // next launch.
+            auto alwaysAsk = [&]() {
+                autoUpdateSave(false);
+                noticeText  = "Automatic updates off — Viridite will ask from now on.";
+                noticeUntil = SDL_GetTicks() + 5000;
+                done = true;
+            };
+
             SDL_Event ev;
             while (SDL_PollEvent(&ev)) {
                 if (ev.type == SDL_QUIT) { done = true; }
                 if (ev.type == SDL_JOYBUTTONDOWN) {
                     if (ev.jbutton.button == BTN_A) { install = true; done = true; }
                     if (ev.jbutton.button == BTN_B) { done = true; }
+                    if (ev.jbutton.button == BTN_X && autoNow) alwaysAsk();
+                }
+                // Every other screen's footer answers to a tap; one that only
+                // answered to a button would be a hint that lies on a handheld.
+                if (ev.type == SDL_FINGERDOWN) {
+                    const int px = (int)(ev.tfinger.x * SW), py = (int)(ev.tfinger.y * SH);
+                    switch (footerAction(px, py)) {
+                        case Act::Confirm:   install = true; done = true; break;
+                        case Act::Back:      done = true; break;
+                        case Act::AlwaysAsk: if (autoNow) alwaysAsk(); break;
+                        default: break;
+                    }
                 }
             }
+            if (autoNow && !done && SDL_GetTicks() >= deadline) { install = true; done = true; }
 
             drawBackground();
             drawHeaderBar();
@@ -1402,9 +1451,23 @@ struct App {
             y += 34;
             drawText(fSm, "Replaces the launcher and both Translation Core binaries", C_DIM, 30, y); y += 22;
             drawText(fSm, "on your SD card. Your APKs, saves and settings are untouched.", C_DIM, 30, y);
+            y += 34;
 
-            drawFooterBar({{Act::Confirm, BG(GLYPH_A, "A"), "Install"},
-                           {Act::Back,    BG(GLYPH_B, "B"), "Not now"}}, "");
+            if (autoNow) {
+                const Uint32 now = SDL_GetTicks();
+                const int left = now >= deadline ? 0 : (int)((deadline - now + 999) / 1000);
+                char cd[96];
+                snprintf(cd, sizeof cd, "Installing automatically in %d…", left);
+                drawText(fMd, cd, C_WHITE, 30, y);
+            }
+
+            if (autoNow)
+                drawFooterBar({{Act::Confirm, BG(GLYPH_A, "A"), "Install now"},
+                               {Act::Back,    BG(GLYPH_B, "B"), "Not now"},
+                               {Act::AlwaysAsk, BG(GLYPH_X, "X"), "Always ask"}}, "");
+            else
+                drawFooterBar({{Act::Confirm, BG(GLYPH_A, "A"), "Install"},
+                               {Act::Back,    BG(GLYPH_B, "B"), "Not now"}}, "");
             SDL_RenderPresent(rdr);
             SDL_Delay(16);
         }
@@ -2184,6 +2247,23 @@ struct App {
         {
             FILE* lm = fopen("sdmc:/Viridite/.launch_apk", "w");
             if (lm) { fputs(apk.path.c_str(), lm); fclose(lm); }
+        }
+
+        // Achievement catalogue, fetched here rather than in the Core: this is
+        // the last moment there is network to spare and nothing on screen that
+        // a pause would spoil. Once the Core has the game running, an HTTP
+        // request competing with it would be the wrong trade.
+        //
+        // Failure is not a launch failure. A metadata server being slow is not
+        // a reason to keep someone from their game — the unlock still records,
+        // it just shows its id instead of its name.
+        {
+            SyncResult sr = achsync::sync(pkg, apk.appName);
+            if (sr.ok && sr.error != "cached")
+                logMsg(("achievements: " + std::to_string(sr.count) +
+                        " for " + sr.slug).c_str());
+            else if (!sr.ok)
+                logMsg(("achievements: no catalogue (" + sr.error + ")").c_str());
         }
 
         // Input mode, passed to the Core the same way as the FPS cap: a marker

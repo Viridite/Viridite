@@ -33,3 +33,7 @@ selftest_core.txt
 theme.txt
 forwarder/build/
 HillClimb67/
+
+# Reference APKs and vendor docs live here; they are large and not ours to ship.
+contribdocs/
+*.apk
