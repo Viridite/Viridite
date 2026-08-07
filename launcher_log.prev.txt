@@ -1,5 +1,5 @@
 Viridite launcher starting
-env: Viridite (launcher) v0.2.115-testing-alpha (build 0.1.2)
+env: Viridite (launcher) v0.2.117-testing-alpha (build 0.1.2)
 update check: started (waiting for network, up to 10s)
   font: Roboto Flex (Google Fonts)
   font: Roboto Flex (Google Fonts)
@@ -8,11 +8,17 @@ update check: started (waiting for network, up to 10s)
 contributors.txt loaded: 1 people
 groundwork.txt loaded: 20 entries
 init complete
-forwarders: last attempt did not finish — this pass skipped. The lock is now cleared, so the next scan will try again.
-update check: up to date (v0.2.115-testing-alpha)
-envHasNextLoad: true
-achievements: no catalogue (Couldn't resolve host name)
-launch input mode: pro (docked) — detected 1 pad(s)
-launchGame: chain-loading to sdmc:/switch/Viridite/Viridite-Translation-Core-x64.nro argv="sdmc:/switch/Viridite/Viridite-Translation-Core-x64.nro com.fingersoft.hillclimb"
-envSetNextLoad OK — returning from main() to hand off
-cleanup done
+forwarder: icon disabled for com.orbital.brainiton — encoding it did not return last time
+forwarder: building for com.orbital.brainiton
+forwarder:   stub read
+forwarder:   nacp built
+forwarder:   icon: skipped — encoding it crashed a previous run
+forwarder: no icon available — writing without one
+forwarder:   writing sdmc:/switch/Viridite Games/com.orbital.brainiton.nro.tmp
+forwarder: wrote sdmc:/switch/Viridite Games/com.orbital.brainiton.nro (Orbital | Viridite Contributors, v1.6.234)
+forwarder: building for com.fingersoft.hillclimb
+forwarder:   stub read
+forwarder:   nacp built
+forwarder:   icon: loading romfs:/gameicons/com.fingersoft.hillclimb.png
+forwarder:   icon: scaling to 256x256
+forwarder:   icon: encoding JPEG

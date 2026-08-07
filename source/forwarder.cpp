@@ -15,6 +15,8 @@
 // The launcher's log, so a forwarder that fails to write says why.
 void logMsg(const char* msg);
 
+bool g_jpegReady = false;
+
 namespace {
 
 const char* kDir      = "sdmc:/switch/Viridite Games";
@@ -95,6 +97,10 @@ bool iconBlocked(const std::string& pkg) {
 }
 
 bool buildIconJpeg(const ApkInfo& apk, Buf& out) {
+    if (!g_jpegReady) {
+        logMsg("forwarder:   icon: skipped — SDL_image has no JPEG encoder this run");
+        return false;
+    }
     if (iconBlocked(apk.packageName)) {
         logMsg("forwarder:   icon: skipped — encoding it crashed a previous run");
         return false;

@@ -30,6 +30,11 @@ bool forwarderRemove(const std::string& pkg_name);
 // Where it lives, for callers that want to check or show the path.
 std::string forwarderPath(const std::string& pkg_name);
 
+// Whether SDL_image actually brought JPEG up. False means no forwarder gets an
+// icon this run — a missing picture is a great deal better than the launcher
+// dying on the scanning screen.
+extern bool g_jpegReady;
+
 // Never try to build this game's icon again.
 //
 // Encoding one killed the process once — a hardware log ends mid-sentence

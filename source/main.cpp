@@ -651,8 +651,28 @@ struct App {
             logSDL("SDL_Init failed"); logClose(); return false;
         }
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-        if (IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_WEBP) == 0)
-            logSDL("IMG_Init warning");
+        // Checked per-format, not just for total failure. IMG_Init returns the
+        // mask it actually managed, so a build where JPEG never came up still
+        // returns non-zero for PNG — and the first thing that notices is
+        // IMG_SaveJPG_RW calling into a decoder that was never initialised.
+        // Three hardware logs end mid-sentence exactly there, on three
+        // different games, including one using a bundled icon we ship — so it
+        // is not the image data, and this is the remaining explanation worth
+        // ruling in or out.
+        {
+            const int want = IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_WEBP;
+            const int got  = IMG_Init(want);
+            if (got == 0) logSDL("IMG_Init warning");
+            g_jpegReady = (got & IMG_INIT_JPG) != 0;
+            char m[128];
+            snprintf(m, sizeof m, "IMG_Init: png=%d jpg=%d webp=%d",
+                     (got & IMG_INIT_PNG) ? 1 : 0, g_jpegReady ? 1 : 0,
+                     (got & IMG_INIT_WEBP) ? 1 : 0);
+            logMsg(m);
+            if (!g_jpegReady)
+                logMsg("IMG_Init: no JPEG support — forwarders will be written without icons "
+                       "rather than encoding one");
+        }
         if (TTF_Init() != 0) {
             logSDL("TTF_Init failed"); logClose(); return false;
         }
