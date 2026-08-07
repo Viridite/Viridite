@@ -1,5 +1,5 @@
 Viridite launcher starting
-env: Viridite (launcher) v0.2.114-testing-alpha (build 0.1.2)
+env: Viridite (launcher) v0.2.115-testing-alpha (build 0.1.2)
 update check: started (waiting for network, up to 10s)
   font: Roboto Flex (Google Fonts)
   font: Roboto Flex (Google Fonts)
@@ -8,10 +8,11 @@ update check: started (waiting for network, up to 10s)
 contributors.txt loaded: 1 people
 groundwork.txt loaded: 20 entries
 init complete
-forwarder: building for com.orbital.brainiton
-forwarder:   stub read
-forwarder:   nacp built
-forwarder:   icon: loading romfs:/gameicons/com.orbital.brainiton.png
-forwarder:   icon: no bundled icon, using the APK's
-forwarder:   icon: scaling to 256x256
-forwarder:   icon: encoding JPEG
+forwarders: last attempt did not finish — this pass skipped. The lock is now cleared, so the next scan will try again.
+update check: up to date (v0.2.115-testing-alpha)
+envHasNextLoad: true
+achievements: no catalogue (Couldn't resolve host name)
+launch input mode: pro (docked) — detected 1 pad(s)
+launchGame: chain-loading to sdmc:/switch/Viridite/Viridite-Translation-Core-x64.nro argv="sdmc:/switch/Viridite/Viridite-Translation-Core-x64.nro com.fingersoft.hillclimb"
+envSetNextLoad OK — returning from main() to hand off
+cleanup done

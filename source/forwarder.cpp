@@ -77,7 +77,28 @@ std::string prettyComponent(const std::string& s) {
 // Store icons are authored at a single size with a consistent style; the ones
 // packed into an APK are whatever density the phone build happened to need,
 // and vary wildly in padding and shape between games.
+// Packages whose icon encode has already taken the process down once.
+const char* kNoIcon = "sdmc:/Viridite/.forwarder_noicon";
+
+bool iconBlocked(const std::string& pkg) {
+    FILE* f = fopen(kNoIcon, "r");
+    if (!f) return false;
+    char line[256];
+    bool hit = false;
+    while (fgets(line, sizeof line, f)) {
+        char* e = line + strlen(line);
+        while (e > line && (e[-1] == '\n' || e[-1] == '\r')) *--e = '\0';
+        if (pkg == line) { hit = true; break; }
+    }
+    fclose(f);
+    return hit;
+}
+
 bool buildIconJpeg(const ApkInfo& apk, Buf& out) {
+    if (iconBlocked(apk.packageName)) {
+        logMsg("forwarder:   icon: skipped — encoding it crashed a previous run");
+        return false;
+    }
     SDL_Surface* src = nullptr;
 
     std::string bundled = "romfs:/gameicons/" + apk.packageName + ".png";
@@ -239,6 +260,16 @@ bool forwarderWrite(const ApkInfo& apk) {
              path.c_str(), author.c_str(), ver.c_str());
     logMsg(msg);
     return true;
+}
+
+void forwarderBlockIcon(const std::string& pkg_name) {
+    if (pkg_name.empty() || iconBlocked(pkg_name)) return;
+    if (FILE* f = fopen(kNoIcon, "a")) {
+        fprintf(f, "%s\n", pkg_name.c_str());
+        fclose(f);
+    }
+    logMsg(("forwarder: icon disabled for " + pkg_name +
+            " — encoding it did not return last time").c_str());
 }
 
 bool forwarderRemove(const std::string& pkg_name) {

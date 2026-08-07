@@ -30,6 +30,17 @@ bool forwarderRemove(const std::string& pkg_name);
 // Where it lives, for callers that want to check or show the path.
 std::string forwarderPath(const std::string& pkg_name);
 
+// Never try to build this game's icon again.
+//
+// Encoding one killed the process once — a hardware log ends mid-sentence
+// inside IMG_SaveJPG_RW, with neither its success nor its failure line ever
+// written. A crash there happens on the "Scanning for APKs..." screen, so the
+// whole-pass lock was skipping every forwarder on alternate launches forever.
+// Blaming the one icon instead turns a permanent crash into a game whose
+// forwarder has no picture, which is what "a forwarder is a convenience"
+// should have meant all along.
+void forwarderBlockIcon(const std::string& pkg_name);
+
 // "Fingersoft | Viridite Contributors" — the developer, credited first,
 // followed by the people who made it run here. Exposed for the UI.
 std::string forwarderAuthor(const std::string& pkg_name);

@@ -9,4 +9,6 @@ core-x64: launch target -> sdmc:/Viridite/apks/Hill+Climb+Racing_1.67.0_APKPure.
   font: system BFTTF
   font: system BFTTF
   font: system BFTTF
+  font: system BFTTF
 sdmc:/Viridite/screenshots/ui_loading.png
+sdmc:/Viridite/screenshots/ui_reveal.png

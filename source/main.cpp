@@ -233,15 +233,36 @@ static void syncForwarders(std::vector<ApkInfo>& list) {
     // work and removed after, so finding one means the last attempt did not
     // return, and this one skips it. Forwarders are a convenience; being able
     // to open the launcher is not.
+    // The lock now carries the package that was being written when it was
+    // left behind, so a crash blames one game rather than the whole pass.
+    // Skipping everything meant forwarders appeared on alternate launches
+    // forever and the offending icon was retried each time — the log showed
+    // exactly that, ending mid-sentence inside the JPEG encoder.
     const char* kLock = "sdmc:/Viridite/.forwarder_sync";
     struct stat lk;
     if (stat(kLock, &lk) == 0) {
+        std::string culprit;
+        if (FILE* f = fopen(kLock, "r")) {
+            char buf[256] = {};
+            if (fgets(buf, sizeof buf, f)) {
+                char* e = buf + strlen(buf);
+                while (e > buf && (e[-1] == '\n' || e[-1] == '\r')) *--e = '\0';
+                culprit = buf;
+            }
+            fclose(f);
+        }
         remove(kLock);
-        logMsg("forwarders: last attempt did not finish — this pass skipped. "
-               "The lock is now cleared, so the next scan will try again.");
-        return;
+        if (!culprit.empty() && culprit != "1") {
+            // The icon is the only part of building a forwarder that runs
+            // third-party image data through a decoder, so it is the part that
+            // can take the process with it. Give up on that one picture and
+            // carry on — the entry still appears, named and launchable.
+            forwarderBlockIcon(culprit);
+        } else {
+            logMsg("forwarders: last attempt did not finish, but did not say where. "
+                   "The lock is cleared, so this pass runs normally.");
+        }
     }
-    if (FILE* f = fopen(kLock, "w")) { fputs("1\n", f); fclose(f); }
 
     int installed = 0, present = 0, wrote = 0, removed = 0, failed = 0;
     for (const ApkInfo& a : list) {
@@ -251,7 +272,13 @@ static void syncForwarders(std::vector<ApkInfo>& list) {
         const bool exists = stat(path.c_str(), &st) == 0;
         if (a.installed) installed++;
         if (exists)      present++;
-        if (a.installed && !exists) { if (forwarderWrite(a)) wrote++; else failed++; }
+        if (a.installed && !exists) {
+            // Name the game in the lock before touching it, so if this call
+            // never returns the next launch knows which one it was.
+            if (FILE* f = fopen(kLock, "w")) { fputs(a.packageName.c_str(), f); fputc('\n', f); fclose(f); }
+            if (forwarderWrite(a)) wrote++; else failed++;
+            remove(kLock);
+        }
         else if (!a.installed && exists) { if (forwarderRemove(a.packageName)) removed++; }
     }
     // Always logged, including when there was nothing to do. A pass that says
@@ -1877,8 +1904,8 @@ struct App {
         // Mirrors Android's app-info screen: cache and storage are separate
         // actions, because "make it re-extract" and "throw my save away" are
         // very different intentions that a single Delete button conflates.
-        static const int ROW_FPS = 0, ROW_CACHE = 1, ROW_STORAGE = 2,
-                         ROW_DELETE = 3, ROW_COUNT = 4;
+        static const int ROW_FPS = 0, ROW_FORWARD = 1, ROW_CACHE = 2,
+                         ROW_STORAGE = 3, ROW_DELETE = 4, ROW_COUNT = 5;
         int  row           = 0;
         Uint32 lastManageStick = 0;
         int  fpsCap        = apkGetFpsCap(pkg); // 0 = default/uncapped
@@ -1892,6 +1919,23 @@ struct App {
         // screen until it finished.
         std::atomic<uint64_t> cacheBytes{0}, dataBytes{0};
         std::atomic<bool>     sizesReady{false};
+        // Whether this game currently has an entry in the HOME menu.
+        struct stat fst;
+        bool fwdExists = stat(forwarderPath(pkg).c_str(), &fst) == 0;
+
+        auto activateForwarder = [&]() {
+            if (fwdExists) {
+                fwdExists = !forwarderRemove(pkg);
+                noticeText = fwdExists ? "Could not remove the forwarder — see launcher_log.txt"
+                                       : "Removed from the HOME menu.";
+            } else {
+                fwdExists = forwarderWrite(apk);
+                noticeText = fwdExists ? "Added to the HOME menu."
+                                       : "Could not write the forwarder — see launcher_log.txt";
+            }
+            noticeUntil = SDL_GetTicks() + 4000;
+        };
+
         std::thread sizer;
         auto startSizing = [&]() {
             if (sizer.joinable()) sizer.join();
@@ -1943,6 +1987,7 @@ struct App {
         };
         auto activate = [&](int r) {
             if (r == ROW_FPS)          toggleFps();
+            else if (r == ROW_FORWARD) activateForwarder();
             else if (r == ROW_CACHE)   activateCache();
             else if (r == ROW_STORAGE) activateStorage();
             else if (r == ROW_DELETE)  activateDelete();
@@ -2028,7 +2073,15 @@ struct App {
                 ? "Clear storage — press A again to confirm, SAVES WILL BE LOST"
                 : "Clear storage (" + (sizesReady ? formatSize(dataBytes) : std::string("measuring…")) +
                   ") — deletes saves and settings too";
-            const char* labels[ROW_COUNT] = { fpsLabel, cacheLabel.c_str(),
+            // Written automatically for installed games, but a forwarder can
+            // go missing — a card reformatted, a folder tidied away — and
+            // hunting for why is worse than a button that just makes one.
+            const bool haveFwd = fwdExists;
+            const std::string fwdLabel = haveFwd
+                ? std::string("Remove from the HOME menu")
+                : std::string("Add to the HOME menu — launches straight into the game");
+            const char* labels[ROW_COUNT] = { fpsLabel, fwdLabel.c_str(),
+                                              cacheLabel.c_str(),
                                               dataLabel.c_str(), deleteLabel };
 
             // Android labels these actions with icons, and they are the same
@@ -2037,6 +2090,7 @@ struct App {
             // screen read as Android rather than as a list of sentences.
             static const char* rowIcons[ROW_COUNT] = {
                 "tune",                // framerate cap
+                "home",                // forwarder
                 "cleaning_services",   // clear cache
                 "storage",             // clear storage
                 "delete_forever",      // delete game
