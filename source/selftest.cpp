@@ -454,6 +454,15 @@ std::vector<TestResult> selfTestRun(const std::vector<ApkInfo>& apks,
                 else if (smallest == 0)
                     add(out, TestStatus::Fail, (label + " — install").c_str(),
                         "%s is 0 bytes — the extract was interrupted", smallestName.c_str());
+                // An arm64 game whose install has no arm64 libraries will be
+                // run on the ARM32 interpreter — slower, much less complete,
+                // and indistinguishable from the game itself being broken. It
+                // read as a clean PASS ("3 lib(s) extracted") for exactly as
+                // long as it took to notice the count said 0 arm64.
+                else if (a.arch == ApkArch::Arm64 && n64 == 0)
+                    add(out, TestStatus::Fail, (label + " — install").c_str(),
+                        "this build ships arm64 libs but the install has none (%d arm32) — "
+                        "it will run on the 32-bit interpreter; reinstall with X", n32);
                 else
                     add(out, TestStatus::Pass, (label + " — install").c_str(),
                         "%d lib(s) extracted, %.1f MB (%d arm64, %d arm32)",

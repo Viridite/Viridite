@@ -661,10 +661,11 @@ bool apkDeleteInstalledData(const std::string& pkg_name) {
 // Android's Storage settings split, applied to how a game actually sits on the
 // SD card:
 //
-//   sdmc:/Viridite/games/<pkg>/lib      extracted .so   — re-extractable
-//   sdmc:/Viridite/games/<pkg>/assets   extracted files — re-extractable
-//   sdmc:/Viridite/games/<pkg>/userdefaults.bin         — the actual save
-//   sdmc:/Viridite/games/<pkg>/.installed, .fps_cap     — markers/settings
+//   sdmc:/Viridite/games/<pkg>/lib      extracted arm64 .so — re-extractable
+//   sdmc:/Viridite/games/<pkg>/lib32    extracted arm32 .so — re-extractable
+//   sdmc:/Viridite/games/<pkg>/assets   extracted files     — re-extractable
+//   sdmc:/Viridite/games/<pkg>/userdefaults.bin             — the actual save
+//   sdmc:/Viridite/games/<pkg>/.installed, .fps_cap         — markers/settings
 //
 // Clear cache drops only what the Core can rebuild from the APK, so progress
 // survives; clear storage drops the lot, which is the "start again from
@@ -676,6 +677,12 @@ bool apkClearCache(const std::string& pkg_name) {
     if (stat(base.c_str(), &st) != 0) return false;         // nothing installed
 
     bool ok = removeRecursive(base + "/lib");
+    // lib32/ too. It arrived after this function was written and was never
+    // added here, so clearing the cache deleted a game's arm64 libraries and
+    // left its arm32 ones in place — which is not a cleared cache but a
+    // downgraded one. The Core then found libs present, decided the install was
+    // fine, and ran a 64-bit game on the 32-bit interpreter.
+    ok = removeRecursive(base + "/lib32") && ok;
     ok = removeRecursive(base + "/assets") && ok;
     // Drop the marker too, so the next launch re-extracts instead of trusting
     // a tree we just emptied.
@@ -711,7 +718,12 @@ static void walkUsage(const std::string& path, bool underCache,
         struct stat st;
         if (stat(full.c_str(), &st) != 0) continue;
         if (S_ISDIR(st.st_mode)) {
-            walkUsage(full, underCache || n == "lib" || n == "assets", cache, data);
+            // lib32 counts as cache for the same reason lib does — the Core can
+            // re-extract it from the APK. Omitting it reported a game's 32-bit
+            // libraries as save data, so the Manage screen understated what
+            // clearing the cache would reclaim and overstated what was at risk.
+            walkUsage(full, underCache || n == "lib" || n == "lib32" || n == "assets",
+                      cache, data);
         } else {
             *(underCache ? cache : data) += (uint64_t)st.st_size;
         }
