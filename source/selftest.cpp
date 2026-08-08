@@ -102,7 +102,7 @@ static void selfTestLastRun(const std::string& pkg, const std::string& label,
         return;
     }
     char line[512];
-    bool   thisGame = false, loaded = false, handedOff = false;
+    bool   thisGame = false, loaded = false, handedOff = false, dryRun = false;
     int    faults = 0, wedged = 0;
     char   version[64] = "?";
     while (fgets(line, sizeof(line), f)) {
@@ -115,12 +115,24 @@ static void selfTestLastRun(const std::string& pkg, const std::string& label,
         if (strstr(line, "loading complete"))            loaded = true;
         if (strstr(line, "handing off to the game"))     handedOff = true;
         if (strstr(line, "WATCHDOG: main thread"))       wedged++;
+        // Both Core loaders write "dry run" on every line of a --selftest deep
+        // test, and the ARM32 path's dry run never reaches "loading complete"
+        // or "handing off" at all — it just lists the libraries and stops. A
+        // log left behind by that path would otherwise read exactly like a
+        // real launch that hung before finishing, which is a false alarm the
+        // deep test itself keeps producing right before this check runs.
+        if (strstr(line, "dry run"))                     dryRun = true;
     }
     fclose(f);
 
     if (!thisGame) {
         add(out, TestStatus::Warn, (label + " — last run").c_str(),
             "not the game in the current log");
+        return;
+    }
+    if (dryRun && !handedOff) {
+        add(out, TestStatus::Warn, (label + " — last run").c_str(),
+            "log is this session's own deep-test dry run — real launch result unknown");
         return;
     }
     if (wedged)
