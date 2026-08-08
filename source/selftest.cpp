@@ -14,6 +14,7 @@
 #include "selftest.h"
 #include "apk.h"
 #include "update.h"
+#include "jpegenc.h"
 #include "build_number.h"
 
 #include <switch.h>
@@ -219,6 +220,83 @@ std::vector<TestResult> selfTestRun(const std::vector<ApkInfo>& apks,
         else
             add(out, TestStatus::Pass, "Controller artwork",
                 "all %zu present", sizeof(kAssets)/sizeof(kAssets[0]));
+    }
+
+    // ── Icon encoder ────────────────────────────────────────────────────────
+    // The forwarder's JPEG encoder replaced IMG_SaveJPG_RW because that call
+    // took the process down on hardware three times and never on the dev box.
+    // A host test cannot speak to that, so the same encode runs here, on the
+    // console, where the original fault lived. Deliberately no decode: reading
+    // it back would drag libjpeg — the suspect — into a test that is supposed
+    // to be always safe to run. Structure and the buffer limit are what matter.
+    if (progress) progress("Checking the icon encoder");
+    {
+        // Static, not stack or heap: this runs before anything has been proven
+        // about memory, and the encoder's whole point is having nothing that
+        // can fail to come up.
+        constexpr int kDim = 64;
+        constexpr size_t kCap = 64 * 1024, kGuard = 4096;
+        static uint8_t pix[kDim * kDim * 3];
+        static uint8_t buf[kCap + kGuard];
+
+        for (int y = 0; y < kDim; y++)
+            for (int x = 0; x < kDim; x++) {
+                uint8_t* p = pix + ((size_t)y * kDim + x) * 3;
+                p[0] = (uint8_t)(x * 4); p[1] = (uint8_t)(y * 4); p[2] = 0x80;
+            }
+
+        memset(buf, 0x5A, sizeof buf);
+        const size_t n = jpegEncodeRGB(pix, kDim, kDim, kDim * 3, 90, buf, kCap);
+
+        bool guardIntact = true;
+        for (size_t i = kCap; i < kCap + kGuard; i++)
+            if (buf[i] != 0x5A) { guardIntact = false; break; }
+
+        // A file the HOME menu will read has to have all four of these. Walk
+        // the segments by their length fields rather than scanning for 0xFF —
+        // quantisation tables and Huffman symbol lists contain 0xFF bytes of
+        // their own, and a scan would happily match one of those.
+        bool sof = false, sos = false;
+        for (size_t i = 2; i + 3 < n; ) {
+            if (buf[i] != 0xFF) break;                  // not on a marker: give up
+            const uint8_t marker = buf[i + 1];
+            if (marker == 0xD8 || marker == 0xD9 || marker == 0x01 ||
+                (marker >= 0xD0 && marker <= 0xD7)) { i += 2; continue; }  // no payload
+            if (marker == 0xC0) sof = true;
+            if (marker == 0xDA) { sos = true; break; }  // entropy-coded data follows
+            i += 2 + (size_t)((buf[i + 2] << 8) | buf[i + 3]);
+        }
+        const bool soi = n >= 4 && buf[0] == 0xFF && buf[1] == 0xD8;
+        const bool eoi = n >= 4 && buf[n - 2] == 0xFF && buf[n - 1] == 0xD9;
+
+        // And it must refuse a buffer it cannot fit in rather than fill it.
+        // The short cap is measured from the encode that just succeeded, so it
+        // stays genuinely too small even if the output size drifts later; below
+        // the encoder's own 1024-byte floor it would take a different path and
+        // prove nothing, hence the guard.
+        bool refused = true;
+        if (n > 1124) {
+            const size_t shortCap = n - 100;
+            memset(buf, 0x5A, sizeof buf);
+            refused = jpegEncodeRGB(pix, kDim, kDim, kDim * 3, 90, buf, shortCap) == 0;
+            for (size_t i = shortCap; i < kCap && refused; i++)
+                if (buf[i] != 0x5A) refused = false;
+        }
+
+        if (n == 0)
+            add(out, TestStatus::Fail, "Icon encoder", "produced nothing");
+        else if (!guardIntact)
+            add(out, TestStatus::Fail, "Icon encoder", "wrote past the buffer it was given");
+        else if (!soi || !eoi || !sof || !sos)
+            add(out, TestStatus::Fail, "Icon encoder", "malformed JPEG (%s%s%s%s)",
+                soi ? "" : "no SOI ", sof ? "" : "no SOF0 ",
+                sos ? "" : "no SOS ", eoi ? "" : "no EOI");
+        else if (!refused)
+            add(out, TestStatus::Fail, "Icon encoder", "overran a deliberately short buffer");
+        else
+            add(out, TestStatus::Pass, "Icon encoder",
+                "%dx%d q90 -> %zu bytes, well-formed, respects its limit",
+                kDim, kDim, n);
     }
 
     // ── Fonts ───────────────────────────────────────────────────────────────

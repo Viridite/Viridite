@@ -105,12 +105,13 @@ bool buildIconJpeg(const ApkInfo& apk, Buf& out) {
     SDL_BlitScaled(src, nullptr, dst, nullptr);
     SDL_FreeSurface(src);
 
-    // Into memory, not a file: the icon only exists to be concatenated. The
-    // buffer is a fixed 256 KB, which a 256x256 JPEG cannot exceed; RWFromMem
-    // bounds the writes, so a surprise merely fails the save.
+    // Into memory, not a file: the icon only exists to be concatenated. A fixed
+    // 256 KB clears the worst case with room to spare — 256x256 at quality 90
+    // measures ~150 KB even for incompressible colour noise, and a real icon is
+    // a tenth of that — and the encoder stops at the limit instead of running
+    // past it, so an image that somehow needed more fails the save rather than
+    // walking off the end of the buffer.
     if (!out.alloc(256 * 1024)) { SDL_FreeSurface(dst); return false; }
-    SDL_RWops* rw = SDL_RWFromMem(out.p, (int)out.n);
-    if (!rw) { SDL_FreeSurface(dst); return false; }
     logMsg("forwarder:   icon: encoding JPEG");
     // Our own encoder, not IMG_SaveJPG_RW. Three hardware logs ended inside
     // that call, on three unrelated games, and the run that finally reported
@@ -119,11 +120,17 @@ bool buildIconJpeg(const ApkInfo& apk, Buf& out) {
     // configure our way out of, so the dependency is gone instead.
     const size_t n = jpegEncodeRGB((const uint8_t*)dst->pixels, dst->w, dst->h,
                                    dst->pitch, 90, out.p, out.n);
-    const int rc = n > 0 ? 0 : -1;
-    SDL_RWclose(rw);
+    const int iw = dst->w, ih = dst->h;
     SDL_FreeSurface(dst);
-    if (rc != 0 || n <= 0) {
-        logMsg(("forwarder:   icon: JPEG encode failed — " + std::string(SDL_GetError())).c_str());
+    if (n == 0) {
+        // No SDL call is involved any more, so SDL_GetError() here would print
+        // whatever unrelated thing last failed — worse than saying nothing.
+        // The encoder returns 0 for exactly two reasons, and both are sizes.
+        char m[160];
+        snprintf(m, sizeof m,
+                 "forwarder:   icon: JPEG encode failed (%dx%d would not fit %zu KB)",
+                 iw, ih, out.n / 1024);
+        logMsg(m);
         return false;
     }
     logMsg("forwarder:   icon: encoded");
