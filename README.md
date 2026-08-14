@@ -343,7 +343,7 @@ Measured numbers from hardware:
 
 | Game | Status | Notes |
 |---|---|---|
-| **Hill Climb Racing** 1.67.0 (Fingersoft) | ✅ Playable | The only game tested. Fully playable — touch controls, real audio, real threads, persistent saves, ~locked 60fps. One known deterministic crash on the Shop/IAP screen (root-caused, not yet patched — see Changelog). |
+| **Hill Climb Racing** 1.67.0 (Fingersoft) | ✅ Playable | Fully playable — touch controls, real audio, real threads, persistent saves, ~locked 60fps. The deterministic Shop/IAP crash tracked in earlier changelog entries below is now patched (`game_hillclimb.cpp` in Translation Core: the empty-product-list populate is skipped and the resulting empty-vector virtual-call is branched over), along with a second, previously-undocumented crash on a null vehicle-skin lookup during racing. |
 | **Brain It On!** 1.6.234 (Orbital Nine) | ❌ Fails to launch | Unity/IL2CPP. Loads *completely* — all four native libraries map, and every one of its 2,641 imported symbols resolves — then 155 of `libunity.so`'s 421 static initialisers fault inside the allocator and the loading screen stops. The loader itself is verified sound: a dry load finishes in 1.7s with zero unresolved symbols. |
 | **Angry Birds Classic** ("WebPit" community build 7.3.0) | ❌ Unsupported | 32-bit only (`armeabi-v7a` + `x86`, no `arm64-v8a` at all — checked every entry in the APK directly). This specific build can't run here; a build that ships `arm64-v8a` (e.g. Rovio's later "Rovio Classics" rebrand, unconfirmed) would have a real chance. |
 
