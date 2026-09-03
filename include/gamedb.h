@@ -83,6 +83,13 @@ struct Title {
     int         marketVariation;  // Cocos2d-x getMarketVariation, or -1
     const char* extraData;   // what it needs beyond the APK, or nullptr
     const char* reference;   // where these facts came from
+    // True only when the game's data is in an OBB shipped *beside* the APK, so
+    // copying the APK alone cannot work. Deliberately not set for the titles
+    // whose OBB rides inside the APK's own assets/ (the Square Enix ports do
+    // this) — those install correctly from the APK alone — nor for one that is
+    // optional. A launch that needs a file nobody has can then say which file,
+    // instead of failing later somewhere unrecognisable.
+    bool        needsObb = false;
 };
 
 // ── Library roles ───────────────────────────────────────────────────────────
@@ -183,7 +190,7 @@ inline constexpr Title kTitles[] = {
      "Kingdom Hearts Union \xcf\x87 Dark Road", "5.0.1",
      "libcocos2dcpp.so", Engine::Cocos2dx, Support::Untested, false, -1,
      "two OBBs alongside the APK (main.76 and patch.87), left packed",
-     "https://github.com/NaGaa95/KHUx_nx"},
+     "https://github.com/NaGaa95/KHUx_nx", /*needsObb=*/true},
     {"com.square_enix.adventures", "Adventures of Mana", "1.1.4",
      "libmcfandroid.so", Engine::Native, Support::Untested, false, -1,
      "assets/sk1/*.mpk plus the bgm*.ogg set",
@@ -221,12 +228,12 @@ inline constexpr Title kTitles[] = {
     {"com.disney.castleofillusion_goo", "Castle of Illusion", "1.4.5",
      "libViewer_GP.so", Engine::Native, Support::Untested, false, -1,
      "main.154.<package>.obb, left packed",
-     "https://github.com/NaGaa95/coi_nx"},
+     "https://github.com/NaGaa95/coi_nx", /*needsObb=*/true},
     {"com.sega.afterburnerclimax", "After Burner Climax", "0.1.7",
      "libacb.so", Engine::Native, Support::Untested, false, -1,
      "main.<ver>.<package>.obb — note the game also ships libfmod/libfmodstudio, "
      "either of which can be larger than the game itself",
-     "https://github.com/NaGaa95/abc_nx"},
+     "https://github.com/NaGaa95/abc_nx", /*needsObb=*/true},
 
     // WB / TT Games — package ids quoted in the READMEs.
     {"com.wb.goog.lnjgo", "LEGO Ninjago: Shadow of Ronin", "2.2.1.02",
@@ -320,7 +327,7 @@ inline constexpr Title kTitles[] = {
     {nullptr, "GTA: San Andreas", "2.11.311",
      "libGame.so", Engine::Native, Support::Untested, false, -1,
      "main.*.obb unpacked into data/models/texdb/audio/text/anim/es2",
-     "https://github.com/NaGaa95/gtasa_nx"},
+     "https://github.com/NaGaa95/gtasa_nx", /*needsObb=*/true},
     {nullptr, "GTA: Liberty City Stories", "2.4.379",
      "libGame.so", Engine::Native, Support::Untested, false, -1,
      "data_main.wad, data_music.wad, intro.m4v",

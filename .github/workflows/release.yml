@@ -160,6 +160,22 @@ jobs:
             core/test/gamedb/harness.cpp -o /tmp/gamedbtest
           /tmp/gamedbtest
 
+      # Expansion files and JNI entry-point matching. Both decide whether a
+      # game can find its own data and its own render loop, and both are
+      # written as plain host code so they can be checked here rather than
+      # inferred from a hardware log.
+      - name: Test expansion-file handling
+        run: |
+          g++ -std=c++17 -Wall -Wextra -I core/include \
+            core/test/obb/harness.cpp core/source/compat/obb.cpp -o /tmp/obbtest
+          /tmp/obbtest
+
+      - name: Test JNI entry-point matching
+        run: |
+          g++ -std=c++17 -Wall -Wextra -I core/include \
+            core/test/jnisym/harness.cpp -o /tmp/jnisymtest
+          /tmp/jnisymtest
+
       # Before the launcher, because the launcher embeds the result: every
       # forwarder it writes is this stub with per-game metadata appended, so a
       # stale copy in romfs would mean forwarders built from old code.
