@@ -18,6 +18,7 @@
 #include <curl/curl.h>
 
 #include "m3_theme.h"
+#include "gamedb.h"
 #include "apk.h"
 #include "forwarder.h"
 #include "avatar.h"
@@ -109,7 +110,8 @@ static std::vector<PadKind> detectPads() {
 }
 
 static bool hasControllerSupport(const std::string& pkg) {
-    return pkg == "com.fingersoft.hillclimb";
+    const gamedb::Title* t = gamedb::findByPackage(pkg.c_str());
+    return t && t->controller;
 }
 
 // Games confirmed to actually run. Not "we have looked at it" — run.
@@ -124,8 +126,15 @@ static bool hasControllerSupport(const std::string& pkg) {
 // It stays fully available to the deep test, which loads it without running
 // it — that is exactly the case the deep test exists for, and it is how we
 // know the loader side is sound.
+//
+// Both answers now come from gamedb.h, the table the Translation Core loads
+// games from, so "confirmed to run" is one field in one place rather than a
+// package id repeated across two repos. Everything the table knows about a
+// title — its engine, its entry library, the data it needs — is held apart
+// from whether it runs, and only Support::Playable is a claim that it does.
 static bool isCompatibleGame(const std::string& pkg) {
-    return pkg == "com.fingersoft.hillclimb";  // Hill Climb Racing (cocos2d-x)
+    const gamedb::Title* t = gamedb::findByPackage(pkg.c_str());
+    return t && t->support == gamedb::Support::Playable;
 }
 
 // ---------------------------------------------------------------------------
@@ -1363,13 +1372,23 @@ struct App {
                                 g_theme->tertiaryContainer);
                     drawText(fSm, TAG, C_WARN, bx, iy + 14);
                 } else if (!rowCompatible) {
-                    static const std::string TAG = "INCOMPATIBLE";
+                    // A title the database knows says what it actually is —
+                    // "UNTESTED" for one that has never been run here, "ENGINE
+                    // UNSUPPORTED" for a shape the Core has no path for. Only
+                    // an APK nobody has recorded anything about stays a flat
+                    // INCOMPATIBLE, which is all that can honestly be said of
+                    // it. The row is still not launchable either way; the
+                    // difference is whether the screen explains itself.
+                    const gamedb::Title* t = gamedb::findByPackage(rowPkg.c_str());
+                    const bool known = t != nullptr;
+                    const std::string TAG = known ? gamedb::supportTag(t->support)
+                                                  : "INCOMPATIBLE";
                     int bw = 0, bh = 0;
                     TTF_SizeUTF8(fSm, TAG.c_str(), &bw, &bh);
                     int bx = SW - bw - 40;
                     fillRounded(bx - 10, iy + 12, bw + 20, bh + 4, M3_FULL,
-                                C_ERR_CONTAINER);
-                    drawText(fSm, TAG, C_ERR, bx, iy + 14);
+                                known ? g_theme->tertiaryContainer : C_ERR_CONTAINER);
+                    drawText(fSm, TAG, known ? C_WARN : C_ERR, bx, iy + 14);
                 } else if (apks[i].installed) {
                     static const std::string INST = "INSTALLED";
                     int bw = 0, bh = 0;
@@ -1403,7 +1422,10 @@ struct App {
         drawHeaderBar(cnt);
 
         if (noticeUntil && now < noticeUntil) {
-            const char* msg = noticeText.c_str();
+            // Clamped: this is one centered line, and a message longer than the
+            // screen would draw its pill off both edges rather than wrapping.
+            const std::string shown = clamp(fSm, noticeText, SW - 80);
+            const char* msg = shown.c_str();
             int w = 0, h = 0;
             TTF_SizeUTF8(fSm, msg, &w, &h);
             fillRounded((SW - w) / 2 - 18, SH - FOOTER_H - 46, w + 36, 38, M3_FULL,
@@ -2276,11 +2298,39 @@ struct App {
         const std::string& pkg =
             apk.packageName.empty() ? apk.filename : apk.packageName;
         if (!isCompatibleGame(pkg)) {
-            noticeText  = "Not supported yet — Hill Climb Racing is the only game "
-                          "confirmed to run. Hold Y then press X to deep-test this "
-                          "one anyway.";
+            // Still blocked — Hill Climb Racing remains the only title anyone
+            // has played through here, and offering a launch that ends in a
+            // frozen screen is the thing this check exists to prevent. What
+            // changes for a title the database knows is that the refusal names
+            // the game and says which of the three reasons it is: no engine
+            // path, loads but doesn't run, or never tried. That is the
+            // difference between "no" and "no, and here is why".
+            //
+            // One line each: the notice draws as a single centered pill, so the
+            // detail — what a title needs beyond its APK — stays in
+            // compat_log.txt and the compatibility docs.
+            const gamedb::Title* t = gamedb::findByPackage(pkg.c_str());
+            if (t && t->support == gamedb::Support::Unsupported) {
+                noticeText = std::string(t->name) + " is a " +
+                             gamedb::engineName(t->engine) +
+                             " game — no path for that engine here yet.";
+            } else if (t && t->support == gamedb::Support::Loads) {
+                noticeText = std::string(t->name) +
+                             " loads here but doesn't run yet. Hold Y then press X "
+                             "to deep-test it.";
+            } else if (t) {
+                noticeText = std::string(t->name) + " (" +
+                             gamedb::engineName(t->engine) +
+                             ") has never been run here. Hold Y then press X to "
+                             "deep-test it.";
+            } else {
+                noticeText = "Not supported yet — Hill Climb Racing is the only game "
+                             "confirmed to run. Hold Y then press X to deep-test this "
+                             "one anyway.";
+            }
             noticeUntil = SDL_GetTicks() + 7000;
-            logMsg(("launch blocked (incompatible): " + pkg).c_str());
+            logMsg(("launch blocked (not confirmed to run): " + pkg +
+                    (t ? std::string(" — known title: ") + t->name : std::string(" — unknown title"))).c_str());
             return false;
         }
         // 32-bit (armeabi-v7a) games now chain-load the x64 Core, which runs

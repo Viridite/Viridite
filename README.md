@@ -349,6 +349,45 @@ Measured numbers from hardware:
 
 The launcher now tags each scanned APK by architecture automatically and blocks launching anything 32-bit-only with an explanation, rather than only finding out after a failed extraction.
 
+### Known titles — what the launcher recognises
+
+Playable is still one game. What changed is that "not playable" is no longer one
+undifferentiated bucket.
+
+[NaGaa95](https://github.com/NaGaa95) has independently published working Switch
+ports of ~30 Android games, built with the same technique this project uses
+generically: load the original arm64 `.so`, resolve its imports natively, run it
+in a minimal Android-shaped environment. Their READMEs document, per title, two
+things no APK tells you — **which library is actually the game**, and **what data
+the game needs beyond its APK**. That has been transcribed into a title database
+(`include/gamedb.h`, shared byte-identically with the Translation Core) and
+credited per row. Full credit to NaGaa95 for the ports it is drawn from.
+
+What that buys, today:
+
+- **The right library gets entered.** The Core's rule was "the largest `.so` is
+  the game". That is wrong for a Unity title (largest is `libil2cpp.so`; the
+  entry point is `libmain.so`), and wrong for a game shipping FMOD Studio, which
+  can outweigh the game itself. The rule is now: the title's documented entry
+  library, else the largest library whose *name* is a known engine entry point,
+  else the largest that isn't a known dependency (FMOD, `libc++_shared.so`, an
+  ad SDK), else the largest — with the answer, and which rule gave it, in
+  `compat_log.txt`. Host-tested, since it can't be checked on hardware without
+  owning every APK in the table.
+- **A refusal that explains itself.** Dropping in one of these titles now names
+  the game, its engine, and what it needs beyond its APK, instead of "Hill Climb
+  Racing is the only game confirmed to run". List rows read `UNTESTED` or
+  `ENGINE UNSUPPORTED` rather than a flat `INCOMPATIBLE`.
+
+What it explicitly does **not** buy: any of them running. Nothing in that table
+has been through this loader, and a row saying `UNTESTED` says exactly that. The
+full list, with each title's package, entry library, engine and data
+requirements, is in
+[VNX-Translation-Core/docs/naga-ports-compat-notes.md](https://github.com/Viridite/VNX-Translation-Core/blob/main/docs/naga-ports-compat-notes.md).
+The nearest ones to real support are Geometry Dash (cocos2d-x 2.2 — the same
+engine family already running here) and the Unity IL2CPP titles, which all move
+together with VNX-Unity-Runtime rather than needing per-title work.
+
 **What a game needs, to have a real chance:**
 - `arm64-v8a` native libraries in the APK (`lib/arm64-v8a/*.so`) — this project only loads AArch64 ELF binaries. ARM32-only (`armeabi-v7a`) APKs are detected during scanning and blocked with an explanation (see [Architecture](#architecture--launcher--translation-core)) rather than attempted.
 - A plain `.apk` — the extractor doesn't understand split/`.xapk` packages yet (see Performance Expectations above).

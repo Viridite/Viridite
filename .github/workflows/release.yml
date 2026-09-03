@@ -142,6 +142,24 @@ jobs:
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "Releasing as $TAG"
 
+      # The launcher and the Core each carry a copy of the game database, and a
+      # release where they disagree about a title is a release where the list
+      # screen and the loader answer differently for the same game. It is one
+      # dependency-free header precisely so this check can be a diff.
+      - name: Check the game database is in step across both repos
+        run: |
+          diff -u core/include/compat/gamedb.h launcher/include/gamedb.h \
+            || { echo "::error::gamedb.h differs between the Core and the launcher — copy the Core's over the launcher's"; exit 1; }
+
+      # Runs on the host, not the Switch: which library a game is entered
+      # through is decided by rules that can't be exercised on hardware without
+      # owning every APK in the table.
+      - name: Test the game database
+        run: |
+          g++ -std=c++17 -Wall -Wextra -I core/include \
+            core/test/gamedb/harness.cpp -o /tmp/gamedbtest
+          /tmp/gamedbtest
+
       # Before the launcher, because the launcher embeds the result: every
       # forwarder it writes is this stub with per-game metadata appended, so a
       # stale copy in romfs would mean forwarders built from old code.
