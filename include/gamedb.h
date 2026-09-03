@@ -267,6 +267,16 @@ inline constexpr Title kTitles[] = {
      "the APK's assets/ tree plus libfmod.so; online play needs a cacert.pem "
      "regenerated from the Switch trust store",
      "https://github.com/NaGaa95/gdash_nx"},
+    {nullptr, "Animal Crossing: Pocket Camp Complete", "7.1.3",
+     "libmain.so", Engine::UnityIl2cpp, Support::Untested, false, -1,
+     "assets/bin/Data; it also ships libTone.so, and still reaches the network "
+     "to download content even though normal play doesn't need a connection",
+     "https://github.com/NaGaa95/acpc_nx"},
+    {nullptr, "Max Payne Mobile", "2.1.131",
+     "libGame.so", Engine::Native, Support::Untested, false, -1,
+     "the .msf sound files, x_*.ras language archives, data/ and es2/ — all in "
+     "the APK's assets, no OBB",
+     "https://github.com/NaGaa95/max_nx_v2.1.131"},
     {nullptr, "Angry Birds 2", "26.4.3",
      "libmain.so", Engine::UnityIl2cpp, Support::Untested, false, -1,
      "assets/bin/Data",
