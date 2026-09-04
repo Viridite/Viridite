@@ -179,6 +179,17 @@ jobs:
       # Which IMU a game ends up reading, against a libnx HID mock. Invisible
       # on hardware — a game with no motion data looks exactly like a game that
       # doesn't use motion controls — so it is checked here instead.
+      # 69 twelve-argument calls into the game, made once before its shop is
+      # built. A mistake in them is a wrong price on a screen nobody
+      # screenshots, not a crash, so it is checked here.
+      - name: Test the Hill Climb Racing shop catalogue
+        run: |
+          cd core
+          g++ -std=c++17 -Wall -Wextra -I test/arm32/mock -I include \
+            test/hcrshop/harness.cpp source/compat/games/game_hillclimb_shop.cpp \
+            -o /tmp/hcrshoptest
+          /tmp/hcrshoptest
+
       - name: Test motion-sensor acquisition
         run: |
           cd core

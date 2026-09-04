@@ -169,10 +169,13 @@ inline constexpr size_t kSoSignatureCount =
 // uses rather than drifting from it.
 inline constexpr Title kTitles[] = {
     // ── Runs here ───────────────────────────────────────────────────────────
-    {"com.fingersoft.hillclimb", "Hill Climb Racing", "1.67.0",
+    {"com.fingersoft.hillclimb", "Hill Climb Racing", "1.67.0 (played) / 1.71.1 (arm64)",
      "libgame.so", Engine::Cocos2dx, Support::Playable, true, /*market=*/1,
      nullptr,
-     "Viridite's own reference title — see source/compat/games/game_hillclimb.cpp"},
+     "Viridite's own reference title — see source/compat/games/game_hillclimb.cpp. "
+     "The shop is filled by replaying the game's own Java-side catalogue rather "
+     "than by patching addresses, so it is no longer pinned to one build; 1.71.1 "
+     "is the version xflipperkast's HCR_NX targets and ships arm64."},
 
     // ── Loads here, does not run ────────────────────────────────────────────
     {"com.orbital.brainiton", "Brain It On!", "Unity 2018.4.13f1",
