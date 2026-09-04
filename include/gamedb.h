@@ -42,6 +42,8 @@ enum class Engine {
     UnityIl2cpp,   // libmain/libunity/libil2cpp — VNX-Unity-Runtime bringup
     TtFusion,      // TT Games' Fusion engine (the LEGO titles)
     Source,        // nillerusr's Android Source engine port
+    AdobeAir,      // Harman Adobe AIR — the game itself is ActionScript bytecode
+    Dalvik,        // the game's logic is DEX, not a native library at all
     Native,        // the game's own engine, no shared runtime to key off
 };
 
@@ -150,6 +152,9 @@ inline constexpr SoSignature kSoSignatures[] = {
     // Source engine. Named so the engine is recognised and reported honestly;
     // there is no path for it here (a Source game is ~30 libraries with the
     // entry point in the launcher wrapper, not in any one of them).
+    {"libCore.so",        Engine::AdobeAir,    SoRole::Dependency, "Harman Adobe AIR runtime — the game is ActionScript inside it, not here"},
+    {"libysshared.so",    Engine::AdobeAir,    SoRole::Dependency, "Adobe AIR support library"},
+
     {"libclient.so",      Engine::Source,      SoRole::Dependency, "Source engine client"},
     {"libserver.so",      Engine::Source,      SoRole::Dependency, "Source engine server"},
     {"libengine.so",      Engine::Source,      SoRole::Dependency, "Source engine core"},
@@ -340,11 +345,46 @@ inline constexpr Title kTitles[] = {
      "game.pak, dxt.bin, the .gxt text and .mp3 music from assets/",
      "https://github.com/NaGaa95/gtactw_nx"},
 
+    {nullptr, "Angry Birds Epic All Stars", "1.2.8.1",
+     "libmain.so", Engine::UnityIl2cpp, Support::Untested, false, -1,
+     "the APK is kept whole and unpacked on first launch",
+     "https://github.com/xflipperkast/angrybirdsas_nx"},
+    {nullptr, "Plants vs. Zombies 2", "13.3.1",
+     nullptr, Engine::Native, Support::Untested, false, -1,
+     "ships as an XAPK, unpacked on first launch",
+     "https://github.com/xflipperkast/PVZ2_NX"},
+    {nullptr, "Plants vs. Zombies 2: Reflourished", "1.4.2",
+     nullptr, Engine::Native, Support::Untested, false, -1,
+     "the modded APK, unpacked on first launch",
+     "https://github.com/xflipperkast/PVZ2RF_NX"},
+
     // ── Engine Viridite has no path for ─────────────────────────────────────
     // Source games are ~30 libraries with no single game binary to enter, and
     // the Android builds are themselves a port (nillerusr's) rather than a
     // stock NDK game. Listed so they are recognised and refused with a reason
     // rather than loaded until something faults.
+    // Adobe AIR: the .so files are the AIR runtime, and the game itself is
+    // ActionScript bytecode inside a signed SWF. A title like this looks like
+    // an NDK game from the outside — it has native libraries — and there is no
+    // native game code in it to enter. xflipperkast's ports run it by writing
+    // an AVM2 interpreter, which is a different project from this one.
+    {nullptr, "slither.io", "3.06",
+     nullptr, Engine::AdobeAir, Support::Unsupported, false, -1,
+     "libCore.so + libysshared.so and a signed SWF; online play",
+     "https://github.com/xflipperkast/slither_nx"},
+    {nullptr, "Papa's Pizzeria To Go", "1.1.6",
+     nullptr, Engine::AdobeAir, Support::Unsupported, false, -1,
+     "a SWF run by an AVM2 interpreter rather than the Android AIR runtime",
+     "https://github.com/xflipperkast/papapizzatg_nx"},
+
+    // Dalvik: the game's logic is DEX, executed by the Android runtime. Viridite
+    // runs no Java bytecode at all — the same fact that left Hill Climb Racing's
+    // shop empty, except here it is the whole game rather than one screen.
+    {nullptr, "Pou", "1.4.135",
+     nullptr, Engine::Dalvik, Support::Unsupported, false, -1,
+     "the APK's DEX, which needs a Dalvik runtime to execute",
+     "https://github.com/xflipperkast/pou_nx"},
+
     {nullptr, "Half-Life 2", "1.16.29 - 1.17.0025",
      nullptr, Engine::Source, Support::Unsupported, false, -1,
      "VPK game data plus ~27 engine libraries",
@@ -394,6 +434,8 @@ inline const char* engineName(Engine e) {
         case Engine::UnityIl2cpp: return "Unity IL2CPP";
         case Engine::TtFusion:    return "TT Fusion";
         case Engine::Source:      return "Source";
+        case Engine::AdobeAir:    return "Adobe AIR / ActionScript";
+        case Engine::Dalvik:      return "Dalvik (DEX bytecode)";
         case Engine::Native:      return "native (own engine)";
         default:                  return "unknown";
     }

@@ -190,6 +190,16 @@ jobs:
             -o /tmp/hcrshoptest
           /tmp/hcrshoptest
 
+      # A slow cache costs frames; a wrong one corrupts assets and looks like
+      # anything but a caching bug. Transparency is checked against the real
+      # bytes, over the access pattern minizip actually produces.
+      - name: Test the APK read cache
+        run: |
+          cd core
+          g++ -std=c++17 -Wall -Wextra -I include \
+            test/apkcache/harness.cpp source/compat/apkcache.cpp -o /tmp/apkcachetest
+          /tmp/apkcachetest
+
       - name: Test motion-sensor acquisition
         run: |
           cd core
