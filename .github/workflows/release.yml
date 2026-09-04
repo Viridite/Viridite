@@ -176,6 +176,16 @@ jobs:
             core/test/jnisym/harness.cpp -o /tmp/jnisymtest
           /tmp/jnisymtest
 
+      # Which IMU a game ends up reading, against a libnx HID mock. Invisible
+      # on hardware — a game with no motion data looks exactly like a game that
+      # doesn't use motion controls — so it is checked here instead.
+      - name: Test motion-sensor acquisition
+        run: |
+          cd core
+          g++ -std=c++17 -Wall -Wextra -I test/sensors/mock -I include \
+            test/sensors/harness.cpp source/compat/sensors.cpp -o /tmp/sensorstest
+          /tmp/sensorstest
+
       # Before the launcher, because the launcher embeds the result: every
       # forwarder it writes is this stub with per-game metadata appended, so a
       # stale copy in romfs would mean forwarders built from old code.
